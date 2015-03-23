@@ -1,0 +1,82 @@
+body{text-align:center;}
+#ft{clear:both;}
+
+#doc,#doc2,#doc3,.yui-t1,.yui-t2,.yui-t3,.yui-t4,.yui-t5,.yui-t6,.yui-t7 {
+	 
+    margin:auto;
+	margin-top: 10px;
+	text-align:center;
+	line-height:40px;
+	width:1280px;
+	min-width:760px;}
+/* 950 centered */ 
+
+#yui-main 
+.yui-t1 #yui-main,
+
+.yui-t1 .yui-a {
+
+	float:left;
+    width:1280px;
+	margin-right:15px;
+	margin-top: 5px;
+
+
+}
+
+/* Basic Element Formatting */
+
+
+body {
+	
+    background-color: #191919;
+}
+
+@font-face {
+    font-family:"Arial";
+}
+
+p.blog{
+	border-radius: 0.3em;
+	width:230px;
+	height:35px;
+	border: 2px solid#BEBEBE;
+	}
+
+
+
+#header{
+
+	margin-left:auto; 
+    margin-right:auto;
+	height:125px;
+	background-color:#E8E8E8;
+
+	}
+	
+	
+#header h1{
+	font-size:1em;
+	margin:0;
+	
+	}
+
+
+	
+#header h1 a{
+	color:#000000;
+	background-color:#e1f5fe;
+
+	}
+
+
+	
+#graph{
+
+	z-index:-1; 
+	height:800px;
+	background-image:url("../picture/mainmenu.png");
+	margin-bottom:15px;
+
+
+	}

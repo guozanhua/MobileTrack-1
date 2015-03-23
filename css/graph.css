@@ -1,0 +1,79 @@
+  .node {
+    stroke: #999;
+    stroke-width: 3px;
+  }
+
+  .text {
+    stroke: #E10215;
+    pointer-events: none;
+    font: 10px sans-serif;
+  }
+
+  .node.Phone{
+    stroke: #000;
+    stroke-width: 5px;
+    text-align: left;
+  }
+
+  .node.Line{
+    stroke: #40FF00;
+    stroke-width: 4px;
+    text-align: center;
+  }
+
+  .node.Whatsapp{
+    stroke: #387E0C;
+    stroke-width: 4px;
+    text-align: center;
+  }
+
+  .node.Facebook{
+    stroke: #1C27BF;
+    stroke-width: 4px;
+    text-align: center;
+  }
+
+  .node:not(:hover) .nodetext {
+    display: none;
+  }
+
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+  .link{
+    stroke: #999;
+    stroke-opacity: 1.6;
+  }
+
+  .link.lowf{
+    stroke: #1CBF29;
+  }
+
+  .link.mediumf{
+    stroke: #FE9A2E;
+  }
+
+  .link.highf{
+    stroke: #E10215;
+
+  }
+
+  #lowf{
+    fill: #1CBF29;
+  }
+
+  #mediumf{
+    fill: #FE9A2E;
+  }
+
+  #highf{
+    fill: #E10215;
+  }
+

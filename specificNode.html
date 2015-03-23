@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Data Analysis Graph</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" >
+<link rel="stylesheet" type="text/css" href="css/styles.css" >
+<link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
+<link rel="stylesheet" type="text/css" href="css/graph.css" >
+
+</head>
+<body>
+<div id="doc" class="yui-t1">
+  <div id="hd">
+    <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:1280px;height:125px"></h1></div>
+  </div>
+ 
+    <div class="yui-b">
+      <div id="input">
+        <br/>
+       
+        <div>
+
+
+          <form id="phonenumber" >
+            
+            <br><br><br><br><br><br>
+            &nbsp&nbsp<label><font face="supermarket" size="4" >PHONE NUMBER:</font></label>
+            <input type="text" id="phoneNo"maxlength="10" style="width:90px;" ></input>
+          </form>
+       
+          <p align = "right"><button id="submitBtn" onclick="querySpecificNode($('#phoneNo').val())">Submit</button></p>
+          <p align = "right"><button id="suggestBtn" >Suggest PhoneNumber</button></p>
+        </div>
+        <br/>
+        <div>
+
+        </div>
+
+        
+        <div>
+          <label><font face="supermarket" size="4"color="white">CONMUNICATION TYPE:</font></label>
+          <select id= "spinnerbox" name="communicationList" onchange="doSomething();">
+                    <option value="select">SELECT</option>
+                     <option value="call">CALL</option>
+                     <option value="message">MESSAGE</option>
+                     <option value="line">LINE</option>
+                     <option value="whatapp">WHATAPP</option>
+                   
+                    
+          </select>
+        </div>
+        <br/>
+         
+        <div>
+          <form id="typeboxcall" style="display:none">
+          <label><font face="supermarket"size="4"color="white" >TYPE:</font></label>
+          <select id="typecall" >
+                    <option value="all">All</option>
+                    <option value="incoming">INCOMING</option>
+                    <option value="outgoing">OUTGOING</option>
+                    <option value="missed">MISSED</option>
+          </select>
+          </form>
+        </div>
+
+        <div>
+          <form id="typeboxmessage" style="display:none">
+          <label><font face="supermarket"size="4"color="white" >TYPE:</font></label>
+          <select id="typesms" >
+                    <option value="all">ALL</option>
+                    <option value="send">SEND</option>
+                    <option value="received">RECEIVED</option>
+                    
+          </select>
+          </form>
+        </div>
+        <br/>
+
+        <div>
+          <form id="date_form" action="demo_form.asp" style="display:none">
+            <label><font face="supermarket" size="4"color="white">DATE FROM:</font></label>
+            <input id="datefrom" type="date" name="bday"><br>
+            <label><font face="supermarket" size="4" color="white">TO:</font></label>
+            <input id="dateto" type="date" name="bday"><br>
+          </form>
+        </div>
+         <br/>
+        <div>
+          <form id="durationbox" style="display:none">
+          <label><font face="supermarket" size="4"color="white">DURATION:</font></label >
+          <select id="duration" >
+                    <option value="01">0-1 MINUTE</option>
+                     <option value="12">1-2 MINUTE</option>
+                     <option value="23">2-3 MINUTE</option>
+                     <!-- <option value="34">3-4 MINUTE</option>
+                     <option value="45">4-5 MINUTE</option>
+                     <option value="5">MORE 5 MINUTE</option> -->
+          </select>
+          </form>
+        </div>
+
+        <div>
+          <form id="statusSMS" style="display:none">
+          <label><font face="supermarket" size="4"color="white">STATUS:</font></label >
+          <select id="status" >
+                    <option value="all">ALL STATUS</option>
+                     <option value="read">READ</option>
+                     <option value="unread">UNREAD</option>
+                     <!-- <option value="34">3-4 MINUTE</option>
+                     <option value="45">4-5 MINUTE</option>
+                     <option value="5">MORE 5 MINUTE</option> -->
+          </select>
+        </form>
+        </div>
+
+        <br/>
+    
+        <div>
+          <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
+           <p align = "right"><button type="button" onclick="getdata();"size="2">Send</button></p>
+        </div>
+
+        <div>
+          <p id="printout"></p>
+          <p id="printout2"></p>
+          <p id="printout3"></p>
+          <p id="printout4"></p>
+        </div>
+
+
+       
+      </div>  
+    </div>
+
+    <div class="yui-a">
+      <div id="graph">
+        
+      </div>
+    </div>
+
+    <div class="yui-c">
+      <div id="scollbar" >
+        <font face="supermarket" size="2" color="white">
+        <div id = "displayNode"style="float: left; width: 33%;"></div>
+        <div id = "displayType" style="float: left; width: 33%;"></div>
+        <div id = "displayLink" style="float: left; width: 33%;"></div>
+      </div>
+
+      <br/>
+      <div id="output"></div>
+    </div>
+    
+  </div>
+
+</div>
+<script>
+function doSomething(){
+  var a = document.getElementById("spinnerbox").value;
+
+    document.getElementById("date_form").style.display="none";
+    document.getElementById("durationbox").style.display="none"
+    document.getElementById("typeboxcall").style.display="none";
+    document.getElementById("typeboxmessage").style.display="none";
+    document.getElementById("statusSMS").style.display="none";
+    console.log(a);
+
+  if(a=="call"){
+    document.getElementById("date_form").style.display="block";
+    
+    document.getElementById("durationbox").style.display="block";
+    document.getElementById("typeboxcall").style.display="block";
+    }
+    else if (a=="message") {
+    document.getElementById("date_form").style.display="block";
+    
+    document.getElementById("typeboxmessage").style.display="block";
+    document.getElementById("statusSMS").style.display="block";
+    }
+    else{
+    /*document.getElementById("date_form").style.display="none";
+    document.getElementById("phonenumber").style.display="none";
+    document.getElementById("durationbox").style.display="none"
+    document.getElementById("typeboxcall").style.display="none";
+    document.getElementById("typeboxmessage").style.display="none";
+    document.getElementById("status").style.display="none";*/
+    }
+}
+</script>
+
+<script>
+function getdata(){
+  var communicationType;
+  var call = 0;
+  var dur = 0;
+  var a = document.getElementById("spinnerbox").value;
+ 
+  if(a=="call"){
+    communicationType = 1;
+    var e = document.getElementById("typecall").value;
+    var dateFrom = document.getElementById("datefrom").value;
+    var dateTo = document.getElementById("dateto").value;
+    var d = document.getElementById("duration").value;
+    console.log(d);
+    if(e=="all"){
+        call = 1;
+        if(d=="01"){
+          dur = 1;
+        }else if(d=="12"){
+          dur = 2;
+        }else if(d=="23"){
+          dur = 3;
+        }
+      }
+      else if(e=="incoming"){
+        call = 2;
+        if(d=="01"){
+          dur = 1;
+        }else if(d=="12"){
+          dur = 2;
+        }else if(d=="23"){
+          dur = 3;
+        }
+      }
+      else if(e=="outgoing"){
+        call = 3;
+        if(d=="01"){
+          dur = 1;
+        }else if(d=="12"){
+          dur = 2;
+        }else if(d=="23"){
+          dur = 3;
+        }
+      }
+      else{
+        call = 4;
+        if(d=="01"){
+          dur = 1;
+        }else if(d=="12"){
+          dur = 2;
+        }else if(d=="23"){
+          dur = 3;
+        }
+      }
+  }else if(a=="message"){
+    communicationType = 2;
+    var t = document.getElementById("typesms").value;
+    var s = document.getElementById("status").value;
+    console.log(s);
+    if(t=="all"){
+      sms = 1;
+      if(s=="read"){
+        stat = 2;
+      }else if(s=="unread"){
+        stat = 3;
+      }else{
+        stat = 1;
+      }
+    }else if(t=="send"){
+      sms = 2;
+      if(s=="read"){
+        stat = 2;
+      }else if(s=="unread"){
+        stat = 3;
+      }else{
+        stat = 1;
+      }
+    }else{
+      sms = 3;
+      if(s=="read"){
+        stat = 2;
+      }else if(s=="unread"){
+        stat = 3;
+      }else{
+        stat = 1;
+      }
+    }
+  }else if(a=="line"){
+    communicationType = 3;
+  }else if(a=="whatapp")
+    communicationType = 4;
+
+
+  if(communicationType == 1){
+    buildQueryForCall(call,dur);
+  }else if(communicationType == 2){
+    buildQueryForSMS(sms,stat);
+  }
+  else if(communicationType == 3){
+    buildQueryForLine($('#phoneNo').val());
+  }else if(communicationType == 4){
+    buildQueryForWhatsapp($('#phoneNo').val());
+  }else{
+    alert("Please select communication type");
+  }
+  
+}
+
+</script>
+
+
+
+<script src='js/d3.v3.min.js'></script>
+<script src="js/d3.tip.js"></script>
+<script type="text/javascript" src="js/specificNodeDetail.js"></script>
+<script type="text/javascript" src="js/specificPhoneDetail.js"></script>
+<script type="text/javascript" src="js/specificSMSDetail.js"></script>
+<script type="text/javascript" src="js/specificLineCommunication.js"></script>
+<script type="text/javascript" src="js/specificWhatsappCommunication.js"></script>
+<script type="text/javascript" src="js/buildQuery.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
+<script type="text/javascript" src="js/listPhoneNumbers.js"></script>
+
+<script>
+//Load all the possible phone numbers into the list to be ready for display when user hit suggestion button.
+var _queryString = "MATCH (n:PHONE) RETURN n";
+var phoneNumberArr = [];
+var myTable;
+
+d3.xhr("http://localhost:7474/db/data/transaction/commit")
+          .header("Content-Type", "application/json")
+          .mimeType("application/json")       
+          .post(
+              JSON.stringify({
+            "statements" : [ {
+              "statement" : _queryString,
+              "resultDataContents" : [ "row" ]//, "graph" ]
+            } ]
+          }),function(err, data){
+                var returnData = JSON.parse(data.responseText);
+                //document.write(JSON.stringify(returnData));
+                var result = returnData.results[0].data;
+                //document.write(JSON.stringify(result));
+                for(i=0;i<result.length;i++){
+                  var objAdd = {};
+                  objAdd.PhoneNumber = result[i].row[0].PhoneNumber;
+                  objAdd.Owner = result[i].row[0].Owner;
+                  objAdd.Model = result[i].row[0].Model;
+                  phoneNumberArr.push(objAdd);
+                }
+                //document.write(JSON.stringify(phoneNumberArr));
+                myTable="<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>PhoneNumber</th>";
+                myTable+= "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>Model</th>";
+                myTable+= "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>Owner</th>";
+                for(var i=0; i<phoneNumberArr.length; i++){
+                    myTable+="<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + phoneNumberArr[i].PhoneNumber + "</td>";
+                    myTable+="<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + phoneNumberArr[i].Model + "</td>";
+                    myTable+="<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + phoneNumberArr[i].Owner + "</td></tr>";
+                }
+                myTable+="</table>";
+                $('#suggestBtn').magnificPopup({
+                  items: {
+                      src: '<div class="white-popup">'+
+                      myTable
+                      +'</div>',
+                      type: 'inline'
+                  },
+                  closeBtnInside: true
+                });
+});
+
+</script>
+
+
+
+</body>
+</html>

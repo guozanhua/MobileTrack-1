@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Data Analysis Graph</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" >
+<link rel="stylesheet" type="text/css" href="css/styles2.css" >
+<link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
+<style>
+  .node {
+      stroke: #555;
+      stroke-width: 3px;
+    }
+
+    .node text {
+      stroke: #333;
+    pointer-events: none;
+    font: 10px sans-serif;
+  }
+    .link {
+      stroke: #999;
+      stroke-opacity: .6;
+  }
+  .node:not(:hover) .nodetext {
+  display: none;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+
+</style>
+</head>
+<body>
+<div id="doc" class="yui-t1">
+  <div id="hd">
+    <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:1280px;height:125px"></h1></div>
+  </div>
+ 
+    <div class="yui-b">
+      <div id="input">
+        <br/><br>
+        <br/><br>
+        <br/><br>
+       <br>
+        <div>
+          <form id="phonenumber" >
+            &nbsp;<label><font face="supermarket" size="4">SOURCE PHONE NUMBER:</font></label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="sourcePhoneNo"maxlength="10"></input>
+            <br></br>
+            &nbsp;<label><font face="supermarket" size="4">TARGET PHONE NUMBER:</font></label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="targetPhoneNo"maxlength="10"></input>
+          </form>
+        </div>    
+        <br>  <br>  
+        <div>
+          <form id="status" >
+          <label><font face="supermarket"size="4"color="white" >SELECT ROUTE COMMUNICATION</font></label><br>
+            <font face="supermarket" size="4" color="white"><input type="radio" name="call" value="" >S--->X---X---X--->D</font>
+             <br>  
+            <font face="supermarket" size="4" color="white"><input type="radio" name="call" value="" >S--->X---X---X<---D</font>
+             <br>
+            <font face="supermarket" size="4" color="white"><input type="radio" name="call" value="" >S<---X---X---X--->D</font>
+             <br>
+            <font face="supermarket" size="4" color="white"><input type="radio" name="call" value="" >S<---X---X---X<---D</font>
+             <br> 
+
+          </form>
+        </div>
+        <br> 
+        <div>
+          <form id="status" >
+           
+          <label><font face="supermarket"size="4"color="white" >SELECT TYPE COMMUNICATION</font></label><br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="call" value="" >CALL</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="sms" value="">SMS</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="line" value="">LINE</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" value="">FACEBOOK</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" value="">WHATAPP</font>
+          </form>
+
+    
+        </div>
+
+         <div>
+          <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
+           <p align = "right"><button type="button" onclick="getdata();"size="2">Send</button></p>
+        </div>
+      
+      </div>  
+    </div>
+
+
+
+
+    <div class="yui-a">
+      <div id="graph">
+        
+      </div>
+    </div>
+  <div class="yui-c">
+      <div id="output">
+       <div id="scollbar" >
+          <font face="supermarket" size="4" color="white">
+          <div name="checkboxes" id="box"></div>
+          </font>
+          <form id="snophone" >
+           
+          
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="call" value="" >0800000000</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="sms" value="">0800000001</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="line" value="">0800000002</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" value="">0800000003</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" value="">0800000004</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" value="">0800000005</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" value="">0800000006</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" value="">0800000007</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" value="">0800000008</font>
+          </form>
+
+
+    
+        </div>
+      </div>
+      </div>
+    </div>
+    
+  </div>
+
+</div>
+
+
+<script>
+function getdata(){
+  var communicationType;
+  var call = 0;
+  var dur = 0;
+  var a = document.getElementById("spinnerbox").value;
+ 
+  if(a=="call"){
+    communicationType = 1;
+    //var e = document.getElementById("typecall").value;
+    var dateFrom = document.getElementById("datefrom").value;
+    var dateTo = document.getElementById("dateto").value;
+    var d = document.getElementById("duration").value;
+    if(d=="default"){
+      dur = 1;
+      document.getElementById("printout4").innerHTML = dur;
+    }else if(d=="more5"){
+      dur = 2;
+      document.getElementById("printout4").innerHTML = dur;
+    }else if(d=="more10"){
+      dur = 3;
+      document.getElementById("printout4").innerHTML = dur;
+    }
+  }
+  // if(a=="select"){
+  //   document.getElementById("printout").innerHTML = "Please select type of communication";
+  // }
+  if(communicationType != null){
+    buildQueryPhoneToPhone(communicationType,dur);
+  }else{
+    alert("Please select communication type");
+  }
+  
+}
+
+</script>
+
+
+
+<script src='http://d3js.org/d3.v3.min.js'></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script type="text/javascript" src="js/specificPhoneDetail.js"></script>
+<script type="text/javascript" src="js/buildQuery.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
+
+
+</body>
+</html>

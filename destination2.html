@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Data Analysis Graph</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" >
+<link rel="stylesheet" type="text/css" href="css/styles2.css" >
+<link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
+<link rel="stylesheet" type="text/css" href="css/graph.css" >
+</head>
+<body>
+<div id="doc" class="yui-t1">
+  <div id="hd">
+    <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:1280px;height:125px"></h1></div>
+  </div>
+ 
+    <div class="yui-b">
+      <div id="input">
+        <br/><br>
+        <br/><br>
+        <br/><br>
+       <br>
+        <div>
+          <form id="phonenumber" >
+            &nbsp;<label><font face="supermarket" size="4">SOURCE PHONE NUMBER:</font></label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="sourcePhoneNo"maxlength="10"></input>
+            <br></br>
+            &nbsp;<label><font face="supermarket" size="4">TARGET PHONE NUMBER:</font></label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="targetPhoneNo"maxlength="10"></input>
+          </form>
+        </div>    
+        <br>  <br>  
+        <div>
+          <form id="status" >
+          <label><font face="supermarket"size="4"color="white" >SELECT ROUTE COMMUNICATION</font></label><br>
+            <font face="supermarket" size="4" color="white"><input type="radio" id="sxdrad1" name="call" value="" >S--->X--->D</font>
+             <br>  
+            <font face="supermarket" size="4" color="white"><input type="radio" id="sxdrad2" name="call" value="" >S--->X<---D</font>
+             <br>
+            <font face="supermarket" size="4" color="white"><input type="radio" id="sxdrad3" name="call" value="" >S<---X--->D</font>
+             <br>
+            <font face="supermarket" size="4" color="white"><input type="radio" id="sxdrad4" name="call" value="" >S<---X<---D</font>
+             <br> 
+
+          </form>
+        </div>
+        <br> 
+        <div>
+          <form id="status" >
+           
+          <label><font face="supermarket"size="4"color="white" >SELECT TYPE COMMUNICATION</font></label><br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" id="sxdchk1" name="call" value="" >CALL</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" id="sxdchk2" name="sms" value="">SMS</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" id="sxdchk3" name="line" value="">LINE</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" id="sxdchk4" name="facbook" value="">WHATSAPP</font>
+             <br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" id="sxdchk5" name="whatapp" value="">FACEBOOK</font>
+          </form>
+
+    
+        </div>
+          <div>
+          <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
+           <p align = "right"><button type="button" onclick="actionPerformed();"size="2">Send</button></p>
+        </div>
+    
+      
+      </div>  
+    </div>
+
+
+
+
+    <div class="yui-a">
+      <div id="graph">
+        
+      </div>
+    </div>
+
+    <div class="yui-c">
+      <div id="scollbar" >
+        <font face="supermarket" size="2" color="white">
+        <div id = "displayNode"style="float: left; width: 33%;"></div>
+        <div id = "displayType" style="float: left; width: 33%;"></div>
+        <div id = "displayLink" style="float: left; width: 33%;"></div>
+      </div>
+
+      <br/>
+      <div id="output"></div>
+    </div>
+    </div>
+    
+  </div>
+
+</div>
+
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.tip.js"></script>
+<script type="text/javascript" src="js/specificNodeDetail.js"></script>
+<script type="text/javascript" src="js/specificPhoneDetail.js"></script>
+<script type="text/javascript" src="js/specificSMSDetail.js"></script>
+<script type="text/javascript" src="js/specificLineCommunication.js"></script>
+<script type="text/javascript" src="js/specificWhatsappCommunication.js"></script>
+<script type="text/javascript" src="js/buildQuery.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
+<script type="text/javascript" src="js/listPhoneNumbers.js"></script>
+<script type="text/javascript" src="js/testsxd.js"></script>
+
+<script type="text/javascript">
+function actionPerformed(){
+  var linkType = [];
+  if(document.getElementById("sxdrad1").checked){
+    var selections = [];
+    if(document.getElementById("sxdchk3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+    }
+
+    if(document.getElementById("sxdchk2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['-[r1:SMS]->','-[r2:SMS]->'];
+      selections.push(objCommu);
+
+    }
+
+    if(document.getElementById("sxdchk1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['-[r1:Call]->','-[r2:Call]->'];
+      selections.push(objCommu);
+
+    }
+    if(selections.length > 0){
+      console.log(selections.length);
+      queryManagementSXD(selections);
+    }
+
+  }else if(document.getElementById("sxdrad2").checked){
+    var selections = [];
+    if(document.getElementById("sxdchk3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['-[r1:SMS]->','<-[r2:SMS]-'];
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['-[r1:Call]->','<-[r2:Call]-'];
+      selections.push(objCommu);
+
+    }
+    //Check if there is any communication in selections
+    if(selections.length > 0){
+      console.log(selections.length);
+      queryManagementSXD(selections);
+    }
+  }else if(document.getElementById("sxdrad3").checked){
+    var selections = [];
+    if(document.getElementById("sxdchk3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['<-[r1:SMS]-','-[r2:SMS]->'];
+      selections.push(objCommu);
+
+    }
+    if(document.getElementById("sxdchk1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['<-[r1:Call]-','-[r2:Call]->'];
+      selections.push(objCommu);
+
+    }
+    //Check if there is any communication in selections
+    if(selections.length > 0){
+      console.log(selections.length);
+      queryManagementSXD(selections);
+    }
+
+  }else if(document.getElementById("sxdrad4").checked){
+    var selections = [];
+    if(document.getElementById("sxdchk3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['<-[r1:SMS]-','<-[r2:SMS]-'];
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['<-[r1:Call]-','<-[r2:Call]-'];
+      selections.push(objCommu);
+
+    }
+    //Check if there is any communication in selections
+    if(selections.length > 0){
+      console.log(selections.length);
+      queryManagementSXD(selections);
+    }
+  }
+  else{
+    alert("Please select communication route !")
+  }
+}
+
+</script>
+
+</body>
+</html>
+            
+          
