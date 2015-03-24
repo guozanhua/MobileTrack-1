@@ -5,36 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" >
 <link rel="stylesheet" type="text/css" href="css/styles2.css" >
 <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
-<style>
-  .node {
-      stroke: #555;
-      stroke-width: 3px;
-    }
-
-    .node text {
-      stroke: #333;
-    pointer-events: none;
-    font: 10px sans-serif;
-  }
-    .link {
-      stroke: #999;
-      stroke-opacity: .6;
-  }
-  .node:not(:hover) .nodetext {
-  display: none;
-}
-
-.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-
-
-</style>
+<link rel="stylesheet" type="text/css" href="css/graph.css" >
 </head>
 <body>
 <div id="doc" class="yui-t1">
@@ -61,13 +32,13 @@
         <div>
           <form id="status" >
           <label><font face="supermarket"size="4"color="white" >SELECT ROUTE COMMUNICATION</font></label><br>
-            <font face="supermarket" size="4" color="white"><input type="radio" name="call" value="" >S--->X---X---X--->D</font>
+            <font face="supermarket" size="4" color="white"><input type="radio" id ="rad1" value="" >S--->X---X---X--->D</font>
              <br>  
-            <font face="supermarket" size="4" color="white"><input type="radio" name="call" value="" >S--->X---X---X<---D</font>
+            <font face="supermarket" size="4" color="white"><input type="radio" id ="rad2" value="" >S--->X---X---X<---D</font>
              <br>
-            <font face="supermarket" size="4" color="white"><input type="radio" name="call" value="" >S<---X---X---X--->D</font>
+            <font face="supermarket" size="4" color="white"><input type="radio" id ="rad3" value="" >S<---X---X---X--->D</font>
              <br>
-            <font face="supermarket" size="4" color="white"><input type="radio" name="call" value="" >S<---X---X---X<---D</font>
+            <font face="supermarket" size="4" color="white"><input type="radio" id ="rad4" value="" >S<---X---X---X<---D</font>
              <br> 
 
           </form>
@@ -77,18 +48,16 @@
           <form id="status" >
            
           <label><font face="supermarket"size="4"color="white" >SELECT TYPE COMMUNICATION</font></label><br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="call" value="" >CALL</font>
+          <font face="supermarket" size="4" color="white"><input type="checkbox" id ="checkb1" >CALL</font>
              <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="sms" value="">SMS</font>
+             <font face="supermarket" size="4" color="white"><input type="checkbox" id ="checkb2" value="">SMS</font>
              <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="line" value="">LINE</font>
+             <font face="supermarket" size="4" color="white"><input type="checkbox" id ="checkb3" value="">LINE</font>
              <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" value="">FACEBOOK</font>
+             <font face="supermarket" size="4" color="white"><input type="checkbox" id ="checkb4" value="">WHATSAPP</font>
              <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" value="">WHATAPP</font>
+             <font face="supermarket" size="4" color="white"><input type="checkbox" id ="checkb5" value="">FACEBOOK</font>
           </form>
-
-    
         </div>
 
          <div>
@@ -107,77 +76,155 @@
         
       </div>
     </div>
-  <div class="yui-c">
-      <div id="output">
-       <div id="scollbar" >
-          <font face="supermarket" size="4" color="white">
-          <div name="checkboxes" id="box"></div>
-          </font>
-          <form id="snophone" >
-           
-          
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="call" value="" >0800000000</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="sms" value="">0800000001</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="line" value="">0800000002</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" value="">0800000003</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" value="">0800000004</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" value="">0800000005</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" value="">0800000006</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" value="">0800000007</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" value="">0800000008</font>
-          </form>
-
-
     
+    <div class="yui-c">
+        <div id="scollbar" >
+            <font face="supermarket" size="2" color="white">
+            <div id = "displayNode"style="float: left; width: 33%;"></div>
+            <div id = "displayType" style="float: left; width: 33%;"></div>
+            <div id = "displayLink" style="float: left; width: 33%;"></div>
         </div>
-      </div>
-      </div>
+        <br/>
+        <div id="output"></div>
     </div>
-    
-  </div>
-
 </div>
 
 
 <script>
 function getdata(){
-  var communicationType;
-  var call = 0;
-  var dur = 0;
-  var a = document.getElementById("spinnerbox").value;
- 
-  if(a=="call"){
-    communicationType = 1;
-    //var e = document.getElementById("typecall").value;
-    var dateFrom = document.getElementById("datefrom").value;
-    var dateTo = document.getElementById("dateto").value;
-    var d = document.getElementById("duration").value;
-    if(d=="default"){
-      dur = 1;
-      document.getElementById("printout4").innerHTML = dur;
-    }else if(d=="more5"){
-      dur = 2;
-      document.getElementById("printout4").innerHTML = dur;
-    }else if(d=="more10"){
-      dur = 3;
-      document.getElementById("printout4").innerHTML = dur;
+if(document.getElementById("rad1").checked){
+    //a->?-?->b
+    var selections = [];
+    if(document.getElementById("checkb3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
     }
-  }
-  // if(a=="select"){
-  //   document.getElementById("printout").innerHTML = "Please select type of communication";
-  // }
-  if(communicationType != null){
-    buildQueryPhoneToPhone(communicationType,dur);
+    if(document.getElementById("checkb4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['-[r1:Call]->','<-[x1:Call]->','<-[x2:Call]->','-[r2:Call]->'];
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['-[r1:SMS]->','<-[x1:SMS]->','<-[x2:SMS]->','-[r2:SMS]->'];
+      selections.push(objCommu);
+    }
+    console.log(selections.length);
+    createQueryForThree(selections);
+
+  }else if(document.getElementById("rad2").checked){  
+    //a->?-?<-b
+    var selections = [];
+    if(document.getElementById("checkb3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['-[r1:Call]->','<-[x1:Call]->','<-[x2:Call]->','<-[r2:Call]-'];
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['-[r1:SMS]->','<-[x1:SMS]->','<-[x2:SMS]->','<-[r2:SMS]-'];
+      selections.push(objCommu);
+    }
+    createQueryForThree(selections);
+
+  }else if(document.getElementById("rad3").checked){
+    //a<-?-?->b
+    var selections = [];
+
+    var selections = [];
+    if(document.getElementById("checkb3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['<-[r1:Call]-','<-[x1:Call]->','<-[x2:Call]->','-[r2:Call]->'];
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['<-[r1:SMS]-','<-[x1:SMS]->','<-[x2:SMS]->','-[r2:SMS]->'];
+      selections.push(objCommu);
+    }
+    createQueryForThree(selections);
+
+  }else if(document.getElementById("rad4").checked){
+    //a<-?-?<-b
+    var selections = [];
+    if(document.getElementById("checkb3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['<-[r1:Call]-','<-[x1:Call]->','<-[x2:Call]->','<-[r2:Call]-'];
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['<-[r1:SMS]-','<-[x1:SMS]->','<-[x2:SMS]->','<-[r2:SMS]-'];
+      selections.push(objCommu);
+    }
+    createQueryForThree(selections);
+
   }else{
-    alert("Please select communication type");
+    alert("Please select your desired communication route ..")
   }
   
 }
@@ -186,12 +233,13 @@ function getdata(){
 
 
 
-<script src='http://d3js.org/d3.v3.min.js'></script>
-<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src='js/d3.v3.min.js'></script>
+<script src="js/d3.tip.js"></script>
 <script type="text/javascript" src="js/specificPhoneDetail.js"></script>
 <script type="text/javascript" src="js/buildQuery.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
+<script src='js/intermediaryNodeQuery3.js'></script>
 
 
 </body>

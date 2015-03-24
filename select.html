@@ -20,7 +20,7 @@
         <br> 
          <div>
         
-          <label><font face="supermarket" size="4"color="white" >SELECT TYPE PHONENUMBER</font></label >
+         <label><font face="supermarket" size="4"color="white" ></font>Please Select an Option</label >
               <br>
          <form id="selecttype"> 
              <font face="supermarket" size="4" color="white"><input type="radio" value="ap" name="read" id="ap" onchange="allNumbers()">ALL PHONENUMBER</font>
@@ -41,8 +41,8 @@
     
         </div>
           <br>
-          <form id="status" > 
-          <label><font face="supermarket"size="4"color="white" >SELECT TYPE COMMUNICATION</font></label><br>  
+          <form id="status" style = "display:none" > 
+          <label><font face="supermarket"size="4"color="white" >Select Type of Communication</font></label><br>  
              <font face="supermarket" size="4" color="white"><input type="checkbox" name="call" id = "mchk1" value="" >CALL</font>
              <br>  
              <font face="supermarket" size="4" color="white"><input type="checkbox" name="sms" id = "mchk2" value="">SMS</font>
@@ -57,76 +57,19 @@
 
         <br>
          <div>
-          <label><font face="supermarket" size="4"color="white">CONMUNICATION TYPE:</font></label>
-          <select id= "spinnerbox" name="communicationList" onchange="doSomething3();">
+          <form id="spinnerboxForm" style = "display:none" >
+            <label><font face="supermarket" size="4"color="white">Communication Type</font></label>
+            <select id= "spinnerbox" name="communicationList">
                     <option value="select">SELECT</option>
                      <option value="call">CALL</option>
                      <option value="message">MESSAGE</option>
                      <option value="line">LINE</option>
-                     <option value="whatapp">WHATAPP</option>
-                   
-                    
-          </select>
-        </div>
-        <br/>
-         
-        <div>
-          <form id="typeboxcall" style="display:none">
-          <label><font face="supermarket"size="4"color="white" >TYPE:</font></label>
-          <select id="typecall" >
-                    <option value="all">All</option>
-                    <option value="incoming">INCOMING</option>
-                    <option value="outgoing">OUTGOING</option>
-                    <option value="missed">MISSED</option>
-          </select>
+                     <option value="whatsapp">WHATSAPP</option>
+                     <option value="facebook">FACEBOOK</option>
+            </select>
           </form>
         </div>
 
-        <div>
-          <form id="typeboxmessage" style="display:none">
-          <label><font face="supermarket"size="4"color="white" >TYPE:</font></label>
-          <select name="typesms" >
-                    <option value="select">Select</option>
-                    <option value="send">SEND</option>
-                    <option value="received">RECEIVED</option>
-                    
-          </select>
-          </form>
-        </div>
-        <br/>
-
-        <div>
-          <form id="date_form" action="demo_form.asp" style="display:none">
-            <label><font face="supermarket" size="4"color="white">DATE FROM:</font></label>
-            <input id="datefrom" type="date" name="bday"><br>
-            <label><font face="supermarket" size="4" color="white">TO:</font></label>
-            <input id="dateto" type="date" name="bday"><br>
-          </form>
-        </div>
-         <br/>
-        <div>
-          <form id="durationbox" style="display:none">
-          <label><font face="supermarket" size="4"color="white">DURATION:</font></label >
-          <select id="duration" >
-                  <option value="01">0-1 MINUTE</option>
-                     <option value="12">1-2 MINUTE</option>
-                     <option value="23">2-3 MINUTE</option>
-                     <option value="34">3-4 MINUTE</option>
-                     <option value="45">4-5 MINUTE</option>
-                     <option value="5">MORE 5 MINUTE</option>
-          </select>
-          </form>
-        </div>
-
-        <div>
-          <form id="status" style="display:none">
-          <label><font face="supermarket" size="4"color="white">STATUS:</font></label >
-        
-            <font face="supermarket" size="4" color="white"><input type="checkbox" name="read" value="read">READ</font>
-            <font face="supermarket" size="4" color="white"><input type="checkbox" name="read" value="unread">UNREAD</font>
-        </form>
-        </div>
-        <br/>
         <div>
           <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
            <p align = "right"><button type="button" onclick="submitButtonPressed();"size="2">Send</button></p>
@@ -164,7 +107,8 @@ function allNumbers(){
   var a = document.getElementById("ap").value;
   document.getElementById("la").style.display="none"
   document.getElementById("checkboxbar").style.display="none";
-
+  document.getElementById("status").style.display = "none";
+  document.getElementById("spinnerboxForm").style.display = "block";
 }
 </script>
 <script>
@@ -172,94 +116,74 @@ function mainNumbers(){
   var a = document.getElementById("mp").value;
   document.getElementById("la").style.display="none"
   document.getElementById("checkboxbar").style.display="none";
-  
-    
+  document.getElementById("spinnerboxForm").style.display = "none";
 
   if(a=="mp"){
     document.getElementById("la").style.display="block";
     document.getElementById("checkboxbar").style.display="block";
+    document.getElementById("status").style.display = "block";
     //document.getElementById("typeboxcall").style.display="block";
-    }
-
-    else{
-    /*document.getElementById("date_form").style.display="none";
-    document.getElementById("phonenumber").style.display="none";
-    document.getElementById("durationbox").style.display="none"
-    document.getElementById("typeboxcall").style.display="none";
-    document.getElementById("typeboxmessage").style.display="none";
-    document.getElementById("status").style.display="none";*/
-    }
+  }
 
 writecheck();
 
 }
 </script>
 <script>
-function doSomething3(){
-  var a = document.getElementById("spinnerbox").value;
-
-    document.getElementById("date_form").style.display="none";
-    document.getElementById("durationbox").style.display="none"
-    document.getElementById("typeboxcall").style.display="none";
-    document.getElementById("typeboxmessage").style.display="none";
-    document.getElementById("status").style.display="none";
-    console.log(a);
-
-  if(a=="call"){
-    document.getElementById("date_form").style.display="block";
-    
-    document.getElementById("durationbox").style.display="block";
-    document.getElementById("typeboxcall").style.display="block";
-    }
-    else if (a=="message") {
-    document.getElementById("date_form").style.display="block";
-    
-    document.getElementById("typeboxmessage").style.display="block";
-    document.getElementById("status").style.display="block";
-    }
-    else{
-    /*document.getElementById("date_form").style.display="none";
-    document.getElementById("phonenumber").style.display="none";
-    document.getElementById("durationbox").style.display="none"
-    document.getElementById("typeboxcall").style.display="none";
-    document.getElementById("typeboxmessage").style.display="none";
-    document.getElementById("status").style.display="none";*/
-    }
-}
-
 function submitButtonPressed(){
   var selections = [];
-  if(document.getElementById("mchk3").checked){
-    var objCommu = {};
-    objCommu.Type = 'Line';
-    objCommu.linkType = '-[r1:LINEchat]->';
-    selections.push(objCommu);
-
-  }if(document.getElementById("mchk4").checked){
-    var objCommu = {};
-    objCommu.Type = 'Whatsapp';
-    objCommu.linkType = '-[r1:WhatsappChat]->';
-    selections.push(objCommu);
-
-  }if(document.getElementById("mchk5").checked){
-    var objCommu = {};
-    objCommu.Type = 'Facebook';
-    selections.push(objCommu);
-  }
-  if(document.getElementById("mchk1").checked){
-    var objCommu = {};
-    objCommu.Type = 'Call';
-    selections.push(objCommu);
-
-  }
-  if(document.getElementById("mchk2").checked){
-    var objCommu = {};
-    objCommu.Type = 'SMS';
-    selections.push(objCommu);
-  }
+  
   if(document.getElementById("ap").checked){
+    var allPhoneCommuType = document.getElementById("spinnerbox").value;
+    if(allPhoneCommuType == 'line'){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      objCommu.linkType = '-[r1:LINEchat]->';
+      selections.push(objCommu);
+
+    }else if(allPhoneCommuType == 'whatsapp'){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      objCommu.linkType = '-[r1:WhatsappChat]->';
+      selections.push(objCommu);
+    }else if(allPhoneCommuType == 'facebook'){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+    }else if(allPhoneCommuType == 'call'){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      selections.push(objCommu);
+    }else{
+       var objCommu = {};
+      objCommu.Type = 'SMS';
+      selections.push(objCommu);
+    }
     queryAllPhones(selections);
   }else if(document.getElementById("mp").checked){
+    if(document.getElementById("mchk3").checked){
+        var objCommu = {};
+        objCommu.Type = 'Line';
+        selections.push(objCommu);
+    }if(document.getElementById("mchk4").checked){
+        var objCommu = {};
+        objCommu.Type = 'Whatsapp';
+        selections.push(objCommu);
+    }if(document.getElementById("mchk5").checked){
+        var objCommu = {};
+        objCommu.Type = 'Facebook';
+        selections.push(objCommu);
+    }if(document.getElementById("mchk1").checked){
+        var objCommu = {};
+        objCommu.Type = 'Call';
+        selections.push(objCommu);
+        
+    }if(document.getElementById("mchk2").checked){
+        var objCommu = {};
+        objCommu.Type = 'SMS';
+        selections.push(objCommu);
+    }
+    
     if(selections.length > 0){
       var selectPhoneArr = showchecked();
       queryMultiplePhones(selections,selectPhoneArr);

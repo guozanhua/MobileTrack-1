@@ -13,26 +13,344 @@ function queryAllPhones(selections){
     var noLoop = 0;
     recursiveAllPhone(promptArr);
     function recursiveAllPhone(promptArr){
-            var currentGroup = 1;
-            nodeArr = promptArr[0];
-            linkArr = promptArr[1];
-            countRelArr = promptArr[2];
+        var currentGroup = 1;
+        nodeArr = promptArr[0];
+        linkArr = promptArr[1];
+        countRelArr = promptArr[2];
+        if(noLoop == 0){
+            if(selections[noLoop].Type == 'Call'){
+                //create Query for Call
+                var _query = "MATCH (n:PHONE)<-[r:Call]->(m:PHONE) "
+                _query += "RETURN collect(distinct r) AS R";
+                console.log(_query);
+                d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                    .header("Content-Type", "application/json")
+                        .mimeType("application/json")				
+                    .post(
+                        JSON.stringify({
+                                  "statements" : [ {
+                                    "statement" : _query,
+                                    "resultDataContents" : [ "row" ]//, "graph" ]
+                                  } ]
+                                }),	function(err, data){
+                                    var returnData = JSON.parse(data.responseText);
+                                    //document.write(JSON.stringify(returnData));
+                                    var result = returnData.results[0].data[0].row[0];
+                                    //document.write(JSON.stringify(result));
+                                    var nodeArr = [];
+                                    var linkArr = [];
+                                    var count = 0;
+                                    if(result.length == 0){
+                                            alert("No data found. Please try again.");
+                                    }
 
-            if(noLoop == 0){
-                    if(selections[noLoop].Type == 'Call'){
-                            //create Query for Call
-                            var _query = "MATCH (n:PHONE)<-[r:Call]->(m:PHONE) "
-                            _query += "RETURN collect(distinct r) AS R";
-                            console.log(_query);
-                            d3.xhr("http://localhost:7474/db/data/transaction/commit")
-                                .header("Content-Type", "application/json")
-                                    .mimeType("application/json")				
-                                .post(
-                                    JSON.stringify({
-                                              "statements" : [ {
-                                                "statement" : _query,
-                                                "resultDataContents" : [ "row" ]//, "graph" ]
-                                              } ]
+                                    //Create nodeArr and linkArr
+                                    for(i=0;i<result.length;i++){
+                                            if(i==0){
+                                                //Source is the prefered sourceNumber
+                                                var objAddSource = {};
+                                                objAddSource.NodeName = result[i].Source;
+                                                objAddSource.PhoneNumber = result[i].SourceNumber;
+                                                objAddSource.textDisplay = result[i].SourceNumber;
+                                                objAddSource.Label = 'Phone'
+                                                objAddSource.NodeIndex = nodeArr.length;
+                                                nodeArr.push(objAddSource);
+
+                                                var objcountRelAdd = {};
+                                                objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                objcountRelAdd._in = 0;
+                                                objcountRelAdd._out = 1;
+                                                countRelArr.push(objcountRelAdd);
+
+                                                //Intermediary node
+                                                var objAddTarget = {};
+                                                objAddTarget.NodeName = result[i].Target;
+                                                objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                                objAddTarget.textDisplay = result[i].TargetNumber;
+                                                objAddTarget.Label = 'Phone'
+                                                objAddTarget.NodeIndex = nodeArr.length;
+                                                nodeArr.push(objAddTarget);
+
+                                                var objcountRelAdd = {};
+                                                objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                objcountRelAdd._in = 1;
+                                                objcountRelAdd._out = 0;
+                                                countRelArr.push(objcountRelAdd);
+
+                                                var objLink = {};
+                                                objLink.source = 0;
+                                                objLink.target = 1;
+                                                objLink.Type = 'Call';
+                                                objLink.prop = [];
+
+                                                var objLinkProp = {};
+                                                objLinkProp.Source = result[i].SourceNumber;
+                                                objLinkProp.Target = result[i].TargetNumber;
+                                                objLinkProp.dur = result[i].Duration;
+                                                objLinkProp.date = result[i].Date;
+                                                objLink.prop.push(objLinkProp);
+                                                linkArr.push(objLink);
+
+                                        }else{
+                                                //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                                var checkSource = 0; var checkTarget = 0;
+
+                                                //These variable are used for storing important data that will be used in linkArr
+                                                var getSourceIndex = 0; var getTargetIndex = 0; var getSourceNumber = ""; var getTargetNumber = "";
+                                                var getSourcePhone = ""; var getTargetPhone = "";
+
+                                                //Check the existence of source in nodeArr
+                                                for(j=0;j<nodeArr.length;j++){
+                                                        if(result[i].Source == nodeArr[j].NodeName){
+                                                                getSourceNumber = nodeArr[j].PhoneNumber;
+                                                                getSourceIndex = nodeArr[j].NodeIndex;
+                                                                checkSource++;
+                                                                break;
+                                                        }
+                                                }
+                                                //Check the existence of target in nodeArr
+                                                for(j=0;j<nodeArr.length;j++){
+                                                        if(result[i].Target == nodeArr[j].NodeName){
+                                                                getTargetNumber = nodeArr[j].PhoneNumber;
+                                                                getTargetIndex = nodeArr[j].NodeIndex;
+                                                                checkTarget++;
+                                                                break;
+                                                        }
+                                                }
+
+                                                if(checkSource == 1 && checkTarget == 1){
+                                                        //First, we have to check an existence of the link.
+                                                        var linkIndex = 0;
+                                                        var linkExist = 0;
+                                                        for(k=0;k<linkArr.length;k++){
+                                                                if(linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex && linkArr[k].Type == "Call"){
+                                                                        linkExist++;
+                                                                        linkIndex = k;
+                                                                        break;
+                                                                }
+                                                        }
+                                                        if(linkExist == 1){
+                                                                //There is already a link between source and target.
+                                                                var objLinkProp = {};
+                                                                objLinkProp.Source = result[i].SourceNumber;
+                                                                objLinkProp.Target = result[i].TargetNumber;
+                                                                objLinkProp.dur = result[i].Duration;
+                                                                objLinkProp.date = result[i].Date;
+                                                                linkArr[linkIndex].prop.push(objLinkProp);
+                                                        }else{
+                                                                //Link between source and target haven't been created yet.
+                                                                var objLink = {};
+                                                                objLink.source = getSourceIndex;
+                                                                objLink.target = getTargetIndex;
+                                                                objLink.Type = "Call"
+                                                                objLink.prop = [];
+
+                                                                var objLinkProp = {};
+                                                                objLinkProp.Source = result[i].SourceNumber;
+                                                                objLinkProp.Target = result[i].TargetNumber;
+                                                                objLinkProp.dur = result[i].Duration;
+                                                                objLinkProp.date = result[i].Date;
+                                                                objLink.prop.push(objLinkProp);
+                                                                linkArr.push(objLink);
+                                                        }
+
+                                                        //increment _in and _out in countRel
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
+                                                                countRelArr[j]._out = countRelArr[j]._out + 1;
+                                                                break;
+                                                            }
+                                                        }
+
+
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
+                                                                countRelArr[j]._in = countRelArr[j]._in + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                }else if(checkSource > 0 && checkTarget == 0){
+                                                        //result[i].Source already existed in nodeArr, therfore, increment _out in countRel
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
+                                                                countRelArr[j]._out = countRelArr[j]._out + 1;
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        var objAdd = {};
+                                                        objAdd.NodeName = result[i].Target;
+                                                        objAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objAdd.textDisplay = result[i].TargetNumber;
+                                                        objAdd.Label = 'Phone'
+                                                        objAdd.NodeIndex = nodeArr.length;
+                                                        nodeArr.push(objAdd);
+
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objcountRelAdd._in = 1;
+                                                        objcountRelAdd._out = 0;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = getSourceIndex;
+                                                        objLink.target = nodeArr.length-1;
+                                                        objLink.Type = 'Call';
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Source = result[i].SourceNumber;
+                                                        objLinkProp.Target = result[i].TargetNumber;
+                                                        objLinkProp.dur = result[i].Duration;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLink.prop.push(objLinkProp);
+                                                        linkArr.push(objLink);
+
+                                                }else if(checkSource == 0 && checkTarget > 0){
+                                                        //result[i].Target already existed in nodeArr, therefore, increment _in in countRelArr
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
+                                                                countRelArr[j]._in = countRelArr[j]._in + 1;
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        var objAdd = {};
+                                                        objAdd.NodeName = result[i].Source;
+                                                        objAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objAdd.textDisplay = result[i].SourceNumber;
+                                                        objAdd.Label = 'Phone'
+                                                        objAdd.NodeIndex = nodeArr.length;
+                                                        nodeArr.push(objAdd);
+
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objcountRelAdd._in = 0;
+                                                        objcountRelAdd._out = 1;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = nodeArr.length-1;
+                                                        objLink.target = getTargetIndex;
+                                                        objLink.Type = 'Call';
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Source = result[i].SourceNumber;
+                                                        objLinkProp.Target = result[i].TargetNumber;
+                                                        objLinkProp.dur = result[i].Duration;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLink.prop.push(objLinkProp);
+                                                        linkArr.push(objLink);
+
+                                                }else{
+                                                        //No input nodes are existed in the nodeArr.
+                                                        var objAddSource = {};
+                                                        objAddSource.NodeName = result[i].Source;
+                                                        objAddSource.PhoneNumber = result[i].SourceNumber;
+                                                        objAddSource.textDisplay = result[i].SourceNumber;
+                                                        objAddSource.Label = 'Phone'
+                                                        objAddSource.NodeIndex = nodeArr.length;
+                                                        nodeArr.push(objAddSource);
+
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objcountRelAdd._in = 0;
+                                                        objcountRelAdd._out = 1;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objAddTarget = {};
+                                                        objAddTarget.NodeName = result[i].Target;
+                                                        objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                                        objAddTarget.textDisplay = result[i].TargetNumber;
+                                                        objAddTarget.Label = 'Phone'
+                                                        objAddTarget.NodeIndex = nodeArr.length;
+                                                        nodeArr.push(objAddTarget);
+
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objcountRelAdd._in = 1;
+                                                        objcountRelAdd._out = 0;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = objAddSource.NodeIndex;
+                                                        objLink.target = objAddTarget.NodeIndex;
+                                                        objLink.Type = 'Call';
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Source = result[i].SourceNumber;
+                                                        objLinkProp.Target = result[i].TargetNumber;
+                                                        objLinkProp.dur = result[i].Duration;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLink.prop.push(objLinkProp);
+                                                        linkArr.push(objLink);
+
+                                                }
+                                        }
+                                }
+                                //Calculate total call logs occur with each node
+                                for(i=0;i<nodeArr.length;i++){
+                                    for(j=0;j<countRelArr.length;j++){
+                                        if(countRelArr[j].PhoneNumber == nodeArr[i].PhoneNumber){
+                                            nodeArr[i].RecordIn = countRelArr[j]._in;
+                                            nodeArr[i].RecordOut = countRelArr[j]._out;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                //Calculate how many relationships are coming in or going out for each node
+                                for(i=0;i<nodeArr.length;i++){
+                                        var countIn = 0; var countOut = 0;
+                                        for(j=0;j<linkArr.length;j++){
+                                                if(nodeArr[i].NodeIndex == linkArr[j].source){
+                                                        countIn++;
+                                                }
+
+                                                if(nodeArr[i].NodeIndex == linkArr[j].target){
+                                                        countOut++;
+                                                }
+                                        }
+
+                                        nodeArr[i].RelIn = countIn;
+                                        nodeArr[i].RelOut = countOut;
+                                }
+
+                                //After finish adding all the nodes and relationship into nodeArr and linkArr
+                                if(noLoop==selections.length-1){
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(countRelArr);
+                                        //document.write(JSON.stringify(nodeArr));
+                                        dataVisualizationAllPhones(finalResult);
+                                }else{
+                                        noLoop++;
+                                        var passArr = [];
+                                        passArr.push(nodeArr);
+                                        passArr.push(linkArr);
+                                        passArr.push(countRelArr);
+                                        recursiveAllPhone(passArr);
+                                }
+
+                            });
+
+                }else if(selections[noLoop].Type == 'SMS'){
+                    //create Query for SMS
+                    var _query = "MATCH (n:PHONE)<-[r:SMS]->(m:PHONE) "
+                    _query += "RETURN collect(distinct r) AS R";
+				console.log(_query);
+				d3.xhr("http://localhost:7474/db/data/transaction/commit")
+				    .header("Content-Type", "application/json")
+					.mimeType("application/json")				
+				    .post(
+				        JSON.stringify({
+						  "statements" : [ {
+						    "statement" : _query,
+						    "resultDataContents" : [ "row" ]//, "graph" ]
+						  } ]
                                             }),	function(err, data){
                                                     var returnData = JSON.parse(data.responseText);
                                                     //document.write(JSON.stringify(returnData));
@@ -40,323 +358,1457 @@ function queryAllPhones(selections){
                                                     //document.write(JSON.stringify(result));
                                                     var nodeArr = [];
                                                     var linkArr = [];
-                                                    var groupArr = [];
+                                                    
                                                     var count = 0;
                                                     if(result.length == 0){
                                                             alert("No data found. Please try again.");
                                                     }
-
-                                                    //Create nodeArr and linkArr
-                                                    for(i=0;i<result.length;i++){
+                                                    
+                                                    /*
+							Start building nodeArr and linkArr
+							*/
+							for(i=0;i<result.length;i++){
                                                             if(i==0){
-                                                                    //Source is the prefered sourceNumber
-                                                                    var objAddSource = {};
-                                                                    objAddSource.NodeName = result[i].Source;
-                                                                    objAddSource.PhoneNumber = result[i].SourceNumber;
-                                                                    objAddSource.textDisplay = result[i].SourceNumber;
-                                                                    objAddSource.Label = 'Phone'
-                                                                    objAddSource.NodeIndex = nodeArr.length;
-                                                                    nodeArr.push(objAddSource);
+                                                                //Source is the prefered sourceNumber
+                                                                var objAddSource = {};
+                                                                objAddSource.NodeName = result[i].Source;
+                                                                objAddSource.PhoneNumber = result[i].SourceNumber;
+                                                                objAddSource.textDisplay = result[i].SourceNumber;
+                                                                objAddSource.Label = 'Phone'
+                                                                objAddSource.NodeIndex = nodeArr.length;
+                                                                nodeArr.push(objAddSource);
+                                                                
+                                                                var objcountRelAdd = {};
+                                                                objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                                objcountRelAdd._in = 0;
+                                                                objcountRelAdd._out = 1;
+                                                                countRelArr.push(objcountRelAdd);
 
-                                                                    var objcountRelAdd = {};
-                                                                    objcountRelAdd.PhoneNumber = result[i].SourceNumber;
-                                                                    objcountRelAdd._in = 0;
-                                                                    objcountRelAdd._out = 1;
-                                                                    countRelArr.push(objcountRelAdd);
+                                                                //Intermediary node
+                                                                var objAddTarget = {};
+                                                                objAddTarget.NodeName = result[i].Target;
+                                                                objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                                                objAddTarget.textDisplay = result[i].TargetNumber;
+                                                                objAddTarget.Label = 'Phone'
+                                                                objAddTarget.NodeIndex = nodeArr.length;
+                                                                nodeArr.push(objAddTarget);
+                                                                
+                                                                var objcountRelAdd = {};
+                                                                objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                                objcountRelAdd._in = 1;
+                                                                objcountRelAdd._out = 0;
+                                                                countRelArr.push(objcountRelAdd);
 
-                                                                    //Intermediary node
-                                                                    var objAddTarget = {};
-                                                                    objAddTarget.NodeName = result[i].Target;
-                                                                    objAddTarget.PhoneNumber = result[i].TargetNumber;
-                                                                    objAddTarget.textDisplay = result[i].TargetNumber;
-                                                                    objAddTarget.Label = 'Phone'
-                                                                    objAddTarget.NodeIndex = nodeArr.length;
-                                                                    nodeArr.push(objAddTarget);
+                                                                var objLink = {};
+                                                                objLink.source = 0;
+                                                                objLink.target = 1;
+                                                                objLink.Type = 'SMS';
+                                                                objLink.prop = [];
 
-                                                                    var objcountRelAdd = {};
-                                                                    objcountRelAdd.PhoneNumber = result[i].TargetNumber;
-                                                                    objcountRelAdd._in = 1;
-                                                                    objcountRelAdd._out = 0;
-                                                                    countRelArr.push(objcountRelAdd);
+                                                                var objLinkProp = {};
+                                                                objLinkProp.Source = result[i].SourceNumber;
+                                                                objLinkProp.Target = result[i].TargetNumber;
+                                                                objLinkProp.date = result[i].Date;
+                                                                //objLinkProp.time = result[i].Time;
+                                                                objLinkProp.status = result[i].Status;
+                                                                objLinkProp.message = result[i].Message;
+                                                                objLink.prop.push(objLinkProp);
+                                                                linkArr.push(objLink);
+                                                        }else{
+                                                            //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                                            var checkSource = 0; var checkTarget = 0;
 
+                                                            //These variable are used for storing important data that will be used in linkArr
+                                                            var getSourceIndex = 0; var getTargetIndex = 0; var getSourceNumber = ""; var getTargetNumber = "";
+                                                            var getSourcePhone = ""; var getTargetPhone = "";
+
+                                                            //Check the existence of source in nodeArr
+                                                            for(j=0;j<nodeArr.length;j++){
+                                                                if(result[i].Source == nodeArr[j].NodeName){
+                                                                    getSourceNumber = nodeArr[j].PhoneNumber;
+                                                                    getSourceIndex = nodeArr[j].NodeIndex;
+                                                                    checkSource++;
+                                                                    break;
+                                                                }
+                                                            }
+                                                            //Check the existence of target in nodeArr
+                                                            for(j=0;j<nodeArr.length;j++){
+                                                                if(result[i].Target == nodeArr[j].NodeName){
+                                                                    getTargetNumber = nodeArr[j].PhoneNumber;
+                                                                    getTargetIndex = nodeArr[j].NodeIndex;
+                                                                    checkTarget++;
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                            if(checkSource == 1 && checkTarget == 1){
+                                                                //First, we have to check an existence of the link.
+                                                                var linkIndex = 0;
+                                                                var linkExist = 0;
+                                                                for(k=0;k<linkArr.length;k++){
+                                                                    if(linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex && linkArr[k].Type == 'SMS'){
+                                                                        linkExist++;
+                                                                        linkIndex = k;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                if(linkExist == 1){
+                                                                    //There is already a link between source and target.	
+                                                                    var objLinkProp = {};
+                                                                    objLinkProp.Source = result[i].SourceNumber;
+                                                                    objLinkProp.Target = result[i].TargetNumber;
+                                                                    objLinkProp.date = result[i].Date;
+                                                                    //objLinkProp.time = result[i].Time;
+                                                                    objLinkProp.status = result[i].Status;
+                                                                    objLinkProp.message = result[i].Message;
+                                                                    linkArr[linkIndex].prop.push(objLinkProp);
+                                                                }else{
+                                                                    //Link between source and target haven't been created yet.
                                                                     var objLink = {};
-                                                                    objLink.source = 0;
-                                                                    objLink.target = 1;
-                                                                    objLink.Type = 'Call';
+                                                                    objLink.source = getSourceIndex;
+                                                                    objLink.target = getTargetIndex;
+                                                                    objLink.Type = "SMS"
                                                                     objLink.prop = [];
 
                                                                     var objLinkProp = {};
                                                                     objLinkProp.Source = result[i].SourceNumber;
                                                                     objLinkProp.Target = result[i].TargetNumber;
-                                                                    objLinkProp.dur = result[i].Duration;
                                                                     objLinkProp.date = result[i].Date;
+                                                                    //objLinkProp.time = result[i].Time;
+                                                                    objLinkProp.status = result[i].Status;
+                                                                    objLinkProp.message = result[i].Message;
                                                                     objLink.prop.push(objLinkProp);
                                                                     linkArr.push(objLink);
+                                                                }
+
+                                                                //increment _in and _out in countRel
+                                                                for(j=0;j<countRelArr.length;j++){
+                                                                    if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
+                                                                        countRelArr[j]._out = countRelArr[j]._out + 1;
+                                                                        break;
+                                                                    }
+                                                                }
+
+
+                                                                for(j=0;j<countRelArr.length;j++){
+                                                                    if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
+                                                                        countRelArr[j]._in = countRelArr[j]._in + 1;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            }else if(checkSource > 0 && checkTarget == 0){
+                                                                //result[i].Source already existed in nodeArr
+                                                                for(j=0;j<countRelArr.length;j++){
+                                                                    if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
+                                                                        countRelArr[j]._out = countRelArr[j]._out + 1;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                
+                                                                var objAdd = {};
+                                                                objAdd.NodeName = result[i].Target;
+                                                                objAdd.PhoneNumber = result[i].TargetNumber;
+                                                                objAdd.textDisplay = result[i].TargetNumber;
+                                                                objAdd.Label = 'Phone'
+                                                                objAdd.NodeIndex = nodeArr.length;
+                                                                nodeArr.push(objAdd);
+
+                                                                var objLink = {};
+                                                                objLink.source = getSourceIndex;
+                                                                objLink.target = nodeArr.length-1;
+                                                                objLink.Type = 'SMS';
+                                                                objLink.prop = [];
+
+                                                                var objcountRelAdd = {};
+                                                                objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                                objcountRelAdd._in = 1;
+                                                                objcountRelAdd._out = 0;
+                                                                countRelArr.push(objcountRelAdd);
+
+                                                                var objLinkProp = {};
+                                                                objLinkProp.Source = result[i].SourceNumber;
+                                                                objLinkProp.Target = result[i].TargetNumber;
+                                                                objLinkProp.date = result[i].Date;
+                                                                //objLinkProp.time = result[i].Time;
+                                                                objLinkProp.status = result[i].Status;
+                                                                objLinkProp.message = result[i].Message;
+                                                                objLink.prop.push(objLinkProp);
+                                                                linkArr.push(objLink);
+
+                                                            }else if(checkSource == 0 && checkTarget > 0){
+                                                                //result[i].Target already existed in nodeArr
+                                                                for(j=0;j<countRelArr.length;j++){
+                                                                    if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
+                                                                        countRelArr[j]._in = countRelArr[j]._in + 1;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                
+                                                                var objAdd = {};
+                                                                objAdd.NodeName = result[i].Source;
+                                                                objAdd.PhoneNumber = result[i].SourceNumber;
+                                                                objAdd.textDisplay = result[i].SourceNumber;
+                                                                objAdd.Label = 'Phone'
+                                                                objAdd.NodeIndex = nodeArr.length;
+                                                                nodeArr.push(objAdd);
+                                                                
+                                                                var objcountRelAdd = {};
+                                                                objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                                objcountRelAdd._in = 0;
+                                                                objcountRelAdd._out = 1;
+                                                                countRelArr.push(objcountRelAdd);
+
+                                                                var objLink = {};
+                                                                objLink.source = nodeArr.length-1;
+                                                                objLink.target = getTargetIndex;
+                                                                objLink.Type = 'SMS';
+                                                                objLink.prop = [];
+
+                                                                var objLinkProp = {};
+                                                                objLinkProp.Source = result[i].SourceNumber;
+                                                                objLinkProp.Target = result[i].TargetNumber;
+                                                                objLinkProp.date = result[i].Date;
+                                                                //objLinkProp.time = result[i].Time;
+                                                                objLinkProp.status = result[i].Status;
+                                                                objLinkProp.message = result[i].Message;
+                                                                objLink.prop.push(objLinkProp);
+                                                                linkArr.push(objLink);
 
                                                             }else{
-                                                                    //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
-                                                                    var checkSource = 0; var checkTarget = 0;
+                                                                //No input nodes are existed in the nodeArr.
+                                                                var objAddSource = {};
+                                                                objAddSource.NodeName = result[i].Source;
+                                                                objAddSource.PhoneNumber = result[i].SourceNumber;
+                                                                objAddSource.textDisplay = result[i].SourceNumber;                                    
+                                                                objAddSource.Label = 'Phone'
+                                                                objAddSource.NodeIndex = nodeArr.length;
+                                                                nodeArr.push(objAddSource);
+                                                                
+                                                                var objcountRelAdd = {};
+                                                                objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                                objcountRelAdd._in = 0;
+                                                                objcountRelAdd._out = 1;
+                                                                countRelArr.push(objcountRelAdd);
 
-                                                                    //These variable are used for storing important data that will be used in linkArr
-                                                                    var getSourceIndex = 0; var getTargetIndex = 0; var getSourceNumber = ""; var getTargetNumber = "";
-                                                                    var getSourcePhone = ""; var getTargetPhone = "";
+                                                                //Intermediary node
+                                                                var objAddTarget = {};
+                                                                objAddTarget.NodeName = result[i].Target;
+                                                                objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                                                objAddTarget.textDisplay = result[i].TargetNumber;                                              
+                                                                objAddTarget.Label = 'Phone'
+                                                                objAddTarget.NodeIndex = nodeArr.length;
+                                                                nodeArr.push(objAddTarget);
+                                                                
+                                                                var objcountRelAdd = {};
+                                                                objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                                objcountRelAdd._in = 1;
+                                                                objcountRelAdd._out = 0;
+                                                                countRelArr.push(objcountRelAdd);
 
-                                                                    //Check the existence of source in nodeArr
-                                                                    for(j=0;j<nodeArr.length;j++){
-                                                                            if(result[i].Source == nodeArr[j].NodeName){
-                                                                                    getSourceNumber = nodeArr[j].PhoneNumber;
-                                                                                    getSourceIndex = nodeArr[j].NodeIndex;
-                                                                                    checkSource++;
-                                                                                    break;
-                                                                            }
-                                                                    }
-                                                                    //Check the existence of target in nodeArr
-                                                                    for(j=0;j<nodeArr.length;j++){
-                                                                            if(result[i].Target == nodeArr[j].NodeName){
-                                                                                    getTargetNumber = nodeArr[j].PhoneNumber;
-                                                                                    getTargetIndex = nodeArr[j].NodeIndex;
-                                                                                    checkTarget++;
-                                                                                    break;
-                                                                            }
-                                                                    }
+                                                                var objLink = {};
+                                                                objLink.source = objAddSource.NodeIndex;
+                                                                objLink.target = objAddTarget.NodeIndex;
+                                                                objLink.Type = 'SMS';
+                                                                objLink.prop = [];
 
-                                                                    if(checkSource == 1 && checkTarget == 1){
-                                                                            //First, we have to check an existence of the link.
-                                                                            var linkIndex = 0;
-                                                                            var linkExist = 0;
-                                                                            for(k=0;k<linkArr.length;k++){
-                                                                                    if(linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex && linkArr[k].Type == "Call"){
-                                                                                            linkExist++;
-                                                                                            linkIndex = k;
-                                                                                            break;
-                                                                                    }
-                                                                            }
-                                                                            if(linkExist == 1){
-                                                                                    //There is already a link between source and target.
-                                                                                    var objLinkProp = {};
-                                                                                    objLinkProp.Source = result[i].SourceNumber;
-                                                                                    objLinkProp.Target = result[i].TargetNumber;
-                                                                                    objLinkProp.dur = result[i].Duration;
-                                                                                    objLinkProp.date = result[i].Date;
-                                                                                    linkArr[linkIndex].prop.push(objLinkProp);
-                                                                            }else{
-                                                                                    //Link between source and target haven't been created yet.
-                                                                                    var objLink = {};
-                                                                                    objLink.source = getSourceIndex;
-                                                                                    objLink.target = getTargetIndex;
-                                                                                    objLink.Type = "Call"
-                                                                                    objLink.prop = [];
-
-                                                                                    var objLinkProp = {};
-                                                                                    objLinkProp.Source = result[i].SourceNumber;
-                                                                                    objLinkProp.Target = result[i].TargetNumber;
-                                                                                    objLinkProp.dur = result[i].Duration;
-                                                                                    objLinkProp.date = result[i].Date;
-                                                                                    objLink.prop.push(objLinkProp);
-                                                                                    linkArr.push(objLink);
-                                                                            }
-
-                                                                            //increment _in and _out in countRel
-                                                                            for(j=0;j<countRelArr.length;j++){
-                                                                                    if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
-                                                                                            countRelArr[j]._out = countRelArr[j]._out + 1;
-                                                                                            break;
-                                                                                    }
-                                                                            }
-
-
-                                                                            for(j=0;j<countRelArr.length;j++){
-                                                                                    if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
-                                                                                            countRelArr[j]._in = countRelArr[j]._in + 1;
-                                                                                            break;
-                                                                                    }
-                                                                            }
-                                                                    }else if(checkSource > 0 && checkTarget == 0){
-                                                                            //result[i].Source already existed in nodeArr, therfore, increment _out in countRel
-                                                                            for(j=0;j<countRelArr.length;j++){
-                                                                                    if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
-                                                                                            countRelArr[j]._out = countRelArr[j]._out + 1;
-                                                                                            break;
-                                                                                    }
-                                                                            }
-
-                                                                            var objAdd = {};
-                                                                            objAdd.NodeName = result[i].Target;
-                                                                            objAdd.PhoneNumber = result[i].TargetNumber;
-                                                                            objAdd.textDisplay = result[i].TargetNumber;
-                                                                            objAdd.Label = 'Phone'
-                                                                            objAdd.NodeIndex = nodeArr.length;
-                                                                            nodeArr.push(objAdd);
-
-                                                                            var objcountRelAdd = {};
-                                                                            objcountRelAdd.PhoneNumber = result[i].TargetNumber;
-                                                                            objcountRelAdd._in = 1;
-                                                                            objcountRelAdd._out = 0;
-                                                                            countRelArr.push(objcountRelAdd);
-
-                                                                            var objLink = {};
-                                                                            objLink.source = getSourceIndex;
-                                                                            objLink.target = nodeArr.length-1;
-                                                                            objLink.Type = 'Call';
-                                                                            objLink.prop = [];
-
-                                                                            var objLinkProp = {};
-                                                                            objLinkProp.Source = result[i].SourceNumber;
-                                                                            objLinkProp.Target = result[i].TargetNumber;
-                                                                            objLinkProp.dur = result[i].Duration;
-                                                                            objLinkProp.date = result[i].Date;
-                                                                            objLink.prop.push(objLinkProp);
-                                                                            linkArr.push(objLink);
-
-                                                                    }else if(checkSource == 0 && checkTarget > 0){
-                                                                            //result[i].Target already existed in nodeArr, therefore, increment _in in countRelArr
-                                                                            for(j=0;j<countRelArr.length;j++){
-                                                                                    if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
-                                                                                            countRelArr[j]._in = countRelArr[j]._in + 1;
-                                                                                            break;
-                                                                                    }
-                                                                            }
-
-                                                                            var objAdd = {};
-                                                                            objAdd.NodeName = result[i].Source;
-                                                                            objAdd.PhoneNumber = result[i].SourceNumber;
-                                                                            objAdd.textDisplay = result[i].SourceNumber;
-                                                                            objAdd.Label = 'Phone'
-                                                                            objAdd.NodeIndex = nodeArr.length;
-                                                                            nodeArr.push(objAdd);
-
-                                                                            var objcountRelAdd = {};
-                                                                            objcountRelAdd.PhoneNumber = result[i].SourceNumber;
-                                                                            objcountRelAdd._in = 0;
-                                                                            objcountRelAdd._out = 1;
-                                                                            countRelArr.push(objcountRelAdd);
-
-                                                                            var objLink = {};
-                                                                            objLink.source = nodeArr.length-1;
-                                                                            objLink.target = getTargetIndex;
-                                                                            objLink.Type = 'Call';
-                                                                            objLink.prop = [];
-
-                                                                            var objLinkProp = {};
-                                                                            objLinkProp.Source = result[i].SourceNumber;
-                                                                            objLinkProp.Target = result[i].TargetNumber;
-                                                                            objLinkProp.dur = result[i].Duration;
-                                                                            objLinkProp.date = result[i].Date;
-                                                                            objLink.prop.push(objLinkProp);
-                                                                            linkArr.push(objLink);
-
-                                                                    }else{
-                                                                            //No input nodes are existed in the nodeArr.
-                                                                            var objAddSource = {};
-                                                                            objAddSource.NodeName = result[i].Source;
-                                                                            objAddSource.PhoneNumber = result[i].SourceNumber;
-                                                                            objAddSource.textDisplay = result[i].SourceNumber;
-                                                                            objAddSource.Label = 'Phone'
-                                                                            objAddSource.NodeIndex = nodeArr.length;
-                                                                            nodeArr.push(objAddSource);
-
-                                                                            var objcountRelAdd = {};
-                                                                            objcountRelAdd.PhoneNumber = result[i].SourceNumber;
-                                                                            objcountRelAdd._in = 0;
-                                                                            objcountRelAdd._out = 1;
-                                                                            countRelArr.push(objcountRelAdd);
-
-                                                                            var objAddTarget = {};
-                                                                            objAddTarget.NodeName = result[i].Target;
-                                                                            objAddTarget.PhoneNumber = result[i].TargetNumber;
-                                                                            objAddTarget.textDisplay = result[i].TargetNumber;
-                                                                            objAddTarget.Label = 'Phone'
-                                                                            objAddTarget.NodeIndex = nodeArr.length;
-                                                                            nodeArr.push(objAddTarget);
-
-                                                                            var objcountRelAdd = {};
-                                                                            objcountRelAdd.PhoneNumber = result[i].TargetNumber;
-                                                                            objcountRelAdd._in = 1;
-                                                                            objcountRelAdd._out = 0;
-                                                                            countRelArr.push(objcountRelAdd);
-
-                                                                            var objLink = {};
-                                                                            objLink.source = objAddSource.NodeIndex;
-                                                                            objLink.target = objAddTarget.NodeIndex;
-                                                                            objLink.Type = 'Call';
-                                                                            objLink.prop = [];
-
-                                                                            var objLinkProp = {};
-                                                                            objLinkProp.Source = result[i].SourceNumber;
-                                                                            objLinkProp.Target = result[i].TargetNumber;
-                                                                            objLinkProp.dur = result[i].Duration;
-                                                                            objLinkProp.date = result[i].Date;
-                                                                            objLink.prop.push(objLinkProp);
-                                                                            linkArr.push(objLink);
-
-                                                                    }
+                                                                var objLinkProp = {};
+                                                                objLinkProp.Source = result[i].SourceNumber;
+                                                                objLinkProp.Target = result[i].TargetNumber;
+                                                                objLinkProp.date = result[i].Date;
+                                                                //objLinkProp.time = result[i].Time;
+                                                                objLinkProp.status = result[i].Status;
+                                                                objLinkProp.message = result[i].Message;
+                                                                objLink.prop.push(objLinkProp);
+                                                                linkArr.push(objLink);
                                                             }
+                                                        }
                                                     }
+                                                    
                                                     //Calculate total call logs occur with each node
                                                     for(i=0;i<nodeArr.length;i++){
-                                                            for(j=0;j<countRelArr.length;j++){
-                                                                    if(countRelArr[j].PhoneNumber == nodeArr[i].PhoneNumber){
-                                                                            nodeArr[i].RecordIn = countRelArr[j]._in;
-                                                                            nodeArr[i].RecordOut = countRelArr[j]._out;
-                                                                            break;
-                                                                    }
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == nodeArr[i].PhoneNumber){
+                                                                nodeArr[i].RecordIn = countRelArr[j]._in;
+                                                                nodeArr[i].RecordOut = countRelArr[j]._out;
+                                                                break;
                                                             }
+                                                        }
                                                     }
 
                                                     //Calculate how many relationships are coming in or going out for each node
                                                     for(i=0;i<nodeArr.length;i++){
-                                                            var countIn = 0; var countOut = 0;
-                                                            for(j=0;j<linkArr.length;j++){
-                                                                    if(nodeArr[i].NodeIndex == linkArr[j].source){
-                                                                            countIn++;
-                                                                    }
-
-                                                                    if(nodeArr[i].NodeIndex == linkArr[j].target){
-                                                                            countOut++;
-                                                                    }
+                                                        var countIn = 0; var countOut = 0;
+                                                        for(j=0;j<linkArr.length;j++){
+                                                            if(nodeArr[i].NodeIndex == linkArr[j].source){
+                                                                    countIn++;
                                                             }
 
-                                                            nodeArr[i].RelIn = countIn;
-                                                            nodeArr[i].RelOut = countOut;
+                                                            if(nodeArr[i].NodeIndex == linkArr[j].target){
+                                                                    countOut++;
+                                                            }
+                                                        }
+
+                                                        nodeArr[i].RelIn = countIn;
+                                                        nodeArr[i].RelOut = countOut;
                                                     }
 
                                                     //After finish adding all the nodes and relationship into nodeArr and linkArr
                                                     if(noLoop==selections.length-1){
-                                                            var finalResult = [];
-                                                            finalResult.push(nodeArr);
-                                                            finalResult.push(linkArr);
-                                                            finalResult.push(countRelArr);
-                                                            //document.write(JSON.stringify(nodeArr));
-                                                            dataVisualizationAllPhones(finalResult);
+                                                        var finalResult = [];
+                                                        finalResult.push(nodeArr);
+                                                        finalResult.push(linkArr);
+                                                        //document.write(JSON.stringify(finalResult));
+                                                        dataVisualizationAllPhones(finalResult);
                                                     }else{
-                                                            noLoop++;
-                                                            var passArr = [];
-                                                            passArr.push(nodeArr);
-                                                            passArr.push(linkArr);
-                                                            passArr.push(countRelArr);
-                                                            recursiveAllPhone(passArr);
+                                                        noLoop++;
+                                                        var passArr = [];
+                                                        passArr.push(nodeArr);
+                                                        passArr.push(linkArr);
+                                                        recursiveAllPhone(passArr);
+                                                    }
+                                                        
+                                                });
+                    
+                }else if(selections[noLoop].Type == 'Line'){
+                    var _query = "MATCH (n:LINE)<-[r:LINEchat]->(m:LINE) ";
+                    _query += "RETURN distinct r ORDER BY r.Date,r.Time";
+                    console.log(_query);
+                    var linkLabel = selections[noLoop].Type;
+                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                        .header("Content-Type", "application/json")
+                        .mimeType("application/json")				
+                        .post(
+                            JSON.stringify({
+                                      "statements" : [ {
+                                        "statement" : _query,
+                                        "resultDataContents" : [ "row" ]//, "graph" ]
+                                      } ]
+                                    }),	function(err, data){
+                                            var returnData = JSON.parse(data.responseText);
+                                            //document.write(JSON.stringify(returnData));
+                                            var result = [];
+
+                                            if(returnData.results[0].data.length == 0){
+                                                alert("No data found for LINE, please try again.");
+                                            }else{
+                                                for(i=0;i<returnData.results[0].data.length;i++){
+                                                    result.push(returnData.results[0].data[i].row[0]);
+                                                }
+                                            }
+                                            
+                                            /*
+                                            Start building nodeArr and linkArr
+                                            */
+                                            for(i=0;i<result.length;i++){
+                                                if(i==0){
+                                                    var objAddSource = {};
+                                                    objAddSource.NodeName = result[i].Source;
+                                                    objAddSource.PhoneNumber = result[i].SourceNumber;
+                                                    objAddSource.textDisplay = "LineID : " + result[i].SourceLineID;
+                                                    objAddSource.Label = 'Line';
+                                                    objAddSource.NodeIndex = nodeArr.length;
+                                                    nodeArr.push(objAddSource);
+                                                    
+                                                    var objcountRelAdd = {};
+                                                    objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                    objcountRelAdd._in = 0;
+                                                    objcountRelAdd._out = 1;
+                                                    countRelArr.push(objcountRelAdd);
+
+                                                    var objAddTarget = {};
+                                                    objAddTarget.NodeName = result[i].Target;
+                                                    objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                                    objAddTarget.textDisplay = "LineID : " + result[i].TargetLineID;
+                                                    objAddTarget.Label = 'Line';
+                                                    objAddTarget.NodeIndex = nodeArr.length;
+                                                    nodeArr.push(objAddTarget);
+                                                    
+                                                    var objcountRelAdd = {};
+                                                    objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                    objcountRelAdd._in = 1;
+                                                    objcountRelAdd._out = 0;
+                                                    countRelArr.push(objcountRelAdd);
+
+                                                    var objLink = {};
+                                                    objLink.source = 0;
+                                                    objLink.target = 1;
+                                                    objLink.Type = linkLabel;
+                                                    objLink.prop = [];
+
+                                                    var objLinkProp = {};
+                                                    objLinkProp.Sender = result[i].SourceLineID;
+                                                    objLinkProp.date = result[i].Date;
+                                                    objLinkProp.Time = result[i].Time;
+                                                    objLinkProp.message = result[i].Message;
+                                                    objLink.prop.push(objLinkProp);
+                                                    linkArr.push(objLink);
+
+                                                }else{
+                                                    //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                                    var checkSource = 0; var checkTarget = 0;
+
+                                                    //These variable are used for storing important data that will be used in linkArr
+                                                    var getSourceIndex = 0; var getTargetIndex = 0; var getSourceNumber = ""; var getTargetNumber = "";
+                                                    var getSourcePhone = ""; var getTargetPhone = "";
+                                                    
+                                                    //Check the existence of source in nodeArr
+                                                    for(j=0;j<nodeArr.length;j++){
+                                                        if(result[i].Source == nodeArr[j].NodeName){
+                                                            getSourceNumber = nodeArr[j].PhoneNumber;
+                                                            getSourceIndex = nodeArr[j].NodeIndex;
+                                                            checkSource++;
+                                                            break;
+                                                        }
+                                                    }
+                                                    //Check the existence of target in nodeArr
+                                                    for(j=0;j<nodeArr.length;j++){
+                                                        if(result[i].Target == nodeArr[j].NodeName){
+                                                            getTargetNumber = nodeArr[j].PhoneNumber;
+                                                            getTargetIndex = nodeArr[j].NodeIndex;
+                                                            checkTarget++;
+                                                            break;
+                                                        }
                                                     }
 
-                                            });
+                                                    if(checkSource == 1 && checkTarget == 1){
+                                                        //First, we have to check an existence of the link.
+                                                        var linkIndex = 0;
+                                                        var linkExist = 0;
+                                                        for(k=0;k<linkArr.length;k++){
+                                                            if((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)){
+                                                                linkExist++;
+                                                                linkIndex = k;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if(linkExist == 1){
+                                                            //There is already a link between source and target.
+                                                            var objLinkProp = {};
+                                                            objLinkProp.Sender = result[i].SourceLineID;
+                                                            objLinkProp.date = result[i].Date;
+                                                            objLinkProp.Time = result[i].Time;
+                                                            objLinkProp.message = result[i].Message;
+                                                            linkArr[linkIndex].prop.push(objLinkProp);
+                                                        }else{
+                                                            //Link between source and target haven't been created yet.
+                                                            var objLink = {};
+                                                            objLink.source = getSourceIndex;
+                                                            objLink.target = getTargetIndex;
+                                                            objLink.Type = linkLabel;
+                                                            objLink.prop = [];
 
+                                                            var objLinkProp = {};
+                                                            objLinkProp.Sender = result[i].SourceLineID;
+                                                            objLinkProp.date = result[i].Date;
+                                                            objLinkProp.Time = result[i].Time;
+                                                            objLinkProp.message = result[i].Message;															
+                                                            objLink.prop.push(objLinkProp);
+                                                            linkArr.push(objLink);
+                                                        }
+                                                        
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
+                                                                countRelArr[j]._out = countRelArr[j]._out + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                        
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
+                                                                countRelArr[j]._in = countRelArr[j]._in + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }else if(checkSource > 0 && checkTarget == 0){
+                                                        //result[i].Source already existed in nodeArr
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
+                                                                countRelArr[j]._out = countRelArr[j]._out + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                                
+                                                        var objAdd = {};
+                                                        objAdd.NodeName = result[i].Target;
+                                                        objAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objAdd.textDisplay = "LineID : " + result[i].TargetLineID;
+                                                        objAdd.Label = 'Line';
+                                                        objAdd.NodeIndex = nodeArr.length;
+                                                        nodeArr.push(objAdd);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objcountRelAdd._in = 1;
+                                                        objcountRelAdd._out = 0;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = getSourceIndex;
+                                                        objLink.target = nodeArr.length-1;
+                                                        objLink.Type = linkLabel;
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Sender = result[i].SourceLineID;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLinkProp.Time = result[i].Time;
+                                                        objLinkProp.message = result[i].Message;
+                                                        linkArr.push(objLink);
+
+                                                    }else if(checkSource == 0 && checkTarget > 0){
+                                                        //result[i].Target already existed in nodeArr
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
+                                                                countRelArr[j]._in = countRelArr[j]._in + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                        
+                                                        var objAdd = {};
+                                                        objAdd.NodeName = result[i].Source;
+                                                        objAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objAdd.textDisplay = "LineID : " + result[i].SourceLineID;
+                                                        objAdd.Label = 'Line';
+                                                        objAdd.NodeIndex = nodeArr.length;
+                                                        nodeArr.push(objAdd);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objcountRelAdd._in = 0;
+                                                        objcountRelAdd._out = 1;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = nodeArr.length-1;
+                                                        objLink.target = getTargetIndex;
+                                                        objLink.Type = linkLabel;
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Sender = result[i].SourceLineID;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLinkProp.Time = result[i].Time;
+                                                        objLinkProp.message = result[i].Message;
+                                                        objLink.prop.push(objLinkProp);
+                                                        linkArr.push(objLink);
+
+                                                    }else{
+                                                        var objAddSource = {};
+                                                        objAddSource.NodeName = result[i].Source;
+                                                        objAddSource.PhoneNumber = result[i].SourceNumber;
+                                                        objAddSource.textDisplay = "LineID : " + result[i].SourceLineID;
+                                                        objAddSource.Label = 'Line';
+                                                        objAddSource.NodeIndex = nodeArr.length;
+                                                        getSourceIndex = nodeArr.length;
+                                                        nodeArr.push(objAddSource);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objcountRelAdd._in = 0;
+                                                        objcountRelAdd._out = 1;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objAddTarget = {};
+                                                        objAddTarget.NodeName = result[i].Target;
+                                                        objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                                        objAddTarget.textDisplay = "LineID : " + result[i].TargetLineID;
+                                                        objAddTarget.Label = 'Line';
+                                                        objAddTarget.NodeIndex = nodeArr.length;
+                                                        getTargetIndex = nodeArr.length;
+                                                        nodeArr.push(objAddTarget);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objcountRelAdd._in = 1;
+                                                        objcountRelAdd._out = 0;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = getSourceIndex;
+                                                        objLink.target = getTargetIndex;
+                                                        objLink.Type = linkLabel;
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Sender = result[i].SourceLineID;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLinkProp.Time = result[i].Time;
+                                                        objLinkProp.message = result[i].Message;
+                                                        objLink.prop.push(objLinkProp);
+                                                        linkArr.push(objLink);
+
+                                                    }
+                                                }
+                                            }
+                                            //Calculate how many relationships are coming in or going out for each node
+                                            for(i=0;i<nodeArr.length;i++){
+                                                var countIn = 0; var countOut = 0;
+                                                for(j=0;j<linkArr.length;j++){
+                                                    if(nodeArr[i].NodeIndex == linkArr[j].source){
+                                                            countIn++;
+                                                    }
+
+                                                    if(nodeArr[i].NodeIndex == linkArr[j].target){
+                                                            countOut++;
+                                                    }
+                                                }
+                                                nodeArr[i].RelIn = countIn;
+                                                nodeArr[i].RelOut = countOut;
+                                            }                                            
+
+                                            //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                            var allLineNodes = [];
+                                            for(i=0;i<nodeArr.length;i++){
+                                                    if(nodeArr[i].Label == 'Line'){
+                                                            allLineNodes.push(nodeArr[i].NodeName);
+                                                    }
+                                            }
+
+                                            var nextQuery = "MATCH (n:LINE)-[r:Line]->(m:PHONE) WHERE "
+                                            for(i=0;i<allLineNodes.length;i++){
+                                                    if(i==0){
+                                                            nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                                    }else{
+                                                            nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                                    }
+                                            }
+                                            nextQuery += "RETURN collect(distinct r) as R";
+                                            FetchPhoneForLineAll(nextQuery);
+                                        });
+                    
+                    function FetchPhoneForLineAll(_query){
+                        d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                        .header("Content-Type", "application/json")
+                        .mimeType("application/json")				
+                        .post(
+                            JSON.stringify({
+                                      "statements" : [ {
+                                        "statement" : _query,
+                                        "resultDataContents" : [ "row" ]//, "graph" ]
+                                      } ]
+                                    }),	function(err, data){
+                                        var returnData = JSON.parse(data.responseText);
+                                        //document.write(JSON.stringify(returnData));
+                                        var result = returnData.results[0].data[0].row[0];
+                                        //document.write(JSON.stringify(result));
+                                        var count = 0;
+                                        if(result.length == 0){
+                                                alert("No data found. Please try again.");
+                                        }
+
+                                        for(i=0;i<result.length;i++){
+
+                                            var getSourceIndex,getTargetIndex,getRelIn,getRelOut;
+                                            
+                                            for(j=0;j<nodeArr.length;j++){
+                                                    if(nodeArr[j].NodeName == result[i].Source){
+                                                            getSourceIndex = nodeArr[j].NodeIndex;
+                                                            getRelIn = nodeArr[j].RelIn;
+                                                            getRelOut = nodeArr[j].RelOut;
+                                                            break;
+                                                    }
+                                            }
+
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Target;
+                                            objAdd.Label = result[i].TargetType;
+                                            objAdd.textDisplay = result[i].PhoneNumber;
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            objAdd.RelIn = getRelIn;
+                                            objAdd.RelOut = getRelOut;
+                                            getTargetIndex = nodeArr.length;
+                                            nodeArr.push(objAdd);
+
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = nodeArr.length - 1;
+                                            objLink.Type = result[i].Description;
+                                            objLink.prop = [];
+                                            linkArr.push(objLink);
+                                        }
+
+                                        //After finish adding all the nodes and relationship into nodeArr and linkArr
+                                        if(noLoop==selections.length-1){
+                                            var finalResult = [];
+                                            finalResult.push(nodeArr);
+                                            finalResult.push(linkArr);
+                                            //document.write(JSON.stringify(finalResult));
+                                            dataVisualizationAllPhones(finalResult);
+                                        }else{
+                                            noLoop++;
+                                            var passArr = [];
+                                            passArr.push(nodeArr);
+                                            passArr.push(linkArr);
+                                            recursiveAllPhones(passArr);
+                                        }
+                                    });
                     }
-            }
+                }else if(selections[noLoop].Type == 'Whatsapp'){
+                    var _query = "MATCH (n:WHATSAPP)<-[r:Whatsappchat]->(m:WHATSAPP) ";
+                    _query += "RETURN distinct r ORDER BY r.Date,r.Time";
+                    console.log(_query);
+                    var linkLabel = selections[noLoop].Type;
+                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                        .header("Content-Type", "application/json")
+                        .mimeType("application/json")				
+                        .post(
+                            JSON.stringify({
+                                      "statements" : [ {
+                                        "statement" : _query,
+                                        "resultDataContents" : [ "row" ]//, "graph" ]
+                                      } ]
+                                    }),	function(err, data){
+                                            var returnData = JSON.parse(data.responseText);
+                                            //document.write(JSON.stringify(returnData));
+                                            var result = [];
+
+                                            if(returnData.results[0].data.length == 0){
+                                                alert("No data found for Whatsapp, please try again.");
+                                            }else{
+                                                for(i=0;i<returnData.results[0].data.length;i++){
+                                                    result.push(returnData.results[0].data[i].row[0]);
+                                                }
+                                            }
+                                            
+                                            /*
+                                            Start building nodeArr and linkArr
+                                            */
+                                            for(i=0;i<result.length;i++){
+                                                if(i==0){
+                                                    var objAddSource = {};
+                                                    objAddSource.NodeName = result[i].Source;
+                                                    objAddSource.PhoneNumber = result[i].SourceNumber;
+                                                    objAddSource.textDisplay = "WhatsappID : " + result[i].SourceNumber;
+                                                    objAddSource.Label = 'Whatsapp';
+                                                    objAddSource.NodeIndex = nodeArr.length;
+                                                    nodeArr.push(objAddSource);
+                                                    
+                                                    var objcountRelAdd = {};
+                                                    objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                    objcountRelAdd._in = 0;
+                                                    objcountRelAdd._out = 1;
+                                                    countRelArr.push(objcountRelAdd);
+
+                                                    var objAddTarget = {};
+                                                    objAddTarget.NodeName = result[i].Target;
+                                                    objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                                    objAddTarget.textDisplay = "WhatsappID : " + result[i].TargetNumber;
+                                                    objAddTarget.Label = 'Whatsapp';
+                                                    objAddTarget.NodeIndex = nodeArr.length;
+                                                    nodeArr.push(objAddTarget);
+                                                    
+                                                    var objcountRelAdd = {};
+                                                    objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                    objcountRelAdd._in = 1;
+                                                    objcountRelAdd._out = 0;
+                                                    countRelArr.push(objcountRelAdd);
+
+                                                    var objLink = {};
+                                                    objLink.source = 0;
+                                                    objLink.target = 1;
+                                                    objLink.Type = linkLabel;
+                                                    objLink.prop = [];
+
+                                                    var objLinkProp = {};
+                                                    objLinkProp.Sender = result[i].SoureNumber;
+                                                    objLinkProp.date = result[i].Date;
+                                                    objLinkProp.Time = result[i].Time;
+                                                    objLinkProp.message = result[i].Message;
+                                                    objLink.prop.push(objLinkProp);
+                                                    linkArr.push(objLink);
+
+                                                }else{
+                                                    //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                                    var checkSource = 0; var checkTarget = 0;
+
+                                                    //These variable are used for storing important data that will be used in linkArr
+                                                    var getSourceIndex = 0; var getTargetIndex = 0; var getSourceNumber = ""; var getTargetNumber = "";
+                                                    var getSourcePhone = ""; var getTargetPhone = "";
+                                                    
+                                                    //Check the existence of source in nodeArr
+                                                    for(j=0;j<nodeArr.length;j++){
+                                                        if(result[i].Source == nodeArr[j].NodeName){
+                                                            getSourceNumber = nodeArr[j].PhoneNumber;
+                                                            getSourceIndex = nodeArr[j].NodeIndex;
+                                                            checkSource++;
+                                                            break;
+                                                        }
+                                                    }
+                                                    //Check the existence of target in nodeArr
+                                                    for(j=0;j<nodeArr.length;j++){
+                                                        if(result[i].Target == nodeArr[j].NodeName){
+                                                            getTargetNumber = nodeArr[j].PhoneNumber;
+                                                            getTargetIndex = nodeArr[j].NodeIndex;
+                                                            checkTarget++;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if(checkSource == 1 && checkTarget == 1){
+                                                        //First, we have to check an existence of the link.
+                                                        var linkIndex = 0;
+                                                        var linkExist = 0;
+                                                        for(k=0;k<linkArr.length;k++){
+                                                            if((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)){
+                                                                linkExist++;
+                                                                linkIndex = k;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if(linkExist == 1){
+                                                            //There is already a link between source and target.
+                                                            var objLinkProp = {};
+                                                            objLinkProp.Sender = result[i].SourceNumber;
+                                                            objLinkProp.date = result[i].Date;
+                                                            objLinkProp.Time = result[i].Time;
+                                                            objLinkProp.message = result[i].Message;
+                                                            linkArr[linkIndex].prop.push(objLinkProp);
+                                                        }else{
+                                                            //Link between source and target haven't been created yet.
+                                                            var objLink = {};
+                                                            objLink.source = getSourceIndex;
+                                                            objLink.target = getTargetIndex;
+                                                            objLink.Type = linkLabel;
+                                                            objLink.prop = [];
+
+                                                            var objLinkProp = {};
+                                                            objLinkProp.Sender = result[i].SourceNumber;
+                                                            objLinkProp.date = result[i].Date;
+                                                            objLinkProp.Time = result[i].Time;
+                                                            objLinkProp.message = result[i].Message;															
+                                                            objLink.prop.push(objLinkProp);
+                                                            linkArr.push(objLink);
+                                                        }
+                                                        
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
+                                                                countRelArr[j]._out = countRelArr[j]._out + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                        
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
+                                                                countRelArr[j]._in = countRelArr[j]._in + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }else if(checkSource > 0 && checkTarget == 0){
+                                                        //result[i].Source already existed in nodeArr
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
+                                                                countRelArr[j]._out = countRelArr[j]._out + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                                
+                                                        var objAdd = {};
+                                                        objAdd.NodeName = result[i].Target;
+                                                        objAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objAdd.textDisplay = "WhatsappID : " + result[i].TargetNumber;
+                                                        objAdd.Label = 'Whatsapp';
+                                                        objAdd.NodeIndex = nodeArr.length;
+                                                        nodeArr.push(objAdd);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objcountRelAdd._in = 1;
+                                                        objcountRelAdd._out = 0;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = getSourceIndex;
+                                                        objLink.target = nodeArr.length-1;
+                                                        objLink.Type = linkLabel;
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Sender = result[i].SourceNumber;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLinkProp.Time = result[i].Time;
+                                                        objLinkProp.message = result[i].Message;
+                                                        linkArr.push(objLink);
+
+                                                    }else if(checkSource == 0 && checkTarget > 0){
+                                                        //result[i].Target already existed in nodeArr
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
+                                                                countRelArr[j]._in = countRelArr[j]._in + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                        
+                                                        var objAdd = {};
+                                                        objAdd.NodeName = result[i].Source;
+                                                        objAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objAdd.textDisplay = "WhatsappID : " + result[i].SourceNumber;
+                                                        objAdd.Label = 'Whatsapp';
+                                                        objAdd.NodeIndex = nodeArr.length;
+                                                        nodeArr.push(objAdd);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objcountRelAdd._in = 0;
+                                                        objcountRelAdd._out = 1;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = nodeArr.length-1;
+                                                        objLink.target = getTargetIndex;
+                                                        objLink.Type = linkLabel;
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Sender = result[i].SourceNumber;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLinkProp.Time = result[i].Time;
+                                                        objLinkProp.message = result[i].Message;
+                                                        objLink.prop.push(objLinkProp);
+                                                        linkArr.push(objLink);
+
+                                                    }else{
+                                                        var objAddSource = {};
+                                                        objAddSource.NodeName = result[i].Source;
+                                                        objAddSource.PhoneNumber = result[i].SourceNumber;
+                                                        objAddSource.textDisplay = "WhatsappID : " + result[i].SourceNumber;
+                                                        objAddSource.Label = 'Whatsapp';
+                                                        objAddSource.NodeIndex = nodeArr.length;
+                                                        getSourceIndex = nodeArr.length;
+                                                        nodeArr.push(objAddSource);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objcountRelAdd._in = 0;
+                                                        objcountRelAdd._out = 1;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objAddTarget = {};
+                                                        objAddTarget.NodeName = result[i].Target;
+                                                        objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                                        objAddTarget.textDisplay = "WhatsappID : " + result[i].TargetNumber;
+                                                        objAddTarget.Label = 'Whatsapp';
+                                                        objAddTarget.NodeIndex = nodeArr.length;
+                                                        getTargetIndex = nodeArr.length;
+                                                        nodeArr.push(objAddTarget);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objcountRelAdd._in = 1;
+                                                        objcountRelAdd._out = 0;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = getSourceIndex;
+                                                        objLink.target = getTargetIndex;
+                                                        objLink.Type = linkLabel;
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Sender = result[i].SourceNumber;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLinkProp.Time = result[i].Time;
+                                                        objLinkProp.message = result[i].Message;
+                                                        objLink.prop.push(objLinkProp);
+                                                        linkArr.push(objLink);
+
+                                                    }
+                                                }
+                                            }
+                                            //Calculate how many relationships are coming in or going out for each node
+                                            for(i=0;i<nodeArr.length;i++){
+                                                var countIn = 0; var countOut = 0;
+                                                for(j=0;j<linkArr.length;j++){
+                                                    if(nodeArr[i].NodeIndex == linkArr[j].source){
+                                                            countIn++;
+                                                    }
+
+                                                    if(nodeArr[i].NodeIndex == linkArr[j].target){
+                                                            countOut++;
+                                                    }
+                                                }
+                                                nodeArr[i].RelIn = countIn;
+                                                nodeArr[i].RelOut = countOut;
+                                            }                                            
+
+                                            //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                            var allWhatsappNodes = [];
+                                            for(i=0;i<nodeArr.length;i++){
+                                                    if(nodeArr[i].Label == 'Whatsapp'){
+                                                            allWhatsappNodes.push(nodeArr[i].NodeName);
+                                                    }
+                                            }
+
+                                            var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
+                                            for(i=0;i<allWhatsappNodes.length;i++){
+                                                    if(i==0){
+                                                            nextQuery += "n.Nodename = '" + allWhatsappNodes[i] + "' ";
+                                                    }else{
+                                                            nextQuery += "OR n.Nodename = '" + allWhatsappNodes[i] + "' ";
+                                                    }
+                                            }
+                                            nextQuery += "RETURN collect(distinct r) as R";
+                                            FetchPhoneForWhatsappAll(nextQuery);
+                                        });
+                    
+                    function FetchPhoneForWhatsappAll(_query){
+                        d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                        .header("Content-Type", "application/json")
+                        .mimeType("application/json")				
+                        .post(
+                            JSON.stringify({
+                                      "statements" : [ {
+                                        "statement" : _query,
+                                        "resultDataContents" : [ "row" ]//, "graph" ]
+                                      } ]
+                                    }),	function(err, data){
+                                        var returnData = JSON.parse(data.responseText);
+                                        //document.write(JSON.stringify(returnData));
+                                        var result = returnData.results[0].data[0].row[0];
+                                        //document.write(JSON.stringify(result));
+                                        var count = 0;
+                                        if(result.length == 0){
+                                                alert("No data found. Please try again.");
+                                        }
+
+                                        for(i=0;i<result.length;i++){
+
+                                            var getSourceIndex,getTargetIndex,getRelIn,getRelOut;
+                                            
+                                            for(j=0;j<nodeArr.length;j++){
+                                                    if(nodeArr[j].NodeName == result[i].Source){
+                                                            getSourceIndex = nodeArr[j].NodeIndex;
+                                                            getRelIn = nodeArr[j].RelIn;
+                                                            getRelOut = nodeArr[j].RelOut;
+                                                            break;
+                                                    }
+                                            }
+
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Target;
+                                            objAdd.Label = result[i].TargetType;
+                                            objAdd.textDisplay = result[i].PhoneNumber;
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            objAdd.RelIn = getRelIn;
+                                            objAdd.RelOut = getRelOut;
+                                            getTargetIndex = nodeArr.length;
+                                            nodeArr.push(objAdd);
+
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = nodeArr.length - 1;
+                                            objLink.Type = result[i].Description;
+                                            objLink.prop = [];
+                                            linkArr.push(objLink);
+                                        }
+
+                                        //After finish adding all the nodes and relationship into nodeArr and linkArr
+                                        if(noLoop==selections.length-1){
+                                            var finalResult = [];
+                                            finalResult.push(nodeArr);
+                                            finalResult.push(linkArr);
+                                            //document.write(JSON.stringify(finalResult));
+                                            dataVisualizationAllPhones(finalResult);
+                                        }else{
+                                            noLoop++;
+                                            var passArr = [];
+                                            passArr.push(nodeArr);
+                                            passArr.push(linkArr);
+                                            recursiveAllPhones(passArr);
+                                        }
+                                    });
+                    }
+                }else{
+                    var _query = "MATCH (n:FACEBOOK)<-[r:Facebook]->(m:FACEBOOK) ";
+                    _query += "RETURN distinct r ORDER BY r.Date,r.Time";
+                    console.log(_query);
+                    var linkLabel = selections[noLoop].Type;
+                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                        .header("Content-Type", "application/json")
+                        .mimeType("application/json")				
+                        .post(
+                            JSON.stringify({
+                                      "statements" : [ {
+                                        "statement" : _query,
+                                        "resultDataContents" : [ "row" ]//, "graph" ]
+                                      } ]
+                                    }),	function(err, data){
+                                            var returnData = JSON.parse(data.responseText);
+                                            //document.write(JSON.stringify(returnData));
+                                            var result = [];
+
+                                            if(returnData.results[0].data.length == 0){
+                                                alert("No data found for Facebook, please try again.");
+                                            }else{
+                                                for(i=0;i<returnData.results[0].data.length;i++){
+                                                    result.push(returnData.results[0].data[i].row[0]);
+                                                }
+                                            }
+                                            
+                                            /*
+                                            Start building nodeArr and linkArr
+                                            */
+                                            for(i=0;i<result.length;i++){
+                                                if(i==0){
+                                                    var objAddSource = {};
+                                                    objAddSource.NodeName = result[i].Source;
+                                                    objAddSource.PhoneNumber = result[i].SourceNumber;
+                                                    objAddSource.textDisplay = "FacebookID : " + result[i].SourceFacebook;
+                                                    objAddSource.Label = 'Facebook';
+                                                    objAddSource.NodeIndex = nodeArr.length;
+                                                    nodeArr.push(objAddSource);
+                                                    
+                                                    var objcountRelAdd = {};
+                                                    objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                    objcountRelAdd._in = 0;
+                                                    objcountRelAdd._out = 1;
+                                                    countRelArr.push(objcountRelAdd);
+
+                                                    var objAddTarget = {};
+                                                    objAddTarget.NodeName = result[i].Target;
+                                                    objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                                    objAddTarget.textDisplay = "FacebookID : " + result[i].TargetFacebook;
+                                                    objAddTarget.Label = 'Facebook';
+                                                    objAddTarget.NodeIndex = nodeArr.length;
+                                                    nodeArr.push(objAddTarget);
+                                                    
+                                                    var objcountRelAdd = {};
+                                                    objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                    objcountRelAdd._in = 1;
+                                                    objcountRelAdd._out = 0;
+                                                    countRelArr.push(objcountRelAdd);
+
+                                                    var objLink = {};
+                                                    objLink.source = 0;
+                                                    objLink.target = 1;
+                                                    objLink.Type = linkLabel;
+                                                    objLink.prop = [];
+
+                                                    var objLinkProp = {};
+                                                    objLinkProp.Sender = result[i].SourceFacebook;
+                                                    objLinkProp.date = result[i].Date;
+                                                    objLinkProp.Time = result[i].Time;
+                                                    objLinkProp.message = result[i].Message;
+                                                    objLink.prop.push(objLinkProp);
+                                                    linkArr.push(objLink);
+
+                                                }else{
+                                                    //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                                    var checkSource = 0; var checkTarget = 0;
+
+                                                    //These variable are used for storing important data that will be used in linkArr
+                                                    var getSourceIndex = 0; var getTargetIndex = 0; var getSourceNumber = ""; var getTargetNumber = "";
+                                                    var getSourcePhone = ""; var getTargetPhone = "";
+                                                    
+                                                    //Check the existence of source in nodeArr
+                                                    for(j=0;j<nodeArr.length;j++){
+                                                        if(result[i].Source == nodeArr[j].NodeName){
+                                                            getSourceNumber = nodeArr[j].PhoneNumber;
+                                                            getSourceIndex = nodeArr[j].NodeIndex;
+                                                            checkSource++;
+                                                            break;
+                                                        }
+                                                    }
+                                                    //Check the existence of target in nodeArr
+                                                    for(j=0;j<nodeArr.length;j++){
+                                                        if(result[i].Target == nodeArr[j].NodeName){
+                                                            getTargetNumber = nodeArr[j].PhoneNumber;
+                                                            getTargetIndex = nodeArr[j].NodeIndex;
+                                                            checkTarget++;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    if(checkSource == 1 && checkTarget == 1){
+                                                        //First, we have to check an existence of the link.
+                                                        var linkIndex = 0;
+                                                        var linkExist = 0;
+                                                        for(k=0;k<linkArr.length;k++){
+                                                            if((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)){
+                                                                linkExist++;
+                                                                linkIndex = k;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if(linkExist == 1){
+                                                            //There is already a link between source and target.
+                                                            var objLinkProp = {};
+                                                            objLinkProp.Sender = result[i].SourceFacebook;
+                                                            objLinkProp.date = result[i].Date;
+                                                            objLinkProp.Time = result[i].Time;
+                                                            objLinkProp.message = result[i].Message;
+                                                            linkArr[linkIndex].prop.push(objLinkProp);
+                                                        }else{
+                                                            //Link between source and target haven't been created yet.
+                                                            var objLink = {};
+                                                            objLink.source = getSourceIndex;
+                                                            objLink.target = getTargetIndex;
+                                                            objLink.Type = linkLabel;
+                                                            objLink.prop = [];
+
+                                                            var objLinkProp = {};
+                                                            objLinkProp.Sender = result[i].SourceFacebook;
+                                                            objLinkProp.date = result[i].Date;
+                                                            objLinkProp.Time = result[i].Time;
+                                                            objLinkProp.message = result[i].Message;															
+                                                            objLink.prop.push(objLinkProp);
+                                                            linkArr.push(objLink);
+                                                        }
+                                                        
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
+                                                                countRelArr[j]._out = countRelArr[j]._out + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                        
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
+                                                                countRelArr[j]._in = countRelArr[j]._in + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                    }else if(checkSource > 0 && checkTarget == 0){
+                                                        //result[i].Source already existed in nodeArr
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].SourceNumber){
+                                                                countRelArr[j]._out = countRelArr[j]._out + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                                
+                                                        var objAdd = {};
+                                                        objAdd.NodeName = result[i].Target;
+                                                        objAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objAdd.textDisplay = "FacebookID : " + result[i].TargetFacebook;
+                                                        objAdd.Label = 'Facebook';
+                                                        objAdd.NodeIndex = nodeArr.length;
+                                                        nodeArr.push(objAdd);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objcountRelAdd._in = 1;
+                                                        objcountRelAdd._out = 0;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = getSourceIndex;
+                                                        objLink.target = nodeArr.length-1;
+                                                        objLink.Type = linkLabel;
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Sender = result[i].SourceFacebook;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLinkProp.Time = result[i].Time;
+                                                        objLinkProp.message = result[i].Message;
+                                                        linkArr.push(objLink);
+
+                                                    }else if(checkSource == 0 && checkTarget > 0){
+                                                        //result[i].Target already existed in nodeArr
+                                                        for(j=0;j<countRelArr.length;j++){
+                                                            if(countRelArr[j].PhoneNumber == result[i].TargetNumber){
+                                                                countRelArr[j]._in = countRelArr[j]._in + 1;
+                                                                break;
+                                                            }
+                                                        }
+                                                        
+                                                        var objAdd = {};
+                                                        objAdd.NodeName = result[i].Source;
+                                                        objAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objAdd.textDisplay = "FacebookID : " + result[i].SourceFacebook;
+                                                        objAdd.Label = 'Facebook';
+                                                        objAdd.NodeIndex = nodeArr.length;
+                                                        nodeArr.push(objAdd);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objcountRelAdd._in = 0;
+                                                        objcountRelAdd._out = 1;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = nodeArr.length-1;
+                                                        objLink.target = getTargetIndex;
+                                                        objLink.Type = linkLabel;
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Sender = result[i].SourceFacebook;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLinkProp.Time = result[i].Time;
+                                                        objLinkProp.message = result[i].Message;
+                                                        objLink.prop.push(objLinkProp);
+                                                        linkArr.push(objLink);
+
+                                                    }else{
+                                                        var objAddSource = {};
+                                                        objAddSource.NodeName = result[i].Source;
+                                                        objAddSource.PhoneNumber = result[i].SourceNumber;
+                                                        objAddSource.textDisplay = "FacebookID : " + result[i].SourceFacebook;
+                                                        objAddSource.Label = 'Facebook';
+                                                        objAddSource.NodeIndex = nodeArr.length;
+                                                        getSourceIndex = nodeArr.length;
+                                                        nodeArr.push(objAddSource);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].SourceNumber;
+                                                        objcountRelAdd._in = 0;
+                                                        objcountRelAdd._out = 1;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objAddTarget = {};
+                                                        objAddTarget.NodeName = result[i].Target;
+                                                        objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                                        objAddTarget.textDisplay = "FacebookID : " + result[i].TargetFacebook;
+                                                        objAddTarget.Label = 'Facebook';
+                                                        objAddTarget.NodeIndex = nodeArr.length;
+                                                        getTargetIndex = nodeArr.length;
+                                                        nodeArr.push(objAddTarget);
+                                                        
+                                                        var objcountRelAdd = {};
+                                                        objcountRelAdd.PhoneNumber = result[i].TargetNumber;
+                                                        objcountRelAdd._in = 1;
+                                                        objcountRelAdd._out = 0;
+                                                        countRelArr.push(objcountRelAdd);
+
+                                                        var objLink = {};
+                                                        objLink.source = getSourceIndex;
+                                                        objLink.target = getTargetIndex;
+                                                        objLink.Type = linkLabel;
+                                                        objLink.prop = [];
+
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Sender = result[i].SourceFacebook;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLinkProp.Time = result[i].Time;
+                                                        objLinkProp.message = result[i].Message;
+                                                        objLink.prop.push(objLinkProp);
+                                                        linkArr.push(objLink);
+
+                                                    }
+                                                }
+                                            }
+                                            //Calculate how many relationships are coming in or going out for each node
+                                            for(i=0;i<nodeArr.length;i++){
+                                                var countIn = 0; var countOut = 0;
+                                                for(j=0;j<linkArr.length;j++){
+                                                    if(nodeArr[i].NodeIndex == linkArr[j].source){
+                                                            countIn++;
+                                                    }
+
+                                                    if(nodeArr[i].NodeIndex == linkArr[j].target){
+                                                            countOut++;
+                                                    }
+                                                }
+                                                nodeArr[i].RelIn = countIn;
+                                                nodeArr[i].RelOut = countOut;
+                                            }                                            
+
+                                            //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                            var allFacebookNodes = [];
+                                            for(i=0;i<nodeArr.length;i++){
+                                                    if(nodeArr[i].Label == 'Facebook'){
+                                                            allFacebookNodes.push(nodeArr[i].NodeName);
+                                                    }
+                                            }
+
+                                            var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                                            for(i=0;i<allFacebookNodes.length;i++){
+                                                    if(i==0){
+                                                            nextQuery += "n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                                    }else{
+                                                            nextQuery += "OR n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                                    }
+                                            }
+                                            nextQuery += "RETURN collect(distinct r) as R";
+                                            FetchPhoneForFacebookAll(nextQuery);
+                                        });
+                    
+                    function FetchPhoneForFacebookAll(_query){
+                        d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                        .header("Content-Type", "application/json")
+                        .mimeType("application/json")				
+                        .post(
+                            JSON.stringify({
+                                      "statements" : [ {
+                                        "statement" : _query,
+                                        "resultDataContents" : [ "row" ]//, "graph" ]
+                                      } ]
+                                    }),	function(err, data){
+                                        var returnData = JSON.parse(data.responseText);
+                                        //document.write(JSON.stringify(returnData));
+                                        var result = returnData.results[0].data[0].row[0];
+                                        //document.write(JSON.stringify(result));
+                                        var count = 0;
+                                        if(result.length == 0){
+                                            alert("No data found. Please try again.");
+                                        }
+
+                                        for(i=0;i<result.length;i++){
+
+                                            var getSourceIndex,getTargetIndex,getRelIn,getRelOut;
+                                            
+                                            for(j=0;j<nodeArr.length;j++){
+                                                if(nodeArr[j].NodeName == result[i].Source){
+                                                        getSourceIndex = nodeArr[j].NodeIndex;
+                                                        getRelIn = nodeArr[j].RelIn;
+                                                        getRelOut = nodeArr[j].RelOut;
+                                                        break;
+                                                }
+                                            }
+
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Target;
+                                            objAdd.Label = result[i].TargetType;
+                                            objAdd.textDisplay = result[i].PhoneNumber;
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            objAdd.RelIn = getRelIn;
+                                            objAdd.RelOut = getRelOut;
+                                            getTargetIndex = nodeArr.length;
+                                            nodeArr.push(objAdd);
+
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = nodeArr.length - 1;
+                                            objLink.Type = result[i].Description;
+                                            objLink.prop = [];
+                                            linkArr.push(objLink);
+                                        }
+
+                                        //After finish adding all the nodes and relationship into nodeArr and linkArr
+                                        if(noLoop==selections.length-1){
+                                            var finalResult = [];
+                                            finalResult.push(nodeArr);
+                                            finalResult.push(linkArr);
+                                            //document.write(JSON.stringify(finalResult));
+                                            dataVisualizationAllPhones(finalResult);
+                                        }else{
+                                            noLoop++;
+                                            var passArr = [];
+                                            passArr.push(nodeArr);
+                                            passArr.push(linkArr);
+                                            recursiveAllPhones(passArr);
+                                        }
+                                    });
+                    }
+                    
+                }
+        }
     }
 }
 
 function dataVisualizationAllPhones(finalResult){
-
 	var width = 550,height = 800;
 	var mLinkNum = {};
 	sortLinks();
 	setLinkIndexAndNum();
 
 	var svg = d3.select('#graph').append('svg')
-			    .attr("width", width)
-			    .attr("height", height)
-			    .append('svg:g')
-			    .call(d3.behavior.zoom().on("zoom", redraw))
-			  	.append('svg:g');
+                    .attr("width", width)
+                    .attr("height", height)
+                    .append('svg:g')
+                    .call(d3.behavior.zoom().on("zoom", redraw))
+                    .append('svg:g');
 
 	svg.append("rect")
 	    .attr("width", width)
@@ -385,18 +1837,18 @@ function dataVisualizationAllPhones(finalResult){
 	    .start();
 
 	var marker = svg.append("defs").selectAll("marker")
-			    	.data(["lowf", "mediumf", "highf"])
-			    	.enter().append("marker")
-			   		.attr("id", function(d){
-			   			return d;
-			   		})
-					.attr("refX", 9)
-					.attr("refY", 3)
-					.attr("markerWidth", 6)
-					.attr("markerHeight", 4)
-					.attr("orient", "auto")
-					.append("path")
-					.attr("d", "M 0,0 V 4 L6,2 Z");
+                        .data(["lowf", "mediumf", "highf"])
+                        .enter().append("marker")
+                        .attr("id", function(d){
+                                return d;
+                        })
+                        .attr("refX", 9)
+                        .attr("refY", 3)
+                        .attr("markerWidth", 6)
+                        .attr("markerHeight", 4)
+                        .attr("orient", "auto")
+                        .append("path")
+                        .attr("d", "M 0,0 V 4 L6,2 Z");
 
 
 	var linkClass = function(d){
@@ -444,19 +1896,19 @@ function dataVisualizationAllPhones(finalResult){
 	    });
 
 	var linktext = svg.selectAll("g.linklabelholder").data(finalResult[1]);
-    linktext.enter().append("g").attr("class", "linklabelholder")
-		    .append("text")
-		    .attr("class", "linklabel")
-		    .style("font-size", "10px")
-		    .attr("x", "50")
-			.attr("y", "-20")
-		    .attr("text-anchor", "start")
-			.style("fill","#fff")
-		    .append("textPath")
-		    .attr("xlink:href",function(d,i) { return "#linkId_" + i;})
-		     .text(function(d) { 
-			 	return d.Type; 
-			 });
+            linktext.enter().append("g").attr("class", "linklabelholder")
+                    .append("text")
+                    .attr("class", "linklabel")
+                    .style("font-size", "10px")
+                    .attr("x", "50")
+                    .attr("y", "-20")
+                    .attr("text-anchor", "start")
+                    .style("fill","#fff")
+                    .append("textPath")
+                    .attr("xlink:href",function(d,i) { return "#linkId_" + i;})
+                    .text(function(d) { 
+                        return d.Type; 
+                    });
 
 	link.on("click",function(d){
 		if(d.Type == "Line"){
@@ -574,11 +2026,11 @@ function dataVisualizationAllPhones(finalResult){
 
 	svg.call(tip);
 
-	 var node_drag = d3.behavior.drag()
-			    .origin(function(d) { return d; })
-			    .on("dragstart", dragstart)
-			    .on("drag", dragmove)
-			    .on("dragend", dragend);
+	var node_drag = d3.behavior.drag()
+                        .origin(function(d) { return d; })
+                        .on("dragstart", dragstart)
+                        .on("drag", dragmove)
+                        .on("dragend", dragend);
 
     function dragstart(d, i) {
         force.stop() // stops the force auto positioning before you start dragging
@@ -621,7 +2073,7 @@ function dataVisualizationAllPhones(finalResult){
       	.on('mouseout', tip.hide)
 	    .call(node_drag);
 
-	node.on("dblclick",function(d){
+	node.on("click",function(d){
 		filterNode(d.NodeName);
 	});
 
@@ -634,7 +2086,7 @@ function dataVisualizationAllPhones(finalResult){
 
 	    if(finalResult[0].length != 0){
 	    	//DisplayNode
-			d3.select("#displayNode")
+                d3.select("#displayNode")
 	            .append('div')
 	            .attr("id","colorpane")
         	var nodeColor = d3.select("#colorpane");
@@ -643,23 +2095,31 @@ function dataVisualizationAllPhones(finalResult){
 	    			.attr('class','nodeCircle')
 	    	var colorLabel = d3.select(".nodeCircle");
 	    	colorLabel.html("&nbsp;Node&nbspcolor:");
+                
+                var phoneArr = [];
+                for(i=0;i<finalResult[0].length;i++){
+                    if(finalResult[0][i].Label == 'Phone'){
+                        phoneArr.push(finalResult[0][i]);
+                    }
+                }
 
-	    	for(i=0;i<finalResult[0].length;i++){
-	    		nodeColor.append('div')
-					.attr('class','nodeCircle'+(i+1))
-					.style("background", function(){
-						var sum = finalResult[0][i].RelIn + finalResult[0][i].RelOut;
-						if(sum > 15){
-				    		return "#FF0000";
-				    	}else if(sum > 10){
-				    		return "#FFFF00";
-				    	}else{
-				    		return "#00FF00";
-				    	}
-					}
-				);
-    			var colorLabel = d3.select(".nodeCircle"+(i+1));
-	            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + finalResult[0][i].textDisplay);
+	    	for(i=0;i<phoneArr.length;i++){
+                    nodeColor.append('div')
+                            .attr('class','nodeCircle'+(i+1))
+                            .style("background", function(){
+                                    var sum = phoneArr[i].RelIn + phoneArr[i].RelOut;
+                                        if(sum > 15){
+                                            return "#FF0000";
+                                        }else if(sum > 10){
+                                                return "#FFFF00";
+                                        }else{
+                                                return "#00FF00";
+                                        }
+                                    }
+                                );
+                    var colorLabel = d3.select(".nodeCircle"+(i+1));
+                    colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + phoneArr[i].textDisplay);
+                                        
 	    	}
 
 		    //DisplayType

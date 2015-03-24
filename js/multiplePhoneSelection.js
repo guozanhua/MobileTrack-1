@@ -465,7 +465,7 @@ function queryMultiplePhones(selections,selectPhonesArr){
 						});
 
 			}else if(selections[noLoop].Type == 'SMS'){
-				//create Query for Call
+				//create Query for SMS
 				var _query = "MATCH (n:PHONE)<-[r:SMS]->(m:PHONE) "
 				for(i=0;i<selectPhonesArr.length;i++){
 			    	if(i==0){
@@ -918,7 +918,7 @@ function queryMultiplePhones(selections,selectPhonesArr){
 						});
 
 			}else if(selections[noLoop].Type == 'Line'){
-				//create Query for Call
+				//create Query for Line
 				var _query = "MATCH (n:LINE)<-[r:LINEchat]->(m:LINE) "
 				for(i=0;i<selectPhonesArr.length;i++){
 			    	if(i==0){
@@ -4086,37 +4086,51 @@ function dataVisualizationMultiplePhones(finalResult){
 	setLinkIndexAndNum();
 
 	var svg = d3.select('#graph').append('svg')
-    .attr('width', width)
-    .attr('height', height);
+                    .attr("width", width)
+                    .attr("height", height)
+                    .append('svg:g')
+                    .call(d3.behavior.zoom().on("zoom", redraw))
+                    .append('svg:g');
+        
+        svg.append("rect")
+	    .attr("width", width)
+	    .attr("height", height)
+	    .style("fill", "none")
+	    .style("pointer-events", "all");
 
-    var color = d3.scale.category20().domain(d3.range(finalResult[0].length));
+	function redraw() {
+	  	console.log("here", d3.event.translate, d3.event.scale);
+	  	svg.attr("transform","translate(" + d3.event.translate + ")"+ " scale(" + d3.event.scale + ")");
+	}
+
+        var color = d3.scale.category20().domain(d3.range(finalResult[0].length));
 	var force = d3.layout.force()
-		.charge(-2400)
-		.linkDistance(function(d){
-			if(d.prop.length > 0){
-				return 270;
-			}else{
-				return 20;
-			}
-		})
-	    .nodes(finalResult[0])
-	    .links(finalResult[1])
-	    .size([width, height])
-	    .start();
+                        .charge(-1200)
+                        .linkDistance(function(d){
+                                if(d.prop.length > 0){
+                                        return 240;
+                                }else{
+                                        return 20;
+                                }
+                        })
+                        .nodes(finalResult[0])
+                        .links(finalResult[1])
+                        .size([width, height])
+                        .start();
 
 	var marker = svg.append("defs").selectAll("marker")
-			    	.data(["lowf", "mediumf", "highf"])
-			    	.enter().append("marker")
-			   		.attr("id", function(d){
-			   			return d;
-			   		})
-					.attr("refX", 9)
-					.attr("refY", 3)
-					.attr("markerWidth", 6)
-					.attr("markerHeight", 4)
-					.attr("orient", "auto")
-					.append("path")
-					.attr("d", "M 0,0 V 4 L6,2 Z");
+                        .data(["lowf", "mediumf", "highf"])
+                        .enter().append("marker")
+                        .attr("id", function(d){
+                                return d;
+                        })
+                        .attr("refX", 9)
+                        .attr("refY", 3)
+                        .attr("markerWidth", 6)
+                        .attr("markerHeight", 4)
+                        .attr("orient", "auto")
+                        .append("path")
+                        .attr("d", "M 0,0 V 4 L6,2 Z");
 
 
 	var linkClass = function(d){
@@ -4164,37 +4178,35 @@ function dataVisualizationMultiplePhones(finalResult){
 	    });
 
 	var linktext = svg.selectAll("g.linklabelholder").data(finalResult[1]);
-    linktext.enter().append("g").attr("class", "linklabelholder")
-		    .append("text")
-		    .attr("class", "linklabel")
-		    .style("font-size", "10px")
-		    .attr("x", "50")
-			.attr("y", "-20")
-		    .attr("text-anchor", "start")
-			.style("fill","#fff")
-		    .append("textPath")
-		    .attr("xlink:href",function(d,i) { return "#linkId_" + i;})
-		     .text(function(d) { 
-			 	return d.Type; 
-			 });
+        linktext.enter().append("g").attr("class", "linklabelholder")
+                        .append("text")
+                        .attr("class", "linklabel")
+                        .style("font-size", "10px")
+                        .attr("x", "50")
+                        .attr("y", "-20")
+                        .attr("text-anchor", "start")
+                        .style("fill","#fff")
+                        .append("textPath")
+                        .attr("xlink:href",function(d,i) { return "#linkId_" + i;})
+                        .text(function(d) { 
+                            return d.Type; 
+                        });
 
 	link.on("click",function(d){
 		if(d.Type == "Line"){
-			var propArr = d.prop;
+                    var propArr = d.prop;
 		    var myTable= "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
 		    myTable+= "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
 		    myTable+= "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
 		    myTable+="<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
 
-		
-
 			for (var i=0; i<propArr.length; i++) {
-				//if(checkDateRange(propArr[i].date) == "PASS"){
-					myTable+="<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-				    myTable+="<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-				    myTable+="<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-				    myTable+="<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-				//}
+                            //if(checkDateRange(propArr[i].date) == "PASS"){
+                            myTable+="<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
+                            myTable+="<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
+                            myTable+="<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
+                            myTable+="<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
+                            //}
 			}  
 			myTable+="</table>";
 
@@ -4295,13 +4307,15 @@ function dataVisualizationMultiplePhones(finalResult){
 
 	svg.call(tip);
 
-	 var node_drag = d3.behavior.drag()
-	    .on("dragstart", dragstart)
-	    .on("drag", dragmove)
-	    .on("dragend", dragend);
+        var node_drag = d3.behavior.drag()
+                       .origin(function(d) { return d; })
+                       .on("dragstart", dragstart)
+                       .on("drag", dragmove)
+                       .on("dragend", dragend);
 
     function dragstart(d, i) {
         force.stop() // stops the force auto positioning before you start dragging
+        d3.event.sourceEvent.stopPropagation();
     }
 
     function dragmove(d, i) {
