@@ -779,7 +779,7 @@ function checkDateRange(date){
                                                 return "NOT PASS";
                                             }
                                         }else{
-                                            return "NOT PASS";
+                                            return "PASS";
                                         }
                                     }else{
                                         return "NOT PASS";
