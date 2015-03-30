@@ -213,7 +213,7 @@ function ConnectDatabase(input,mode){
 														"Email":result.Email,
 														"label":result.label
 													};
-										outputDisplay += "<<tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>ACCOUNT</th>";
+										outputDisplay += "<table><tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>ACCOUNT</th>";
 										outputDisplay += "<td style='background-color:#8B8B83;width: 250px;  border: 2px solid white; border: 1px solid black; border: 1px solid black;text-align: left;padding-left:10px; padding-right:10px;'>" + nodeProperty.Account + "</td>";
 										outputDisplay += "<<tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>EMAIL</th>";
 										outputDisplay += "<td style='background-color:#8B8B83;width: 250px;  border: 2px solid white; border: 1px solid black;text-align: left;padding-left:10px; padding-right:10px;'>" + nodeProperty.Email + "</td>";

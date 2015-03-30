@@ -12,327 +12,330 @@ function FetchDatabase(input){
 	var inputNumber = document.getElementById("phoneNo").value;
 
 	d3.xhr("http://localhost:7474/db/data/transaction/commit")
-				    .header("Content-Type", "application/json")
-					.mimeType("application/json")				
-				    .post(
-				        JSON.stringify({
-						  "statements" : [ {
-						    "statement" : _queryString,
-						    "resultDataContents" : [ "row" ]//, "graph" ]
-						  } ]
-						}),	function(err, data){
-							var returnData = JSON.parse(data.responseText);
-							//document.write(JSON.stringify(returnData));
-							var result = returnData.results[0].data[0].row[0];
-							//document.write(JSON.stringify(result));
-							var nodeArr = [];
-							var linkArr = [];
-							var groupArr = [];
-							var count = 0;
-							if(result.length == 0){
-								alert("No data found. Please try again.");
-							}
+            .header("Content-Type", "application/json")
+                .mimeType("application/json")				
+            .post(
+                JSON.stringify({
+                          "statements" : [ {
+                            "statement" : _queryString,
+                            "resultDataContents" : [ "row" ]//, "graph" ]
+                          } ]
+                        }),	function(err, data){
+                                var returnData = JSON.parse(data.responseText);
+                                //document.write(JSON.stringify(returnData));
+                                var result = returnData.results[0].data[0].row[0];
+                                //document.write(JSON.stringify(result));
+                                var nodeArr = [];
+                                var linkArr = [];
+                                var groupArr = [];
+                                var count = 0;
+                                if(result.length == 0){
+                                        alert("No data found. Please try again.");
+                                }
 
-							//create GroupArr
-							for(i=0;i<result.length;i++){
-								if(result[i].SourceNumber == inputNumber || result[i].TargetNumber == inputNumber){
-									if(result[i].SourceNumber == inputNumber){
-										var objGroupSource = {};
-										objGroupSource.NodeName = result[i].Source;
-										objGroupSource.PhoneNumber = result[i].SourceNumber;
-										objGroupSource.group = 0;
-										groupArr.push(objGroupSource);
+                                //create GroupArr
+                                for(i=0;i<result.length;i++){
+                                        if(result[i].SourceNumber == inputNumber || result[i].TargetNumber == inputNumber){
+                                                if(result[i].SourceNumber == inputNumber){
+                                                        var objGroupSource = {};
+                                                        objGroupSource.NodeName = result[i].Source;
+                                                        objGroupSource.PhoneNumber = result[i].SourceNumber;
+                                                        objGroupSource.group = 0;
+                                                        groupArr.push(objGroupSource);
 
-										var objGroupTarget = {};
-										objGroupTarget.NodeName = result[i].Target;
-										objGroupTarget.PhoneNumber = result[i].TargetNumber;
-										objGroupTarget.group = 1;
-										groupArr.push(objGroupTarget);
-									}else{
-										var objGroupSource = {};
-										objGroupSource.NodeName = result[i].Source;
-										objGroupSource.PhoneNumber = result[i].SourceNumber;
-										objGroupSource.group = 1;
-										groupArr.push(objGroupSource);
+                                                        var objGroupTarget = {};
+                                                        objGroupTarget.NodeName = result[i].Target;
+                                                        objGroupTarget.PhoneNumber = result[i].TargetNumber;
+                                                        objGroupTarget.group = 1;
+                                                        groupArr.push(objGroupTarget);
+                                                }else{
+                                                        var objGroupSource = {};
+                                                        objGroupSource.NodeName = result[i].Source;
+                                                        objGroupSource.PhoneNumber = result[i].SourceNumber;
+                                                        objGroupSource.group = 1;
+                                                        groupArr.push(objGroupSource);
 
-										var objGroupTarget = {};
-										objGroupTarget.NodeName = result[i].Target;
-										objGroupTarget.PhoneNumber = result[i].TargetNumber;
-										objGroupTarget.group = 0;
-										groupArr.push(objGroupTarget);
+                                                        var objGroupTarget = {};
+                                                        objGroupTarget.NodeName = result[i].Target;
+                                                        objGroupTarget.PhoneNumber = result[i].TargetNumber;
+                                                        objGroupTarget.group = 0;
+                                                        groupArr.push(objGroupTarget);
 
-									}
+                                                }
 
-								}else{
-									var objGroupSource = {};
-									objGroupSource.NodeName = result[i].Source;
-									objGroupSource.PhoneNumber = result[i].SourceNumber;
-									objGroupSource.group = 1;
-									groupArr.push(objGroupSource);
+                                        }else{
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.PhoneNumber = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
 
-									var objGroupTarget = {};
-									objGroupTarget.NodeName = result[i].Target;
-									objGroupTarget.PhoneNumber = result[i].TargetNumber;
-									objGroupTarget.group = 1;
-									groupArr.push(objGroupTarget);
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.PhoneNumber = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
 
-								}
-							}
-							
-							for(i=0;i<result.length;i++){
+                                        }
+                                }
 
-								
-								//i == 0 means this is the first time we enter this loop.
-								//Automatically added both Source and Target node into nodeArr.
-								//For linkArr, automatically assigned sourceIndex as 0 and targetIndex as 1. Follow by property of the communcation
+                                for(i=0;i<result.length;i++){
+                                    console.log(checkDateRange(result[i].Date));
+                                        //i == 0 means this is the first time we enter this loop.
+                                        //Automatically added both Source and Target node into nodeArr.
+                                        //For linkArr, automatically assigned sourceIndex as 0 and targetIndex as 1. Follow by property of the communcation
 
-								var getGroupSource,getGroupTarget;
-								for(j=0;j<groupArr.length;j++){
-									if(groupArr[j].NodeName == result[i].Source){
-										getGroupSource = groupArr[j].group;
-										break;
-									}
-								}
+                                        var getGroupSource,getGroupTarget;
+                                        for(j=0;j<groupArr.length;j++){
+                                                if(groupArr[j].NodeName == result[i].Source){
+                                                        getGroupSource = groupArr[j].group;
+                                                        break;
+                                                }
+                                        }
 
-								for(j=0;j<groupArr.length;j++){
-									if(groupArr[j].NodeName == result[i].Target){
-										getGroupTarget = groupArr[j].group;
-										break;
-									}
-								}
+                                        for(j=0;j<groupArr.length;j++){
+                                                if(groupArr[j].NodeName == result[i].Target){
+                                                        getGroupTarget = groupArr[j].group;
+                                                        break;
+                                                }
+                                        }
 
-								if(i==0){
-									//Add source to nodeArr
-									var objSource = {};
-									objSource.NodeName = result[i].Source;
-									objSource.PhoneNumber = result[i].SourceNumber;
-									objSource.NodeIndex = nodeArr.length;
-									objSource.groupIndex = getGroupSource;
-									objSource.textDisplay = result[i].SourceNumber;
-									objSource.Label = 'Phone'
-									nodeArr.push(objSource);
-									//Add target to nodeArr
-									var objTarget = {};
-									objTarget.NodeName = result[i].Target;
-									objTarget.PhoneNumber = result[i].TargetNumber;
-									objTarget.NodeIndex = nodeArr.length;
-									objTarget.groupIndex = getGroupTarget;
-									objTarget.textDisplay = result[i].TargetNumber;
-									objTarget.Label = 'Phone'
-									nodeArr.push(objTarget);
-									//Add relationship to linkArr
-									var objLink = {};
-									objLink.source = 0;
-									objLink.target = 1;
-									objLink.Type = "Call"
+                                        if(i==0){
+                                            if(checkDateRange(result[i].Date) == 'PASS'){
+                                                //Add source to nodeArr
+                                                var objSource = {};
+                                                objSource.NodeName = result[i].Source;
+                                                objSource.PhoneNumber = result[i].SourceNumber;
+                                                objSource.NodeIndex = nodeArr.length;
+                                                objSource.groupIndex = getGroupSource;
+                                                objSource.textDisplay = result[i].SourceNumber;
+                                                objSource.Label = 'Phone'
+                                                nodeArr.push(objSource);
+                                                //Add target to nodeArr
+                                                var objTarget = {};
+                                                objTarget.NodeName = result[i].Target;
+                                                objTarget.PhoneNumber = result[i].TargetNumber;
+                                                objTarget.NodeIndex = nodeArr.length;
+                                                objTarget.groupIndex = getGroupTarget;
+                                                objTarget.textDisplay = result[i].TargetNumber;
+                                                objTarget.Label = 'Phone'
+                                                nodeArr.push(objTarget);
+                                                //Add relationship to linkArr
+                                            
+                                                var objLink = {};
+                                                objLink.source = 0;
+                                                objLink.target = 1;
+                                                objLink.Type = "Call"
+                                                //'prop' is an array which contain an object. Each object in this 'prop' represents a detail about each time the communcation occurs   
+                                                objLink.prop = [];
 
-									//'prop' is an array which contain an object. Each object in this 'prop' represents a detail about each time the communcation occurs   
-									objLink.prop = [];
-									if(checkDateRange(result[i].DateAndTime) == "PASS"){
-										var objLinkProp = {};
-										objLinkProp.Source = result[i].SourceNumber;
-										objLinkProp.Target = result[i].TargetNumber;
-										objLinkProp.dur = result[i].Duration;
-										objLinkProp.date = result[i].Date;
-										objLink.prop.push(objLinkProp)
-									}
-									linkArr.push(objLink);
-								}else{
+                                                var objLinkProp = {};
+                                                objLinkProp.Source = result[i].SourceNumber;
+                                                objLinkProp.Target = result[i].TargetNumber;
+                                                objLinkProp.dur = result[i].Duration;
+                                                objLinkProp.date = result[i].Date;
+                                                objLink.prop.push(objLinkProp)
+                                                linkArr.push(objLink);
+                                            }
+                                                    
+                                        }else{
 
-								//If this is not the first time we enter this loop, let the program do the followings:
-								//1. Check result[i].Source with existing node in nodeArr. If any of node in nodeArr matches with result[i].Source, we are 'not' going to add this node because adding it will cause a node duplication.
-								//	 However, we have to get information of this node for further use. 
-								//2. Check result[i].Target with existing node in nodeArr. The rest is same as (1).
-								//3. After we finished (1) and (2). There are 4 conditions that going to occur
-								//		3.1 Both of result[i].Source and result[i].Target match with nodes in nodeArr. In this case, we will not add any node into nodeArr.
-								//			In the meantime, we have to find an object in linkArr that '(getSourceIndex = linkArr[j].source AND getTargetIndex = linkArr[j].target)' OR '(getSourceIndex = linkArr[j].target AND getTargetIndex = linkArr[j].source)' for revised direction.
-								//			After successfully find the specific object in linkArr, we have to push all properties that are crucial for data visualization into prop[] as an object.
-								//		3.2 result[i].Source matched with node in nodeArr but result[i].Target did not. We will add only result[i].Source into nodeArr. Next, we assign sourceindex as nodeArr.length - 1 and targetindex as getTargetIndex. 
-								//			Final procedure is push all properties that are crucial for data visualization into prop[] as an obj.
-								//		3.3 result[i].Target matched with node in nodeArr but result[i].Source did not. Follow (3.2) with some minor changes including adding result[i].Target instead of result[i].Target and assigning targetindex and sourceindex.
-								//		3.4 Both of result[i].Source and result[i].Target do not match with any node in nodeArr so we have to push both of them into nodeArr.
-								//			Due to we have to newly create both of result[i].Source and result[i].Target, we can assure that there is no object that represent a communication between these two. As a consequence, we have to create a new object in linkArr.
-									
-									//checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
-									var checkSource = 0; var checkTarget = 0;
+                                        //If this is not the first time we enter this loop, let the program do the followings:
+                                        //1. Check result[i].Source with existing node in nodeArr. If any of node in nodeArr matches with result[i].Source, we are 'not' going to add this node because adding it will cause a node duplication.
+                                        //	 However, we have to get information of this node for further use. 
+                                        //2. Check result[i].Target with existing node in nodeArr. The rest is same as (1).
+                                        //3. After we finished (1) and (2). There are 4 conditions that going to occur
+                                        //		3.1 Both of result[i].Source and result[i].Target match with nodes in nodeArr. In this case, we will not add any node into nodeArr.
+                                        //			In the meantime, we have to find an object in linkArr that '(getSourceIndex = linkArr[j].source AND getTargetIndex = linkArr[j].target)' OR '(getSourceIndex = linkArr[j].target AND getTargetIndex = linkArr[j].source)' for revised direction.
+                                        //			After successfully find the specific object in linkArr, we have to push all properties that are crucial for data visualization into prop[] as an object.
+                                        //		3.2 result[i].Source matched with node in nodeArr but result[i].Target did not. We will add only result[i].Source into nodeArr. Next, we assign sourceindex as nodeArr.length - 1 and targetindex as getTargetIndex. 
+                                        //			Final procedure is push all properties that are crucial for data visualization into prop[] as an obj.
+                                        //		3.3 result[i].Target matched with node in nodeArr but result[i].Source did not. Follow (3.2) with some minor changes including adding result[i].Target instead of result[i].Target and assigning targetindex and sourceindex.
+                                        //		3.4 Both of result[i].Source and result[i].Target do not match with any node in nodeArr so we have to push both of them into nodeArr.
+                                        //			Due to we have to newly create both of result[i].Source and result[i].Target, we can assure that there is no object that represent a communication between these two. As a consequence, we have to create a new object in linkArr.
 
-									//These variable are used for storing important data that will be used in linkArr
-									var getSourceIndex = 0; var getTargetIndex = 0; var getSourceName = ""; var getTargetName = "";
-									var getSourcePhone = ""; var getTargetPhone = ""; var getDur = ""; var getDate = "";
+                                                //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                                var checkSource = 0; var checkTarget = 0;
 
-									//(1)
-									for(j=0;j<nodeArr.length;j++){
-										if(result[i].Source == nodeArr[j].NodeName){
-											getSourceName = result[i].Source;
-											getSourcePhone = result[i].SourceNumber;
-											getSourceIndex = nodeArr[j].NodeIndex;
-											getDur = result[i].Duration;
-											getDate = result[i].Date;
-											checkSource++;
-											break;
-										}
-									}
+                                                //These variable are used for storing important data that will be used in linkArr
+                                                var getSourceIndex = 0; var getTargetIndex = 0; var getSourceName = ""; var getTargetName = "";
+                                                var getSourcePhone = ""; var getTargetPhone = ""; var getDur = ""; var getDate = "";
 
-									//(2)
-									for(j=0;j<nodeArr.length;j++){
-										if(result[i].Target == nodeArr[j].NodeName){
-											getTargetName = result[i].Target;
-											getTargetPhone = result[i].TargetNumber;
-											getTargetIndex = nodeArr[j].NodeIndex;
-											getDur = result[i].Duration;
-											getDate = result[i].Date;
-											checkTarget++;
-											break;
-										}
-									}
+                                                //(1)
+                                                for(j=0;j<nodeArr.length;j++){
+                                                    if(result[i].Source == nodeArr[j].NodeName){
+                                                        getSourceName = result[i].Source;
+                                                        getSourcePhone = result[i].SourceNumber;
+                                                        getSourceIndex = nodeArr[j].NodeIndex;
+                                                        getDur = result[i].Duration;
+                                                        getDate = result[i].Date;
+                                                        checkSource++;
+                                                        break;
+                                                    }
+                                                }
 
-									//(3.1)
-									if(checkSource == 1 && checkTarget == 1){
-										//First, we have to check an existence of the link.
-										var linkIndex = 0;
-										var linkExist = 0;
-										for(k=0;k<linkArr.length;k++){
-											if(linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex){
-												linkExist++;
-												linkIndex = k;
-												break;
-											}
-										}
-										if(linkExist == 1){
-											//There is already a link between source and target.
-											var objLinkProp = {};
-											objLinkProp.Source = result[i].SourceNumber;
-											objLinkProp.Target = result[i].TargetNumber;
-											objLinkProp.dur = result[i].Duration;
-											objLinkProp.date = result[i].Date;
-											linkArr[linkIndex].prop.push(objLinkProp);
-										}else{
-											//Link between source and target haven't been created yet.
-											var objLink = {};
-											objLink.source = getSourceIndex;
-											objLink.target = getTargetIndex;
-											objLink.Type = "Call"
-											objLink.prop = [];
+                                                //(2)
+                                                for(j=0;j<nodeArr.length;j++){
+                                                    if(result[i].Target == nodeArr[j].NodeName){
+                                                        getTargetName = result[i].Target;
+                                                        getTargetPhone = result[i].TargetNumber;
+                                                        getTargetIndex = nodeArr[j].NodeIndex;
+                                                        getDur = result[i].Duration;
+                                                        getDate = result[i].Date;
+                                                        checkTarget++;
+                                                        break;
+                                                    }
+                                                }
 
-											var objLinkProp = {};
-											objLinkProp.Source = result[i].SourceNumber;
-											objLinkProp.Target = result[i].TargetNumber;
-											objLinkProp.dur = result[i].Duration;
-											objLinkProp.date = result[i].Date;
-											objLink.prop.push(objLinkProp);
-											linkArr.push(objLink);
-										}
-									}else if(checkSource > 0 && checkTarget == 0){ // source is matched with the existing node in nodeArr
-										var objAdd = {};
-										objAdd.NodeName = result[i].Target;
-										objAdd.PhoneNumber = result[i].TargetNumber;
-										objAdd.NodeIndex = nodeArr.length;
-										objAdd.groupIndex = getGroupTarget;
-										objAdd.textDisplay = result[i].TargetNumber;
-										objAdd.Label = "Phone";
-										nodeArr.push(objAdd);
+                                                //(3.1)
+                                                if(checkSource == 1 && checkTarget == 1){
+                                                        //First, we have to check an existence of the link.
+                                                        var linkIndex = 0;
+                                                        var linkExist = 0;
+                                                        for(k=0;k<linkArr.length;k++){
+                                                            if(linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex){
+                                                                linkExist++;
+                                                                linkIndex = k;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if(linkExist == 1){
+                                                            //There is already a link between source and target.
+                                                            if(checkDateRange(result[i].Date) == 'PASS'){
+                                                                var objLinkProp = {};
+                                                                objLinkProp.Source = result[i].SourceNumber;
+                                                                objLinkProp.Target = result[i].TargetNumber;
+                                                                objLinkProp.dur = result[i].Duration;
+                                                                objLinkProp.date = result[i].Date;
+                                                                linkArr[linkIndex].prop.push(objLinkProp);
+                                                            }
+                                                                
+                                                        }else{
+                                                            if(checkDateRange(result[i].Date) == 'PASS'){
+                                                                //Link between source and target haven't been created yet.
+                                                                var objLink = {};
+                                                                objLink.source = getSourceIndex;
+                                                                objLink.target = getTargetIndex;
+                                                                objLink.Type = "Call"
+                                                                objLink.prop = [];
 
-										var objLink = {};
-										objLink.source = getSourceIndex;
-										objLink.target = nodeArr.length - 1;
-										objLink.Type = "Call"
-										objLink.prop = [];
-										if(checkDateRange(result[i].DateAndTime) == "PASS"){
-											var objLinkProp = {};
-											objLinkProp.Source = result[i].SourceNumber;
-											objLinkProp.Target = result[i].TargetNumber;
-											objLinkProp.dur = result[i].Duration;
-											objLinkProp.date = result[i].DateAndTime;
-											objLink.prop.push(objLinkProp);
-										}
-										
-										linkArr.push(objLink);
+                                                                var objLinkProp = {};
+                                                                objLinkProp.Source = result[i].SourceNumber;
+                                                                objLinkProp.Target = result[i].TargetNumber;
+                                                                objLinkProp.dur = result[i].Duration;
+                                                                objLinkProp.date = result[i].Date;
+                                                                objLink.prop.push(objLinkProp);
 
-									//(3.3)
-									}else if(checkSource == 0 && checkTarget > 0){ // target is matched with the existing node in nodeArr 
-										var objAdd = {};
-										objAdd.NodeName = result[i].Source;
-										objAdd.PhoneNumber = result[i].SourceNumber;
-										objAdd.NodeIndex = nodeArr.length;
-										objAdd.groupIndex = getGroupSource;
-										objAdd.textDisplay = result[i].SourceNumber;
-										objAdd.Label = "Phone";
-										nodeArr.push(objAdd);
+                                                                linkArr.push(objLink);
+                                                            } 
+                                                        }
+                                                }else if(checkSource > 0 && checkTarget == 0){ // source is matched with the existing node in nodeArr
+                                                        if(checkDateRange(result[i].Date) == "PASS"){
+                                                            var objAdd = {};
+                                                            objAdd.NodeName = result[i].Target;
+                                                            objAdd.PhoneNumber = result[i].TargetNumber;
+                                                            objAdd.NodeIndex = nodeArr.length;
+                                                            objAdd.groupIndex = getGroupTarget;
+                                                            objAdd.textDisplay = result[i].TargetNumber;
+                                                            objAdd.Label = "Phone";
+                                                            nodeArr.push(objAdd);
+                                                            
+                                                            var objLink = {};
+                                                            objLink.source = getSourceIndex;
+                                                            objLink.target = nodeArr.length - 1;
+                                                            objLink.Type = "Call"
+                                                            objLink.prop = [];
+                                                            var objLinkProp = {};
+                                                            objLinkProp.Source = result[i].SourceNumber;
+                                                            objLinkProp.Target = result[i].TargetNumber;
+                                                            objLinkProp.dur = result[i].Duration;
+                                                            objLinkProp.date = result[i].Date;
+                                                            objLink.prop.push(objLinkProp);
+                                                            linkArr.push(objLink);
+                                                        }
 
-										var objLink = {};
-										objLink.source = nodeArr.length - 1;
-										objLink.target = getTargetIndex;
-										objLink.Type = "Call"
-										objLink.prop = [];
-										if(checkDateRange(result[i].DateAndTime) == "PASS"){
-											var objLinkProp = {};
-											objLinkProp.Source = result[i].SourceNumber;
-											objLinkProp.Target = result[i].TargetNumber;
-											objLinkProp.dur = result[i].Duration;
-											objLinkProp.date = result[i].DateAndTime;
-											objLink.prop.push(objLinkProp);
-										}
-										
-										linkArr.push(objLink);
-										//document.write("Add " + result[i].Source + "</br>");
+                                                //(3.3)
+                                                }else if(checkSource == 0 && checkTarget > 0){ // target is matched with the existing node in nodeArr 
+                                                        if(checkDateRange(result[i].Date) == "PASS"){    
+                                                            var objAdd = {};
+                                                            objAdd.NodeName = result[i].Source;
+                                                            objAdd.PhoneNumber = result[i].SourceNumber;
+                                                            objAdd.NodeIndex = nodeArr.length;
+                                                            objAdd.groupIndex = getGroupSource;
+                                                            objAdd.textDisplay = result[i].SourceNumber;
+                                                            objAdd.Label = "Phone";
+                                                            nodeArr.push(objAdd);
 
+                                                            var objLink = {};
+                                                            objLink.source = nodeArr.length - 1;
+                                                            objLink.target = getTargetIndex;
+                                                            objLink.Type = "Call"
+                                                            objLink.prop = [];
 
-									//(3.4)
-									}else{ // No match in an array
-										//Add source to nodeArr
-										var objSource = {};
-										var sourceIndex;
-										objSource.NodeName = result[i].Source;
-										objSource.PhoneNumber = result[i].SourceNumber;
-										objSource.NodeIndex = nodeArr.length;
-										objSource.groupIndex = getGroupSource;
-										objSource.textDisplay = result[i].SourceNumber;
-										objSource.Label = 'Phone';
-										sourceIndex = objSource.NodeIndex;
-										nodeArr.push(objSource);
+                                                            var objLinkProp = {};
+                                                            objLinkProp.Source = result[i].SourceNumber;
+                                                            objLinkProp.Target = result[i].TargetNumber;
+                                                            objLinkProp.dur = result[i].Duration;
+                                                            objLinkProp.date = result[i].Date;
+                                                            objLink.prop.push(objLinkProp);
+                                                            linkArr.push(objLink);
+                                                            //document.write("Add " + result[i].Source + "</br>");
+                                                        }
 
-										//Add target to nodeArr
-										var objTarget = {};
-										var targetIndex;
-										objTarget.NodeName = result[i].Target;
-										objTarget.PhoneNumber = result[i].TargetNumber;
-										objTarget.NodeIndex = nodeArr.length;
-										objTarget.groupIndex = getGroupTarget;
-										objTarget.textDisplay = result[i].TargetNumber;
-										objTarget.Label = 'Phone'
-										targetIndex = objTarget.NodeIndex;
-										nodeArr.push(objTarget);
-										//Add relationship to linkArr
-										var objLink = {};
-										objLink.source = sourceIndex;
-										objLink.target = targetIndex;
-										objLink.Type = "Call"
-										objLink.prop = [];
+                                                //(3.4)
+                                                }else{ // No match in an array
+                                                    if(checkDateRange(result[i].Date) == "PASS"){
+                                                        //Add source to nodeArr
+                                                        var objSource = {};
+                                                        var sourceIndex;
+                                                        objSource.NodeName = result[i].Source;
+                                                        objSource.PhoneNumber = result[i].SourceNumber;
+                                                        objSource.NodeIndex = nodeArr.length;
+                                                        objSource.groupIndex = getGroupSource;
+                                                        objSource.textDisplay = result[i].SourceNumber;
+                                                        objSource.Label = 'Phone';
+                                                        sourceIndex = objSource.NodeIndex;
+                                                        nodeArr.push(objSource);
 
-										if(checkDateRange(result[i].DateAndTime) == "PASS"){
-											var objLinkProp = {};
-											objLinkProp.Source = result[i].SourceNumber;
-											objLinkProp.Target = result[i].TargetNumber;
-											objLinkProp.dur = result[i].Duration;
-											objLinkProp.date = result[i].DateAndTime;
-											objLink.prop.push(objLinkProp);
-										}
-										
-										linkArr.push(objLink);
-										//document.write("Add " + result[i].Source + " " + result[i].Target + "</br>");
-									}
+                                                        //Add target to nodeArr
+                                                        var objTarget = {};
+                                                        var targetIndex;
+                                                        objTarget.NodeName = result[i].Target;
+                                                        objTarget.PhoneNumber = result[i].TargetNumber;
+                                                        objTarget.NodeIndex = nodeArr.length;
+                                                        objTarget.groupIndex = getGroupTarget;
+                                                        objTarget.textDisplay = result[i].TargetNumber;
+                                                        objTarget.Label = 'Phone'
+                                                        targetIndex = objTarget.NodeIndex;
+                                                        nodeArr.push(objTarget);
+                                                        //Add relationship to linkArr
+                                                        var objLink = {};
+                                                        objLink.source = sourceIndex;
+                                                        objLink.target = targetIndex;
+                                                        objLink.Type = "Call"
+                                                        objLink.prop = [];
 
-								}
-							}
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Source = result[i].SourceNumber;
+                                                        objLinkProp.Target = result[i].TargetNumber;
+                                                        objLinkProp.dur = result[i].Duration;
+                                                        objLinkProp.date = result[i].Date;
+                                                        objLink.prop.push(objLinkProp);
 
-							//document.write(JSON.stringify(nodeArr));
-							var finalResult = [];
-							finalResult.push(nodeArr);
-							finalResult.push(linkArr);
-							finalResult.push(groupArr);
-							//document.write(JSON.stringify(resultArr[1]));
-							dataVisualizationPhone(finalResult);
-						});
+                                                        linkArr.push(objLink);
+                                                        //document.write("Add " + result[i].Source + " " + result[i].Target + "</br>");
+                                                    }
+                                                }
+                                        }
+                                }
+                                //document.write(JSON.stringify(nodeArr));
+                                var finalResult = [];
+                                finalResult.push(nodeArr);
+                                finalResult.push(linkArr);
+                                finalResult.push(groupArr);
+                                //document.write(JSON.stringify(finalResult[1]));
+                                dataVisualizationPhone(finalResult);
+                        });
 }
 
 function dataVisualizationPhone(finalResult){
@@ -463,25 +466,22 @@ function dataVisualizationPhone(finalResult){
 	}
 
 	link.on("click", function(d){
-		var propArr = d.prop;
+            var propArr = d.prop;
 	    var myTable= "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
 	    myTable+= "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>TARGET</th>";
 	    myTable+= "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>DURATION</th>";
 	    myTable+="<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr>";
+            
+            for (var i=0; i<propArr.length; i++) {
+                myTable+="<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
+                myTable+="<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
+                myTable+="<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + convertTime(propArr[i].dur) + "</td>";
+                myTable+="<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td></tr>";
 
-	
+            }  
+            myTable+="</table>";
 
-		for (var i=0; i<propArr.length; i++) {
-			if(checkDateRange(propArr[i].date) == "PASS"){
-				myTable+="<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-			    myTable+="<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-			    myTable+="<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + convertTime(propArr[i].dur) + "</td>";
-			    myTable+="<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td></tr>";
-			}
-		}  
-		myTable+="</table>";
-
-		document.getElementById("output").innerHTML = myTable;
+            document.getElementById("output").innerHTML = myTable;
 	});
 
 	var tip = d3.tip()
@@ -738,71 +738,90 @@ function checkDateRange(date){
 		var start = convertDateAndTime(inputFrom); // dd/mm/yy
 		var end = convertDateAndTime(inputTo); // dd/mm/yy
 
-		var startDate = start.substring(0,2);
+		var startMonth = start.substring(0,2);
 		var temp = start.substring(3);
-		var startMonth = temp.substring(0,2);
+		var startDate = temp.substring(0,2);
 		var startYear = start.substring(6);
-		console.log(startDate + " " + startMonth + " " + startYear);
+                console.log("Begin: " + startMonth + " " + startDate + " " + startYear);
 
-		var endDate = end.substring(0,2);
+		var endMonth = end.substring(0,2);
 		var temp = end.substring(3);
-		var endMonth = temp.substring(0,2);
+		var endDate = temp.substring(0,2);
 		var endYear = end.substring(6);
-		console.log(endDate + " " + endMonth + " " + endYear);
+		console.log("End: " + endMonth + " " + endDate + " " + endYear);
 
-		var compareDate = date.substring(0,2);
+		var compareMonth = date.substring(0,2);
 		var temp = date.substring(3);
-		var compareMonth = temp.substring(0,2);
+		var compareDate = temp.substring(0,2);
 		var compareYear = date.substring(6);
-		console.log(compareDate + " " + compareMonth + " " + compareYear);
+		console.log("Compare: " + compareMonth + " " + compareDate + " " + compareYear);
 
 		if((startYear <= compareYear) && (endYear >= compareYear)){
-			//Check the year first. If compareYear is in between startYear and endYear, automatically return PASS as every conditions are fine.
-			if((startYear == compareYear) || (endYear == compareYear)){
-				if(startYear == compareYear){
-					//if compareMonth > startMonth in the same year then return PASS. If compareMonth and startMonth are equal then check the date.
-					if(startMonth <= compareMonth){
-						if(startMonth == compareMonth){
-							if(startDate <= compareDate){
-								//Everything matches the condition.
-								return "PASS";
-							}else{
-								//Everything matches except date is before user selection.
-								return "NOT PASS";
-							}
-						}else{
-							return "PASS";
-						}
-					}else{
-						return "NOT PASS";
-					}
-				}else if(endYear == compareYear){
-					//if compareMonth < endMonth in the same year then return PASS. If compareMonth and endMonth are equal then check their date.
-					if(endMonth >= compareMonth){
-						if(endMonth == compareMonth){
-							if(endDate >= compareDate){
-								//Everything matches the condition.
-								return "PASS";
-							}else{
-								//Everything matches except date is before user selection.
-								return "NOT PASS";
-							}
-						}else{
-							return "PASS";
-						}
-					}else{
-						return "NOT PASS";
-					}
-				}else{
-					return "NOT PASS"
-				}
+                    //Check the year first. If compareYear is in between startYear and endYear, automatically return PASS as every conditions are fine.
+                    if((startYear == compareYear) || (endYear == compareYear)){
+                        if(startYear == compareYear){
+                            //if compareMonth > startMonth in the same year then return PASS. If compareMonth and startMonth are equal then check the date.
+                            if(startMonth <= compareMonth){
+                                if(startMonth == compareMonth){
+                                    if(startDate <= compareDate){
+                                        //Everything matches the condition.
+                                        return "PASS";
+                                    }else{
+                                        //Everything matches except date is before user selection.
+                                        return "NOT PASS";
+                                    }
+                                }else{
+                                    if(compareMonth <= endMonth){
+                                        if(compareMonth == endMonth){
+                                            if(compareDate <= endDate){
+                                                return "PASS";
+                                            }else{
+                                                return "NOT PASS";
+                                            }
+                                        }else{
+                                            return "NOT PASS";
+                                        }
+                                    }else{
+                                        return "NOT PASS";
+                                    }
+                                    
+                                }
+                                
+                            }else{
+                                return "NOT PASS";
+                            }
+                        }else if(endYear == compareYear){
+                            //if compareMonth < endMonth in the same year then return PASS. If compareMonth and endMonth are equal then check their date.
+                            if(endMonth >= compareMonth){
+                                if(endMonth == compareMonth){
+                                        if(endDate >= compareDate){
+                                                //Everything matches the condition.
+                                                return "PASS";
+                                        }else{
+                                                //Everything matches except date is before user selection.
+                                                return "NOT PASS";
+                                        }
+                                }else{
+                                    if(compareMonth >= startMonth){
+                                        return "PASS";
+                                    }else{
+                                        return "NOT PASS";
+                                    }
+                                        
+                                }
+                            }else{
+                                return "NOT PASS";
+                            }
+                        }else{
+                            return "NOT PASS"
+                        }
 
-			}else{
-				return "PASS";
-			}
-		}else{
-			return "NOT PASS";
-		}
+                    }else{
+                        return "PASS";
+                    }
+            }else{
+                return "NOT PASS";
+            }
 
 	}
 }
@@ -813,7 +832,7 @@ function convertDateAndTime(UserInputdate){
 	var tempmonth = b.substring(5);
 	var month = tempmonth.substring(0,2);
 	var day = b.substring(8);
-	var outputDate = day + "/" + month + "/" + year;
+	var outputDate = month + "/" + day + "/" + year;
 	//console.log(outputDate);
 	return outputDate;
 }
