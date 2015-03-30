@@ -47,7 +47,6 @@ function buildQueryForSMS(smstype,status){
     query += "RETURN collect(distinct r)";
     FetchSMSDatabase(query);
     console.log("smsType = " + smstype,status);
-
 }
 
 function buildQueryForLine(input){
@@ -74,19 +73,7 @@ function buildQueryPhoneToPhone(communicationType,dur){
                     //Do nothing
             }
     }
-
     query += "RETURN collect(distinct r)";
     FetchDatabase(query);
     console.log(query);
 }
-
-function convertTime(duration){
-    console.log(duration);
-    var gettime = duration;
-    var seconds = parseInt((gettime / 1000) % 60);
-    var minutes = parseInt((gettime/(1000*60))%60);
-    var hours = parseInt((gettime/(1000*60*60))%24);
-    var outputTime = hours + "H: " + minutes + "M: " + seconds + "Sec";
-    return outputTime;
-}
-

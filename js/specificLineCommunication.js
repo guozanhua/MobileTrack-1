@@ -589,10 +589,6 @@ function dataVisualizationLine(finalResult){
 
 }
 
-function removeUTC(time){
-	var outputTime = time.replace("(UTC+0)","");
-	return outputTime;
-}
 
 
 
