@@ -7,7 +7,7 @@ body{text-align:center;}
     margin:auto;
 	margin-top: 10px;
 	text-align:left;
-	width:1280px;
+	width:1680px;
 	min-width:760px;}
 /* 950 centered */ 
 
@@ -24,7 +24,7 @@ body{text-align:center;}
 .yui-t1 .yui-a {
 
 	float:left;
-    width:550px;
+    width:950px;
 	margin-right:5px;
 	margin-top: 5px;}
 .yui-t1 .yui-c {
@@ -39,9 +39,170 @@ body{text-align:center;}
 
 body {
 	
-    background-color: #1C1C1C;
+    background-color: black;
+}
+.wrapper-dropdown-3 {
+    /* Size and position */
+    position: relative;
+    width: 225px;
+    margin: 0 auto;
+    padding: 5px;
+    height:35px;
+    /* Styles */
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.15);
+    box-shadow: 0 1px 1px rgba(50,50,50,0.1);
+    cursor: pointer;
+    outline: none;
+
+    /* Font settings */
+    font-weight: bold;
+    color: #8AA8BD;
+}
+.wrapper-dropdown-2 {
+    /* Size and position */
+    position: relative;
+    width: 213px;
+    margin: 0 auto;
+    padding: 5px;
+    height:35px;
+    /* Styles */
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.15);
+    box-shadow: 0 1px 1px rgba(50,50,50,0.1);
+    cursor: pointer;
+    outline: none;
+
+    /* Font settings */
+    font-weight: bold;
+    color: #8AA8BD;
 }
 
+.wrapper-dropdown-1 {
+    /* Size and position */
+    position: relative;
+  
+    margin: 0 auto;
+    padding: 5px;
+    height:12px;
+    /* Styles */
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.15);
+    box-shadow: 0 1px 1px rgba(50,50,50,0.1);
+    cursor: pointer;
+    outline: none;
+
+    /* Font settings */
+    font-weight: bold;
+    color: #8AA8BD;
+}
+.button{
+  display: inline-block;
+  *display: inline;
+  zoom: 1;
+  padding: 6px 20px;
+  margin: 0;
+  cursor: pointer;
+  border: 1px solid #bbb;
+  overflow: visible;
+  font: bold 13px arial, helvetica, sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #555;
+  background-color: #ddd;
+  background-image: linear-gradient(top, rgba(255,255,255,1),
+                                         rgba(255,255,255,0)),
+                    url(data:image/png;base64,iVBORw0KGg[...]QmCC); 
+  transition: background-color .2s ease-out;
+  background-clip: padding-box; /* Fix bleeding */
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .3),
+              0 2px 2px -1px rgba(0, 0, 0, .5),
+              0 1px 0 rgba(255, 255, 255, .3) inset;
+  text-shadow: 0 1px 0 rgba(255,255,255, .9);  
+}
+
+.button:hover{
+  background-color: #eee;
+  color: #555;
+}
+
+.button:active{
+  background: #e9e9e9;
+  position: relative;
+  top: 1px;
+  text-shadow: none;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .3) inset;
+}
+
+.button.small{
+  padding: 4px 12px;
+}
+
+/* Larger buttons styles */
+.button.large{
+  padding: 12px 30px;
+  text-transform: uppercase;
+}
+
+.button.large:active{
+  top: 2px;
+}
+.button.color{
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.2);
+  background-image: linear-gradient(top, rgba(255,255,255,.3), 
+             rgba(255,255,255,0)),
+                    url(data:image/png;base64,iVBORw0KGg[...]QmCC);
+}
+
+/* */
+
+.button.green{
+  background-color: #57a957;
+  border-color: #57a957;
+}
+
+.button.green:hover{
+  background-color: #62c462;
+}
+
+.button.green:active{
+  background: #57a957;
+}
+
+/* */
+
+.button.red{
+  background-color: #c43c35;
+  border-color: #c43c35;
+}
+
+.button.red:hover{
+  background-color: #ee5f5b;
+}
+
+.button.red:active{
+  background: #c43c35;
+}
+
+/* */
+
+.button.blue{
+  background-color: #269CE9;
+  border-color: #269CE9;
+}
+
+.button.blue:hover{
+  background-color: #70B9E8;
+}
+
+.button.blue:active{
+  background: #269CE9;
+}
 @font-face {
     font-family:"Arial";
 }
@@ -56,7 +217,7 @@ P.blocktext {
 
 	margin-left:auto; 
     margin-right:auto;
-	height:125px;
+	height:155px;
 	background-color:#E8E8E8;
 }
 	
@@ -75,9 +236,10 @@ P.blocktext {
 }
 
 #input{
-	height:800px;
+	height:1000px;
 	background-image:url("../picture/llll.png");
-	margin-bottom:15px; 
+    /*background-color: black;*/
+	margin-bottom:10px; 
 	padding-right:13px; 
    	padding-left:13px;
 }
@@ -85,17 +247,17 @@ P.blocktext {
 #graph{
 	
 	z-index:-1; 
-	height:800px;
+	height:1000px;
 	/*width:815px;*/
 	background-color:#111111;
-	margin-bottom:15px;
+	margin-bottom:10px;
 	overflow: auto;
 	text-align: center;
 }
 
 
 #output{
-	height:630px;
+	height:808px;
 	background-image:url("../picture/lllll.png");
 	margin-bottom:15px;
 	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
@@ -115,6 +277,7 @@ P.blocktext {
 #scollbar{
     height: 150px;
 }
+
 
 #checkboxbar{
     overflow: auto;

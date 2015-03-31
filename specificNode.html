@@ -11,7 +11,7 @@
 <body>
 <div id="doc" class="yui-t1">
   <div id="hd">
-    <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:1280px;height:125px"></h1></div>
+    <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:1680px;height:155px"></h1></div>
   </div>
  
     <div class="yui-b">
@@ -22,13 +22,13 @@
 
 
           <form id="phonenumber" >
-            <br><br><br><br><br><br><br/><br/>
+            <br><br><br><br><br><br>
             &nbsp&nbsp<label><font face="supermarket" size="4" >PHONE NUMBER:</font></label>
-            <input type="text" id="phoneNo"maxlength="10" style="width:90px;" ></input>
+            <input type="text"class="wrapper-dropdown-1" id="phoneNo"maxlength="10" style="width:89px;" ></input>
           </form>
        
-          <p align = "right"><button id="submitBtn" onclick="querySpecificNode($('#phoneNo').val())">Submit</button></p>
-          <p align = "right"><button id="suggestBtn" >Suggest PhoneNumber</button></p>
+          <p align = "right"><button id="submitBtn" class="color green button" onclick="querySpecificNode($('#phoneNo').val())">Submit</button></p>
+          <p align = "right"><button id="suggestBtn"class="color red button" >Suggest PhoneNumber</button></p>
         </div>
         <br/>
         <div>
@@ -38,7 +38,7 @@
         
         <div>
           <label><font face="supermarket" size="4"color="white">CONMUNICATION TYPE:</font></label>
-          <select id= "spinnerbox" name="communicationList" onchange="doSomething();">
+          <select id= "spinnerbox" class="wrapper-dropdown-3"name="communicationList" onchange="doSomething();">
                     <option value="select">SELECT</option>
                      <option value="call">CALL</option>
                      <option value="message">MESSAGE</option>
@@ -53,7 +53,7 @@
         <div>
           <form id="typeboxcall" style="display:none">
           <label><font face="supermarket"size="4"color="white" >TYPE:</font></label>
-          <select id="typecall" >
+          <select id="typecall" class="wrapper-dropdown-3">
                     <option value="all">All</option>
                     <option value="incoming">INCOMING</option>
                     <option value="outgoing">OUTGOING</option>
@@ -65,7 +65,7 @@
         <div>
           <form id="typeboxmessage" style="display:none">
           <label><font face="supermarket"size="4"color="white" >TYPE:</font></label>
-          <select id="typesms" >
+          <select id="typesms"class="wrapper-dropdown-3" >
                     <option value="all">ALL</option>
                     <option value="send">SEND</option>
                     <option value="received">RECEIVED</option>
@@ -73,21 +73,21 @@
           </select>
           </form>
         </div>
-        <br/>
+        <br/><br/>
 
         <div>
           <form id="date_form" action="demo_form.asp" style="display:none">
             <label><font face="supermarket" size="4"color="white">DATE FROM:</font></label>
-            <input id="datefrom" type="date" name="bday"><br>
+            <input id="datefrom" class="wrapper-dropdown-2"type="date" name="bday"><br>
             <label><font face="supermarket" size="4" color="white">TO:</font></label>
-            <input id="dateto" type="date" name="bday"><br>
+            <input id="dateto" class="wrapper-dropdown-2"type="date" name="bday"><br>
           </form>
         </div>
-         <br/>
+         <br/><br/>
         <div>
           <form id="durationbox" style="display:none">
           <label><font face="supermarket" size="4"color="white">DURATION:</font></label >
-          <select id="duration" >
+          <select id="duration" class="wrapper-dropdown-3">
                     <option value="01">0-1 MINUTE</option>
                      <option value="12">1-2 MINUTE</option>
                      <option value="23">2-3 MINUTE</option>
@@ -101,7 +101,7 @@
         <div>
           <form id="statusSMS" style="display:none">
           <label><font face="supermarket" size="4"color="white">STATUS:</font></label >
-          <select id="status" >
+          <select id="status" class="wrapper-dropdown-3">
                     <option value="all">ALL STATUS</option>
                      <option value="read">READ</option>
                      <option value="unread">UNREAD</option>
@@ -116,7 +116,7 @@
     
         <div>
           <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
-           <p align = "right"><button type="button" onclick="getdata();"size="2">Send</button></p>
+           <p align = "right"><button type="button" class="color blue button"onclick="getdata();"size="2">Send</button></p>
         </div>
 
         <div>
@@ -182,13 +182,28 @@ function doSomething(){
     document.getElementById("durationbox").style.display="block";
     document.getElementById("typeboxcall").style.display="block";
     }
-    else if (a=="message") {
+  else if (a=="message") {
     document.getElementById("date_form").style.display="block";
     
     document.getElementById("typeboxmessage").style.display="block";
     document.getElementById("statusSMS").style.display="block";
     }
-    else{
+  else if (a=="line") {
+    document.getElementById("date_form").style.display="block";
+    
+   
+    }
+  else if (a=="facebook") {
+    document.getElementById("date_form").style.display="block";
+    
+   
+    }
+  else if (a=="whatapp") {
+    document.getElementById("date_form").style.display="block";
+    
+   
+    }
+  else{
     /*document.getElementById("date_form").style.display="none";
     document.getElementById("phonenumber").style.display="none";
     document.getElementById("durationbox").style.display="none"
