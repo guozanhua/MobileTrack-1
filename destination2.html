@@ -10,25 +10,26 @@
 <body>
 <div id="doc" class="yui-t1">
   <div id="hd">
-    <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:1280px;height:125px"></h1></div>
+    <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:1680px;height:155px"></h1></div>
   </div>
  
     <div class="yui-b">
       <div id="input">
         <br/><br>
         <br/><br>
-        <br/><br>
+       
        <br>
         <div>
             <br/>
             <br/>
           <form id="phonenumber" >
             &nbsp;<label><font face="supermarket" size="4">SOURCE PHONE NUMBER:</font></label>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="sourcePhoneNo"maxlength="10"></input>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; <input type="text" id="sourcePhoneNo"class="wrapper-dropdown-1"maxlength="10"></input>
             <br></br>
             &nbsp;<label><font face="supermarket" size="4">TARGET PHONE NUMBER:</font></label>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="targetPhoneNo"maxlength="10"></input>
-            <p align = "right"><button id="suggestBtn" >Suggest PhoneNumber</button></p>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; <input type="text" id="targetPhoneNo"class="wrapper-dropdown-1"maxlength="10"></input>
+            <br/><br/>
+            <p align = "right"><button id="suggestBtn"class="color red button" >Suggest PhoneNumber</button></p>
           </form>
         </div>    
         <br>  
@@ -62,12 +63,20 @@
              <br>  
              <font face="supermarket" size="4" color="white"><input type="checkbox" id="sxdchk5" name="whatapp" value="">FACEBOOK</font>
           </form>
-
+<br><br>
     
+        </div>
+         <div>
+          <form id="date_form" action="demo_form.asp" >
+            <label><font face="supermarket" size="4"color="white">DATE FROM:</font></label>
+            <input id="datefrom" class="wrapper-dropdown-2"type="date" name="bday"><br>
+            <label><font face="supermarket" size="4" color="white">TO:</font></label>
+            <input id="dateto" class="wrapper-dropdown-2"type="date" name="bday"><br>
+          </form>
         </div>
           <div>
           <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
-           <p align = "right"><button type="button" onclick="actionPerformed();"size="2">Send</button></p>
+           <p align = "right"><button type="button" class="color blue button"onclick="actionPerformed();"size="2">Send</button></p>
         </div>
     
       
