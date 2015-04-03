@@ -2,12 +2,12 @@ body{text-align:center;}
 #ft{clear:both;}
 
 #doc,#doc2,#doc3,.yui-t1,.yui-t2,.yui-t3,.yui-t4,.yui-t5,.yui-t6,.yui-t7 {
-	 
+     
     margin:auto;
-	margin-top: 10px;
-	text-align:left;
-	width:1680px;
-	min-width:760px;}
+    margin-top: 10px;
+    text-align:left;
+    width:1680px;
+    min-width:760px;}
 /* 950 centered */ 
 
 #yui-main 
@@ -15,24 +15,24 @@ body{text-align:center;}
 
 .yui-t1 .yui-b {
 
-	
-	float:left;
+    
+    float:left;
     width:250px;
     height: 400px;
-	margin-right:5px;
-	margin-top: 5px;}
+    margin-right:5px;
+    margin-top: 5px;}
 .yui-t1 .yui-a {
 
-	float:left;
+    float:left;
     width:950px;
-	margin-right:5px;
-	margin-top: 5px;}
+    margin-right:5px;
+    margin-top: 5px;}
 .yui-t1 .yui-c {
 
-	
-	float:left;
+    
+    float:left;
     width:460px;
-	margin-top: 5px;}
+    margin-top: 5px;}
 
 
 
@@ -41,7 +41,7 @@ body{text-align:center;}
 
 
 body {
-	
+    
     background-color: #1C1C1C;
 }
 .wrapper-dropdown-3 {
@@ -82,7 +82,25 @@ body {
     font-weight: bold;
     color: #8AA8BD;
 }
+.wrapper-dropdown-4 {
+    /* Size and position */
+    position: relative;
+    width: 130px;
+    margin: 0 auto;
+    padding: 5px;
+    height:30px;
+    /* Styles */
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.15);
+    box-shadow: 0 1px 1px rgba(50,50,50,0.1);
+    cursor: pointer;
+    outline: none;
 
+    /* Font settings */
+    font-weight: bold;
+    color: #8AA8BD;
+}
 .wrapper-dropdown-1 {
     /* Size and position */
     position: relative;
@@ -218,51 +236,52 @@ P.blocktext {
 
 #header{
 
-	margin-left:auto; 
+    margin-left:auto; 
     margin-right:auto;
-	height:155px;
-	background-color:#E8E8E8;
+    height:155px;
+    background-color:#E8E8E8;
 }
-	
-	
+    
+    
 #header h1{
-	font-size:1em;
-	margin:0;
+    font-size:1em;
+    margin:0;
 }
 
 
-	
+    
 #header h1 a{
-	color:#000000;
-	background-color:#e1f5fe;
+    color:#000000;
+    background-color:#e1f5fe;
 
 }
 
 #input{
-	height:1000px;
-	background-image:url("../picture/ipphoneno.png");
-	margin-bottom:10px; 
-	padding-right:13px; 
-   	padding-left:13px;
+    height:1000px;
+    background-image:url("../picture/ipphoneno.png");
+    margin-bottom:10px; 
+    padding-right:13px; 
+    padding-left:13px;
+  
 }
 
 #graph{
-	
-	z-index:-1; 
-	height:1000px;
-	/*width:815px;*/
-	background-color:#111111;
-	margin-bottom:10px;
-	overflow: auto;
-	text-align: center;
+    
+    z-index:-1; 
+    height:1000px;
+    /*width:815px;*/
+    background-color:#111111;
+    margin-bottom:10px;
+    overflow: auto;
+    text-align: center;
 }
 
 
 #output{
-	height:808px;
-	background-image:url("../picture/lllll.png");
-	margin-bottom:10px;
-	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+    height:808px;
+    background-image:url("../picture/lllll.png");
+    margin-bottom:10px;
+    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
     white-space: -pre-wrap;      /* Opera 4-6 */
     white-space: -o-pre-wrap;    /* Opera 7 */
     white-space: pre-wrap;       /* css-3 */
@@ -277,47 +296,47 @@ P.blocktext {
 }
 
 #scollbar{
-	height: 150px;
+    height: 150px;
 }
 
 #checkboxbar{
-	overflow: auto;
-	height: 150px;
+    overflow: auto;
+    height: 150px;
 }
 
 #colorpane{
 
-	float:right;
+    float:right;
     height: 165px;
     width: 150px;
     border: 1px white solid;
-	background: grey;
+    background: grey;
     overflow: auto;
 }
 
 #colorpane2{
 
-	float:right;
+    float:right;
     height: 165px;
     width: 150px;
     border: 1px white solid;
-	background: grey;
+    background: grey;
     overflow: auto;
 }
 
 #colorpane3{
 
-	float:right;
+    float:right;
     height: 165px;
     width: 150px;
     border: 1px white solid;
-	background: grey;
+    background: grey;
     overflow: auto;
 }
 
 
 .nodeCircle{
-	width:15px;
+    width:15px;
     height:20px;
     border-radius:7.5px;
     background: grey;
@@ -326,7 +345,7 @@ P.blocktext {
 }
 
 .nodeCircle1{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:14.5px;
     color:white;
@@ -334,7 +353,7 @@ P.blocktext {
 }
 
 .nodeCircle2{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:14.5px;
     color:white;
@@ -342,7 +361,7 @@ P.blocktext {
 }
 
 .nodeCircle3{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:14.5px;
     color:white;
@@ -350,7 +369,7 @@ P.blocktext {
 }
 
 .nodeCircle4{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:14.5px;
     color:white;
@@ -358,23 +377,23 @@ P.blocktext {
 }
 
 .nodeCircle5{
-	width:15px;
-	height:15px;
-	border-radius:14.5px;
-	color:white;
-	margin: 5px;
+    width:15px;
+    height:15px;
+    border-radius:14.5px;
+    color:white;
+    margin: 5px;
 }
 
 .nodeCircle6{
-	width:15px;
-	height:15px;
-	border-radius:14.5px;
-	color:white;
-	margin: 5px;
+    width:15px;
+    height:15px;
+    border-radius:14.5px;
+    color:white;
+    margin: 5px;
 }
 
 .nodeCircle7{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:14.5px;
     color:white;
@@ -382,7 +401,7 @@ P.blocktext {
 }
 
 .nodeCircle8{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:14.5px;
     color:white;
@@ -390,7 +409,7 @@ P.blocktext {
 }
 
 .nodeCircle9{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:14.5px;
     color:white;
@@ -398,7 +417,7 @@ P.blocktext {
 }
 
 .nodeCircle10{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:14.5px;
     color:white;
@@ -406,7 +425,7 @@ P.blocktext {
 }
 
 .nodeCircle11{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:14.5px;
     color:white;
@@ -414,7 +433,7 @@ P.blocktext {
 }
 
 .nodeCircle12{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:14.5px;
     color:white;
@@ -422,23 +441,23 @@ P.blocktext {
 }
 
 .nodeCircle13{
-	width:15px;
-	height:15px;
-	border-radius:14.5px;
-	color:white;
-	margin: 5px;
+    width:15px;
+    height:15px;
+    border-radius:14.5px;
+    color:white;
+    margin: 5px;
 }
 
 .nodeCircle14{
-	width:15px;
-	height:15px;
-	border-radius:14.5px;
-	color:white;
-	margin: 5px;
+    width:15px;
+    height:15px;
+    border-radius:14.5px;
+    color:white;
+    margin: 5px;
 }
 
 .nodeType{
-	width:15px;
+    width:15px;
     height:20px;
     border-radius:7.5px;
     background: grey;
@@ -447,7 +466,7 @@ P.blocktext {
 }
 
 .nodeType1{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:12px;
     border: 2.5px solid #000;
@@ -457,7 +476,7 @@ P.blocktext {
 }
 
 .nodeType2{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:12px;
     border: 2.5px solid #40FF00;
@@ -467,7 +486,7 @@ P.blocktext {
 }
 
 .nodeType3{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:12px;
     border: 2.5px solid #387E0C;
@@ -477,7 +496,7 @@ P.blocktext {
 }
 
 .nodeType4{
-	width:15px;
+    width:15px;
     height:15px;
     border-radius:12px;
     border: 2.5px solid #1C27BF;
@@ -487,7 +506,7 @@ P.blocktext {
 }
 
 .linkType{
-	width:15px;
+    width:15px;
     height:20px;
     background: grey;
     color:white;
@@ -496,30 +515,30 @@ P.blocktext {
 }
 
 .linkType1{
-	width:15px;
+    width:15px;
     height:15px;
     background: green;
     color:white;
     margin: 5px;
-	
+    
 }
 
 .linkType2{
-	width:15px;
+    width:15px;
     height:15px;
     background: orange;
     color:white;
     margin: 5px;
-	
+    
 }
 
 .linkType3{
-	width:15px;
+    width:15px;
     height:15px;
     background: red;
     color:white;
     margin: 5px;
-	
+    
 }
 
 .colorMeaning{

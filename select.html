@@ -17,7 +17,7 @@
     <div class="yui-b">
       <div id="input">
         <br> 
-        <br> 
+      
          <div>
         
          <label><font face="supermarket" size="4" color="white" >PLEASE SELECT AN OPTION</font></label >
@@ -29,31 +29,96 @@
            
         </form>
         </div>
-       <br>
-        <div>
+
+
+        <label><font face="supermarket"size="3"color="white" >----------------------------------</font></label>
+          
         <label><font face="supermarket"size="4"color="white" id="la"style="display:none">SELECT PHONENUMBER</font></label> 
-        </div>
+      
         <div id="checkboxbar" style="display:none">
-          <font face="supermarket" size="4" color="white">
-          <div name="checkboxes" id="box"></div>
-        </font>
+          <font face="supermarket" size="4" color="white"><div name="checkboxes" id="box"></div></font>
 
     
         </div>
-          <br>
+       
           <form id="status" style = "display:none" > 
-          <label><font face="supermarket"size="4"color="white" >Select Type of Communication</font></label><br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="call" id = "mchk1" value="" >CALL</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="sms" id = "mchk2" value="">SMS</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="line" id = "mchk3" value="">LINE</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" id = "mchk4" value="">WHATSAPP</font>
-             <br>  
-             <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" id = "mchk5" value="">FACEBOOK</font>
-          </form>
+          <label><font face="supermarket"size="4"color="white" >CONMUNICATION TYPE:</font></label><br>  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="call" id = "mchk1" value="mchk1" onchange="selection1()">CALL</font>
+          </form>    
 
+          <div>
+          <form id="typeboxcall2" style="display:none">
+          <label><font face="supermarket"size="3"color="white" >----------------------------------</font></label>
+         &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket"size="3"color="white" >TYPE:</font></label>
+          <select id="typecall" class="wrapper-dropdown-4">
+                    <option value="all">All</option>
+                    <option value="incoming">INCOMING</option>
+                    <option value="outgoing">OUTGOING</option>
+                    <option value="missed">MISSED</option>
+          </select>
+          </form>
+          </div>
+
+          <div>
+          <form id="durationbox2" style="display:none">
+          &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket" size="3"color="white">DURATION:</font></label >
+          <select id="duration" class="wrapper-dropdown-4">
+                    <option value="01">0-1 MINUTE</option>
+                     <option value="12">1-2 MINUTE</option>
+                     <option value="23">2-3 MINUTE</option>
+                     <!-- <option value="34">3-4 MINUTE</option>
+                     <option value="45">4-5 MINUTE</option>
+                     <option value="5">MORE 5 MINUTE</option> -->
+          </select>
+          <label><font face="supermarket"size="3"color="white" >----------------------------------</font></label>
+          </form>
+          </div>
+
+            
+          <form id="status1" style = "display:none" > 
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="sms" id = "mchk2" value="mchk2" onchange="selection2()">SMS</font>
+          </form> 
+           
+          <div>
+          <form id="typeboxmessage2" style="display:none">
+          <label><font face="supermarket"size="3"color="white" >----------------------------------</font></label>
+           &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket"size="3"color="white" >TYPE:</font></label>
+          <select id="typesms"class="wrapper-dropdown-4" >
+                    <option value="all">ALL</option>
+                    <option value="send">SEND</option>
+                    <option value="received">RECEIVED</option>
+                    
+          </select><br>
+          <label><font face="supermarket"size="3"color="white" >----------------------------------</font></label>
+          </form>
+          </div>
+
+          <form id="status2" style = "display:none" >  
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="line" id = "mchk3" value="">LINE</font>
+          </form> 
+            
+
+          <form id="status3" style = "display:none" > 
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" id = "mchk4" value="">WHATSAPP</font>
+          </form> 
+              
+
+          <form id="status4" style = "display:none" > 
+             <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" id = "mchk5" value="">FACEBOOK</font>
+          </form> 
+        
+
+        <div>
+
+          <form id="date_form2" action="demo_form.asp" style="display:none">
+          <label><font face="supermarket"size="3"color="white" >----------------------------------</font></label>
+            <label><font face="supermarket" size="4"color="white">DATE FROM:</font></label>
+            <input id="datefrom" class="wrapper-dropdown-2"type="date" name="bday"><br>
+            <label><font face="supermarket" size="4" color="white">TO:</font></label>
+            <input id="dateto" class="wrapper-dropdown-2"type="date" name="bday">
+            <label><font face="supermarket"size="3"color="white" >----------------------------------</font></label>
+          </form>
+        </div>
 
         <br>
          <div>
@@ -94,17 +159,24 @@
           </select>
           </form>
         </div>
-        <br/><br/>
+      
 
         <div>
+
           <form id="date_form" action="demo_form.asp" style="display:none">
+          <label><font face="supermarket"size="3"color="white" >----------------------------------</font></label>
             <label><font face="supermarket" size="4"color="white">DATE FROM:</font></label>
             <input id="datefrom" class="wrapper-dropdown-2"type="date" name="bday"><br>
             <label><font face="supermarket" size="4" color="white">TO:</font></label>
-            <input id="dateto" class="wrapper-dropdown-2"type="date" name="bday"><br>
+            <input id="dateto" class="wrapper-dropdown-2"type="date" name="bday">
+            <label><font face="supermarket"size="3"color="white" >----------------------------------</font></label>
           </form>
         </div>
-         <br/><br/>
+         
+
+
+
+
         <div>
           <form id="durationbox" style="display:none">
           <label><font face="supermarket" size="4"color="white">DURATION:</font></label >
@@ -212,26 +284,79 @@ function doSomething(){
 }
 </script>
 
+
 <script>
+function selection1(){
+  var a = document.getElementById("mchk1").value;
+  document.getElementById("spinnerboxForm").style.display = "none"
+  
+  
+  if(a=="mchk1"){
+  document.getElementById("typeboxcall2").style.display = "block";
+  document.getElementById("durationbox2").style.display = "block";
+  }
+
+}
+</script>
+
+<script>
+function selection2(){
+  var a = document.getElementById("mchk2").value;
+  document.getElementById("spinnerboxForm").style.display = "none"
+  document.getElementById("typeboxmessage2").style.display = "none"
+  
+  if(a=="mchk2"){
+  document.getElementById("typeboxmessage2").style.display = "block";
+ 
+  }
+
+
+}
+</script>
+
+writecheck();
+<script>
+
+
 function allNumbers(){
   var a = document.getElementById("ap").value;
-  document.getElementById("la").style.display="none"
-  document.getElementById("checkboxbar").style.display="none";
-  document.getElementById("status").style.display = "none";
-  document.getElementById("spinnerboxForm").style.display = "block";
+          document.getElementById("date_form").style.display="none";
+          document.getElementById("checkboxbar").style.display="none";
+           document.getElementById("la").style.display="none";
+           document.getElementById("status").style.display = "none";
+          document.getElementById("status1").style.display = "none";
+          document.getElementById("status2").style.display = "none";
+          document.getElementById("status3").style.display = "none";
+          document.getElementById("status4").style.display = "none";
+           document.getElementById("typeboxcall2").style.display = "none";
+          document.getElementById("durationbox2").style.display = "none";
+          document.getElementById("typeboxmessage2").style.display = "none";
+          document.getElementById("date_form2").style.display="none";
+    if(a=="ap"){
+          document.getElementById("spinnerboxForm").style.display = "block";}
 }
 </script>
 <script>
 function mainNumbers(){
   var a = document.getElementById("mp").value;
-  document.getElementById("la").style.display="none"
-  document.getElementById("checkboxbar").style.display="none";
-  document.getElementById("spinnerboxForm").style.display = "none";
-
+document.getElementById("spinnerboxForm").style.display = "none";
+document.getElementById("typeboxcall2").style.display = "none";
+document.getElementById("durationbox2").style.display = "none";
+document.getElementById("typeboxmessage2").style.display = "none";
+document.getElementById("durationbox").style.display="none";
+document.getElementById("typeboxcall").style.display="none";
+document.getElementById("typeboxmessage").style.display="none";
+document.getElementById("statusSMS").style.display="none";
+ document.getElementById("date_form").style.display="none";
   if(a=="mp"){
     document.getElementById("la").style.display="block";
     document.getElementById("checkboxbar").style.display="block";
     document.getElementById("status").style.display = "block";
+    document.getElementById("status1").style.display = "block";
+    document.getElementById("status2").style.display = "block";
+    document.getElementById("status3").style.display = "block";
+    document.getElementById("status4").style.display = "block";
+    document.getElementById("date_form2").style.display="block";
     //document.getElementById("typeboxcall").style.display="block";
   }
 
@@ -385,5 +510,5 @@ function showchecked(){
 
 </body>
 </html>
-            
+             
           
