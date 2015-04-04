@@ -437,7 +437,7 @@
         }
 
         function writecheck() {
-            var _queryString = "MATCH (n:PHONE) RETURN n";
+            var _queryString = "MATCH (n:PHONE {Type: 'main'}) RETURN n";
             var phoneNumberArr = [];
             var myTable;
             var i;
