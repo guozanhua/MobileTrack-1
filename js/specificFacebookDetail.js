@@ -1,13 +1,20 @@
-function WhatsappDatabase(){
-    clearDiv('graph');
-    clearDiv('output');
-    var inputNumber = $("#phoneNo").val();
-    var _query = "MATCH (n:WHATSAPP)-[r:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' RETURN distinct r ORDER BY r.Date,r.Time";
-    console.log(_query);
-    var nodeArr = [];
-    var groupArr = [];
-    var linkArr = [];
-    d3.xhr("http://localhost:7474/db/data/transaction/commit")
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
+function FacebookDatabase(){
+     clearDiv('graph');
+        clearDiv('output');
+	var inputNumber = $("#phoneNo").val();
+	var _query = "MATCH (n:FACEBOOK)-[r:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' RETURN distinct r ORDER BY r.Date,r.Time";
+	console.log(_query);
+        var nodeArr = [];
+        var groupArr = [];
+        var linkArr = [];
+	d3.xhr("http://localhost:7474/db/data/transaction/commit")
             .header("Content-Type", "application/json")
             .mimeType("application/json")				
             .post(
@@ -77,16 +84,16 @@ function WhatsappDatabase(){
                                     if(i==0 && checkDateRange(result[i].Date) == 'PASS'){
                                         var objSource = {};
                                         objSource.NodeName = result[i].Source;
-                                        objSource.textDisplay = "WhatsappID: " + result[i].SourceNumber;
-                                        objSource.Label = "Whatsapp";
+                                        objSource.textDisplay = "FacebookID: " + result[i].SourceFacebook;
+                                        objSource.Label = "Facebook";
                                         objSource.NodeIndex = nodeArr.length;
                                         objSource.groupIndex = getGroupSource;
                                         nodeArr.push(objSource);
 
                                         var objTarget = {};
                                         objTarget.NodeName = result[i].Target;
-                                        objTarget.textDisplay = "WhatsappID: " + result[i].TargetNumber;
-                                        objTarget.Label = "Whatsapp";
+                                        objTarget.textDisplay = "FacebookID: " + result[i].TargetFacebook;
+                                        objTarget.Label = "Facebook";
                                         objTarget.NodeIndex = nodeArr.length;
                                         objTarget.groupIndex = getGroupTarget;
                                         nodeArr.push(objTarget);
@@ -95,10 +102,10 @@ function WhatsappDatabase(){
                                         var objLink = {};
                                         objLink.source = 0;
                                         objLink.target = 1;
-                                        objLink.Type = "Whatsapp";
+                                        objLink.Type = "Facebook";
                                         objLink.prop = [];
                                         var objLinkProp = {};
-                                        objLinkProp.Sender = result[i].SourceNumber;
+                                        objLinkProp.Sender = result[i].SourceFacebook;
                                         objLinkProp.date = result[i].Date;
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
@@ -137,7 +144,7 @@ function WhatsappDatabase(){
                                                 if(linkExist == 1){
                                                     //There is already a link between source and target.
                                                     var objLinkProp = {};
-                                                    objLinkProp.Sender = result[i].SourceNumber;
+                                                    objLinkProp.Sender = result[i].SourceFacebook;
                                                     objLinkProp.date = result[i].Date;
                                                     objLinkProp.Time = result[i].Time;
                                                     objLinkProp.message = result[i].Message;
@@ -147,11 +154,11 @@ function WhatsappDatabase(){
                                                     var objLink = {};
                                                     objLink.source = getSourceIndex;
                                                     objLink.target = getTargetIndex;
-                                                    objLink.Type = "Whatsapp";
+                                                    objLink.Type = "Facebook";
                                                     objLink.prop = [];
 
                                                     var objLinkProp = {};
-                                                    objLinkProp.Sender = result[i].SourceNumber;
+                                                    objLinkProp.Sender = result[i].SourceFacebook;
                                                     objLinkProp.date = result[i].Date;
                                                     objLinkProp.Time = result[i].Time;
                                                     objLinkProp.message = result[i].Message;															
@@ -163,8 +170,8 @@ function WhatsappDatabase(){
                                         }else if(countSource == 1 && countTarget == 0 && checkDateRange(result[i].Date) == 'PASS'){
                                             var objAdd = {};
                                             objAdd.NodeName = result[i].Target;
-                                            objAdd.textDisplay = "WhatsappID: " + result[i].TargetNumber;
-                                            objAdd.Label = "Whatsapp";
+                                            objAdd.textDisplay = "FacebookID: " + result[i].TargetFacebook;
+                                            objAdd.Label = "Facebook";
                                             objAdd.NodeIndex = nodeArr.length;
                                             objAdd.groupIndex = getGroupTarget;
                                             nodeArr.push(objAdd);
@@ -172,11 +179,11 @@ function WhatsappDatabase(){
                                             var objLink = {};
                                             objLink.source = getSourceIndex;
                                             objLink.target = nodeArr.length - 1;
-                                            objLink.Type = "Whatsapp";
+                                            objLink.Type = "Facebook";
                                             objLink.prop = [];
 
                                             var objLinkProp = {};
-                                            objLinkProp.Sender = result[i].SourceNumber;
+                                            objLinkProp.Sender = result[i].SourceFacebook;
                                             objLinkProp.date = result[i].Date;
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;															
@@ -187,8 +194,8 @@ function WhatsappDatabase(){
                                         }else if(countSource == 0 && countTarget == 1 && checkDateRange(result[i].Date) == 'PASS'){                                       
                                             var objAdd = {};
                                             objAdd.NodeName = result[i].Source;
-                                            objAdd.textDisplay = "WhatsappID: " + result[i].SourceNumber;
-                                            objAdd.Label = "Whatsapp";
+                                            objAdd.textDisplay = "FacebookID: " + result[i].SourceFacebook;
+                                            objAdd.Label = "Facebook";
                                             objAdd.NodeIndex = nodeArr.length;
                                             objAdd.groupIndex = getGroupSource;
                                             nodeArr.push(objAdd);
@@ -196,11 +203,11 @@ function WhatsappDatabase(){
                                             var objLink = {};
                                             objLink.source = nodeArr.length - 1;
                                             objLink.target = getTargetIndex;
-                                            objLink.Type = "Whatsapp";
+                                            objLink.Type = "Facebook";
                                             objLink.prop = [];
 
                                             var objLinkProp = {};
-                                            objLinkProp.Sender = result[i].SourceNumber;
+                                            objLinkProp.Sender = result[i].SourceFacebook;
                                             objLinkProp.date = result[i].Date;
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;															
@@ -210,8 +217,8 @@ function WhatsappDatabase(){
                                             if(checkDateRange(result[i].Date) == 'PASS'){
                                                 var objSource = {};
                                                 objSource.NodeName = result[i].Source;
-                                                objSource.textDisplay = "WhatsappID: " + result[i].SourceNumber;
-                                                objSource.Label = "Whatsapp";
+                                                objSource.textDisplay = "FacebookID: " + result[i].SourceFacebook;
+                                                objSource.Label = "Facebook";
                                                 objSource.NodeIndex = nodeArr.length;
                                                 objSource.groupIndex = getGroupSource;
                                                 getSourceIndex = objSource.NodeIndex;
@@ -219,8 +226,8 @@ function WhatsappDatabase(){
 
                                                 var objTarget = {};
                                                 objTarget.NodeName = result[i].Target;
-                                                objTarget.textDisplay = "WhatsappID: " + result[i].TargetNumber;
-                                                objTarget.Label = "Whatsapp";
+                                                objTarget.textDisplay = "FacebookID: " + result[i].TargetFacebook;
+                                                objTarget.Label = "Facebook";
                                                 objTarget.NodeIndex = nodeArr.length;
                                                 objTarget.groupIndex = getGroupTarget;
                                                 getTargetIndex = objSource.NodeIndex;
@@ -230,10 +237,10 @@ function WhatsappDatabase(){
                                                 var objLink = {};
                                                 objLink.source = getSourceIndex;
                                                 objLink.target = getTargetIndex;
-                                                objLink.Type = "Whatsapp";
+                                                objLink.Type = "Facebook";
                                                 objLink.prop = [];
                                                 var objLinkProp = {};
-                                                objLinkProp.Sender = result[i].SourceNumber;
+                                                objLinkProp.Sender = result[i].SourceFacebook;
                                                 objLinkProp.date = result[i].Date;
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
@@ -247,30 +254,30 @@ function WhatsappDatabase(){
                                 
                                 
                                 //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allWhatsappNodes = [];
+                                var allFacebookNodes = [];
                                 for(i=0;i<nodeArr.length;i++){
-                                        if(nodeArr[i].Label == 'Whatsapp'){
-                                                allWhatsappNodes.push(nodeArr[i].NodeName);
+                                        if(nodeArr[i].Label == 'Facebook'){
+                                                allFacebookNodes.push(nodeArr[i].NodeName);
                                         }
                                 }
 
-                                var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
-                                for(i=0;i<allWhatsappNodes.length;i++){
+                                var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                                for(i=0;i<allFacebookNodes.length;i++){
                                         if(i==0){
-                                                nextQuery += "n.Nodename = '" + allWhatsappNodes[i] + "' ";
+                                                nextQuery += "n.Nodename = '" + allFacebookNodes[i] + "' ";
                                         }else{
-                                                nextQuery += "OR n.Nodename = '" + allWhatsappNodes[i] + "' ";
+                                                nextQuery += "OR n.Nodename = '" + allFacebookNodes[i] + "' ";
                                         }
                                 }
                                 nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneWhatsapp(nextQuery); 
+                                FetchPhoneFacebook(nextQuery); 
                         });
-                        
-    function FetchPhoneWhatsapp(nextQuery){
+    
+    function FetchPhoneFacebook(nextQuery){
         console.log(nextQuery);
         d3.xhr("http://localhost:7474/db/data/transaction/commit")
             .header("Content-Type", "application/json")
-            .mimeType("application/json")				
+                .mimeType("application/json")				
             .post(
                 JSON.stringify({
                           "statements" : [ {
@@ -327,7 +334,7 @@ function WhatsappDatabase(){
                                     finalResult.push(nodeArr);
                                     finalResult.push(linkArr);
                                     finalResult.push(groupArr);
-                                    dataVisualizationWhatsapp(finalResult);
+                                    dataVisualizationFacebook(finalResult);
                                 }else{
                                     alert("No result matches!");
                                 }
@@ -335,8 +342,8 @@ function WhatsappDatabase(){
     }
 }
 
-function dataVisualizationWhatsapp(finalResult){
-var width = 550,height = 800;
+function dataVisualizationFacebook(finalResult){
+	var width = 550,height = 800;
 	var groupArr = finalResult[2];
 	var mLinkNum = {};
 	sortLinks();
@@ -351,7 +358,7 @@ var width = 550,height = 800;
 	var force = d3.layout.force()
 		.charge(-500)
 		.linkDistance(function(d){
-			if(d.Type == "Whatsapp")
+			if(d.Type == "Facebook")
 				return 200;
 			else
 				return 50;
@@ -382,11 +389,11 @@ var width = 550,height = 800;
 	    .on("mouseover", fadeLink(.1))
 		.on("mouseout", fadeLink(1))
 		.attr("marker-end",function(d){
-	    	if(d.prop.length > 8 && d.Type != 'Whatsapp' && d.Type != 'Whatsapp' && d.Type != 'Facebook'){
+	    	if(d.prop.length > 8 && d.Type != 'Facebook' && d.Type != 'Whatsapp' && d.Type != 'Facebook'){
 	    		return 'url(#highf)';
-	    	}else if(d.prop.length > 5 && d.Type != 'Whatsapp' && d.Type != 'Whatsapp' && d.Type != 'Facebook'){
+	    	}else if(d.prop.length > 5 && d.Type != 'Facebook' && d.Type != 'Whatsapp' && d.Type != 'Facebook'){
 	    		return 'url(#mediumf)';
-	    	}else if(d.prop.length > 0 && d.Type != 'Whatsapp' && d.Type != 'Whatsapp' && d.Type != 'Facebook'){
+	    	}else if(d.prop.length > 0 && d.Type != 'Facebook' && d.Type != 'Whatsapp' && d.Type != 'Facebook'){
 	    		return 'url(#lowf)';
 	    	}else{
 	    		return "";
@@ -400,46 +407,48 @@ var width = 550,height = 800;
 	    	}
 	    })
 	    .style("stroke", function(d){
-	    	if(d.Type != "Whatsapp" && d.Type != "Call" && d.Type != "Whatsapp" && d.Type != "Facebook" && d.Type != "SMS" ){
+	    	if(d.Type != "Facebook" && d.Type != "Call" && d.Type != "Whatsapp" && d.Type != "Facebook" && d.Type != "SMS" ){
 	    		return color[d.source.groupIndex];
 	    	}		    		
 	    });
 
 	var linktext = svg.selectAll("g.linklabelholder").data(finalResult[1]);
         linktext.enter().append("g").attr("class", "linklabelholder")
-                        .append("text")
-                        .attr("class", "linklabel")
-                        .style("font-size", "10px")
-                        .attr("x", "50")
-                            .attr("y", "-20")
-                        .attr("text-anchor", "start")
-                            .style("fill","#fff")
-                        .append("textPath")
-                        .attr("xlink:href",function(d,i) { return "#linkId_" + i;})
-                         .text(function(d) { 
-                                    return d.Type; 
-                    });
+		    .append("text")
+		    .attr("class", "linklabel")
+		    .style("font-size", "10px")
+		    .attr("x", "50")
+			.attr("y", "-20")
+		    .attr("text-anchor", "start")
+			.style("fill","#fff")
+		    .append("textPath")
+		    .attr("xlink:href",function(d,i) { return "#linkId_" + i;})
+		     .text(function(d) { 
+			 	return d.Type; 
+		});
 
 	link.on("click",function(d){
-            if(d.Type == "Whatsapp"){
-                var propArr = d.prop;
-                var myTable= "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>SENDER</th>";
-                myTable+= "<th style='background-color:#333333;height: 40px; width:250px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-                myTable+= "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>DATE</th>";
-                myTable+="<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>TIME</th></tr>";
+		if(d.Type == "Facebook"){
+			var propArr = d.prop;
+	    var myTable= "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>SENDER</th>";
+	    myTable+= "<th style='background-color:#333333;height: 40px; width:250px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
+	    myTable+= "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>DATE</th>";
+	    myTable+="<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>TIME</th></tr>";
+
+	
 
 		for (var i=0; i<propArr.length; i++) {
-                    //if(checkDateRange(propArr[i].date) == "PASS"){
-                    myTable+="<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white; '>" + propArr[i].Sender + "</td>";
-                    myTable+="<td style='height: 40px; text-align:left;background-color:#BEBEBE;border:2px solid white; '>" + propArr[i].message + "</td>";
-                    myTable+="<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white; '>" + propArr[i].date + "</td>";
-                    myTable+="<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white; '>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                    //}
+			//if(checkDateRange(propArr[i].date) == "PASS"){
+				myTable+="<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white; '>" + propArr[i].Sender + "</td>";
+			    myTable+="<td style='height: 40px; text-align:left;background-color:#BEBEBE;border:2px solid white; '>" + propArr[i].message + "</td>";
+			    myTable+="<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white; '>" + propArr[i].date + "</td>";
+			    myTable+="<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white; '>" + removeUTC(propArr[i].Time) + "</td></tr>";
+			//}
 		}  
 		myTable+="</table>";
 
 		document.getElementById("output").innerHTML = myTable;
-            }
+		}
 	});
 
 	var tip = d3.tip()
@@ -551,7 +560,7 @@ var width = 550,height = 800;
 	    	nodeType.append('div')
 	    			.attr('class','nodeType2')
 	    	var typeLabel = d3.select(".nodeType2");
-	    	typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WhatsappAccount");
+	    	typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FacebookAccount");
 
 	    	nodeType.append('div')
 	    			.attr('class','nodeType3')
@@ -710,6 +719,9 @@ var width = 550,height = 800;
     }
 
 }
+
+
+
 
 
 

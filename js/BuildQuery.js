@@ -49,16 +49,6 @@ function buildQueryForSMS(smstype,status){
     console.log("smsType = " + smstype,status);
 }
 
-function buildQueryForLine(input){
-    var query = "MATCH (n:LINE)-[r1]->(m:PHONE) MATCH (n:LINE)-[r2]->(l:LINE) MATCH (l:LINE)-[r3]->(p:PHONE) WHERE n.PhoneNumber = '" + input + "' AND (n.PhoneNumber = '" + input + "' OR l.PhoneNumber = '" + input + "') RETURN collect(distinct r1) + collect(distinct r3) AS R;"
-    LineDatabase(query);
-}
-
-function buildQueryForWhatsapp(input){
-    var query = "MATCH (n:WHATSAPP)-[r1]->(m:PHONE) MATCH (n:WHATSAPP)-[r2]->(l:WHATSAPP) MATCH (l:WHATSAPP)-[r3]->(p:PHONE) WHERE n.PhoneNumber = '" + input + "' AND (n.PhoneNumber = '" + input + "' OR l.PhoneNumber = '" + input + "') RETURN collect(distinct r1) + collect(distinct r3) AS R;"
-    WhatsappDatabase(query);
-}
-
 function buildQueryPhoneToPhone(communicationType,dur){
     var query = "";
     var inputSource = $('#sourcePhoneNo').val();

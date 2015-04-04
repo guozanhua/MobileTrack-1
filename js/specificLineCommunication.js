@@ -1,4 +1,10 @@
-function LineDatabase(input){
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+function LineDatabase(){
 
 	/*
 	Instruction
@@ -7,208 +13,340 @@ function LineDatabase(input){
 	3. Visualize the data.
 
 	*/
-
-	var inputNumber = document.getElementById("phoneNo").value;
-	clearDiv('graph');
-	clearDiv('output');
-	//var _queryString = input;
-	var _queryString = input;
-	//console.log(_queryString);
-
-	d3.xhr("http://localhost:7474/db/data/transaction/commit")
-				    .header("Content-Type", "application/json")
-					.mimeType("application/json")				
-				    .post(
-				        JSON.stringify({
-						  "statements" : [ {
-						    "statement" : _queryString,
-						    "resultDataContents" : [ "row" ]//, "graph" ]
-						  } ]
-						}),	function(err, data){
-							var returnData = JSON.parse(data.responseText);
-							//document.write(JSON.stringify(returnData));
-							var result = returnData.results[0].data[0].row[0];
-							//document.write(JSON.stringify(result));
-							var nodeArr = [];
-							var linkArr = [];
-							var groupArr = [];
-							var count = 0;
-							if(result.length == 0){
-								alert("No data found. Please try again.");
-							}
-
-							//Create groupArr
-							for(i=0;i<result.length;i++){
-								if(result[i].TargetType == 'Phone' && result[i].PhoneNumber == inputNumber){
-									var objGroup = {};
-									objGroup.NodeName = result[i].Target;
-									objGroup.PhoneNumber = result[i].PhoneNumber;
-									objGroup.groupIndex = 0;
-									groupArr.push(objGroup);
-								}else{
-									var objGroup = {};
-									objGroup.NodeName = result[i].Target;
-									objGroup.PhoneNumber = result[i].PhoneNumber;
-									objGroup.groupIndex = 1;
-									groupArr.push(objGroup);
-								}
-							}
-
-							//document.write(JSON.stringify(groupArr));
-
-							//Create nodeArr and linkArr
-							for(i=0;i<result.length;i++){
-								var getGroupIndex;
-
-								for(j=0;j<groupArr.length;j++){
-									if(result[i].Target == groupArr[j].NodeName){
-										getGroupIndex = groupArr[j].groupIndex;
-										break;
-									}
-								}
-								var objSource = {};
-								var objTarget = {};
-								var objLink = {};
-
-								objSource.NodeName = result[i].Source;
-								objSource.textDisplay = "LineID: " + result[i].LineID;
-								objSource.Label = "Line";
-								objSource.NodeIndex = nodeArr.length;
-								objSource.groupIndex = getGroupIndex;
-								nodeArr.push(objSource);
-
-								objTarget.NodeName = result[i].Target;
-								objTarget.textDisplay = result[i].PhoneNumber;
-								objTarget.Label = "Phone";
-								objTarget.NodeIndex = nodeArr.length;
-								objTarget.groupIndex = getGroupIndex;
-								nodeArr.push(objTarget);
-
-								objLink.source = objSource.NodeIndex;
-								objLink.target = objTarget.NodeIndex;
-								objLink.Type = result[i].Description;
-								objLink.prop = [{size: 1}];
-								linkArr.push(objLink);
-							}
-							var resultArr = [];
-							resultArr.push(nodeArr);
-							resultArr.push(linkArr);
-							resultArr.push(groupArr);
-							//document.write(JSON.stringify(resultArr));
-							FetchLineCommunicationDetail(resultArr,input);
-						});
-}
-
-function FetchLineCommunicationDetail(resultArr,input){
-	var nodeArr = resultArr[0];
-	var linkArr = resultArr[1];
-	var groupArr = resultArr[2];
-	var inputPhoneNumber = $("#phoneNo").val();
-
-	var _query = "MATCH (n:LINE)-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputPhoneNumber + "' OR m.PhoneNumber = '" + inputPhoneNumber + "' RETURN distinct r ORDER BY r.Date,r.Time";
+        clearDiv('graph');
+        clearDiv('output');
+	var inputNumber = $("#phoneNo").val();
+	var _query = "MATCH (n:LINE)-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' RETURN distinct r ORDER BY r.Date,r.Time";
 	console.log(_query);
-
+        var nodeArr = [];
+        var groupArr = [];
+        var linkArr = [];
 	d3.xhr("http://localhost:7474/db/data/transaction/commit")
-				    .header("Content-Type", "application/json")
-					.mimeType("application/json")				
-				    .post(
-				        JSON.stringify({
-						  "statements" : [ {
-						    "statement" : _query,
-						    
-						  } ]
-						}),	function(err, data){
-							var returnData = JSON.parse(data.responseText);
-							//document.write(JSON.stringify(returnData));
-							var result = [];
+            .header("Content-Type", "application/json")
+            .mimeType("application/json")				
+            .post(
+                JSON.stringify({
+                          "statements" : [ {
+                            "statement" : _query,
 
-							if(returnData.results[0].data.length == 0){
-								alert("No data found, please try again.");
-							}else{
-								for(i=0;i<returnData.results[0].data.length;i++){
-									result.push(returnData.results[0].data[i].row[0]);
-								}
-							}
+                          } ]
+                        }),	function(err, data){
+                                var returnData = JSON.parse(data.responseText);
+                                //document.write(JSON.stringify(returnData));
+                                var result = [];
 
-							//document.write(JSON.stringify(result));
+                                if(returnData.results[0].data.length == 0){
+                                    alert("No data found, please try again.");
+                                }else{
+                                    for(i=0;i<returnData.results[0].data.length;i++){
+                                        result.push(returnData.results[0].data[i].row[0]);
+                                    }
+                                }
 
-							var getSourceIndex; var getTargetIndex; var getSourceName; var getTargetName;
-							for(i=0;i<result.length;i++){
+                                //Create groupArr
+                                for(i=0;i<result.length;i++){
+                                    if(result[i].SourceNumber == inputNumber){
+                                        var objGroup = {};
+                                        objGroup.NodeName = result[i].Source;
+                                        objGroup.PhoneNumber = result[i].SourceNumber;
+                                        objGroup.groupIndex = 0;
+                                        groupArr.push(objGroup);
 
-								for(j=0;j<nodeArr.length;j++){
-									if(result[i].Source == nodeArr[j].NodeName){
-										getSourceIndex = nodeArr[j].NodeIndex;
-										break;
-									}
-								}
+                                        var objGroup = {};
+                                        objGroup.NodeName = result[i].Target;
+                                        objGroup.PhoneNumber = result[i].TargetNumber;
+                                        objGroup.groupIndex = 1;
+                                        groupArr.push(objGroup);
+                                    }else if(result[i].TargetNumber == inputNumber){
+                                        var objGroup = {};
+                                        objGroup.NodeName = result[i].Source;
+                                        objGroup.PhoneNumber = result[i].SourceNumber;
+                                        objGroup.groupIndex = 1;
+                                        groupArr.push(objGroup);
 
-								for(j=0;j<nodeArr.length;j++){
-									if(result[i].Target == nodeArr[j].NodeName){
-										getTargetIndex = nodeArr[j].NodeIndex;
-										break;
-									}
-								}
+                                        var objGroup = {};
+                                        objGroup.NodeName = result[i].Target;
+                                        objGroup.PhoneNumber = result[i].TargetNumber;
+                                        objGroup.groupIndex = 0;
+                                        groupArr.push(objGroup);
+                                    }
+                                }
 
-								if(i==0){
-									var objLink = {};
-									objLink.source = getSourceIndex;
-									objLink.target = getTargetIndex;
-									objLink.Type = "Line";
-									objLink.prop = [];
+                                //Create nodeArr and linkArr
+                                for(i=0;i<result.length;i++){
+                                    var getGroupSource = 0,getGroupTarget = 0;
+                                    for(j=0;j<groupArr.length;j++){
+                                        if(groupArr[j].PhoneNumber == result[i].SourceNumber){
+                                            getGroupSource = groupArr[j].groupIndex;
+                                            break;
+                                        }
+                                    }
+                                    for(j=0;j<groupArr.length;j++){
+                                        if(groupArr[j].PhoneNumber == result[i].TargetNumber){
+                                            getGroupTarget = groupArr[j].groupIndex;
+                                            break;
+                                        }
+                                    }
 
-									var objLinkProp = {};
-									objLinkProp.Sender = result[i].SourceLineID;
-									objLinkProp.date = result[i].Date;
-									objLinkProp.Time = result[i].Time;
-									objLinkProp.message = result[i].Message;
-									objLink.prop.push(objLinkProp);
+                                    if(i==0 && checkDateRange(result[i].Date) == 'PASS'){
+                                        var objSource = {};
+                                        objSource.NodeName = result[i].Source;
+                                        objSource.textDisplay = "LineID: " + result[i].SourceLineID;
+                                        objSource.Label = "Line";
+                                        objSource.NodeIndex = nodeArr.length;
+                                        objSource.groupIndex = getGroupSource;
+                                        nodeArr.push(objSource);
 
-									linkArr.push(objLink);
-								}else{
-									var checkLink = 0;
-									for(k=0;k<linkArr.length;k++){
-										if((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)){
-											var objLinkProp = {};
-											objLinkProp.Sender = result[i].SourceLineID;
-											objLinkProp.date = result[i].Date;
-											objLinkProp.Time = result[i].Time;
-											objLinkProp.message = result[i].Message;
-											linkArr[k].prop.push(objLinkProp);
-											checkLink++;
-											break;
-										}
-									}
-
-									//checkLink = 0 means no object in linkArr that represents communication between this source and target.s
-									if(checkLink == 0){
-										var objLink = {};
-										objLink.source = getSourceIndex;
-										objLink.target = getTargetIndex;
-										objLink.Type = "Line";
-										objLink.prop = [];
-
-										var objLinkProp = {};
-										objLinkProp.Sender = result[i].SourceLineID;
-										objLinkProp.date = result[i].Date;
-										objLinkProp.Time = result[i].Time;
-										objLinkProp.message = result[i].Message;
-										objLink.prop.push(objLinkProp);
-
-										linkArr.push(objLink);
-									}
+                                        var objTarget = {};
+                                        objTarget.NodeName = result[i].Target;
+                                        objTarget.textDisplay = "LineID: " + result[i].TargetLineID;
+                                        objTarget.Label = "Line";
+                                        objTarget.NodeIndex = nodeArr.length;
+                                        objTarget.groupIndex = getGroupTarget;
+                                        nodeArr.push(objTarget);
 
 
-								}
-							}
+                                        var objLink = {};
+                                        objLink.source = 0;
+                                        objLink.target = 1;
+                                        objLink.Type = "Line";
+                                        objLink.prop = [];
+                                        var objLinkProp = {};
+                                        objLinkProp.Sender = result[i].SourceLineID;
+                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.Time = result[i].Time;
+                                        objLinkProp.message = result[i].Message;
+                                        objLink.prop.push(objLinkProp);
+                                        linkArr.push(objLink);
+                                    }else{
+                                        var getSourceIndex = 0,getTargetIndex = 0,countSource = 0,countTarget = 0;
+                                        for(j=0;j<nodeArr.length;j++){
+                                            if(nodeArr[j].NodeName == result[i].Source){
+                                                getSourceIndex = nodeArr[j].NodeIndex;
+                                                countSource++;
+                                                break;
+                                            }
+                                        }
 
-							var finalResult = [];
-							finalResult.push(nodeArr);
-							finalResult.push(linkArr);
-							finalResult.push(groupArr);
-							//document.write(JSON.stringify(finalResult));
-							dataVisualizationLine(finalResult);
-							
-						});
+                                        for(j=0;j<nodeArr.length;j++){
+                                            if(nodeArr[j].NodeName == result[i].Target){
+                                                getTargetIndex = nodeArr[j].NodeIndex;
+                                                countTarget++;
+                                                break;
+                                            }
+                                        }
+                                        
+                                        if(countSource == 1 && countTarget == 1){
+                                            if(checkDateRange(result[i].Date) == 'PASS'){
+                                                //First, we have to check an existence of the link.
+                                                var linkIndex = 0;
+                                                var linkExist = 0;
+                                                for(k=0;k<linkArr.length;k++){
+                                                    if((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)){
+                                                        linkExist++;
+                                                        linkIndex = k;
+                                                        break;
+                                                    }
+                                                }
+                                                if(linkExist == 1){
+                                                    //There is already a link between source and target.
+                                                    var objLinkProp = {};
+                                                    objLinkProp.Sender = result[i].SourceLineID;
+                                                    objLinkProp.date = result[i].Date;
+                                                    objLinkProp.Time = result[i].Time;
+                                                    objLinkProp.message = result[i].Message;
+                                                    linkArr[linkIndex].prop.push(objLinkProp);
+                                                }else{
+                                                    //Link between source and target haven't been created yet.
+                                                    var objLink = {};
+                                                    objLink.source = getSourceIndex;
+                                                    objLink.target = getTargetIndex;
+                                                    objLink.Type = "Line";
+                                                    objLink.prop = [];
+
+                                                    var objLinkProp = {};
+                                                    objLinkProp.Sender = result[i].SourceLineID;
+                                                    objLinkProp.date = result[i].Date;
+                                                    objLinkProp.Time = result[i].Time;
+                                                    objLinkProp.message = result[i].Message;															
+                                                    objLink.prop.push(objLinkProp);
+                                                    linkArr.push(objLink);
+                                                }
+                                            }
+                                            
+                                        }else if(countSource == 1 && countTarget == 0 && checkDateRange(result[i].Date) == 'PASS'){
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Target;
+                                            objAdd.textDisplay = "LineID: " + result[i].TargetLineID;
+                                            objAdd.Label = "Line";
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            objAdd.groupIndex = getGroupTarget;
+                                            nodeArr.push(objAdd);
+                                            
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = nodeArr.length - 1;
+                                            objLink.Type = "Line";
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceLineID;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;															
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+                                            
+
+                                        }else if(countSource == 0 && countTarget == 1 && checkDateRange(result[i].Date) == 'PASS'){                                       
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Source;
+                                            objAdd.textDisplay = "LineID: " + result[i].SourceLineID;
+                                            objAdd.Label = "Line";
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            objAdd.groupIndex = getGroupSource;
+                                            nodeArr.push(objAdd);
+                                            
+                                            var objLink = {};
+                                            objLink.source = nodeArr.length - 1;
+                                            objLink.target = getTargetIndex;
+                                            objLink.Type = "Line";
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceLineID;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;															
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+                                        }else{
+                                            if(checkDateRange(result[i].Date) == 'PASS'){
+                                                var objSource = {};
+                                                objSource.NodeName = result[i].Source;
+                                                objSource.textDisplay = "LineID: " + result[i].SourceLineID;
+                                                objSource.Label = "Line";
+                                                objSource.NodeIndex = nodeArr.length;
+                                                objSource.groupIndex = getGroupSource;
+                                                getSourceIndex = objSource.NodeIndex;
+                                                nodeArr.push(objSource);
+
+                                                var objTarget = {};
+                                                objTarget.NodeName = result[i].Target;
+                                                objTarget.textDisplay = "LineID: " + result[i].TargetLineID;
+                                                objTarget.Label = "Line";
+                                                objTarget.NodeIndex = nodeArr.length;
+                                                objTarget.groupIndex = getGroupTarget;
+                                                getTargetIndex = objSource.NodeIndex;
+                                                nodeArr.push(objTarget);
+
+
+                                                var objLink = {};
+                                                objLink.source = getSourceIndex;
+                                                objLink.target = getTargetIndex;
+                                                objLink.Type = "Line";
+                                                objLink.prop = [];
+                                                var objLinkProp = {};
+                                                objLinkProp.Sender = result[i].SourceLineID;
+                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.Time = result[i].Time;
+                                                objLinkProp.message = result[i].Message;
+                                                objLink.prop.push(objLinkProp);
+                                                linkArr.push(objLink);  
+                                            }
+                                            
+                                        }
+                                    }
+                                }
+                                
+                                
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allLineNodes = [];
+                                for(i=0;i<nodeArr.length;i++){
+                                        if(nodeArr[i].Label == 'Line'){
+                                                allLineNodes.push(nodeArr[i].NodeName);
+                                        }
+                                }
+
+                                var nextQuery = "MATCH (n:LINE)-[r:Line]->(m:PHONE) WHERE "
+                                for(i=0;i<allLineNodes.length;i++){
+                                        if(i==0){
+                                                nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                        }else{
+                                                nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                        }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneLine(nextQuery); 
+                        });
+    
+    function FetchPhoneLine(nextQuery){
+        console.log(nextQuery);
+        d3.xhr("http://localhost:7474/db/data/transaction/commit")
+            .header("Content-Type", "application/json")
+                .mimeType("application/json")				
+            .post(
+                JSON.stringify({
+                          "statements" : [ {
+                            "statement" : nextQuery,
+                            "resultDataContents" : [ "row" ]//, "graph" ]
+                          } ]
+                        }),	function(err, data){
+                                var returnData = JSON.parse(data.responseText);
+                                //document.write(JSON.stringify(returnData));
+                                var result = returnData.results[0].data[0].row[0];
+                                //document.write(JSON.stringify(result));
+                                var count = 0;
+                                if(result.length == 0){
+                                        alert("No data found. Please try again.");
+                                }
+
+                                for(i=0;i<result.length;i++){
+                                    var getGroupIndex;
+                                    var getSourceIndex,getTargetIndex;
+                                    for(j=0;j<groupArr.length;j++){
+                                            if(groupArr[j].NodeName == result[i].Source){
+                                                getGroupIndex = groupArr[j].groupIndex;
+                                                break;
+                                            }
+                                    }
+
+                                    for(j=0;j<nodeArr.length;j++){
+                                            if(nodeArr[j].NodeName == result[i].Source){
+                                                getSourceIndex = nodeArr[j].NodeIndex;
+                                                break;
+                                            }
+                                    }
+
+                                    var objAdd = {};
+                                    objAdd.NodeName = result[i].Target;
+                                    objAdd.Label = result[i].TargetType;
+                                    objAdd.groupIndex = getGroupIndex;
+                                    objAdd.textDisplay = result[i].PhoneNumber;
+                                    objAdd.NodeIndex = nodeArr.length;
+                                    objAdd.Type = "Phone"
+                                    getTargetIndex = nodeArr.length;
+                                    nodeArr.push(objAdd);
+
+                                    var objLink = {};
+                                    objLink.source = getSourceIndex;
+                                    objLink.target = getTargetIndex;
+                                    objLink.Type = result[i].Description;
+                                    objLink.prop = [];
+                                    linkArr.push(objLink);
+                                }
+
+                                if(linkArr.length > 0){
+                                    var finalResult = [];
+                                    finalResult.push(nodeArr);
+                                    finalResult.push(linkArr);
+                                    finalResult.push(groupArr);
+                                    dataVisualizationLine(finalResult);
+                                }else{
+                                    alert("No result matches!");
+                                }
+                            });
+    }
 }
 
 function dataVisualizationLine(finalResult){
@@ -242,7 +380,7 @@ function dataVisualizationLine(finalResult){
 			return "link highf";
 		}else if(d.prop.length > 10){
 			return "link mediumf"
-		}else if(d.prop.length > 5){
+		}else if(d.prop.length > 0){
 			return "link lowf";
 		}else{
 			return "link";
@@ -282,7 +420,7 @@ function dataVisualizationLine(finalResult){
 	    });
 
 	var linktext = svg.selectAll("g.linklabelholder").data(finalResult[1]);
-    linktext.enter().append("g").attr("class", "linklabelholder")
+        linktext.enter().append("g").attr("class", "linklabelholder")
 		    .append("text")
 		    .attr("class", "linklabel")
 		    .style("font-size", "10px")

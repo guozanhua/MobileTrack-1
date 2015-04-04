@@ -2,7 +2,6 @@ function queryManagementSXD(selections){
 	var nodeArr = [];
 	var linkArr = [];
 	var groupArr = [];
-
 	var inputSource = document.getElementById("sourcePhoneNo").value;
 	var inputTarget = document.getElementById("targetPhoneNo").value;
 	clearDiv('graph');

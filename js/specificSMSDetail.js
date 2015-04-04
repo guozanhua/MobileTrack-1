@@ -13,7 +13,7 @@ function FetchSMSDatabase(input){
 
 	d3.xhr("http://localhost:7474/db/data/transaction/commit")
 				    .header("Content-Type", "application/json")
-					.mimeType("application/json")				
+                                    .mimeType("application/json")				
 				    .post(
 				        JSON.stringify({
 						  "statements" : [ {

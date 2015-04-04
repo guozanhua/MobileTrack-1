@@ -22,7 +22,7 @@
 
 
           <form id="phonenumber" >
-            <br><br><br><br><br><br>
+            <br/><br/><br/><br/><br/><br/>
             &nbsp&nbsp<label><font face="supermarket" size="4" >PHONE NUMBER:</font></label>
             <input type="text"class="wrapper-dropdown-1" id="phoneNo"maxlength="10" style="width:89px;" ></input>
           </form>
@@ -160,6 +160,7 @@
 <script type="text/javascript" src="js/specificSMSDetail.js"></script>
 <script type="text/javascript" src="js/specificLineCommunication.js"></script>
 <script type="text/javascript" src="js/specificWhatsappCommunication.js"></script>
+<script type="text/javascript" src="js/specificFacebookDetail.js"></script>
 <script type="text/javascript" src="js/BuildQuery.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
@@ -303,8 +304,12 @@ function getdata(){
     }
   }else if(a=="line"){
     communicationType = 3;
-  }else if(a=="whatapp")
-    communicationType = 4;
+  }else if(a=="whatapp"){
+      communicationType = 4;
+  }else if(a=="facebook"){
+      communicationType = 5;
+  }
+    
 
 
   if(communicationType == 1){
@@ -313,9 +318,11 @@ function getdata(){
     buildQueryForSMS(sms,stat);
   }
   else if(communicationType == 3){
-    buildQueryForLine($('#phoneNo').val());
+    LineDatabase();
   }else if(communicationType == 4){
-    buildQueryForWhatsapp($('#phoneNo').val());
+    WhatsappDatabase();
+  }else if(communicationType == 5){
+    FacebookDatabase();
   }else{
     alert("Please select communication type");
   }
