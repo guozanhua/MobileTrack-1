@@ -349,7 +349,7 @@ function queryManagementSXD(selections) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].DatenTime;
+                                    objLinkProp.date = result[i].Date;
                                     objLink.prop.push(objLinkProp);
                                     linkArr.push(objLink);
 
@@ -432,7 +432,7 @@ function queryManagementSXD(selections) {
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
                                             objLinkProp.dur = result[i].Duration;
-                                            objLinkProp.date = result[i].DatenTime;
+                                            objLinkProp.date = result[i].Date;
                                             objLink.prop.push(objLinkProp);
                                             linkArr.push(objLink);
                                         }
@@ -457,7 +457,7 @@ function queryManagementSXD(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].DatenTime;
+                                        objLinkProp.date = result[i].Date;
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
@@ -482,7 +482,7 @@ function queryManagementSXD(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].DatenTime;
+                                        objLinkProp.date = result[i].Date;
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
@@ -517,7 +517,7 @@ function queryManagementSXD(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].DatenTime;
+                                        objLinkProp.date = result[i].Date;
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
