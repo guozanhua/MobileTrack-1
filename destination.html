@@ -1,221 +1,265 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-<head>
-<title>Data Analysis Graph</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" >
-<link rel="stylesheet" type="text/css" href="css/styles2.css" >
-<link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
-<link rel="stylesheet" type="text/css" href="css/graph.css" >
+    <head>
+        <title>Data Analysis Graph</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" >
+        <link rel="stylesheet" type="text/css" href="css/styles2.css" >
+        <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
+        <link rel="stylesheet" type="text/css" href="css/graph.css" >
 
-</head>
-<body>
-<div id="doc" class="yui-t1">
-  <div id="hd">
-    <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:100%"></h1></div>
-  </div>
- 
-    <div class="yui-b">
-      <div id="input">
-        
-        <br/>
-       <p align = "center"><label><font face="supermarket" class="font1" size="2" color="white">- ENTER -</label></p></font>
-        <p align = "center"><label><font face="supermarket" class="font2" size="4"color="white">SOURCE AND TARGET NUMBERS TO DISPLAY THE COMMUNICATION</label></p></font>
-           <div class="wrapper-dropdown-5">
-
-          <form id="phonenumber" >
-            <u><p align = "center"><label><font face="supermarket" class="font" size="4">SOURCE PHONE NUMBER</font></label></u>
-            <input type="text" id="sPhoneNo"class="wrapper-dropdown-6"maxlength="10"></input>
-            <br></br>
-            <u><label><font face="supermarket" class="font" size="4">TARGET PHONE NUMBER</font></label></u>
-           <input type="text" id="tPhoneNo"class="wrapper-dropdown-6"maxlength="10"></input>
-          </form>
-        </div>   
-          
-
-         <p align = "center"><button id="suggestBtn"class="color red button" >Suggest PhoneNumber</button></p>
-      
-   
-        <br>    
-        <div>
-          <form id="status" >
-          <u><label><font face="supermarket"class="font"size="4"color="white" >ROUTE COMMUNICATION :</font></label><br></u>
-            <font face="supermarket" class="font"size="4" color="white"><input type="radio" name="call" id = "sdrad1" value="" >S--->D</font>
-             <br>  
-            <font face="supermarket" class="font"size="4" color="white"><input type="radio" name="call" id = "sdrad2" value="" >S<---D</font>
-             <br>  
-          </form>
-        </div>
-        <br> <br> <br>
-        <div>
-          <form id="status" >
-           
-          <u><label><font face="supermarket"class="font"size="4"color="white" >TYPE COMMUNICATION :</font></label><br> </u> 
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="call" id = "sdchk1" value="" >CALL</font>
-             <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="sms" id = "sdchk2" value="">SMS</font>
-             <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="line" id = "sdchk3" value="">LINE</font>
-             <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="facbook" id = "sdchk4" value="">WHATSAPP</font>
-             <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="whatapp" id = "sdchk5" value="">FACEBOOK</font>
-          </form>
-
-    
-        </div>
-        <br>
-         <div  >
-          <form id="date_form" action="demo_form.asp" >
-          <div><class="wrapper-dropdown-5">
-                   
-            <u><label><font face="supermarket" size="4"color="white"class="font" >DATE FROM :</font></label></u>
-            <input id="datefrom" class="wrapper-dropdown-2"type="date" name="bday"><br>
-            <u><label><font face="supermarket" size="4" color="white"class="font" >TO :</font></label></u>
-            <input id="dateto" class="wrapper-dropdown-2"type="date" name="bday"><br>
+    </head>
+    <body>
+        <div id="doc" class="yui-t1">
+            <div id="hd">
+                <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:1680px;height:155px"></h1></div>
             </div>
 
-          </form>
+            <div class="yui-b">
+                <div id="input">
+                    <br/><br>
+                    <br/><br>
+
+                    <br>
+                    <div>
+                        <br/>
+                        <br/>
+                        <form id="phonenumber" >
+                            &nbsp;<label><font face="supermarket" size="4">SOURCE PHONE NUMBER:</font></label>
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; <input type="text" class="wrapper-dropdown-1"id="sPhoneNo"maxlength="10"></input>
+                            <br></br>
+                            &nbsp;<label><font face="supermarket" size="4">TARGET PHONE NUMBER:</font></label>
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; <input type="text" class="wrapper-dropdown-1"id="tPhoneNo"maxlength="10" ></input>
+                            <br>
+                            <br>
+                            <p align = "right"><button id="suggestBtn" class="color red button">Suggest PhoneNumber</button></p>
+                        </form>
+                    </div>    
+
+                    <br/>  
+                    <div>
+                        <form id="status" >
+                            <label><font face="supermarket"size="4"color="white" >SELECT ROUTE COMMUNICATION</font></label><br>
+                            <font face="supermarket" size="4" color="white"><input type="radio" name="call" id = "sdrad1" value="" >S--->D</font>
+                            <br>  
+                            <font face="supermarket" size="4" color="white"><input type="radio" name="call" id = "sdrad2" value="" >S<---D</font>
+                            <br>  
+                        </form>
+                    </div>
+                    <br> <br> <br>
+                    <div>
+                        <form id="status" >
+
+                            <label><font face="supermarket"size="4"color="white" >SELECT TYPE COMMUNICATION</font></label><br>  
+                            <font face="supermarket" size="4" color="white"><input type="checkbox" name="call" id = "sdchk1" value="" >CALL</font>
+                            <br>  
+                            <font face="supermarket" size="4" color="white"><input type="checkbox" name="sms" id = "sdchk2" value="">SMS</font>
+                            <br>  
+                            <font face="supermarket" size="4" color="white"><input type="checkbox" name="line" id = "sdchk3" value="">LINE</font>
+                            <br>  
+                            <font face="supermarket" size="4" color="white"><input type="checkbox" name="facbook" id = "sdchk4" value="">WHATSAPP</font>
+                            <br>  
+                            <font face="supermarket" size="4" color="white"><input type="checkbox" name="whatapp" id = "sdchk5" value="">FACEBOOK</font>
+                        </form>
+
+
+                    </div>
+                    <br><br>
+                    <div>
+                        <form id="date_form" action="demo_form.asp" >
+                            <label><font face="supermarket" size="4"color="white">DATE FROM:</font></label>
+                            <input id="datefrom" class="wrapper-dropdown-2"type="date" name="bday"><br>
+                            <label><font face="supermarket" size="4" color="white">TO:</font></label>
+                            <input id="dateto" class="wrapper-dropdown-2"type="date" name="bday"><br>
+                        </form>
+                    </div>
+                    <div>
+                        <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
+                        <p align = "right"><button type="button" class="color blue button"onclick="gatheringSelections();"size="2">Send</button></p>
+                    </div>
+
+                </div>  
+            </div>
+
+
+
+
+            <div class="yui-a">
+                <div id="graph">
+
+                </div>
+            </div>
+
+            <div class="yui-c">
+                <div id="scollbar" >
+                    <font face="supermarket" size="2" color="white">
+                        <div id = "displayNode"style="float: left; width: 33%;"></div>
+                        <div id = "displayType" style="float: left; width: 33%;"></div>
+                        <div id = "displayLink" style="float: left; width: 33%;"></div>
+                </div>
+
+                <br/>
+                <div id="output"></div>
+            </div>
+
         </div>
-            <div>
-          <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
-           <p align = "right"><button class="color blue button"  onclick="gatheringSelections();"size="2">Send</button></p>
-        </div>
-      
-      </div>  
+
     </div>
 
 
+    <script>
+        function gatheringSelections() {
+            if (document.getElementById("sdrad1").checked) {
+                var selections = [];
+                if (document.getElementById("sdchk3").checked) {
+                    var objCommu = {};
+                    objCommu.Type = 'Line';
+                    objCommu.linkType = '-[r1:LINEchat]->';
+                    selections.push(objCommu);
+
+                }
+                if (document.getElementById("sdchk4").checked) {
+                    var objCommu = {};
+                    objCommu.Type = 'Whatsapp';
+                    objCommu.linkType = '-[r1:WhatsappChat]->';
+                    selections.push(objCommu);
+
+                }
+                if (document.getElementById("sdchk5").checked) {
+                    var objCommu = {};
+                    objCommu.Type = 'Facebook';
+                    objCommu.linkType = '-[r1:Facebook]->';
+                    selections.push(objCommu);
+                }
+
+                if (document.getElementById("sdchk1").checked) {
+                    var objCommu = {};
+                    objCommu.Type = 'Call';
+                    objCommu.linkType = '-[r1:Call]->';
+                    selections.push(objCommu);
+
+                }
+                if (document.getElementById("sdchk2").checked) {
+                    var objCommu = {};
+                    objCommu.Type = 'SMS';
+                    objCommu.linkType = '-[r1:SMS]->';
+                    selections.push(objCommu);
+
+                }
+                if (selections.length > 0) {
+                    console.log(selections.length);
+                    queryManagement(selections);
+                }
+
+            } else if (document.getElementById("sdrad2").checked) {
+                var selections = [];
+                if (document.getElementById("sdchk3").checked) {
+                    var objCommu = {};
+                    objCommu.Type = 'Line';
+                    objCommu.linkType = '<-[r1:LINEchat]->';
+                    selections.push(objCommu);
+
+                }
+                if (document.getElementById("sdchk4").checked) {
+                    var objCommu = {};
+                    objCommu.Type = 'Whatsapp';
+                    objCommu.linkType = '<-[r1:WhatsappChat]->';
+                    selections.push(objCommu);
+
+                }
+                if (document.getElementById("sdchk5").checked) {
+                    var objCommu = {};
+                    objCommu.Type = 'Facebook';
+                    objCommu.linkType = '<-[r1:Facebook]->';
+                    selections.push(objCommu);
+
+                }
+                if (document.getElementById("sdchk1").checked) {
+                    var objCommu = {};
+                    objCommu.Type = 'Call';
+                    objCommu.linkType = '<-[r1:Call]-';
+                    selections.push(objCommu);
+
+                }
+                if (document.getElementById("sdchk2").checked) {
+                    var objCommu = {};
+                    objCommu.Type = 'SMS';
+                    objCommu.linkType = '<-[r1:SMS]-';
+                    selections.push(objCommu);
+
+                }
+                //Check if there is any communication in selections
+                if (selections.length > 0) {
+                    console.log(selections.length);
+                    queryManagement(selections);
+                }
+            } else {
+                alert("Please select communication route !")
+            }
+        }
 
 
-    <div class="yui-a">
-      <div id="graph">
-        
-      </div>
-    </div>
+    </script>
 
-     <div class="yui-c">
-      <div id="scollbar" >
-        <font face="supermarket" size="2" color="white">
-        <div id = "displayNode"style="float: left; width: 33%;"></div>
-        <div id = "displayType" style="float: left; width: 33%;"></div>
-        <div id = "displayLink" style="float: left; width: 33%;"></div>
-      </div>
+    <script src='js/d3.v3.min.js'></script>
+    <script src="js/d3.tip.js"></script>
+    <script type="text/javascript" src="js/specificNodeDetail.js"></script>
+    <script type="text/javascript" src="js/BuildQuery.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
+    <script type="text/javascript" src="js/helperfunction.js"></script>
+    <script type="text/javascript" src="js/intermediaryNodeQuery.js"></script>
+    <script type="text/javascript" src="js/testsd.js"></script>
 
-      <br/>
-      <div id="output"></div>
-    </div>
-    
-  </div>
+    <script>
+    //Load all the possible phone numbers into the list to be ready for display when user hit suggestion button.
+        var _queryString = "MATCH (n:PHONE) RETURN n";
+        var phoneNumberArr = [];
+        var myTable;
 
-</div>
+        d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                .header("Content-Type", "application/json")
+                .mimeType("application/json")
+                .post(
+                        JSON.stringify({
+                            "statements": [{
+                                    "statement": _queryString,
+                                    "resultDataContents": ["row"]//, "graph" ]
+                                }]
+                        }), function (err, data) {
+                    var returnData = JSON.parse(data.responseText);
+                    //document.write(JSON.stringify(returnData));
+                    var result = returnData.results[0].data;
+                    //document.write(JSON.stringify(result));
+                    for (i = 0; i < result.length; i++) {
+                        var objAdd = {};
+                        objAdd.PhoneNumber = result[i].row[0].PhoneNumber;
+                        objAdd.Owner = result[i].row[0].Owner;
+                        objAdd.Model = result[i].row[0].Model;
+                        phoneNumberArr.push(objAdd);
+                    }
+                    //document.write(JSON.stringify(phoneNumberArr));
+                    myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>PhoneNumber</th>";
+                    myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>Model</th>";
+                    myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>Owner</th>";
+                    for (var i = 0; i < phoneNumberArr.length; i++) {
+                        myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + phoneNumberArr[i].PhoneNumber + "</td>";
+                        myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + phoneNumberArr[i].Model + "</td>";
+                        myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + phoneNumberArr[i].Owner + "</td></tr>";
+                    }
+                    myTable += "</table>";
+                    $('#suggestBtn').magnificPopup({
+                        items: {
+                            src: '<div class="white-popup">' +
+                                    myTable
+                                    + '</div>',
+                            type: 'inline'
+                        },
+                        closeBtnInside: true
+                    });
+                });
 
-
-<script>
-function gatheringSelections(){
-  if(document.getElementById("sdrad1").checked){
-    var selections = [];
-    if(document.getElementById("sdchk3").checked){
-      var objCommu = {};
-      objCommu.Type = 'Line';
-      objCommu.linkType = '-[r1:LINEchat]->';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sdchk4").checked){
-      var objCommu = {};
-      objCommu.Type = 'Whatsapp';
-      objCommu.linkType = '-[r1:WhatsappChat]->';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sdchk5").checked){
-      var objCommu = {};
-      objCommu.Type = 'Facebook';
-      objCommu.linkType = '-[r1:Facebook]->';
-      selections.push(objCommu);
-    }
-
-    if(document.getElementById("sdchk1").checked){
-      var objCommu = {};
-      objCommu.Type = 'Call';
-      objCommu.linkType = '-[r1:Call]->';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sdchk2").checked){
-      var objCommu = {};
-      objCommu.Type = 'SMS';
-      objCommu.linkType = '-[r1:SMS]->';
-      selections.push(objCommu);
-
-    }
-    if(selections.length > 0){
-      console.log(selections.length);
-      queryManagement(selections);
-    }
-
-  }else if(document.getElementById("sdrad2").checked){
-    var selections = [];
-    if(document.getElementById("sdchk3").checked){
-      var objCommu = {};
-      objCommu.Type = 'Line';
-      objCommu.linkType = '<-[r1:LINEchat]->';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sdchk4").checked){
-      var objCommu = {};
-      objCommu.Type = 'Whatsapp';
-      objCommu.linkType = '<-[r1:WhatsappChat]->';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sdchk5").checked){
-      var objCommu = {};
-      objCommu.Type = 'Facebook';
-      objCommu.linkType = '<-[r1:Facebook]->';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sdchk1").checked){
-      var objCommu = {};
-      objCommu.Type = 'Call';
-      objCommu.linkType = '<-[r1:Call]-';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sdchk2").checked){
-      var objCommu = {};
-      objCommu.Type = 'SMS';
-      objCommu.linkType = '<-[r1:SMS]-';
-      selections.push(objCommu);
-
-    }
-    //Check if there is any communication in selections
-    if(selections.length > 0){
-      console.log(selections.length);
-      queryManagement(selections);
-    }
-  }else{
-    alert("Please select communication route !")
-  }
-}
-  
-
-</script>
-
-
-
-<script src='js/d3.v3.min.js'></script>
-<script src="js/d3.tip.js"></script>
-<script type="text/javascript" src="js/specificNodeDetail.js"></script>
-<script type="text/javascript" src="js/specificPhoneDetail.js"></script>
-<script type="text/javascript" src="js/specificSMSDetail.js"></script>
-<script type="text/javascript" src="js/specificLineCommunication.js"></script>
-<script type="text/javascript" src="js/specificWhatsappCommunication.js"></script>
-<script type="text/javascript" src="js/buildQuery.js"></script>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
-<script type="text/javascript" src="js/listPhoneNumbers.js"></script>
-<script type="text/javascript" src="js/intermediaryNodeQuery.js"></script>
-<script type="text/javascript" src="js/testsd.js"></script>
-
-
+    </script>
 
 </body>
 </html>
-            
-          
+

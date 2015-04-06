@@ -4,19 +4,12 @@
  * and open the template in the editor.
  */
 
-function LineDatabase(){
 
-	/*
-	Instruction
-	1. First, Get all PHONE and LINE nodes from database. Push all of them into nodeArr and create linkArr as well.
-	2. Then, connect with database again and request communication via LINE. Convert return results to an object and push it into prop[].
-	3. Visualize the data.
-
-	*/
-        clearDiv('graph');
+function FacebookDatabase() {
+    clearDiv('graph');
     clearDiv('output');
     var inputNumber = $("#phoneNo").val();
-    var _query = "MATCH (n:LINE)-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' RETURN distinct r ORDER BY r.Date,r.Time";
+    var _query = "MATCH (n:FACEBOOK)-[r:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' RETURN distinct r ORDER BY r.Date,r.Time";
     console.log(_query);
     var nodeArr = [];
     var groupArr = [];
@@ -90,16 +83,16 @@ function LineDatabase(){
                     if (i == 0 && checkDateRange(result[i].Date) == 'PASS') {
                         var objSource = {};
                         objSource.NodeName = result[i].Source;
-                        objSource.textDisplay = "LineID: " + result[i].SourceLineID;
-                        objSource.Label = "Line";
+                        objSource.textDisplay = "FacebookID: " + result[i].SourceFacebook;
+                        objSource.Label = "Facebook";
                         objSource.NodeIndex = nodeArr.length;
                         objSource.groupIndex = getGroupSource;
                         nodeArr.push(objSource);
 
                         var objTarget = {};
                         objTarget.NodeName = result[i].Target;
-                        objTarget.textDisplay = "LineID: " + result[i].TargetLineID;
-                        objTarget.Label = "Line";
+                        objTarget.textDisplay = "FacebookID: " + result[i].TargetFacebook;
+                        objTarget.Label = "Facebook";
                         objTarget.NodeIndex = nodeArr.length;
                         objTarget.groupIndex = getGroupTarget;
                         nodeArr.push(objTarget);
@@ -108,10 +101,10 @@ function LineDatabase(){
                         var objLink = {};
                         objLink.source = 0;
                         objLink.target = 1;
-                        objLink.Type = "Line";
+                        objLink.Type = "Facebook";
                         objLink.prop = [];
                         var objLinkProp = {};
-                        objLinkProp.Sender = result[i].SourceLineID;
+                        objLinkProp.Sender = result[i].SourceFacebook;
                         objLinkProp.date = result[i].Date;
                         objLinkProp.Time = result[i].Time;
                         objLinkProp.message = result[i].Message;
@@ -150,7 +143,7 @@ function LineDatabase(){
                                 if (linkExist == 1) {
                                     //There is already a link between source and target.
                                     var objLinkProp = {};
-                                    objLinkProp.Sender = result[i].SourceLineID;
+                                    objLinkProp.Sender = result[i].SourceFacebook;
                                     objLinkProp.date = result[i].Date;
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
@@ -160,11 +153,11 @@ function LineDatabase(){
                                     var objLink = {};
                                     objLink.source = getSourceIndex;
                                     objLink.target = getTargetIndex;
-                                    objLink.Type = "Line";
+                                    objLink.Type = "Facebook";
                                     objLink.prop = [];
 
                                     var objLinkProp = {};
-                                    objLinkProp.Sender = result[i].SourceLineID;
+                                    objLinkProp.Sender = result[i].SourceFacebook;
                                     objLinkProp.date = result[i].Date;
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
@@ -176,8 +169,8 @@ function LineDatabase(){
                         } else if (countSource == 1 && countTarget == 0 && checkDateRange(result[i].Date) == 'PASS') {
                             var objAdd = {};
                             objAdd.NodeName = result[i].Target;
-                            objAdd.textDisplay = "LineID: " + result[i].TargetLineID;
-                            objAdd.Label = "Line";
+                            objAdd.textDisplay = "FacebookID: " + result[i].TargetFacebook;
+                            objAdd.Label = "Facebook";
                             objAdd.NodeIndex = nodeArr.length;
                             objAdd.groupIndex = getGroupTarget;
                             nodeArr.push(objAdd);
@@ -185,11 +178,11 @@ function LineDatabase(){
                             var objLink = {};
                             objLink.source = getSourceIndex;
                             objLink.target = nodeArr.length - 1;
-                            objLink.Type = "Line";
+                            objLink.Type = "Facebook";
                             objLink.prop = [];
 
                             var objLinkProp = {};
-                            objLinkProp.Sender = result[i].SourceLineID;
+                            objLinkProp.Sender = result[i].SourceFacebook;
                             objLinkProp.date = result[i].Date;
                             objLinkProp.Time = result[i].Time;
                             objLinkProp.message = result[i].Message;
@@ -200,8 +193,8 @@ function LineDatabase(){
                         } else if (countSource == 0 && countTarget == 1 && checkDateRange(result[i].Date) == 'PASS') {
                             var objAdd = {};
                             objAdd.NodeName = result[i].Source;
-                            objAdd.textDisplay = "LineID: " + result[i].SourceLineID;
-                            objAdd.Label = "Line";
+                            objAdd.textDisplay = "FacebookID: " + result[i].SourceFacebook;
+                            objAdd.Label = "Facebook";
                             objAdd.NodeIndex = nodeArr.length;
                             objAdd.groupIndex = getGroupSource;
                             nodeArr.push(objAdd);
@@ -209,11 +202,11 @@ function LineDatabase(){
                             var objLink = {};
                             objLink.source = nodeArr.length - 1;
                             objLink.target = getTargetIndex;
-                            objLink.Type = "Line";
+                            objLink.Type = "Facebook";
                             objLink.prop = [];
 
                             var objLinkProp = {};
-                            objLinkProp.Sender = result[i].SourceLineID;
+                            objLinkProp.Sender = result[i].SourceFacebook;
                             objLinkProp.date = result[i].Date;
                             objLinkProp.Time = result[i].Time;
                             objLinkProp.message = result[i].Message;
@@ -223,8 +216,8 @@ function LineDatabase(){
                             if (checkDateRange(result[i].Date) == 'PASS') {
                                 var objSource = {};
                                 objSource.NodeName = result[i].Source;
-                                objSource.textDisplay = "LineID: " + result[i].SourceLineID;
-                                objSource.Label = "Line";
+                                objSource.textDisplay = "FacebookID: " + result[i].SourceFacebook;
+                                objSource.Label = "Facebook";
                                 objSource.NodeIndex = nodeArr.length;
                                 objSource.groupIndex = getGroupSource;
                                 getSourceIndex = objSource.NodeIndex;
@@ -232,8 +225,8 @@ function LineDatabase(){
 
                                 var objTarget = {};
                                 objTarget.NodeName = result[i].Target;
-                                objTarget.textDisplay = "LineID: " + result[i].TargetLineID;
-                                objTarget.Label = "Line";
+                                objTarget.textDisplay = "FacebookID: " + result[i].TargetFacebook;
+                                objTarget.Label = "Facebook";
                                 objTarget.NodeIndex = nodeArr.length;
                                 objTarget.groupIndex = getGroupTarget;
                                 getTargetIndex = objSource.NodeIndex;
@@ -243,10 +236,10 @@ function LineDatabase(){
                                 var objLink = {};
                                 objLink.source = getSourceIndex;
                                 objLink.target = getTargetIndex;
-                                objLink.Type = "Line";
+                                objLink.Type = "Facebook";
                                 objLink.prop = [];
                                 var objLinkProp = {};
-                                objLinkProp.Sender = result[i].SourceLineID;
+                                objLinkProp.Sender = result[i].SourceFacebook;
                                 objLinkProp.date = result[i].Date;
                                 objLinkProp.Time = result[i].Time;
                                 objLinkProp.message = result[i].Message;
@@ -260,26 +253,26 @@ function LineDatabase(){
 
 
                 //After finished adding all the nodes and relationship into nodeArr and linkArr
-                var allLineNodes = [];
+                var allFacebookNodes = [];
                 for (i = 0; i < nodeArr.length; i++) {
-                    if (nodeArr[i].Label == 'Line') {
-                        allLineNodes.push(nodeArr[i].NodeName);
+                    if (nodeArr[i].Label == 'Facebook') {
+                        allFacebookNodes.push(nodeArr[i].NodeName);
                     }
                 }
 
-                var nextQuery = "MATCH (n:LINE)-[r:Line]->(m:PHONE) WHERE "
-                for (i = 0; i < allLineNodes.length; i++) {
+                var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                for (i = 0; i < allFacebookNodes.length; i++) {
                     if (i == 0) {
-                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                        nextQuery += "n.Nodename = '" + allFacebookNodes[i] + "' ";
                     } else {
-                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                        nextQuery += "OR n.Nodename = '" + allFacebookNodes[i] + "' ";
                     }
                 }
                 nextQuery += "RETURN collect(distinct r) as R";
-                FetchPhoneLine(nextQuery);
+                FetchPhoneFacebook(nextQuery);
             });
 
-    function FetchPhoneLine(nextQuery) {
+    function FetchPhoneFacebook(nextQuery) {
         console.log(nextQuery);
         d3.xhr("http://localhost:7474/db/data/transaction/commit")
                 .header("Content-Type", "application/json")
@@ -340,7 +333,7 @@ function LineDatabase(){
                         finalResult.push(nodeArr);
                         finalResult.push(linkArr);
                         finalResult.push(groupArr);
-                        dataVisualizationLine(finalResult);
+                        dataVisualizationFacebook(finalResult);
                     } else {
                         alert("No result matches!");
                     }
@@ -348,7 +341,7 @@ function LineDatabase(){
     }
 }
 
-function dataVisualizationLine(finalResult) {
+function dataVisualizationFacebook(finalResult) {
     var width = 550, height = 800;
     var groupArr = finalResult[2];
     var mLinkNum = {};
@@ -364,7 +357,7 @@ function dataVisualizationLine(finalResult) {
     var force = d3.layout.force()
             .charge(-500)
             .linkDistance(function (d) {
-                if (d.Type == "Line")
+                if (d.Type == "Facebook")
                     return 200;
                 else
                     return 50;
@@ -397,11 +390,11 @@ function dataVisualizationLine(finalResult) {
             .on("mouseover", fadeLink(.1))
             .on("mouseout", fadeLink(1))
             .attr("marker-end", function (d) {
-                if (d.prop.length > 8 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
+                if (d.prop.length > 8 && d.Type != 'Facebook' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
                     return 'url(#highf)';
-                } else if (d.prop.length > 5 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
+                } else if (d.prop.length > 5 && d.Type != 'Facebook' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
                     return 'url(#mediumf)';
-                } else if (d.prop.length > 0 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
+                } else if (d.prop.length > 0 && d.Type != 'Facebook' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
                     return 'url(#lowf)';
                 } else {
                     return "";
@@ -415,7 +408,7 @@ function dataVisualizationLine(finalResult) {
                 }
             })
             .style("stroke", function (d) {
-                if (d.Type != "Line" && d.Type != "Call" && d.Type != "Whatsapp" && d.Type != "Facebook" && d.Type != "SMS") {
+                if (d.Type != "Facebook" && d.Type != "Call" && d.Type != "Whatsapp" && d.Type != "Facebook" && d.Type != "SMS") {
                     return color[d.source.groupIndex];
                 }
             });
@@ -438,7 +431,7 @@ function dataVisualizationLine(finalResult) {
             });
 
     link.on("click", function (d) {
-        if (d.Type == "Line") {
+        if (d.Type == "Facebook") {
             var propArr = d.prop;
             var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>SENDER</th>";
             myTable += "<th style='background-color:#333333;height: 40px; width:250px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
@@ -578,7 +571,7 @@ function dataVisualizationLine(finalResult) {
             nodeType.append('div')
                     .attr('class', 'nodeType2')
             var typeLabel = d3.select(".nodeType2");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LineAccount");
+            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FacebookAccount");
 
             nodeType.append('div')
                     .attr('class', 'nodeType3')

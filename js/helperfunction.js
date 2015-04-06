@@ -56,7 +56,7 @@ function checkDateRange(date){
                                         return "NOT PASS";
                                     }
                                 }else{
-                                    if(compareMonth <= endMonth){
+                                    if(compareMonth <= endMonth || compareMonth >= startMonth){
                                         if(compareMonth == endMonth){
                                             if(compareDate <= endDate){
                                                 return "PASS";
@@ -98,7 +98,7 @@ function checkDateRange(date){
                                 return "NOT PASS";
                             }
                         }else{
-                            return "NOT PASS"
+                            return "PASS";
                         }
 
                     }else{
