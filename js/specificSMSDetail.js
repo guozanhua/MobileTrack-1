@@ -439,6 +439,10 @@ function smsDataVisualization(finalResult) {
             .links(finalResult[1])
             .size([width, height])
             .start();
+    
+    var nodeData = finalResult[0].filter(function(d){
+        return d.matchFreq > 0;
+    });
 
     var marker = svg.append("defs").selectAll("marker")
             .data(["lowf", "mediumf", "highf"])
@@ -656,7 +660,7 @@ function smsDataVisualization(finalResult) {
 
         var inputSource = document.getElementById("phoneNo").value;
 
-        if (finalResult[0].length != 0) {
+        if (nodeData.length != 0) {
             //DisplayNode
             d3.select("#displayNode")
                     .append('div')
@@ -683,6 +687,23 @@ function smsDataVisualization(finalResult) {
                     })
             var colorLabel = d3.select(".nodeCircle2");
             colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coresponding&nbsp;Nodes");
+            
+            var nonInputPhone = [];
+            for(i=0;i<nodeData.length;i++){
+                if(nodeData[i].PhoneNumber != inputSource){
+                    nonInputPhone.push(nodeData[i].PhoneNumber);
+                }
+            }
+            
+            for(i=0;i<nonInputPhone.length;i++){
+                nodeColor.append('div')
+                    .attr('class', 'nodeCircle' + (i+3))
+                    .style('background', function (d) {
+                        return color[1];
+                    })
+                var colorLabel = d3.select(".nodeCircle" + (i+3));
+                colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + nonInputPhone[i]);
+            }
 
             //DisplayType
             d3.select("#displayType")
