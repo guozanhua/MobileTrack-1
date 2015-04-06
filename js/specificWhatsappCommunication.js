@@ -243,7 +243,42 @@ function WhatsappDatabase() {
                         }
                     }
                 }
+                
+                for(i=0;i<nodeArr.length;i++){
+                    nodeArr[i].WhatsappChat = [];
+                }
 
+                linkArr.forEach(function (link) {
+                    for (i = 0; i < nodeArr.length; i++) {
+                        if (link.source == nodeArr[i].NodeIndex) {
+                            for (j = 0; j < nodeArr.length; j++) {
+                                if (link.target == nodeArr[j].NodeIndex) {
+                                    var objWhatsappChat = {};
+                                    objWhatsappChat.PhoneNumber = nodeArr[j].PhoneNumber;
+                                    objWhatsappChat.freq = link.prop.length; //Will change to lineId soon!!
+                                    nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    for (i = 0; i < nodeArr.length; i++) {
+                        if (link.target == nodeArr[i].NodeIndex) {
+                            for (j = 0; j < nodeArr.length; j++) {
+                                if (link.source == nodeArr[j].NodeIndex) {
+                                    var objWhatsappChat = {};
+                                    objWhatsappChat.Account = nodeArr[j].textDisplay;
+                                    objWhatsappChat.freq = link.prop.length;//Will change to linkID soon!!
+                                    nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                });
 
                 //After finished adding all the nodes and relationship into nodeArr and linkArr
                 var allWhatsappNodes = [];
@@ -449,7 +484,15 @@ function dataVisualizationWhatsapp(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                return "<strong>Node:</strong> <span style='color:red'>" + d.NodeName + "</span>";
+                if(d.Label == 'Whatsapp'){
+                    var output = "";
+                    output = d.textDisplay + "<br/>";
+                    output += "Whatsapp chat with: " + "<br/>"
+                    for (i = 0; i < d.WhatsappChat.length; i++) {
+                        output += i + "). " + d.WhatsappChat[i].Account + " Freq: " + d.WhatsappChat[i].freq + "<br/>";
+                    }
+                    return output;
+                }
             });
 
     svg.call(tip);

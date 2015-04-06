@@ -251,7 +251,42 @@ function FacebookDatabase() {
                     }
                 }
 
+                for(i=0;i<nodeArr.length;i++){
+                    nodeArr[i].facebookChat = [];
+                }
 
+                linkArr.forEach(function (link) {
+                    for (i = 0; i < nodeArr.length; i++) {
+                        if (link.source == nodeArr[i].NodeIndex) {
+                            for (j = 0; j < nodeArr.length; j++) {
+                                if (link.target == nodeArr[j].NodeIndex) {
+                                    var objFacebookChat = {};
+                                    objFacebookChat.Account = nodeArr[j].textDisplay;
+                                    objFacebookChat.freq = link.prop.length; //Will change to lineId soon!!
+                                    nodeArr[i].facebookChat.push(objFacebookChat);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    for (i = 0; i < nodeArr.length; i++) {
+                        if (link.target == nodeArr[i].NodeIndex) {
+                            for (j = 0; j < nodeArr.length; j++) {
+                                if (link.source == nodeArr[j].NodeIndex) {
+                                    var objFacebookChat = {};
+                                    objFacebookChat.Account = nodeArr[j].textDisplay;
+                                    objFacebookChat.freq = link.prop.length;//Will change to linkID soon!!
+                                    nodeArr[i].facebookChat.push(objFacebookChat);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                });
+                
                 //After finished adding all the nodes and relationship into nodeArr and linkArr
                 var allFacebookNodes = [];
                 for (i = 0; i < nodeArr.length; i++) {
@@ -458,7 +493,16 @@ function dataVisualizationFacebook(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                return "<strong>Node:</strong> <span style='color:red'>" + d.NodeName + "</span>";
+                if(d.Label == 'Facebook'){
+                    var output = "";
+                    output = d.textDisplay + "<br/>";
+                    output += "Facebook chat with: " + "<br/>"
+                    for (i = 0; i < d.facebookChat.length; i++) {
+                        output += i + "). " + d.facebookChat[i].Account + " Freq: " + d.facebookChat[i].freq + "<br/>";
+                    }
+
+                    return output;
+                }
             });
 
     svg.call(tip);

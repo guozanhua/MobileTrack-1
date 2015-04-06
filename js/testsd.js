@@ -1127,6 +1127,7 @@ function queryManagement(selections) {
                                 var count = 0;
                                 if (result.length == 0) {
                                     alert("No data found. Please try again.");
+                                    
                                 }
 
                                 //Create groupArr
