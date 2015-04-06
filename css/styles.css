@@ -236,7 +236,7 @@ P.blocktext {
 }
 
 #input{
-	height:1000px;
+	height:1200px;
 	background-image:url("../picture/llll.png");
     /*background-color: black;*/
 	margin-bottom:10px; 
@@ -247,7 +247,7 @@ P.blocktext {
 #graph{
 	
 	z-index:-1; 
-	height:1000px;
+	height:1200px;
 	/*width:815px;*/
 	background-color:#111111;
 	margin-bottom:10px;
@@ -257,7 +257,7 @@ P.blocktext {
 
 
 #output{
-	height:808px;
+	height:1008px;
 	background-image:url("../picture/lllll.png");
 	margin-bottom:15px;
 	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
