@@ -257,6 +257,42 @@ function LineDatabase(){
                         }
                     }
                 }
+                
+                for(i=0;i<nodeArr.length;i++){
+                    nodeArr[i].lineChat = [];
+                }
+
+                linkArr.forEach(function (link) {
+                    for (i = 0; i < nodeArr.length; i++) {
+                        if (link.source == nodeArr[i].NodeIndex) {
+                            for (j = 0; j < nodeArr.length; j++) {
+                                if (link.target == nodeArr[j].NodeIndex) {
+                                    var objLineChat = {};
+                                    objLineChat.Account = nodeArr[j].textDisplay;
+                                    objLineChat.freq = link.prop.length; //Will change to lineId soon!!
+                                    nodeArr[i].lineChat.push(objLineChat);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    for (i = 0; i < nodeArr.length; i++) {
+                        if (link.target == nodeArr[i].NodeIndex) {
+                            for (j = 0; j < nodeArr.length; j++) {
+                                if (link.source == nodeArr[j].NodeIndex) {
+                                    var objLineChat = {};
+                                    objLineChat.Account = nodeArr[j].textDisplay;
+                                    objLineChat.freq = link.prop.length;//Will change to linkID soon!!
+                                    nodeArr[i].lineChat.push(objLineChat);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                });
 
 
                 //After finished adding all the nodes and relationship into nodeArr and linkArr
@@ -465,7 +501,16 @@ function dataVisualizationLine(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                return "<strong>Node:</strong> <span style='color:red'>" + d.NodeName + "</span>";
+                if(d.Label == 'Line'){
+                    var output = "";
+                    output =  d.textDisplay + "<br/>";
+                    output += "LINE chat with: " + "<br/>"
+                    for (i = 0; i < d.lineChat.length; i++) {
+                        output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";
+                    }
+
+                    return output;
+                }
             });
 
     svg.call(tip);

@@ -327,6 +327,81 @@ function FetchSMSDatabase(input) {
 
                     }
                 }
+                
+                 for(i=0;i<nodeArr.length;i++){
+                    nodeArr[i].callOut = [];
+                    nodeArr[i].callIn = [];
+                }
+
+                linkArr.forEach(function (link) {
+                    for (i = 0; i < nodeArr.length; i++) {
+                        if (link.source == nodeArr[i].NodeIndex) {
+                            for (j = 0; j < nodeArr.length; j++) {
+                                if (link.target == nodeArr[j].NodeIndex) {
+                                    var objCallOut = {};
+                                    objCallOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                    objCallOut.freq = link.prop.length;
+                                    nodeArr[i].callOut.push(objCallOut);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    for (i = 0; i < nodeArr.length; i++) {
+                        if (link.target == nodeArr[i].NodeIndex) {
+                            for (j = 0; j < nodeArr.length; j++) {
+                                if (link.source == nodeArr[j].NodeIndex) {
+                                    var objCallIn = {};
+                                    objCallIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                    objCallIn.freq = link.prop.length;
+                                    nodeArr[i].callIn.push(objCallIn);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                });
+                
+                for(i=0;i<nodeArr.length;i++){
+                    nodeArr[i].smsOut = [];
+                    nodeArr[i].smsIn = [];
+                }
+
+                linkArr.forEach(function (link) {
+                    for (i = 0; i < nodeArr.length; i++) {
+                        if (link.source == nodeArr[i].NodeIndex) {
+                            for (j = 0; j < nodeArr.length; j++) {
+                                if (link.target == nodeArr[j].NodeIndex) {
+                                    var objSMSOut = {};
+                                    objSMSOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                    objSMSOut.freq = link.prop.length;
+                                    nodeArr[i].smsOut.push(objSMSOut);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    for (i = 0; i < nodeArr.length; i++) {
+                        if (link.target == nodeArr[i].NodeIndex) {
+                            for (j = 0; j < nodeArr.length; j++) {
+                                if (link.source == nodeArr[j].NodeIndex) {
+                                    var objSMSIn = {};
+                                    objSMSIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                    objSMSIn.freq = link.prop.length;
+                                    nodeArr[i].smsIn.push(objSMSIn);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                });
+
 
                 //document.write(JSON.stringify(nodeArr));
                 var resultArr = [];
@@ -498,7 +573,19 @@ function smsDataVisualization(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                return "<strong>Node:</strong> <span style='color:red'>" + d.textDisplay + "</span>";
+                var output = "";
+                output = "Phone Number: " + d.PhoneNumber + "<br/>";
+                output += "SMS In: " + "<br/>"
+                for (i = 0; i < d.callIn.length; i++) {
+                    output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
+                }
+
+                output += "SMS Out: " + "<br/>"
+                for (i = 0; i < d.callOut.length; i++) {
+                    output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
+                }
+
+                return output;
             });
 
     svg.call(tip);

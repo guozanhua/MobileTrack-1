@@ -80,7 +80,6 @@ function FetchDatabase(input) {
                 }
 
                 for (i = 0; i < result.length; i++) {
-                    console.log(checkDateRange(result[i].Date));
                     //i == 0 means this is the first time we enter this loop.
                     //Automatically added both Source and Target node into nodeArr.
                     //For linkArr, automatically assigned sourceIndex as 0 and targetIndex as 1. Follow by property of the communcation
@@ -167,6 +166,8 @@ function FetchDatabase(input) {
                         var getTargetPhone = "";
                         var getDur = "";
                         var getDate = "";
+                        var locSource = 0;
+                        var locTarget = 0;
 
                         //(1)
                         for (j = 0; j < nodeArr.length; j++) {
@@ -176,6 +177,7 @@ function FetchDatabase(input) {
                                 getSourceIndex = nodeArr[j].NodeIndex;
                                 getDur = result[i].Duration;
                                 getDate = result[i].Date;
+                                locSource = j;
                                 checkSource++;
                                 break;
                             }
@@ -189,6 +191,7 @@ function FetchDatabase(input) {
                                 getTargetIndex = nodeArr[j].NodeIndex;
                                 getDur = result[i].Duration;
                                 getDate = result[i].Date;
+                                locTarget = j;
                                 checkTarget++;
                                 break;
                             }
@@ -335,21 +338,69 @@ function FetchDatabase(input) {
                         }
                     }
                 }
+                
+                
+                for(i=0;i<nodeArr.length;i++){
+                    nodeArr[i].callOut = [];
+                    nodeArr[i].callIn = [];
+                    nodeArr[i].matchFreq = 0;
+                }
+                
+                var inputFreq = 3;
+
+                linkArr.forEach(function (link) {
+                    if(link.prop.length >= inputFreq){
+                        for (i = 0; i < nodeArr.length; i++) {
+                            if (link.source == nodeArr[i].NodeIndex) {
+                                for (j = 0; j < nodeArr.length; j++) {
+                                    if (link.target == nodeArr[j].NodeIndex) {
+                                        var objCallOut = {};
+                                        objCallOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                        objCallOut.freq = link.prop.length;
+                                        nodeArr[i].callOut.push(objCallOut);
+                                        nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+
+                        for (i = 0; i < nodeArr.length; i++) {
+                            if (link.target == nodeArr[i].NodeIndex) {
+                                for (j = 0; j < nodeArr.length; j++) {
+                                    if (link.source == nodeArr[j].NodeIndex) {
+                                        var objCallIn = {};
+                                        objCallIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                        objCallIn.freq = link.prop.length;
+                                        nodeArr[i].callIn.push(objCallIn);
+                                        nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    
+                });
+
                 //document.write(JSON.stringify(nodeArr));
                 var finalResult = [];
                 finalResult.push(nodeArr);
                 finalResult.push(linkArr);
                 finalResult.push(groupArr);
-                //document.write(JSON.stringify(finalResult[1]));
+                //document.write(JSON.stringify(finalResult[0]));
                 dataVisualizationPhone(finalResult);
             });
 }
 
 function dataVisualizationPhone(finalResult) {
 
-    var width = 550, height = 800;
+    var width = 800, height = 800;
     var groupArr = finalResult[2];
     var mLinkNum = {};
+    var inputFreq = 3;
     sortLinks();
     setLinkIndexAndNum();
 
@@ -368,10 +419,18 @@ function dataVisualizationPhone(finalResult) {
                 }
             })
             .nodes(finalResult[0])
-            .links(finalResult[1])
+            .links(finalResult[1].filter(function(d){
+                if(d.prop.length >= inputFreq)
+                    console.log("FROM: " + d.source + "/ TO: " + d.target);
+                return d.prop.length >= inputFreq;
+            }))
             .size([width, height])
             .start();
-
+    
+    var nodeData = finalResult[0].filter(function(d){
+        return d.matchFreq > 0;
+    });
+    
     var marker = svg.append("defs").selectAll("marker")
             .data(["lowf", "mediumf", "highf"])
             .enter().append("marker")
@@ -401,7 +460,7 @@ function dataVisualizationPhone(finalResult) {
 
     //force.linkDistance(width/2);
     var link = svg.selectAll('.link')
-            .data(finalResult[1])
+            .data(force.links())
             .enter().append('path')
             .attr('class', linkClass)
             .attr("id", function (d, i) {
@@ -433,7 +492,7 @@ function dataVisualizationPhone(finalResult) {
                 }
             });
 
-    var linktext = svg.selectAll("g.linklabelholder").data(finalResult[1]);
+    var linktext = svg.selectAll("g.linklabelholder").data(force.links());
     linktext.enter().append("g").attr("class", "linklabelholder")
             .append("text")
             .attr("class", "linklabel")
@@ -499,7 +558,19 @@ function dataVisualizationPhone(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                return "<strong>Node:</strong> <span style='color:red'>" + d.PhoneNumber + "</span>";
+                var output = "";
+                output = "Phone Number: " + d.PhoneNumber + "<br/>";
+                output += "Call In: " + "<br/>"
+                for (i = 0; i < d.callIn.length; i++) {
+                    output += i + "). " + d.callIn[i].PhoneNumber + " Freq: " + d.callIn[i].freq + "<br/>";
+                }
+
+                output += "Call Out: " + "<br/>"
+                for (i = 0; i < d.callOut.length; i++) {
+                    output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
+                }
+
+                return output;
             });
 
     svg.call(tip);
@@ -529,7 +600,7 @@ function dataVisualizationPhone(finalResult) {
     }
     // Now it's the nodes turn. Each node is drawn as a circle.
     var node = svg.selectAll('.node')
-            .data(finalResult[0])
+            .data(nodeData)
             .enter().append('circle')
             .attr("class", function (d) {
                 return "node " + d.Label;
@@ -552,7 +623,7 @@ function dataVisualizationPhone(finalResult) {
     });
 
     var texts = svg.selectAll(".text")
-            .data(finalResult[0])
+            .data(nodeData)
             .enter().append("text")
             .attr("class", "text")
             .attr("text-anchor", "middle")
@@ -589,6 +660,7 @@ function dataVisualizationPhone(finalResult) {
                     })
             var colorLabel = d3.select(".nodeCircle1");
             colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputSource);
+
 
             nodeColor.append('div')
                     .attr('class', 'nodeCircle2')
@@ -668,7 +740,7 @@ function dataVisualizationPhone(finalResult) {
             var dx = d.target.x - d.source.x,
                     dy = d.target.y - d.source.y,
                     dr = Math.sqrt(dx * dx + dy * dy);
-            // get the total link numbers between source and target node
+            // get the total link PhoneNumberbers between source and target node
             var lTotalLinkNum = mLinkNum[d.source.NodeIndex + "," + d.target.NodeIndex] || mLinkNum[d.target.NodeIndex + "," + d.source.NodeIndex];
             if (lTotalLinkNum > 1)
             {
@@ -719,7 +791,7 @@ function dataVisualizationPhone(finalResult) {
         });
     }
 
-    //any links with duplicate source and target get an incremented 'linknum'
+    //any links with duplicate source and target get an incremented 'linkPhoneNumber'
     function setLinkIndexAndNum()
     {
         for (var i = 0; i < finalResult[1].length; i++)
@@ -734,7 +806,7 @@ function dataVisualizationPhone(finalResult) {
             {
                 finalResult[1][i].linkindex = 1;
             }
-            // save the total number of links between two nodes
+            // save the total PhoneNumberber of links between two nodes
             if (mLinkNum[finalResult[1][i].target + "," + finalResult[1][i].source] !== undefined)
             {
                 mLinkNum[finalResult[1][i].target + "," + finalResult[1][i].source] = finalResult[1][i].linkindex;
