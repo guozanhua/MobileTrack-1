@@ -83,7 +83,7 @@
           <form id="typeboxmessage2" style="display:none">
          
            &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket"class="font2"size="3"color="white" >TYPE:</font></label>
-          <select id="typesms"class="wrapper-dropdown-" >
+          <select id="typesms"class="wrapper-dropdown-6" >
                     <option value="all">ALL</option>
                     <option value="send">SEND</option>
                     <option value="received">RECEIVED</option>
@@ -204,6 +204,30 @@
           </select>
         </form>
         </div>
+<br>
+    <div>
+          <form id="frequency" style="display:none">
+          <u><label><font face="supermarket" size="4"color="white"class="font" >FREQUENCY :</font></label ></u>
+          <select id="status" class="wrapper-dropdown-3">
+                    <option value="all">ALL</option>
+                     <option value="3">3</option>
+                     <option value="6">6</option>
+                     <option value="6">9</option>
+                    
+          </select>
+        </form>
+        </div>    <div>
+          <form id="frequency" style="display:none">
+          <u><label><font face="supermarket" size="4"color="white"class="font" >FREQUENCY :</font></label ></u>
+          <select id="status" class="wrapper-dropdown-3">
+                    <option value="all">ALL</option>
+                     <option value="3">3</option>
+                     <option value="6">6</option>
+                     <option value="6">9</option>
+                    
+          </select>
+        </form>
+        </div>
         <div>
           <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
            <p align = "right"><button type="button" class="color blue button"onclick="submitButtonPressed();"size="2">Send</button></p>
@@ -228,6 +252,10 @@
         <div id = "displayLink" style="float: left; width: 33%;"></div>
       </div>
       <br/>
+       <div id="scollbar" >
+        <font face="supermarket" size="2" color="white">
+        
+      </div>
       <div id="output">
       </div>
     </div>
@@ -244,6 +272,7 @@ function doSomething(){
     document.getElementById("typeboxcall").style.display="none";
     document.getElementById("typeboxmessage").style.display="none";
     document.getElementById("statusSMS").style.display="none";
+    document.getElementById("frequency").style.display="none";
     console.log(a);
 
   if(a=="call"){
@@ -251,25 +280,30 @@ function doSomething(){
     
     document.getElementById("durationbox").style.display="block";
     document.getElementById("typeboxcall").style.display="block";
+    document.getElementById("frequency").style.display="block";
     }
   else if (a=="message") {
     document.getElementById("date_form").style.display="block";
     
     document.getElementById("typeboxmessage").style.display="block";
     document.getElementById("statusSMS").style.display="block";
+    document.getElementById("frequency").style.display="block";
     }
   else if (a=="line") {
     document.getElementById("date_form").style.display="block";
+    document.getElementById("frequency").style.display="block";
     
    
     }
   else if (a=="facebook") {
     document.getElementById("date_form").style.display="block";
+    document.getElementById("frequency").style.display="block";
     
    
     }
-  else if (a=="whatapp") {
+  else if (a=="whatsapp") {
     document.getElementById("date_form").style.display="block";
+    document.getElementById("frequency").style.display="block";
     
    
     }
@@ -332,6 +366,7 @@ function allNumbers(){
           document.getElementById("durationbox2").style.display = "none";
           document.getElementById("typeboxmessage2").style.display = "none";
           document.getElementById("date_form2").style.display="none";
+          document.getElementById("frequency").style.display="none";
     if(a=="ap"){
           document.getElementById("spinnerboxForm").style.display = "block";}
 }
@@ -348,6 +383,7 @@ document.getElementById("typeboxcall").style.display="none";
 document.getElementById("typeboxmessage").style.display="none";
 document.getElementById("statusSMS").style.display="none";
  document.getElementById("date_form").style.display="none";
+ document.getElementById("frequency").style.display="none";
   if(a=="mp"){
     document.getElementById("la").style.display="block";
     document.getElementById("checkboxbar").style.display="block";
@@ -357,6 +393,7 @@ document.getElementById("statusSMS").style.display="none";
     document.getElementById("status3").style.display = "block";
     document.getElementById("status4").style.display = "block";
     document.getElementById("date_form2").style.display="block";
+    document.getElementById("frequency").style.display="block";
     //document.getElementById("typeboxcall").style.display="block";
   }
 
