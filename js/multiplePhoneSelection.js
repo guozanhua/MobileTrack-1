@@ -452,6 +452,98 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     }
                                 }
                             }
+
+
+                            for (i = 0; i < nodeArr.length; i++) {
+                                nodeArr[i].callOut = [];
+                                nodeArr[i].callIn = [];
+                                nodeArr[i].matchFreq = 0;
+                            }
+
+                            var inputFreq = 0;
+                            //Listed of callTo and callIn for each node
+                            linkArr.forEach(function (link) {
+                                if (link.prop.length >= inputFreq) {
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.source == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.target == nodeArr[j].NodeIndex) {
+                                                    var objCallOut = {};
+                                                    objCallOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                    objCallOut.freq = link.prop.length;
+                                                    nodeArr[i].callOut.push(objCallOut);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.target == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.source == nodeArr[j].NodeIndex) {
+                                                    var objCallIn = {};
+                                                    objCallIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                    objCallIn.freq = link.prop.length;
+                                                    nodeArr[i].callIn.push(objCallIn);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+
+                            });
+
+                            for (i = 0; i < nodeArr.length; i++) {
+                                nodeArr[i].callOut = [];
+                                nodeArr[i].callIn = [];
+                                nodeArr[i].matchFreq = 0;
+                            }
+
+                            var inputFreq = 0;
+                            //Listed of callTo and callIn for each node
+                            linkArr.forEach(function (link) {
+                                if (link.prop.length >= inputFreq) {
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.source == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.target == nodeArr[j].NodeIndex) {
+                                                    var objCallOut = {};
+                                                    objCallOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                    objCallOut.freq = link.prop.length;
+                                                    nodeArr[i].callOut.push(objCallOut);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.target == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.source == nodeArr[j].NodeIndex) {
+                                                    var objCallIn = {};
+                                                    objCallIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                    objCallIn.freq = link.prop.length;
+                                                    nodeArr[i].callIn.push(objCallIn);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+
+                            });
+
                             //After finish adding all the nodes and relationship into nodeArr and linkArr
                             if (noLoop == selections.length - 1) {
                                 var finalResult = [];
@@ -914,6 +1006,44 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     }
                                 }
                             }
+
+                            for (i = 0; i < nodeArr.length; i++) {
+                                nodeArr[i].smsOut = [];
+                                nodeArr[i].smsIn = [];
+                            }
+
+                            linkArr.forEach(function (link) {
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.source == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.target == nodeArr[j].NodeIndex) {
+                                                var objSMSOut = {};
+                                                objSMSOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                objSMSOut.freq = link.prop.length;
+                                                nodeArr[i].smsOut.push(objSMSOut);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.target == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.source == nodeArr[j].NodeIndex) {
+                                                var objSMSIn = {};
+                                                objSMSIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                objSMSIn.freq = link.prop.length;
+                                                nodeArr[i].smsIn.push(objSMSIn);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            });
+
                             //After finish adding all the nodes and relationship into nodeArr and linkArr
                             if (noLoop == selections.length - 1) {
                                 var finalResult = [];
@@ -1364,6 +1494,77 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     }
                                 }
                             }
+
+                            for (i = 0; i < nodeArr.length; i++) {
+                                nodeArr[i].lineChat = [];
+                            }
+
+                            linkArr.forEach(function (link) {
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.source == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.target == nodeArr[j].NodeIndex) {
+                                                var objLineChat = {};
+                                                objLineChat.Account = nodeArr[j].textDisplay;
+                                                objLineChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                nodeArr[i].lineChat.push(objLineChat);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.target == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.source == nodeArr[j].NodeIndex) {
+                                                var objLineChat = {};
+                                                objLineChat.Account = nodeArr[j].textDisplay;
+                                                objLineChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                nodeArr[i].lineChat.push(objLineChat);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            });
+                            for (i = 0; i < nodeArr.length; i++) {
+                                nodeArr[i].lineChat = [];
+                            }
+
+                            linkArr.forEach(function (link) {
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.source == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.target == nodeArr[j].NodeIndex) {
+                                                var objLineChat = {};
+                                                objLineChat.Account = nodeArr[j].textDisplay;
+                                                objLineChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                nodeArr[i].lineChat.push(objLineChat);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.target == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.source == nodeArr[j].NodeIndex) {
+                                                var objLineChat = {};
+                                                objLineChat.Account = nodeArr[j].textDisplay;
+                                                objLineChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                nodeArr[i].lineChat.push(objLineChat);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            });
 
                             //After finished adding all the nodes and relationship into nodeArr and linkArr
                             var allLineNodes = [];
@@ -1888,6 +2089,44 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     }
                                 }
                             }
+
+                            for (i = 0; i < nodeArr.length; i++) {
+                                nodeArr[i].WhatsappChat = [];
+                            }
+
+                            linkArr.forEach(function (link) {
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.source == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.target == nodeArr[j].NodeIndex) {
+                                                var objWhatsappChat = {};
+                                                objWhatsappChat.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                objWhatsappChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.target == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.source == nodeArr[j].NodeIndex) {
+                                                var objWhatsappChat = {};
+                                                objWhatsappChat.Account = nodeArr[j].textDisplay;
+                                                objWhatsappChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            });
+
+
                             //After finished adding all the nodes and relationship into nodeArr and linkArr
                             var allLineNodes = [];
                             for (i = 0; i < nodeArr.length; i++) {
@@ -1984,7 +2223,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
             } else {
                 //create Query for Facebook
-                var _query = "MATCH (n:FACEBOOK)<-[r:Facebook]->(m:FACEBOOK) "
+                var _query = "MATCH (n:FACEBOOK)<-[r:Facebookchat]->(m:FACEBOOK) "
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
                         _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
@@ -2411,6 +2650,43 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     }
                                 }
                             }
+
+                            for (i = 0; i < nodeArr.length; i++) {
+                                nodeArr[i].facebookChat = [];
+                            }
+
+                            linkArr.forEach(function (link) {
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.source == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.target == nodeArr[j].NodeIndex) {
+                                                var objFacebookChat = {};
+                                                objFacebookChat.Account = nodeArr[j].textDisplay;
+                                                objFacebookChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                nodeArr[i].facebookChat.push(objFacebookChat);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.target == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.source == nodeArr[j].NodeIndex) {
+                                                var objFacebookChat = {};
+                                                objFacebookChat.Account = nodeArr[j].textDisplay;
+                                                objFacebookChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                nodeArr[i].facebookChat.push(objFacebookChat);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            });
+
                             //After finished adding all the nodes and relationship into nodeArr and linkArr
                             var allFacebookNodes = [];
                             for (i = 0; i < nodeArr.length; i++) {
@@ -2810,6 +3086,54 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                 }
                             }
 
+                            for (i = 0; i < nodeArr.length; i++) {
+                                if (nodeArr[i].Label == 'Phone') {
+                                    nodeArr[i].callOut = [];
+                                    nodeArr[i].callIn = [];
+                                    nodeArr[i].matchFreq = 0;
+                                }
+                            }
+
+                            var inputFreq = 0;
+                            //Listed of callTo and callIn for each node
+                            linkArr.forEach(function (link) {
+                                if (link.Type == 'Call') {
+                                    if (link.prop.length >= inputFreq) {
+                                        for (i = 0; i < nodeArr.length; i++) {
+                                            if (link.source == nodeArr[i].NodeIndex) {
+                                                for (j = 0; j < nodeArr.length; j++) {
+                                                    if (link.target == nodeArr[j].NodeIndex) {
+                                                        var objCallOut = {};
+                                                        objCallOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                        objCallOut.freq = link.prop.length;
+                                                        nodeArr[i].callOut.push(objCallOut);
+                                                        nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                        break;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }
+
+                                        for (i = 0; i < nodeArr.length; i++) {
+                                            if (link.target == nodeArr[i].NodeIndex) {
+                                                for (j = 0; j < nodeArr.length; j++) {
+                                                    if (link.source == nodeArr[j].NodeIndex) {
+                                                        var objCallIn = {};
+                                                        objCallIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                        objCallIn.freq = link.prop.length;
+                                                        nodeArr[i].callIn.push(objCallIn);
+                                                        nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                        break;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+
                             //After finish adding all the nodes and relationship into nodeArr and linkArr
                             if (noLoop == selections.length - 1) {
                                 var finalResult = [];
@@ -3134,6 +3458,48 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                 }
                             }
 
+                            for (i = 0; i < nodeArr.length; i++) {
+                                if (nodeArr[i].Label == 'Phone') {
+                                    nodeArr[i].smsOut = [];
+                                    nodeArr[i].smsIn = [];
+                                }
+
+                            }
+
+                            linkArr.forEach(function (link) {
+                                if (link.Type == 'SMS') {
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.source == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.target == nodeArr[j].NodeIndex) {
+                                                    var objSMSOut = {};
+                                                    objSMSOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                    objSMSOut.freq = link.prop.length;
+                                                    nodeArr[i].smsOut.push(objSMSOut);
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.target == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.source == nodeArr[j].NodeIndex) {
+                                                    var objSMSIn = {};
+                                                    objSMSIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                    objSMSIn.freq = link.prop.length;
+                                                    nodeArr[i].smsIn.push(objSMSIn);
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            });
+
                             //After finish adding all the nodes and relationship into nodeArr and linkArr
                             if (noLoop == selections.length - 1) {
                                 var finalResult = [];
@@ -3359,7 +3725,6 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                 }
                             }
 
-
                             /*
                              Start building nodeArr and linkArr
                              */
@@ -3533,6 +3898,48 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
                                 }
                             }
+
+                            for (i = 0; i < nodeArr.length; i++) {
+                                if (nodeArr[i].Label == 'Whatsapp') {
+                                    nodeArr[i].WhatsappChat = [];
+                                }
+                            }
+
+                            linkArr.forEach(function (link) {
+                                if (link.Type == 'Whatsapp') {
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.source == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.target == nodeArr[j].NodeIndex) {
+                                                    var objWhatsappChat = {};
+                                                    objWhatsappChat.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                    objWhatsappChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                    nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.target == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.source == nodeArr[j].NodeIndex) {
+                                                    var objWhatsappChat = {};
+                                                    objWhatsappChat.Account = nodeArr[j].textDisplay;
+                                                    objWhatsappChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                    nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+
+                            });
+
                             //After finished adding all the nodes and relationship into nodeArr and linkArr
                             var allLineNodes = [];
                             for (i = 0; i < nodeArr.length; i++) {
@@ -4026,6 +4433,49 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
                                 }
                             }
+
+                            for (i = 0; i < nodeArr.length; i++) {
+                                if (nodeArr[i].Label == 'Facebook') {
+                                    nodeArr[i].facebookChat = [];
+                                }
+
+                            }
+
+                            linkArr.forEach(function (link) {
+                                if (link.Type == 'Facebook') {
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.source == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.target == nodeArr[j].NodeIndex) {
+                                                    var objFacebookChat = {};
+                                                    objFacebookChat.Account = nodeArr[j].textDisplay;
+                                                    objFacebookChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                    nodeArr[i].facebookChat.push(objFacebookChat);
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.target == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.source == nodeArr[j].NodeIndex) {
+                                                    var objFacebookChat = {};
+                                                    objFacebookChat.Account = nodeArr[j].textDisplay;
+                                                    objFacebookChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                    nodeArr[i].facebookChat.push(objFacebookChat);
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+
+                            });
+
                             //After finished adding all the nodes and relationship into nodeArr and linkArr
                             var allLineNodes = [];
                             for (i = 0; i < nodeArr.length; i++) {
@@ -4374,7 +4824,80 @@ function dataVisualizationMultiplePhones(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                return "<strong><span style='color:white'>" + d.textDisplay + "</span></strong>";
+                
+                var output = "";
+                if(document.getElementById("").checked){
+                    if(d.Label == 'Phone'){
+                        output = "Phone Number: " + d.PhoneNumber + "<br/>";
+                        output += "Call In: " + "<br/>"
+                        for (i = 0; i < d.callIn.length; i++) {
+                            output += i + "). " + d.callIn[i].PhoneNumber + " Freq: " + d.callIn[i].freq + "<br/>";
+                        }
+
+                        output += "Call Out: " + "<br/>"
+                        for (i = 0; i < d.callOut.length; i++) {
+                            output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
+                        }
+
+                        return output;
+                    }
+                }
+                
+                if(document.getElementById("").checked){
+                    if(d.Label == 'Phone'){
+                        output = "Phone Number: " + d.PhoneNumber + "<br/>";
+                        output += "SMS In: " + "<br/>"
+                        for (i = 0; i < d.callIn.length; i++) {
+                            output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
+                        }
+
+                        output += "SMS Out: " + "<br/>"
+                        for (i = 0; i < d.callOut.length; i++) {
+                            output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
+                        }
+
+                        return output;
+                    }
+                    
+                }
+               
+                if(document.getElementById("").checked){
+                    if(d.Label == 'Line'){
+                        output =  d.textDisplay + "<br/>";
+                        output += "LINE chat with: " + "<br/>"
+                        for (i = 0; i < d.lineChat.length; i++) {
+                            output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";
+                        }
+
+                        return output;
+                    }
+                    
+                }
+                
+                if(document.getElementById("").checked){
+                    if(d.Label == 'Whatsapp'){
+                        output = d.textDisplay + "<br/>";
+                        output += "Whatsapp chat with: " + "<br/>"
+                        for (i = 0; i < d.WhatsappChat.length; i++) {
+                            output += i + "). " + d.WhatsappChat[i].Account + " Freq: " + d.WhatsappChat[i].freq + "<br/>";
+                        }
+                        return output;
+                    }
+                    
+                }
+                
+                if(document.getElementById("").checked){
+                    if(d.Label == 'Facebook'){
+                        output = d.textDisplay + "<br/>";
+                        output += "Facebook chat with: " + "<br/>"
+                        for (i = 0; i < d.facebookChat.length; i++) {
+                            output += i + "). " + d.facebookChat[i].Account + " Freq: " + d.facebookChat[i].freq + "<br/>";
+                        }
+
+                        return output;
+                    }
+                    
+                }
             });
 
     svg.call(tip);
