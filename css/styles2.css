@@ -292,8 +292,8 @@ P.blocktext {
 }
 
 #input{
-  height:100%;
-    min-height:1200px;
+  
+   min-height:1300px;
   background-color: #0c0c0c;
     background-size: 100%;
     /*background-color: black;*/
@@ -301,13 +301,14 @@ P.blocktext {
   padding-right:5%; 
     padding-left:5%;
     border:5px solid rgba(0,0,0,0.40);
+    overflow: auto;
 }
   
 #graph{
   
   z-index:-1; 
-  height:100%;
-    min-height:1200px;
+ 
+    height:1300px;
   /*width:815px;*/
   background-color:#111111;
   margin-bottom:10px;
@@ -318,8 +319,8 @@ P.blocktext {
 
 
 #output{
-  height:100%;
-    min-height:1008px;
+  
+   height:958px;
   background-color:#0c0c0c;
   margin-bottom:1%;
   white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
