@@ -11,6 +11,10 @@ function queryManagement(selections) {
 
     var inputSource = document.getElementById("sPhoneNo").value;
     var inputTarget = document.getElementById("tPhoneNo").value;
+    var datefrom = document.getElementById("datefrom").value;
+    var dateto = document.getElementById("dateto").value;
+    var datefromforquery = convertDatetoISO(datefrom);
+    var datetoforquery = convertDatetoISO(dateto);
 
     var noLoop = 0;
     recursive();
@@ -19,7 +23,11 @@ function queryManagement(selections) {
         if (noLoop == 0) {
             if (selections[noLoop].Type == 'Call') {
                 var linkType = selections[noLoop].linkType;
-                var _query = "MATCH (n:PHONE)" + linkType + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) AS R";
+                var _query = "MATCH (n:PHONE)" + linkType + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                if(datefrom != "" && dateto != ""){
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery +")"
+                }
+                _query += "RETURN collect(distinct r1) AS R";
                 console.log(_query);
                 //console.log(_queryString);
 
@@ -346,12 +354,12 @@ function queryManagement(selections) {
 
                                     //'prop' is an array which contain an object. Each object in this 'prop' represents a detail about each time the communcation occurs   
                                     objLink.prop = [];
-                                    //if(checkDateRange(result[i].DateAndTime) == "PASS"){
+                                    //if(checkDateRange(convertDatetoNormal(result[i].Date)AndTime) == "PASS"){
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].DateAndTime;
+                                    objLinkProp.date = (convertDatetoNormal(result[i].Date));
                                     objLink.prop.push(objLinkProp)
                                     //}
                                     linkArr.push(objLink);
@@ -392,7 +400,7 @@ function queryManagement(selections) {
                                             getSourcePhone = result[i].SourceNumber;
                                             getSourceIndex = nodeArr[j].NodeIndex;
                                             getDur = result[i].Duration;
-                                            getDate = result[i].DateAndTime;
+                                            getDate = convertDatetoNormal(result[i].Date);
                                             checkSource++;
                                             break;
                                         }
@@ -405,7 +413,7 @@ function queryManagement(selections) {
                                             getTargetPhone = result[i].TargetNumber;
                                             getTargetIndex = nodeArr[j].NodeIndex;
                                             getDur = result[i].Duration;
-                                            getDate = result[i].DateAndTime;
+                                            getDate = convertDatetoNormal(result[i].Date);
                                             checkTarget++;
                                             break;
                                         }
@@ -455,12 +463,12 @@ function queryManagement(selections) {
                                         objLink.target = nodeArr.length - 1;
                                         objLink.Type = "Call";
                                         objLink.prop = [];
-                                        //if(checkDateRange(result[i].DateAndTime) == "PASS"){
+                                        //if(checkDateRange(convertDatetoNormal(result[i].Date)AndTime) == "PASS"){
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].DateAndTime;
+                                        objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
                                         objLink.prop.push(objLinkProp);
                                         //}
 
@@ -482,12 +490,12 @@ function queryManagement(selections) {
                                         objLink.target = getTargetIndex;
                                         objLink.Type = "Call";
                                         objLink.prop = [];
-                                        //if(checkDateRange(result[i].DateAndTime) == "PASS"){
+                                        //if(checkDateRange(convertDatetoNormal(result[i].Date)AndTime) == "PASS"){
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
                                         objLink.prop.push(objLinkProp);
                                         //}
 
@@ -527,12 +535,12 @@ function queryManagement(selections) {
                                         objLink.Type = "Call";
                                         objLink.prop = [];
 
-                                        //if(checkDateRange(result[i].DateAndTime) == "PASS"){
+                                        //if(checkDateRange(convertDatetoNormal(result[i].Date)AndTime) == "PASS"){
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
                                         objLink.prop.push(objLinkProp);
                                         //}
 
@@ -882,11 +890,11 @@ function queryManagement(selections) {
 
                                     //'prop' is an array which contain an object. Each object in this 'prop' represents a detail about each time the communcation occurs   
                                     objLink.prop = [];
-                                    //if(checkDateRange(result[i].DateAndTime) == "PASS"){
+                                    //if(checkDateRange(convertDatetoNormal(result[i].Date)AndTime) == "PASS"){
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
                                     objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -928,7 +936,7 @@ function queryManagement(selections) {
                                             getSourceName = result[i].Source;
                                             getSourcePhone = result[i].SourceNumber;
                                             getSourceIndex = nodeArr[j].NodeIndex;
-                                            getDate = result[i].Date;
+                                            getDate = convertDatetoNormal(convertDatetoNormal(result[i].Date));
                                             getStat = result[i].Status;
                                             getMess = result[i].Message;
                                             checkSource++;
@@ -942,7 +950,7 @@ function queryManagement(selections) {
                                             getTargetName = result[i].Target;
                                             getTargetPhone = result[i].TargetNumber;
                                             getTargetIndex = nodeArr[j].NodeIndex;
-                                            getDate = result[i].Date;
+                                            getDate = convertDatetoNormal(convertDatetoNormal(result[i].Date));
                                             getStat = result[i].Status;
                                             getMess = result[i].Message;
                                             checkTarget++;
@@ -959,7 +967,7 @@ function queryManagement(selections) {
                                                     var objLinkProp = {};
                                                     objLinkProp.Source = getSourcePhone;
                                                     objLinkProp.Target = getTargetPhone;
-                                                    objLinkProp.date = result[i].Date;
+                                                    objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
                                                     objLinkProp.status = result[i].Status;
                                                     objLinkProp.message = result[i].Message;
                                                     linkArr[k].prop.push(objLinkProp);
@@ -969,7 +977,7 @@ function queryManagement(selections) {
                                                     var objLinkProp = {};
                                                     objLinkProp.Source = getSourcePhone;
                                                     objLinkProp.Target = getTargetPhone;
-                                                    objLinkProp.date = result[i].Date;
+                                                    objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
                                                     objLinkProp.status = result[i].Status;
                                                     objLinkProp.message = result[i].Message;
                                                     linkArr[k].prop.push(objLinkProp);
@@ -996,11 +1004,11 @@ function queryManagement(selections) {
                                         objLink.target = nodeArr.length - 1;
                                         objLink.Type = "SMS";
                                         objLink.prop = [];
-                                        //if(checkDateRange(result[i].DateAndTime) == "PASS"){
+                                        //if(checkDateRange(convertDatetoNormal(result[i].Date)AndTime) == "PASS"){
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
                                         objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1025,11 +1033,11 @@ function queryManagement(selections) {
                                         objLink.target = getTargetIndex;
                                         objLink.Type = "SMS";
                                         objLink.prop = [];
-                                        //if(checkDateRange(result[i].DateAndTime) == "PASS"){
+                                        //if(checkDateRange(convertDatetoNormal(result[i].Date)AndTime) == "PASS"){
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1072,11 +1080,11 @@ function queryManagement(selections) {
                                         objLink.Type = "SMS";
                                         objLink.prop = [];
 
-                                        //if(checkDateRange(result[i].DateAndTime) == "PASS"){
+                                        //if(checkDateRange(convertDatetoNormal(result[i].Date)AndTime) == "PASS"){
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1246,7 +1254,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1258,7 +1266,7 @@ function queryManagement(selections) {
                                             if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceLineID;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[k].prop.push(objLinkProp);
@@ -1277,7 +1285,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -1446,7 +1454,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1458,7 +1466,7 @@ function queryManagement(selections) {
                                             if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceNumber;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[k].prop.push(objLinkProp);
@@ -1477,7 +1485,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -1646,7 +1654,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1658,7 +1666,7 @@ function queryManagement(selections) {
                                             if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceFacebook;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[k].prop.push(objLinkProp);
@@ -1677,7 +1685,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebook;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -1752,7 +1760,7 @@ function queryManagement(selections) {
                                             getSourcePhone = result[i].SourceNumber;
                                             getSourceIndex = nodeArr[j].NodeIndex;
                                             getDur = result[i].Duration;
-                                            getDate = result[i].DateAndTime;
+                                            getDate = convertDatetoNormal(result[i].Date);
                                             checkSource++;
                                             break;
                                         }
@@ -1765,7 +1773,7 @@ function queryManagement(selections) {
                                             getTargetPhone = result[i].TargetNumber;
                                             getTargetIndex = nodeArr[j].NodeIndex;
                                             getDur = result[i].Duration;
-                                            getDate = result[i].DateAndTime;
+                                            getDate = convertDatetoNormal(result[i].Date);
                                             checkTarget++;
                                             break;
                                         }
@@ -1782,7 +1790,7 @@ function queryManagement(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].DateAndTime;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
                                     } else {
@@ -1901,7 +1909,7 @@ function queryManagement(selections) {
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
                                     } else {
@@ -1914,7 +1922,7 @@ function queryManagement(selections) {
                                                     objLinkProp.Target = getTargetPhone;
                                                     objLinkProp.message = result[i].Message;
                                                     objLinkProp.status = result[i].Status;
-                                                    objLinkProp.date = result[i].Date;
+                                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                     linkArr[k].prop.push(objLinkProp);
                                                     //}
                                                 } else {
@@ -1924,7 +1932,7 @@ function queryManagement(selections) {
                                                     objLinkProp.Target = getTargetPhone;
                                                     objLinkProp.message = result[i].Message;
                                                     objLinkProp.status = result[i].Status;
-                                                    objLinkProp.date = result[i].Date;
+                                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                     linkArr[k].prop.push(objLinkProp);
                                                     //}			
                                                 }
@@ -2074,7 +2082,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -2086,7 +2094,7 @@ function queryManagement(selections) {
                                             if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceLineID;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[k].prop.push(objLinkProp);
@@ -2105,7 +2113,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2253,7 +2261,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -2265,7 +2273,7 @@ function queryManagement(selections) {
                                             if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceNumber;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[k].prop.push(objLinkProp);
@@ -2284,7 +2292,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2431,7 +2439,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -2443,7 +2451,7 @@ function queryManagement(selections) {
                                             if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceFacebook;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[k].prop.push(objLinkProp);
@@ -2462,7 +2470,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);

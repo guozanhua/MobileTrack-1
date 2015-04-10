@@ -17,7 +17,7 @@ function checkDateRange(date){
 	var inputFrom = document.getElementById("datefrom").value;
 	var inputTo = document.getElementById("dateto").value;	
 	
-	if(inputFrom == "" && inputTo == ""){
+	if(inputFrom == "" || inputTo == ""){
 		return "PASS";
 	}else{
 		var start = convertDateAndTime(inputFrom); // dd/mm/yy
@@ -137,3 +137,19 @@ function removeUTC(time){
 	return outputTime;
 }
 
+
+function convertDatetoISO(a){
+    var fyear = a.substring(0,4);
+    var fmonth = a.substring(5,7);
+    var fdate = a.substring(8,10);
+    var confromdate = fyear + fmonth + fdate;
+    return confromdate;
+}
+
+function convertDatetoNormal(b){
+        var newfromyear = b.substring(0,4);
+	var newfrommonth = b.substring(4,6);
+	var newfromdate = b.substring(6,8);
+	var normal = newfrommonth + "/" + newfromdate + "/" + newfromyear;
+        return normal;
+}
