@@ -245,7 +245,7 @@ function ConnectDatabase(input, mode) {
 
 
 function drawD3(finalResult) {
-    var width = 550, height = 800;
+    var width = 800, height = 800;
     var mLinkNum = {};
     sortLinks();
     setLinkIndexAndNum();

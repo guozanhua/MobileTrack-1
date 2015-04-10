@@ -1593,7 +1593,7 @@ function queryAllPhones(selections) {
 }
 
 function dataVisualizationAllPhones(finalResult) {
-    var width = 550, height = 800;
+    var width = 800, height = 800;
     var mLinkNum = {};
     sortLinks();
     setLinkIndexAndNum();

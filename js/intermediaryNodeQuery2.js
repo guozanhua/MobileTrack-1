@@ -4949,7 +4949,7 @@ function twoInterNodeVisualization(finalResult) {
     var sourceNumber = document.getElementById("sourcePhoneNo").value;
     var targetNumber = document.getElementById("targetPhoneNo").value;
 
-    var width = 550, height = 800;
+    var width = 800, height = 800;
     var groupArr = finalResult[2];
     var mLinkNum = {};
     sortLinks();

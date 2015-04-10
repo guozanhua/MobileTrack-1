@@ -385,7 +385,7 @@ function LineDatabase(){
 }
 
 function dataVisualizationLine(finalResult) {
-    var width = 550, height = 800;
+    var width = 800, height = 800;
     var groupArr = finalResult[2];
     var mLinkNum = {};
     sortLinks();
