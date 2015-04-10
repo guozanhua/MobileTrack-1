@@ -4056,7 +4056,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
             } else if (selections[noLoop].Type == 'Facebook') {
                 //create Query for Whatsapp
-                var _query = "MATCH (n:FACEBOOK)<-[r:Facebook]->(m:FACEBOOK) "
+                var _query = "MATCH (n:FACEBOOK)<-[r:Facebookchat]->(m:FACEBOOK) "
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
                         _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
@@ -4824,9 +4824,9 @@ function dataVisualizationMultiplePhones(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                
                 var output = "";
-                if(document.getElementById("").checked){
+                var count = 0;
+                if(document.getElementById("mchk1").checked){
                     if(d.Label == 'Phone'){
                         output = "Phone Number: " + d.PhoneNumber + "<br/>";
                         output += "Call In: " + "<br/>"
@@ -4838,66 +4838,61 @@ function dataVisualizationMultiplePhones(finalResult) {
                         for (i = 0; i < d.callOut.length; i++) {
                             output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
                         }
-
-                        return output;
                     }
+                    count = 1;
                 }
                 
-                if(document.getElementById("").checked){
+                if(document.getElementById("mchk2").checked){
                     if(d.Label == 'Phone'){
-                        output = "Phone Number: " + d.PhoneNumber + "<br/>";
+                        if(count == 0){
+                            output = "Phone Number: " + d.PhoneNumber + "<br/>";
+                        }   
                         output += "SMS In: " + "<br/>"
-                        for (i = 0; i < d.callIn.length; i++) {
+                        for (i = 0; i < d.smsIn.length; i++) {
                             output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
                         }
 
                         output += "SMS Out: " + "<br/>"
-                        for (i = 0; i < d.callOut.length; i++) {
+                        for (i = 0; i < d.smsOut.length; i++) {
                             output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
                         }
-
-                        return output;
                     }
                     
                 }
                
-                if(document.getElementById("").checked){
+                if(document.getElementById("mchk3").checked){
                     if(d.Label == 'Line'){
                         output =  d.textDisplay + "<br/>";
                         output += "LINE chat with: " + "<br/>"
                         for (i = 0; i < d.lineChat.length; i++) {
                             output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";
                         }
-
-                        return output;
                     }
                     
                 }
                 
-                if(document.getElementById("").checked){
+                if(document.getElementById("mchk4").checked){
                     if(d.Label == 'Whatsapp'){
                         output = d.textDisplay + "<br/>";
                         output += "Whatsapp chat with: " + "<br/>"
                         for (i = 0; i < d.WhatsappChat.length; i++) {
                             output += i + "). " + d.WhatsappChat[i].Account + " Freq: " + d.WhatsappChat[i].freq + "<br/>";
                         }
-                        return output;
                     }
                     
                 }
                 
-                if(document.getElementById("").checked){
+                if(document.getElementById("mchk5").checked){
                     if(d.Label == 'Facebook'){
                         output = d.textDisplay + "<br/>";
                         output += "Facebook chat with: " + "<br/>"
                         for (i = 0; i < d.facebookChat.length; i++) {
                             output += i + "). " + d.facebookChat[i].Account + " Freq: " + d.facebookChat[i].freq + "<br/>";
                         }
-
-                        return output;
                     }
-                    
                 }
+                
+                return output;
             });
 
     svg.call(tip);
