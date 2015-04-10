@@ -33,8 +33,7 @@
           
 
          <p align = "center"><button id="suggestBtn"class="color red button" >Suggest PhoneNumber</button></p>
-      
-   
+     
         <br>    
         <div>
           <form id="status" >
@@ -219,19 +218,61 @@ function gatheringSelections(){
 <script src='js/d3.v3.min.js'></script>
 <script src="js/d3.tip.js"></script>
 <script type="text/javascript" src="js/specificNodeDetail.js"></script>
-<script type="text/javascript" src="js/specificPhoneDetail.js"></script>
-<script type="text/javascript" src="js/specificSMSDetail.js"></script>
-<script type="text/javascript" src="js/specificLineCommunication.js"></script>
-<script type="text/javascript" src="js/specificWhatsappCommunication.js"></script>
-<script type="text/javascript" src="js/buildQuery.js"></script>
+<script type="text/javascript" src="js/BuildQuery.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
-<script type="text/javascript" src="js/listPhoneNumbers.js"></script>
-<script type="text/javascript" src="js/intermediaryNodeQuery.js"></script>
+<script type="text/javascript" src="js/helperfunction.js"></script>
 <script type="text/javascript" src="js/testsd.js"></script>
 
+<script>
+//Load all the possible phone numbers into the list to be ready for display when user hit suggestion button.
+var _queryString = "MATCH (n:PHONE) RETURN n";
+var phoneNumberArr = [];
+var myTable;
 
+d3.xhr("http://localhost:7474/db/data/transaction/commit")
+          .header("Content-Type", "application/json")
+          .mimeType("application/json")       
+          .post(
+              JSON.stringify({
+            "statements" : [ {
+              "statement" : _queryString,
+              "resultDataContents" : [ "row" ]//, "graph" ]
+            } ]
+          }),function(err, data){
+                var returnData = JSON.parse(data.responseText);
+                //document.write(JSON.stringify(returnData));
+                var result = returnData.results[0].data;
+                //document.write(JSON.stringify(result));
+                for(i=0;i<result.length;i++){
+                  var objAdd = {};
+                  objAdd.PhoneNumber = result[i].row[0].PhoneNumber;
+                  objAdd.Owner = result[i].row[0].Owner;
+                  objAdd.Model = result[i].row[0].Model;
+                  phoneNumberArr.push(objAdd);
+                }
+                //document.write(JSON.stringify(phoneNumberArr));
+                myTable="<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>PhoneNumber</th>";
+                myTable+= "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>Model</th>";
+                myTable+= "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>Owner</th>";
+                for(var i=0; i<phoneNumberArr.length; i++){
+                    myTable+="<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + phoneNumberArr[i].PhoneNumber + "</td>";
+                    myTable+="<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + phoneNumberArr[i].Model + "</td>";
+                    myTable+="<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + phoneNumberArr[i].Owner + "</td></tr>";
+                }
+                myTable+="</table>";
+                $('#suggestBtn').magnificPopup({
+                  items: {
+                      src: '<div class="white-popup">'+
+                      myTable
+                      +'</div>',
+                      type: 'inline'
+                  },
+                  closeBtnInside: true
+                });
+});
 
+</script>
 </body>
 </html>
             
