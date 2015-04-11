@@ -828,7 +828,6 @@ function dataVisualizationPhone(finalResult) {
 }
 
 function specificCallSummarize(finalResult){
-    var output = "";
     var d = finalResult[0];
     var index = 0;
     var inputSource = document.getElementById("phoneNo").value;

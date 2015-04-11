@@ -76,6 +76,7 @@ function WhatsappDatabase() {
                     if (i == 0 && checkDateRange(result[i].Date) == 'PASS') {
                         var objSource = {};
                         objSource.NodeName = result[i].Source;
+                        objSource.PhoneNumber = result[i].SourceNumber;
                         objSource.textDisplay = "WhatsappID: " + result[i].SourceNumber;
                         objSource.Label = "Whatsapp";
                         objSource.NodeIndex = nodeArr.length;
@@ -84,6 +85,7 @@ function WhatsappDatabase() {
 
                         var objTarget = {};
                         objTarget.NodeName = result[i].Target;
+                        objTarget.PhoneNumber = result[i].TargetNumber;
                         objTarget.textDisplay = "WhatsappID: " + result[i].TargetNumber;
                         objTarget.Label = "Whatsapp";
                         objTarget.NodeIndex = nodeArr.length;
@@ -162,6 +164,7 @@ function WhatsappDatabase() {
                         } else if (countSource == 1 && countTarget == 0 && checkDateRange(result[i].Date) == 'PASS') {
                             var objAdd = {};
                             objAdd.NodeName = result[i].Target;
+                            objAdd.PhoneNumber = result[i].TargetNumber;
                             objAdd.textDisplay = "WhatsappID: " + result[i].TargetNumber;
                             objAdd.Label = "Whatsapp";
                             objAdd.NodeIndex = nodeArr.length;
@@ -186,6 +189,7 @@ function WhatsappDatabase() {
                         } else if (countSource == 0 && countTarget == 1 && checkDateRange(result[i].Date) == 'PASS') {
                             var objAdd = {};
                             objAdd.NodeName = result[i].Source;
+                            objAdd.PhoneNumber = result[i].SourceNumber;
                             objAdd.textDisplay = "WhatsappID: " + result[i].SourceNumber;
                             objAdd.Label = "Whatsapp";
                             objAdd.NodeIndex = nodeArr.length;
@@ -209,6 +213,7 @@ function WhatsappDatabase() {
                             if (checkDateRange(result[i].Date) == 'PASS') {
                                 var objSource = {};
                                 objSource.NodeName = result[i].Source;
+                                objSource.PhoneNumber = result[i].SourceNumber;
                                 objSource.textDisplay = "WhatsappID: " + result[i].SourceNumber;
                                 objSource.Label = "Whatsapp";
                                 objSource.NodeIndex = nodeArr.length;
@@ -218,6 +223,7 @@ function WhatsappDatabase() {
 
                                 var objTarget = {};
                                 objTarget.NodeName = result[i].Target;
+                                objTarget.PhoneNumber = result[i].TargetNumber;
                                 objTarget.textDisplay = "WhatsappID: " + result[i].TargetNumber;
                                 objTarget.Label = "Whatsapp";
                                 objTarget.NodeIndex = nodeArr.length;
@@ -376,6 +382,7 @@ function dataVisualizationWhatsapp(finalResult) {
     sortLinks();
     setLinkIndexAndNum();
 
+    specificWhatsappSummarize(finalResult);
 
     var svg = d3.select('#graph').append('svg')
             .attr('width', width)
@@ -461,7 +468,8 @@ function dataVisualizationWhatsapp(finalResult) {
     link.on("click", function (d) {
         if (d.Type == "Whatsapp") {
             var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>SENDER</th>";
+            var myTable = "<p style='color:#FF0000'>Whatsapp Chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+            myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>SENDER</th>";
             myTable += "<th style='background-color:#333333;height: 40px; width:250px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
             myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>DATE</th>";
             myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>TIME</th></tr>";
@@ -769,6 +777,25 @@ function dataVisualizationWhatsapp(finalResult) {
 
 }
 
+function specificWhatsappSummarize(finalResult){
+    var nodeArr = finalResult[0];
+    var index = 0;
+    var inputSource = document.getElementById("phoneNo").value;
+    for(i=0;i<nodeArr.length;i++){
+        if(nodeArr[i].PhoneNumber == inputSource  && nodeArr[i].Label == 'Whatsapp'){       
+            index = i;
+            break;
+        }
+    }
+    
+    var output = "User's input Phone Number: " + inputSource + "<br/>";
+    output += "Associated Whatsapp Account is " + nodeArr[index].textDisplay + "<br/>";
+    output += "Chat with: " + "<br/>"
+    for(i=0;i<nodeArr[index].WhatsappChat.length;i++){
+        output += i + "). " + nodeArr[index].WhatsappChat[i].Account + " Freq: " + nodeArr[index].WhatsappChat[i].freq + "<br/>";
+    }
+    document.getElementById("summarize").innerHTML = output;
+}
 
 
 
