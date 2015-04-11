@@ -1,7 +1,3 @@
-function clearDiv(id) {
-    document.getElementById(id).innerHTML = "";
-}
-
 function FetchSMSDatabase(input) {
     clearDiv('graph');
     clearDiv('output');
@@ -327,79 +323,50 @@ function FetchSMSDatabase(input) {
 
                     }
                 }
-                
-                 for(i=0;i<nodeArr.length;i++){
-                    nodeArr[i].callOut = [];
-                    nodeArr[i].callIn = [];
-                }
 
-                linkArr.forEach(function (link) {
-                    for (i = 0; i < nodeArr.length; i++) {
-                        if (link.source == nodeArr[i].NodeIndex) {
-                            for (j = 0; j < nodeArr.length; j++) {
-                                if (link.target == nodeArr[j].NodeIndex) {
-                                    var objCallOut = {};
-                                    objCallOut.PhoneNumber = nodeArr[j].PhoneNumber;
-                                    objCallOut.freq = link.prop.length;
-                                    nodeArr[i].callOut.push(objCallOut);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
-
-                    for (i = 0; i < nodeArr.length; i++) {
-                        if (link.target == nodeArr[i].NodeIndex) {
-                            for (j = 0; j < nodeArr.length; j++) {
-                                if (link.source == nodeArr[j].NodeIndex) {
-                                    var objCallIn = {};
-                                    objCallIn.PhoneNumber = nodeArr[j].PhoneNumber;
-                                    objCallIn.freq = link.prop.length;
-                                    nodeArr[i].callIn.push(objCallIn);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
-                });
-                
-                for(i=0;i<nodeArr.length;i++){
+                for (i = 0; i < nodeArr.length; i++) {
                     nodeArr[i].smsOut = [];
                     nodeArr[i].smsIn = [];
+                    nodeArr[i].matchFreq = 0;
                 }
 
+                var inputFreq = 0;
+
                 linkArr.forEach(function (link) {
-                    for (i = 0; i < nodeArr.length; i++) {
-                        if (link.source == nodeArr[i].NodeIndex) {
-                            for (j = 0; j < nodeArr.length; j++) {
-                                if (link.target == nodeArr[j].NodeIndex) {
-                                    var objSMSOut = {};
-                                    objSMSOut.PhoneNumber = nodeArr[j].PhoneNumber;
-                                    objSMSOut.freq = link.prop.length;
-                                    nodeArr[i].smsOut.push(objSMSOut);
-                                    break;
+                    if (link.prop.length >= inputFreq) {
+                        for (i = 0; i < nodeArr.length; i++) {
+                            if (link.source == nodeArr[i].NodeIndex) {
+                                for (j = 0; j < nodeArr.length; j++) {
+                                    if (link.target == nodeArr[j].NodeIndex) {
+                                        var objSMSOut = {};
+                                        objSMSOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                        objSMSOut.freq = link.prop.length;
+                                        nodeArr[i].smsOut.push(objSMSOut);
+                                        nodeArr[i].matchFreq++;
+                                        break;
+                                    }
                                 }
+                                break;
                             }
-                            break;
+                        }
+
+                        for (i = 0; i < nodeArr.length; i++) {
+                            if (link.target == nodeArr[i].NodeIndex) {
+                                for (j = 0; j < nodeArr.length; j++) {
+                                    if (link.source == nodeArr[j].NodeIndex) {
+                                        var objSMSIn = {};
+                                        objSMSIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                        objSMSIn.freq = link.prop.length;
+                                        nodeArr[i].smsIn.push(objSMSIn);
+                                        nodeArr[i].matchFreq++;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
                         }
                     }
 
-                    for (i = 0; i < nodeArr.length; i++) {
-                        if (link.target == nodeArr[i].NodeIndex) {
-                            for (j = 0; j < nodeArr.length; j++) {
-                                if (link.source == nodeArr[j].NodeIndex) {
-                                    var objSMSIn = {};
-                                    objSMSIn.PhoneNumber = nodeArr[j].PhoneNumber;
-                                    objSMSIn.freq = link.prop.length;
-                                    nodeArr[i].smsIn.push(objSMSIn);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
                 });
 
 
@@ -418,8 +385,11 @@ function smsDataVisualization(finalResult) {
     var width = 800, height = 800;
     var groupArr = finalResult[2];
     var mLinkNum = {};
+    var inputFreq = 0;
     sortLinks();
     setLinkIndexAndNum();
+
+    specificSMSSummarize(finalResult);
 
     var svg = d3.select('#graph').append('svg')
             .attr('width', width)
@@ -436,11 +406,14 @@ function smsDataVisualization(finalResult) {
                 }
             })
             .nodes(finalResult[0])
-            .links(finalResult[1])
+            .links(finalResult[1].filter(function(d){
+                if(d.prop.length >= inputFreq)
+                    return d.prop.length >= inputFreq;
+            }))
             .size([width, height])
             .start();
-    
-    var nodeData = finalResult[0].filter(function(d){
+
+    var nodeData = finalResult[0].filter(function (d) {
         return d.matchFreq > 0;
     });
 
@@ -551,7 +524,8 @@ function smsDataVisualization(finalResult) {
 
     link.on("click", function (d) {
         var propArr = d.prop;
-        var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
+        var myTable = "<p style='color:#FF0000'>SMS between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>"; 
+        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>RECEIVER</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:155px; border: 2px solid white; color: white; text-align: center;'>DATE</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:125px; border: 2px solid white; color: white; text-align: center;'>STATUS</th>";
@@ -577,19 +551,7 @@ function smsDataVisualization(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                var output = "";
-                output = "Phone Number: " + d.PhoneNumber + "<br/>";
-                output += "SMS In: " + "<br/>"
-                for (i = 0; i < d.callIn.length; i++) {
-                    output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
-                }
 
-                output += "SMS Out: " + "<br/>"
-                for (i = 0; i < d.callOut.length; i++) {
-                    output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
-                }
-
-                return output;
             });
 
     svg.call(tip);
@@ -687,21 +649,21 @@ function smsDataVisualization(finalResult) {
                     })
             var colorLabel = d3.select(".nodeCircle2");
             colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coresponding&nbsp;Nodes");
-            
+
             var nonInputPhone = [];
-            for(i=0;i<nodeData.length;i++){
-                if(nodeData[i].PhoneNumber != inputSource){
+            for (i = 0; i < nodeData.length; i++) {
+                if (nodeData[i].PhoneNumber != inputSource) {
                     nonInputPhone.push(nodeData[i].PhoneNumber);
                 }
             }
-            
-            for(i=0;i<nonInputPhone.length;i++){
+
+            for (i = 0; i < nonInputPhone.length; i++) {
                 nodeColor.append('div')
-                    .attr('class', 'nodeCircle' + (i+3))
-                    .style('background', function (d) {
-                        return color[1];
-                    })
-                var colorLabel = d3.select(".nodeCircle" + (i+3));
+                        .attr('class', 'nodeCircle' + (i + 3))
+                        .style('background', function (d) {
+                            return color[1];
+                        })
+                var colorLabel = d3.select(".nodeCircle" + (i + 3));
                 colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + nonInputPhone[i]);
             }
 
@@ -764,7 +726,7 @@ function smsDataVisualization(finalResult) {
 
         } else {
             console.log("what!!?")
-            clearDiv('mid');
+            clearDiv('graph');
         }
     }
 
@@ -855,4 +817,29 @@ function smsDataVisualization(finalResult) {
 
 }
 
+function specificSMSSummarize(finalResult) {
+    var output = "";
+    var d = finalResult[0];
+    var index = 0;
+    var inputSource = document.getElementById("phoneNo").value;
+    for (i = 0; i < d.length; i++) {
+        if (d[i].PhoneNumber == inputSource) {
+            index = i;
+            break;
+        }
+    }
 
+    var output = "User's input Phone Number: " + inputSource + "<br/>";
+    output += "Received SMS from: " + "<br/>"
+    for (i = 0; i < d[index].smsIn.length; i++) {
+        output += (i + 1) + "). " + d[index].smsIn[i].PhoneNumber + " Freq: " + d[index].smsIn[i].freq + "<br/>";
+    }
+
+    output += "Send SMS to: " + "<br/>"
+    for (i = 0; i < d[index].smsOut.length; i++) {
+        output += (i + 1) + "). " + d[index].smsOut[i].PhoneNumber + " Freq: " + d[index].smsOut[i].freq + "<br/>";
+    }
+
+    document.getElementById("summarize").innerHTML = output;
+}
+    

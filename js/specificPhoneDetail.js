@@ -346,7 +346,7 @@ function FetchDatabase(input) {
                     nodeArr[i].matchFreq = 0;
                 }
                 
-                var inputFreq = 3;
+                var inputFreq = 0;
 
                 linkArr.forEach(function (link) {
                     if(link.prop.length >= inputFreq){
@@ -400,9 +400,11 @@ function dataVisualizationPhone(finalResult) {
     var width = 800, height = 800;
     var groupArr = finalResult[2];
     var mLinkNum = {};
-    var inputFreq = 3;
+    var inputFreq = 0;
     sortLinks();
     setLinkIndexAndNum();
+    
+    specificCallSummarize(finalResult);
 
     var svg = d3.select('#graph').append('svg')
             .attr('width', width)
@@ -537,7 +539,8 @@ function dataVisualizationPhone(finalResult) {
 
     link.on("click", function (d) {
         var propArr = d.prop;
-        var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
+        var myTable = "<p style='color:#FF0000'>Call between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>TARGET</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>DURATION</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr>";
@@ -558,19 +561,7 @@ function dataVisualizationPhone(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                var output = "";
-                output = "Phone Number: " + d.PhoneNumber + "<br/>";
-                output += "Call In: " + "<br/>"
-                for (i = 0; i < d.callIn.length; i++) {
-                    output += i + "). " + d.callIn[i].PhoneNumber + " Freq: " + d.callIn[i].freq + "<br/>";
-                }
-
-                output += "Call Out: " + "<br/>"
-                for (i = 0; i < d.callOut.length; i++) {
-                    output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
-                }
-
-                return output;
+                
             });
 
     svg.call(tip);
@@ -836,3 +827,28 @@ function dataVisualizationPhone(finalResult) {
     }
 }
 
+function specificCallSummarize(finalResult){
+    var output = "";
+    var d = finalResult[0];
+    var index = 0;
+    var inputSource = document.getElementById("phoneNo").value;
+    for(i=0;i<d.length;i++){
+        if(d[i].PhoneNumber == inputSource){
+            index = i;
+            break;
+        }
+    }
+    
+    var output = "User's input Phone Number: " + inputSource + "<br/>";
+    output += "Receive Call from: " + "<br/>"
+    for (i = 0; i < d[index].callIn.length; i++) {
+        output += (i+1) + "). " + d[index].callIn[i].PhoneNumber + " Freq: " + d[index].callIn[i].freq + "<br/>";
+    }
+
+    output += "Dialing Call to: " + "<br/>"
+    for (i = 0; i < d[index].callOut.length; i++) {
+        output += (i+1) + "). " + d[index].callOut[i].PhoneNumber + " Freq: " + d[index].callOut[i].freq + "<br/>";
+    }
+
+    document.getElementById("summarize").innerHTML = output;
+}
