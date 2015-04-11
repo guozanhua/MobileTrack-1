@@ -132,7 +132,7 @@ function FetchDatabase(input) {
                             objLinkProp.Source = result[i].SourceNumber;
                             objLinkProp.Target = result[i].TargetNumber;
                             objLinkProp.dur = result[i].Duration;
-                            objLinkProp.date = result[i].Date;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                             objLink.prop.push(objLinkProp)
                             linkArr.push(objLink);
                         }
@@ -216,7 +216,7 @@ function FetchDatabase(input) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     linkArr[linkIndex].prop.push(objLinkProp);
                                 }
 
@@ -233,14 +233,14 @@ function FetchDatabase(input) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLink.prop.push(objLinkProp);
 
                                     linkArr.push(objLink);
                                 }
                             }
                         } else if (checkSource > 0 && checkTarget == 0) { // source is matched with the existing node in nodeArr
-                            if (checkDateRange(result[i].Date) == "PASS") {
+                            
                                 var objAdd = {};
                                 objAdd.NodeName = result[i].Target;
                                 objAdd.PhoneNumber = result[i].TargetNumber;
@@ -259,14 +259,14 @@ function FetchDatabase(input) {
                                 objLinkProp.Source = result[i].SourceNumber;
                                 objLinkProp.Target = result[i].TargetNumber;
                                 objLinkProp.dur = result[i].Duration;
-                                objLinkProp.date = result[i].Date;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                 objLink.prop.push(objLinkProp);
                                 linkArr.push(objLink);
-                            }
+                            
 
                             //(3.3)
                         } else if (checkSource == 0 && checkTarget > 0) { // target is matched with the existing node in nodeArr 
-                            if (checkDateRange(result[i].Date) == "PASS") {
+                            
                                 var objAdd = {};
                                 objAdd.NodeName = result[i].Source;
                                 objAdd.PhoneNumber = result[i].SourceNumber;
@@ -286,15 +286,15 @@ function FetchDatabase(input) {
                                 objLinkProp.Source = result[i].SourceNumber;
                                 objLinkProp.Target = result[i].TargetNumber;
                                 objLinkProp.dur = result[i].Duration;
-                                objLinkProp.date = result[i].Date;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                 objLink.prop.push(objLinkProp);
                                 linkArr.push(objLink);
                                 //document.write("Add " + result[i].Source + "</br>");
-                            }
+                            
 
                             //(3.4)
                         } else { // No match in an array
-                            if (checkDateRange(result[i].Date) == "PASS") {
+                            
                                 //Add source to nodeArr
                                 var objSource = {};
                                 var sourceIndex;
@@ -329,12 +329,12 @@ function FetchDatabase(input) {
                                 objLinkProp.Source = result[i].SourceNumber;
                                 objLinkProp.Target = result[i].TargetNumber;
                                 objLinkProp.dur = result[i].Duration;
-                                objLinkProp.date = result[i].Date;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                 objLink.prop.push(objLinkProp);
 
                                 linkArr.push(objLink);
                                 //document.write("Add " + result[i].Source + " " + result[i].Target + "</br>");
-                            }
+                            
                         }
                     }
                 }

@@ -567,7 +567,11 @@ function queryManagement(selections) {
                
                 var linkType = selections[noLoop].linkType;
                 /*Add date filtering here*/
-                var _query = "MATCH (n:PHONE) " + linkType + " (m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) AS R";
+                var _query = "MATCH (n:PHONE) " + linkType + " (m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ")"
+                }
+                _query += "RETURN collect(distinct r1) AS R";
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
@@ -1115,7 +1119,11 @@ function queryManagement(selections) {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
                 /*add date filtering here*/
-                var _query = "MATCH (n:LINE)<-[r1:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time ";
+                var _query = "MATCH (n:LINE)<-[r1:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ")"
+                }
+                _query += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time";
                 FetchSocialNodesLine(_query, linkLabel);
 
                 function FetchSocialNodesLine(_query, linkLabel) {
@@ -1719,7 +1727,12 @@ function queryManagement(selections) {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
                 /*Add date filtering here*/
-                var _query = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time ";
+                var _query = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                var _query = "MATCH (n:LINE)<-[r1:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ")"
+                }
+                _query += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time";
                 FetchSocialNodesWhatsapp(_query, linkLabel);
 
                 function FetchSocialNodesWhatsapp(_query, linkLabel) {
@@ -2321,7 +2334,11 @@ function queryManagement(selections) {
             } else {
                 var linkLabel = selections[noLoop].Type;
                 /*Add date filtering here*/
-                var _query = "MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time";
+                var _query = "MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ")"
+                }
+                _query += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time";
                 FetchSocialNodesFacebook(_query, linkLabel);
 
                 function FetchSocialNodesFacebook(_query, linkLabel) {
@@ -2928,8 +2945,13 @@ function queryManagement(selections) {
             if (selections[noLoop].Type == 'Call') {
                 var linkType = selections[noLoop].linkType;
                 /*Add date filtering here*/
-                var _query = "MATCH (n:PHONE) " + linkType + " (m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) AS R";
+                var _query = "MATCH (n:PHONE) " + linkType + " (m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ")"
+                }
+                _query += "RETURN collect(distinct r1) AS R";
                 console.log(_query);
+                
                 FetchDatabaseForCall2round(_query);
 
                 function FetchDatabaseForCall2round(query) {
@@ -3052,7 +3074,11 @@ function queryManagement(selections) {
             } else if (selections[noLoop].Type == 'SMS') {
                 var linkType = selections[noLoop].linkType;
                 /*Add date filtering here*/
-                var _query = "MATCH (n:PHONE) " + linkType + " (m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) AS R";
+                var _query = "MATCH (n:PHONE) " + linkType + " (m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ")"
+                }
+                _query += "RETURN collect(distinct r1) AS R";
                 FetchDatabaseForSMS2round(_query);
 
                 function FetchDatabaseForSMS2round(query) {
@@ -3175,7 +3201,11 @@ function queryManagement(selections) {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
                 /*Add date filtering here*/
-                var _query = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time ";
+                var _query = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ")"
+                }
+                _query += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time";
                 FetchSocialNodesWhatsapp2round(_query, linkLabel);
 
                 function FetchSocialNodesWhatsapp2round(_query, linkLabel) {
@@ -3748,7 +3778,11 @@ function queryManagement(selections) {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
                 /*Add date filtering here*/
-                var _query = "MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time ";
+                var _query = "MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ")"
+                }
+                _query += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time";
                 FetchSocialNodesFacebook2round(_query, linkLabel);
 
                 function FetchSocialNodesFacebook2round(_query, linkLabel) {
