@@ -133,7 +133,7 @@ function ConnectDatabase(input, mode) {
                 } else {
                     //document.write(JSON.stringify(result));
                     var nodeProperty = {};
-                    var outputDisplay = "";
+                    var outputDisplay = "<p style ='color:red'>Showing detail of the node you have just clicked<p/><br/>";
                     if (result.label == "Phone") {
                         nodeProperty = {"PhoneNumber": result.PhoneNumber,
                             "Model": result.Model,
@@ -144,7 +144,7 @@ function ConnectDatabase(input, mode) {
                             "Serial": result.Serial,
                             "label": result.label
                         };
-                        outputDisplay = "<table><tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>PHONE NUMBER</th>";
+                        outputDisplay += "<table><tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>PHONE NUMBER</th>";
                         outputDisplay += "<td style='background-color:#8B8B83;width: 250px;border: 2px solid white; text-align: left; padding-left:10px;padding-right:10px;'>" + nodeProperty.PhoneNumber + "</td>";
                         outputDisplay += "<<tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>MODEL</th>";
                         outputDisplay += "<td style='background-color:#8B8B83;width: 250px;border: 2px solid white; text-align: left; padding-left:10px;padding-right:10px;'>" + nodeProperty.Model + "</td>";
@@ -164,7 +164,7 @@ function ConnectDatabase(input, mode) {
                             "LineID": result.LineID,
                             "label": result.label
                         };
-                        outputDisplay = "<table><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>PHONE NUMBER</th>";
+                        outputDisplay += "<table><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>PHONE NUMBER</th>";
                         outputDisplay += "<td style='background-color:#8B8B83;width: 250px;border: 2px solid white; text-align: left; padding-left:10px;padding-right:10px;'>" + nodeProperty.PhoneNumber + "</td>";
                         outputDisplay += "<<tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>EMAIL</th>";
                         outputDisplay += "<td style='background-color:#8B8B83;width: 250px;border: 2px solid white; text-align: left; padding-left:10px;padding-right:10px;'>" + nodeProperty.Email + "</td>";
@@ -180,7 +180,7 @@ function ConnectDatabase(input, mode) {
                             "Entries": result.Entries,
                             "label": result.label};
 
-                        outputDisplay = "<table><tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>NODE NAME</th>";
+                        outputDisplay += "<table><tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>NODE NAME</th>";
                         outputDisplay += "<td style='background-color:#8B8B83;width: 250px;border: 2px solid white;text-align: left; padding-left:10px;padding-right:10px;'>" + nodeProperty.Nodename + "</td>";
                         outputDisplay += "<<tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
                         outputDisplay += "<td style='background-color:#8B8B83;width: 250px;border: 2px solid white; text-align: left; padding-left:10px;padding-right:10px;'>" + nodeProperty.Source + "</td>";
@@ -196,7 +196,7 @@ function ConnectDatabase(input, mode) {
                             "Name": result.Name,
                             "label": result.label
                         };
-                        outputDisplay = "<table><tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>PHONE NUMBER</th>";
+                        outputDisplay += "<table><tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>PHONE NUMBER</th>";
                         outputDisplay += "<td style='background-color:#8B8B83;width: 250px;border: 2px solid white; text-align: left; padding-left:10px;padding-right:10px;'>" + nodeProperty.PhoneNumber + "</td>";
                         outputDisplay += "<<tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>NODE NAME</th>";
                         outputDisplay += "<td style='background-color:#8B8B83;width: 250px; border: 2px solid white; text-align: left; padding-left:10px;padding-right:10px;'>" + nodeProperty.Nodename + "</td>";
@@ -226,7 +226,7 @@ function ConnectDatabase(input, mode) {
                             "MetaData": result.MetaData,
                             "label": result.label
                         };
-                        outputDisplay = "<table><tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color:white ; text-align: center;'>NODE NAME</th>";
+                        outputDisplay += "<table><tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color:white ; text-align: center;'>NODE NAME</th>";
                         outputDisplay += "<td style='background-color:#8B8B83; width: 250px; border:2px solid white;text-align: left; padding-left:10px;padding-right:10px; '>" + nodeProperty.Nodename + "</td>";
                         outputDisplay += "<<tr><th style='background-color:#333333;height: 30px; width:200px; border: 2px solid white; color: white; text-align: center;'>NAME</th>";
                         outputDisplay += "<td style='background-color:#8B8B83;width: 250px; border: 2px solid white;text-align: left; padding-left:10px;padding-right:10px; '>" + nodeProperty.Name + "</td>";
@@ -236,7 +236,7 @@ function ConnectDatabase(input, mode) {
                         outputDisplay += "<td style='background-color:#8B8B83;width: 250px;border: 2px solid white;text-align: left; padding-left:10px; padding-right:10px; '>" + nodeProperty.label + "</td>";
                         outputDisplay += "</table>";
                     }
-
+                    console.log(outputDisplay);
                     document.getElementById("output").innerHTML = outputDisplay;
 
                 }

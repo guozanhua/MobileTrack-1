@@ -8,6 +8,7 @@ function queryManagement(selections) {
     groupArr = [];
     clearDiv('graph');
     clearDiv('output');
+    clearDiv('summarize');
 
     var inputSource = document.getElementById("sPhoneNo").value;
     var inputTarget = document.getElementById("tPhoneNo").value;
