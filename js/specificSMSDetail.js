@@ -99,7 +99,7 @@ function FetchSMSDatabase(input) {
                     }
 
                     if (i == 0) {
-                        if (checkDateRange(result[i].Date) == "PASS") {
+                        
                             //Add source to nodeArr
                             var objSource = {};
                             objSource.NodeName = result[i].Source;
@@ -127,14 +127,14 @@ function FetchSMSDatabase(input) {
                             var objLinkProp = {};
                             objLinkProp.Source = result[i].SourceNumber;
                             objLinkProp.Target = result[i].TargetNumber;
-                            objLinkProp.date = result[i].Date;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                             //objLinkProp.time = result[i].Time;
                             objLinkProp.status = result[i].Status;
                             objLinkProp.message = result[i].Message;
                             objLink.prop.push(objLinkProp)
 
                             linkArr.push(objLink);
-                        }
+                        
                     } else {
                         var checkSource = 0;
                         var checkTarget = 0;
@@ -190,20 +190,20 @@ function FetchSMSDatabase(input) {
                                 }
                             }
                             if (linkExist == 1) {
-                                if (checkDateRange(result[i].Date) == "PASS") {
+                                
                                     //There is already a link between source and target.
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
                                     linkArr[linkIndex].prop.push(objLinkProp);
-                                }
+                                
                             } else {
                                 //Link between source and target haven't been created yet.
-                                if (checkDateRange(result[i].Date) == "PASS") {
+                                
                                     var objLink = {};
                                     objLink.source = getSourceIndex;
                                     objLink.target = getTargetIndex;
@@ -213,16 +213,16 @@ function FetchSMSDatabase(input) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
                                     linkArr.push(objLink);
-                                }
+                                
                             }
                         } else if (checkSource > 0 && checkTarget == 0) { // source is matched with the existing node in nodeArr
-                            if (checkDateRange(result[i].Date) == "PASS") {
+                            
                                 var objAdd = {};
                                 objAdd.NodeName = result[i].Target;
                                 objAdd.PhoneNumber = result[i].TargetNumber;
@@ -240,18 +240,18 @@ function FetchSMSDatabase(input) {
                                 var objLinkProp = {};
                                 objLinkProp.Source = result[i].SourceNumber;
                                 objLinkProp.Target = result[i].TargetNumber;
-                                objLinkProp.date = result[i].Date;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                 //objLinkProp.time = result[i].Time;
                                 objLinkProp.status = result[i].Status;
                                 objLinkProp.message = result[i].Message;
                                 objLink.prop.push(objLinkProp);
 
                                 linkArr.push(objLink);
-                            }
+                            
 
                             //(3.3)
                         } else if (checkSource == 0 && checkTarget > 0) { // target is matched with the existing node in nodeArr 
-                            if (checkDateRange(result[i].Date) == "PASS") {
+                            
                                 var objAdd = {};
                                 objAdd.NodeName = result[i].Source;
                                 objAdd.PhoneNumber = result[i].SourceNumber;
@@ -269,7 +269,7 @@ function FetchSMSDatabase(input) {
                                 var objLinkProp = {};
                                 objLinkProp.Source = result[i].SourceNumber;
                                 objLinkProp.Target = result[i].TargetNumber;
-                                objLinkProp.date = result[i].Date;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                 //objLinkProp.time = result[i].Time;
                                 objLinkProp.status = result[i].Status;
                                 objLinkProp.message = result[i].Message;
@@ -277,11 +277,11 @@ function FetchSMSDatabase(input) {
 
                                 linkArr.push(objLink);
                                 //document.write("Add " + result[i].Source + "</br>");
-                            }
+                            
 
                             //(3.4)
                         } else { // No match in an array
-                            if (checkDateRange(result[i].Date) == "PASS") {
+                            
                                 //Add source to nodeArr
                                 var objSource = {};
                                 var sourceIndex;
@@ -314,7 +314,7 @@ function FetchSMSDatabase(input) {
                                 var objLinkProp = {};
                                 objLinkProp.Source = result[i].SourceNumber;
                                 objLinkProp.Target = result[i].TargetNumber;
-                                objLinkProp.date = result[i].Date;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                 //objLinkProp.time = result[i].Time;
                                 objLinkProp.status = result[i].Status;
                                 objLinkProp.message = result[i].Message;
@@ -322,7 +322,7 @@ function FetchSMSDatabase(input) {
 
                                 linkArr.push(objLink);
                                 //document.write("Add " + result[i].Source + " " + result[i].Target + "</br>");
-                            }
+                            
                         }
 
                     }
