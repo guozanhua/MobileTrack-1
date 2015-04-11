@@ -1,6 +1,11 @@
 function buildQueryForCall(callType,dur){
     var query = "";
     var input = $('#phoneNo').val();
+    var datefrom = document.getElementById("datefrom").value;
+    var dateto = document.getElementById("dateto").value;
+    var datefromforquery = convertDatetoISO(datefrom);
+    var datetoforquery = convertDatetoISO(dateto);
+    
     query = "MATCH (n:PHONE)-[r:Call]->(m:PHONE) WHERE (n.PhoneNumber = '" + input + "' OR m.PhoneNumber = '" + input + "') ";
     if(callType == 1){
             //do nothing because no additional command is needed
@@ -10,6 +15,9 @@ function buildQueryForCall(callType,dur){
             query += "AND r.SourceNumber = '" + input + "' ";
     }
     console.log(dur);
+    if(datefrom != "" && dateto != ""){
+        query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +")"
+    }
 
     if(dur == 3){ // 2-2.59 min
             query += "AND toInt(r.Duration) > 120000 ";
@@ -28,6 +36,11 @@ function buildQueryForCall(callType,dur){
 function buildQueryForSMS(smstype,status){
     var query = "";
     var input = $('#phoneNo').val();
+    var datefrom = document.getElementById("datefrom").value;
+    var dateto = document.getElementById("dateto").value;
+    var datefromforquery = convertDatetoISO(datefrom);
+    var datetoforquery = convertDatetoISO(dateto);
+    
     query = "MATCH (n:PHONE)-[r:SMS]->(m:PHONE) WHERE (n.PhoneNumber = '" + input + "' OR m.PhoneNumber = '" + input + "') ";
     if(smstype == 1){
             //do nothing because no additional command is needed
@@ -35,6 +48,9 @@ function buildQueryForSMS(smstype,status){
             query += "AND r.SourceNumber = '" + input + "' ";
     }else{// Receive based on the input from user mean SourceNumber must equal to input
             query += "AND r.TargetNumber = '" + input + "' ";
+    }
+    if(datefrom != "" && dateto != ""){
+        query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +")"
     }
 
     if(status == 3){ 
