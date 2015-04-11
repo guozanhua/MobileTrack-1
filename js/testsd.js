@@ -24,8 +24,8 @@ function queryManagement(selections) {
             if (selections[noLoop].Type == 'Call') {
                 var linkType = selections[noLoop].linkType;
                 var _query = "MATCH (n:PHONE)" + linkType + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
-                if(datefrom != "" && dateto != ""){
-                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery +")"
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ")"
                 }
                 _query += "RETURN collect(distinct r1) AS R";
                 console.log(_query);
@@ -46,6 +46,7 @@ function queryManagement(selections) {
                             //document.write(JSON.stringify(result));
                             var count = 0;
                             if (result.length == 0) {
+                                /*No result found handler here*/
                                 alert("No data found. Please try again.");
                             }
 
@@ -563,9 +564,10 @@ function queryManagement(selections) {
                             }
                         });
             } else if (selections[noLoop].Type == 'SMS') {
+               
                 var linkType = selections[noLoop].linkType;
+                /*Add date filtering here*/
                 var _query = "MATCH (n:PHONE) " + linkType + " (m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) AS R";
-
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
@@ -581,6 +583,7 @@ function queryManagement(selections) {
                             //document.write(JSON.stringify(result));
                             var count = 0;
                             if (result.length == 0) {
+                                /*No result found handler here*/
                                 alert("No data found. Please try again.");
                             }
 
@@ -894,7 +897,7 @@ function queryManagement(selections) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -967,7 +970,7 @@ function queryManagement(selections) {
                                                     var objLinkProp = {};
                                                     objLinkProp.Source = getSourcePhone;
                                                     objLinkProp.Target = getTargetPhone;
-                                                    objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
+                                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                     objLinkProp.status = result[i].Status;
                                                     objLinkProp.message = result[i].Message;
                                                     linkArr[k].prop.push(objLinkProp);
@@ -977,7 +980,7 @@ function queryManagement(selections) {
                                                     var objLinkProp = {};
                                                     objLinkProp.Source = getSourcePhone;
                                                     objLinkProp.Target = getTargetPhone;
-                                                    objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
+                                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                     objLinkProp.status = result[i].Status;
                                                     objLinkProp.message = result[i].Message;
                                                     linkArr[k].prop.push(objLinkProp);
@@ -1111,20 +1114,545 @@ function queryManagement(selections) {
             } else if (selections[noLoop].Type == 'Line') {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:LINE)-[r]->(m:PHONE) WHERE m.PhoneNumber = '" + inputSource + "' OR m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r) AS R";
-                FetchSocialNodesLine(_query1, linkLabel);
-                //First time
-                function FetchSocialNodesLine(query, linkLabel) {
-                    var _queryString = query;
-                    console.log(_queryString);
+                /*add date filtering here*/
+                var _query = "MATCH (n:LINE)<-[r1:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time ";
+                FetchSocialNodesLine(_query, linkLabel);
 
+                function FetchSocialNodesLine(_query, linkLabel) {
+                    console.log(_query);
                     d3.xhr("http://localhost:7474/db/data/transaction/commit")
                             .header("Content-Type", "application/json")
                             .mimeType("application/json")
                             .post(
                                     JSON.stringify({
                                         "statements": [{
-                                                "statement": _queryString,
+                                                "statement": _query,
+                                                "resultDataContents": ["row"]//, "graph" ]
+                                            }]
+                                    }), function (err, data) {
+                                var returnData = JSON.parse(data.responseText);
+                                //document.write(JSON.stringify(returnData));
+                                var result = [];
+
+                                if (returnData.results[0].data.length == 0) {
+                                    /*No result found handler here*/
+                                    alert("No data found, please try again.");
+                                } else {
+                                    for (i = 0; i < returnData.results[0].data.length; i++) {
+                                        result.push(returnData.results[0].data[i].row[0]);
+                                    }
+                                }
+
+                                //Create groupArr
+                                for (i = 0; i < result.length; i++) {
+                                    if (i == 0) {
+                                        //both source and target will be added to groupArray.
+                                        if (((result[i].SourceNumber == inputSource) && (result[i].TargetNumber == inputTarget)) || ((result[i].SourceNumber == inputTarget) && (result[i].TargetNumber == inputSource))) {
+                                            if (result[i].SourceNumber == inputSource && result[i].TargetNumber == inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 0;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 0;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else if ((result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) || (result[i].SourceNumber != inputTarget && result[i].TargetNumber == inputSource)) {
+                                            if (result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 0;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 0;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else if ((result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) || (result[i].SourceNumber == inputTarget && result[i].TargetNumber != inputSource)) {
+                                            if (result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else {
+                                            var objGroupSource = {};
+                                            objGroupSource.NodeName = result[i].Source;
+                                            objGroupSource.number = result[i].SourceNumber;
+                                            objGroupSource.group = 2;
+                                            groupArr.push(objGroupSource);
+
+                                            var objGroupTarget = {};
+                                            objGroupTarget.NodeName = result[i].Target;
+                                            objGroupTarget.number = result[i].TargetNumber;
+                                            objGroupTarget.group = 2;
+                                            groupArr.push(objGroupTarget);
+                                        }
+
+                                    } else {
+                                        var grCheckSource = 0;
+                                        var grCheckTarget = 0;
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                grCheckSource++;
+                                                break;
+                                            }
+                                        }
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                grCheckTarget++;
+                                                break;
+                                            }
+                                        }
+
+                                        if (grCheckSource == 0 && grCheckTarget == 0) {
+                                            //Add both of source and target into groupArr
+                                            if (((result[i].SourceNumber == inputSource) && (result[i].TargetNumber == inputTarget)) || ((result[i].SourceNumber == inputTarget) && (result[i].TargetNumber == inputSource))) {
+                                                if (result[i].SourceNumber == inputSource && result[i].TargetNumber == inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 0;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 1;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 1;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 0;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else if ((result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) || (result[i].SourceNumber != inputTarget && result[i].TargetNumber == inputSource)) {
+                                                if (result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 0;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 2;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 2;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 0;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else if ((result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) || (result[i].SourceNumber == inputTarget && result[i].TargetNumber != inputSource)) {
+                                                if (result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 2;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 1;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 1;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 2;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            }
+
+                                        } else if (grCheckSource == 0 && grCheckTarget == 1) {
+                                            //Add source to groupArr
+                                            if (result[i].SourceNumber == inputSource) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 0;
+                                                groupArr.push(objGroup);
+
+                                            } else if (result[i].SourceNumber == inputTarget) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 1;
+                                                groupArr.push(objGroup);
+
+                                            } else {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 2;
+                                                groupArr.push(objGroup);
+                                            }
+
+                                        } else if (grCheckSource == 1 && grCheckTarget == 0) {
+                                            if (result[i].TargetNumber == inputSource) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 0;
+                                                groupArr.push(objGroup);
+
+                                            } else if (result[i].TargetNumber == inputTarget) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 1;
+                                                groupArr.push(objGroup);
+
+                                            } else {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 2;
+                                                groupArr.push(objGroup);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                //document.write(JSON.stringify(groupArr));
+
+                                /*
+                                 Start building nodeArr and linkArr
+                                 */
+                                for (i = 0; i < result.length; i++) {
+                                    if (i == 0) {
+                                        var getGroupSource;
+                                        var getGroupTarget;
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                getGroupSource = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                getGroupTarget = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+
+                                        var objAddSource = {};
+                                        objAddSource.NodeName = result[i].Source;
+                                        objAddSource.PhoneNumber = result[i].SourceNumber;
+                                        objAddSource.textDisplay = "LineID : " + result[i].SourceLineID;
+                                        objAddSource.groupIndex = getGroupSource;
+                                        objAddSource.Label = 'Line';
+                                        objAddSource.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objAddSource);
+
+                                        var objAddTarget = {};
+                                        objAddTarget.NodeName = result[i].Target;
+                                        objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                        objAddTarget.textDisplay = "LineID : " + result[i].TargetLineID;
+                                        objAddTarget.groupIndex = getGroupTarget;
+                                        objAddTarget.Label = 'Line';
+                                        objAddTarget.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objAddTarget);
+
+                                        var objLink = {};
+                                        objLink.source = 0;
+                                        objLink.target = 1;
+                                        objLink.Type = linkLabel;
+                                        objLink.prop = [];
+
+                                        var objLinkProp = {};
+                                        objLinkProp.Sender = result[i].SourceLineID;
+                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.Time = result[i].Time;
+                                        objLinkProp.message = result[i].Message;
+                                        objLink.prop.push(objLinkProp);
+                                        linkArr.push(objLink);
+
+                                    } else {
+                                        //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                        var checkSource = 0;
+                                        var checkTarget = 0;
+
+                                        //These variable are used for storing important data that will be used in linkArr
+                                        var getSourceIndex = 0;
+                                        var getTargetIndex = 0;
+                                        var getSourceNumber = "";
+                                        var getTargetNumber = "";
+                                        var getSourcePhone = "";
+                                        var getTargetPhone = "";
+                                        var getGroupSource;
+                                        var getGroupTarget;
+
+                                        //Get group for source
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                getGroupSource = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+                                        //Get group for target
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                getGroupTarget = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+                                        //Check the existence of source in nodeArr
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (result[i].Source == nodeArr[j].NodeName) {
+                                                getSourceNumber = nodeArr[j].PhoneNumber;
+                                                getSourceIndex = nodeArr[j].NodeIndex;
+                                                checkSource++;
+                                                break;
+                                            }
+                                        }
+                                        //Check the existence of target in nodeArr
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (result[i].Target == nodeArr[j].NodeName) {
+                                                getTargetNumber = nodeArr[j].PhoneNumber;
+                                                getTargetIndex = nodeArr[j].NodeIndex;
+                                                checkTarget++;
+                                                break;
+                                            }
+                                        }
+
+                                        if (checkSource == 1 && checkTarget == 1) {
+                                            //First, we have to check an existence of the link.
+                                            var linkIndex = 0;
+                                            var linkExist = 0;
+                                            for (k = 0; k < linkArr.length; k++) {
+                                                if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
+                                                    linkExist++;
+                                                    linkIndex = k;
+                                                    break;
+                                                }
+                                            }
+                                            if (linkExist == 1) {
+                                                //There is already a link between source and target.
+                                                var objLinkProp = {};
+                                                objLinkProp.Sender = result[i].SourceLineID;
+                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.Time = result[i].Time;
+                                                objLinkProp.message = result[i].Message;
+                                                linkArr[linkIndex].prop.push(objLinkProp);
+                                            } else {
+                                                //Link between source and target haven't been created yet.
+                                                var objLink = {};
+                                                objLink.source = getSourceIndex;
+                                                objLink.target = getTargetIndex;
+                                                objLink.Type = linkLabel
+                                                objLink.prop = [];
+
+                                                var objLinkProp = {};
+                                                objLinkProp.Sender = result[i].SourceLineID;
+                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.Time = result[i].Time;
+                                                objLinkProp.message = result[i].Message;
+                                                objLink.prop.push(objLinkProp);
+                                                linkArr.push(objLink);
+                                            }
+                                        } else if (checkSource > 0 && checkTarget == 0) {
+                                            //result[i].Source already existed in nodeArr
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Target;
+                                            objAdd.PhoneNumber = result[i].TargetNumber;
+                                            objAdd.groupIndex = getGroupTarget;
+                                            objAdd.textDisplay = "LineID : " + result[i].TargetLineID;
+                                            objAdd.Label = 'Line';
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAdd);
+
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = nodeArr.length - 1;
+                                            objLink.Type = linkLabel;
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceLineID;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            linkArr.push(objLink);
+
+                                        } else if (checkSource == 0 && checkTarget > 0) {
+                                            //result[i].Target already existed in nodeArr
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Source;
+                                            objAdd.PhoneNumber = result[i].SourceNumber;
+                                            objAdd.groupIndex = getGroupSource;
+                                            objAdd.textDisplay = "LineID : " + result[i].SourceLineID;
+                                            objAdd.Label = 'Line';
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAdd);
+
+                                            var objLink = {};
+                                            objLink.source = nodeArr.length - 1;
+                                            objLink.target = getTargetIndex;
+                                            objLink.Type = linkLabel;
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceLineID;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+
+                                        } else {
+                                            var objAddSource = {};
+                                            objAddSource.NodeName = result[i].Source;
+                                            objAddSource.PhoneNumber = result[i].SourceNumber;
+                                            objAddSource.textDisplay = "LineID : " + result[i].SourceLineID;
+                                            objAddSource.groupIndex = getGroupSource;
+                                            objAddSource.Label = 'Line';
+                                            objAddSource.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAddSource);
+
+                                            var objAddTarget = {};
+                                            objAddTarget.NodeName = result[i].Target;
+                                            objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                            objAddTarget.textDisplay = "LineID : " + result[i].TargetLineID;
+                                            objAddTarget.groupIndex = getGroupTarget;
+                                            objAddSource.Label = 'Line';
+                                            objAddTarget.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAddTarget);
+
+                                            var objLink = {};
+                                            objLink.source = 0;
+                                            objLink.target = 1;
+                                            objLink.Type = linkLabel;
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceLineID;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+
+                                        }
+                                    }
+                                }
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allLineNodes = [];
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (nodeArr[i].Label == 'Line') {
+                                        allLineNodes.push(nodeArr[i].NodeName);
+                                    }
+                                }
+
+                                var nextQuery = "MATCH (n:LINE)-[r:Line]->(m:PHONE) WHERE "
+                                for (i = 0; i < allLineNodes.length; i++) {
+                                    if (i == 0) {
+                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                    } else {
+                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                    }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneForLine(nextQuery);
+                            });
+                }
+
+                function FetchPhoneForLine(_query) {
+                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                            .header("Content-Type", "application/json")
+                            .mimeType("application/json")
+                            .post(
+                                    JSON.stringify({
+                                        "statements": [{
+                                                "statement": _query,
                                                 "resultDataContents": ["row"]//, "graph" ]
                                             }]
                                     }), function (err, data) {
@@ -1135,165 +1663,44 @@ function queryManagement(selections) {
                                 var count = 0;
                                 if (result.length == 0) {
                                     alert("No data found. Please try again.");
-                                    
                                 }
 
-                                //Create groupArr
                                 for (i = 0; i < result.length; i++) {
-                                    if (result[i].TargetType == 'Phone') {
-                                        var objGroup = {};
-                                        objGroup.NodeName = result[i].Target;
-                                        objGroup.groupIndex = groupArr.length;
-                                        groupArr.push(objGroup);
-                                    }
-                                }
 
-                                //document.write(JSON.stringify(groupArr));
-
-                                //Create nodeArr and linkArr
-                                for (i = 0; i < result.length; i++) {
                                     var getGroupIndex;
-
+                                    var getSourceIndex, getTargetIndex;
                                     for (j = 0; j < groupArr.length; j++) {
-                                        if (result[i].Target == groupArr[j].NodeName) {
-                                            getGroupIndex = groupArr[j].groupIndex;
+                                        if (groupArr[j].NodeName == result[i].Source) {
+                                            getGroupIndex = groupArr[j].group;
                                             break;
                                         }
                                     }
-                                    var objSource = {};
-                                    var objTarget = {};
-                                    var objLink = {};
-
-                                    objSource.NodeName = result[i].Source;
-                                    objSource.Label = result[i].SourceType;
-                                    objSource.NodeIndex = nodeArr.length;
-                                    objSource.groupIndex = getGroupIndex;
-                                    objSource.textDisplay = "LineID: " + result[i].LineID;
-                                    nodeArr.push(objSource);
-
-                                    objTarget.NodeName = result[i].Target;
-                                    objTarget.Label = "Phone"
-                                    objTarget.NodeIndex = nodeArr.length;
-                                    objTarget.groupIndex = getGroupIndex;
-                                    objTarget.textDisplay = result[i].PhoneNumber;
-                                    nodeArr.push(objTarget);
-
-                                    objLink.source = objSource.NodeIndex;
-                                    objLink.target = objTarget.NodeIndex;
-                                    objLink.Type = result[i].Description;
-                                    objLink.prop = [];
-                                    linkArr.push(objLink);
-                                }
-                                //document.write(JSON.stringify(resultArr));
-
-                                var nextQuery;
-                                var inputSource = document.getElementById("sPhoneNo").value;
-                                var inputTarget = document.getElementById("tPhoneNo").value;
-                                if (linkLabel == 'Line') {
-                                    nextQuery = "MATCH (n:LINE)<-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else if (linkLabel == 'Facebook') {
-                                    nextQuery = "MATCH (n:FACEBOOK)<-[r:Facebook]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else {
-                                    nextQuery = "MATCH (n:WHATSAPP)<-[r:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                }
-                                fetchSocialCommunicationLine(nextQuery, linkLabel);
-                            });
-                }
-
-                function fetchSocialCommunicationLine(query, linkLabel) {
-                    var _query = query;
-                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
-                            .header("Content-Type", "application/json")
-                            .mimeType("application/json")
-                            .post(
-                                    JSON.stringify({
-                                        "statements": [{
-                                                "statement": _query,
-                                            }]
-                                    }), function (err, data) {
-                                var returnData = JSON.parse(data.responseText);
-                                //document.write(JSON.stringify(returnData));
-                                var result = [];
-
-                                if (returnData.results[0].data.length == 0) {
-                                    alert("No data found, please try again.");
-                                } else {
-                                    for (i = 0; i < returnData.results[0].data.length; i++) {
-                                        result.push(returnData.results[0].data[i].row[0]);
-                                    }
-                                }
-
-                                //document.write(JSON.stringify(result));
-
-                                var getSourceIndex;
-                                var getTargetIndex;
-                                var getSourceName;
-                                var getTargetName;
-                                for (i = 0; i < result.length; i++) {
 
                                     for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Source == nodeArr[j].NodeName) {
+                                        if (nodeArr[j].NodeName == result[i].Source) {
                                             getSourceIndex = nodeArr[j].NodeIndex;
                                             break;
                                         }
                                     }
 
-                                    for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Target == nodeArr[j].NodeName) {
-                                            getTargetIndex = nodeArr[j].NodeIndex;
-                                            break;
-                                        }
-                                    }
+                                    var objAdd = {};
+                                    objAdd.NodeName = result[i].Target;
+                                    objAdd.Label = result[i].TargetType;
+                                    objAdd.groupIndex = getGroupIndex;
+                                    objAdd.textDisplay = result[i].PhoneNumber;
+                                    objAdd.NodeIndex = nodeArr.length;
+                                    getTargetIndex = nodeArr.length;
+                                    nodeArr.push(objAdd);
 
-                                    if (i == 0) {
-                                        var objLink = {};
-                                        objLink.source = getSourceIndex;
-                                        objLink.target = getTargetIndex;
-                                        objLink.Type = linkLabel;
-                                        objLink.prop = [];
-
-                                        var objLinkProp = {};
-                                        objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                        objLinkProp.Time = result[i].Time;
-                                        objLinkProp.message = result[i].Message;
-                                        objLink.prop.push(objLinkProp);
-
-                                        linkArr.push(objLink);
-                                    } else {
-                                        var checkLink = 0;
-                                        for (k = 0; k < linkArr.length; k++) {
-                                            if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
-                                                var objLinkProp = {};
-                                                objLinkProp.Sender = result[i].SourceLineID;
-                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                                objLinkProp.Time = result[i].Time;
-                                                objLinkProp.message = result[i].Message;
-                                                linkArr[k].prop.push(objLinkProp);
-                                                checkLink++;
-                                                break;
-                                            }
-                                        }
-
-                                        //checkLink = 0 means no object in linkArr that represents communication between this source and target.
-                                        if (checkLink == 0) {
-                                            var objLink = {};
-                                            objLink.source = getSourceIndex;
-                                            objLink.target = getTargetIndex;
-                                            objLink.Type = linkLabel;
-                                            objLink.prop = [];
-
-                                            var objLinkProp = {};
-                                            objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                            objLinkProp.Time = result[i].Time;
-                                            objLinkProp.message = result[i].Message;
-                                            objLink.prop.push(objLinkProp);
-
-                                            linkArr.push(objLink);
-                                        }
-                                    }
+                                    var objLink = {};
+                                    objLink.source = getSourceIndex;
+                                    objLink.target = getTargetIndex;
+                                    objLink.Type = result[i].Description;
+                                    objLink.prop = [];
+                                    linkArr.push(objLink);
                                 }
+
+                                //After finish adding all the nodes and relationship into nodeArr and linkArr
                                 if (noLoop == selections.length - 1) {
                                     var finalResult = [];
                                     finalResult.push(nodeArr);
@@ -1305,103 +1712,18 @@ function queryManagement(selections) {
                                     noLoop++;
                                     recursive();
                                 }
-
                             });
                 }
                 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
             } else if (selections[noLoop].Type == 'Whatsapp') {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:WHATSAPP)-[r1]->(m:PHONE) MATCH (n:WHATSAPP)-[r2]->(l:WHATSAPP) MATCH (l:WHATSAPP)-[r3]->(p:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND l.PhoneNumber = '" + inputTarget + "' AND ((n.PhoneNumber = '" + inputSource + "' AND l.PhoneNumber = '" + inputTarget + "') OR (n.PhoneNumber = '" + inputTarget + "' AND l.PhoneNumber = '" + inputSource + "' )) RETURN collect(distinct r1) + collect(distinct r3) AS R;";
-                FetchSocialNodesWhatsapp(_query1, linkLabel);
-                //First time
-                function FetchSocialNodesWhatsapp(query, linkLabel) {
-                    var _queryString = query;
-                    //console.log(_queryString);
+                /*Add date filtering here*/
+                var _query = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time ";
+                FetchSocialNodesWhatsapp(_query, linkLabel);
 
-                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
-                            .header("Content-Type", "application/json")
-                            .mimeType("application/json")
-                            .post(
-                                    JSON.stringify({
-                                        "statements": [{
-                                                "statement": _queryString,
-                                                "resultDataContents": ["row"]//, "graph" ]
-                                            }]
-                                    }), function (err, data) {
-                                var returnData = JSON.parse(data.responseText);
-                                //document.write(JSON.stringify(returnData));
-                                var result = returnData.results[0].data[0].row[0];
-                                //document.write(JSON.stringify(result));
-                                var count = 0;
-                                if (result.length == 0) {
-                                    alert("No data found. Please try again.");
-                                }
-
-                                //Create groupArr
-                                for (i = 0; i < result.length; i++) {
-                                    if (result[i].TargetType == 'Phone') {
-                                        var objGroup = {};
-                                        objGroup.NodeName = result[i].Target;
-                                        objGroup.groupIndex = groupArr.length;
-                                        groupArr.push(objGroup);
-                                    }
-                                }
-
-                                //document.write(JSON.stringify(groupArr));
-
-                                //Create nodeArr and linkArr
-                                for (i = 0; i < result.length; i++) {
-                                    var getGroupIndex;
-
-                                    for (j = 0; j < groupArr.length; j++) {
-                                        if (result[i].Target == groupArr[j].NodeName) {
-                                            getGroupIndex = groupArr[j].groupIndex;
-                                            break;
-                                        }
-                                    }
-                                    var objSource = {};
-                                    var objTarget = {};
-                                    var objLink = {};
-
-                                    objSource.NodeName = result[i].Source;
-                                    objSource.Label = result[i].SourceType;
-                                    objSource.NodeIndex = nodeArr.length;
-                                    objSource.groupIndex = getGroupIndex;
-                                    objSource.textDisplay = "WhatsappID: " + result[i].Name;
-                                    nodeArr.push(objSource);
-
-                                    objTarget.NodeName = result[i].Target;
-                                    objTarget.Label = "Phone"
-                                    objTarget.NodeIndex = nodeArr.length;
-                                    objTarget.groupIndex = getGroupIndex;
-                                    objTarget.textDisplay = result[i].PhoneNumber;
-                                    nodeArr.push(objTarget);
-
-                                    objLink.source = objSource.NodeIndex;
-                                    objLink.target = objTarget.NodeIndex;
-                                    objLink.Type = result[i].Description;
-                                    objLink.prop = [];
-                                    linkArr.push(objLink);
-                                }
-                                //document.write(JSON.stringify(resultArr));
-
-                                var nextQuery;
-                                var inputSource = document.getElementById("sPhoneNo").value;
-                                var inputTarget = document.getElementById("tPhoneNo").value;
-                                if (linkLabel == 'Line') {
-                                    nextQuery = "MATCH (n:LINE)<-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else if (linkLabel == 'Facebook') {
-                                    nextQuery = "MATCH (n:FACEBOOK)<-[r:Facebook]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else {
-                                    nextQuery = "MATCH (n:WHATSAPP)<-[r:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                }
-                                fetchSocialCommunicationWhatsapp(nextQuery, linkLabel);
-                            });
-                }
-
-                function fetchSocialCommunicationWhatsapp(query, linkLabel) {
-                    var _query = query;
+                function FetchSocialNodesWhatsapp(_query, linkLabel) {
+                    console.log(_query);
                     d3.xhr("http://localhost:7474/db/data/transaction/commit")
                             .header("Content-Type", "application/json")
                             .mimeType("application/json")
@@ -1409,6 +1731,7 @@ function queryManagement(selections) {
                                     JSON.stringify({
                                         "statements": [{
                                                 "statement": _query,
+                                                "resultDataContents": ["row"]//, "graph" ]
                                             }]
                                     }), function (err, data) {
                                 var returnData = JSON.parse(data.responseText);
@@ -1416,6 +1739,7 @@ function queryManagement(selections) {
                                 var result = [];
 
                                 if (returnData.results[0].data.length == 0) {
+                                    /*No result found handler here*/
                                     alert("No data found, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
@@ -1423,60 +1747,469 @@ function queryManagement(selections) {
                                     }
                                 }
 
-                                //document.write(JSON.stringify(result));
-
-                                var getSourceIndex;
-                                var getTargetIndex;
-                                var getSourceName;
-                                var getTargetName;
+                                //Create groupArr
                                 for (i = 0; i < result.length; i++) {
-
-                                    for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Source == nodeArr[j].NodeName) {
-                                            getSourceIndex = nodeArr[j].NodeIndex;
-                                            break;
-                                        }
-                                    }
-
-                                    for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Target == nodeArr[j].NodeName) {
-                                            getTargetIndex = nodeArr[j].NodeIndex;
-                                            break;
-                                        }
-                                    }
-
                                     if (i == 0) {
+                                        //both source and target will be added to groupArray.
+                                        if (((result[i].SourceNumber == inputSource) && (result[i].TargetNumber == inputTarget)) || ((result[i].SourceNumber == inputTarget) && (result[i].TargetNumber == inputSource))) {
+                                            if (result[i].SourceNumber == inputSource && result[i].TargetNumber == inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 0;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 0;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else if ((result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) || (result[i].SourceNumber != inputTarget && result[i].TargetNumber == inputSource)) {
+                                            if (result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 0;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 0;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else if ((result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) || (result[i].SourceNumber == inputTarget && result[i].TargetNumber != inputSource)) {
+                                            if (result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else {
+                                            var objGroupSource = {};
+                                            objGroupSource.NodeName = result[i].Source;
+                                            objGroupSource.number = result[i].SourceNumber;
+                                            objGroupSource.group = 2;
+                                            groupArr.push(objGroupSource);
+
+                                            var objGroupTarget = {};
+                                            objGroupTarget.NodeName = result[i].Target;
+                                            objGroupTarget.number = result[i].TargetNumber;
+                                            objGroupTarget.group = 2;
+                                            groupArr.push(objGroupTarget);
+                                        }
+
+                                    } else {
+                                        var grCheckSource = 0;
+                                        var grCheckTarget = 0;
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                grCheckSource++;
+                                                break;
+                                            }
+                                        }
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                grCheckTarget++;
+                                                break;
+                                            }
+                                        }
+
+                                        if (grCheckSource == 0 && grCheckTarget == 0) {
+                                            //Add both of source and target into groupArr
+                                            if (((result[i].SourceNumber == inputSource) && (result[i].TargetNumber == inputTarget)) || ((result[i].SourceNumber == inputTarget) && (result[i].TargetNumber == inputSource))) {
+                                                if (result[i].SourceNumber == inputSource && result[i].TargetNumber == inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 0;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 1;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 1;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 0;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else if ((result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) || (result[i].SourceNumber != inputTarget && result[i].TargetNumber == inputSource)) {
+                                                if (result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 0;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 2;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 2;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 0;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else if ((result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) || (result[i].SourceNumber == inputTarget && result[i].TargetNumber != inputSource)) {
+                                                if (result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 2;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 1;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 1;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 2;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            }
+
+                                        } else if (grCheckSource == 0 && grCheckTarget == 1) {
+                                            //Add source to groupArr
+                                            if (result[i].SourceNumber == inputSource) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 0;
+                                                groupArr.push(objGroup);
+
+                                            } else if (result[i].SourceNumber == inputTarget) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 1;
+                                                groupArr.push(objGroup);
+
+                                            } else {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 2;
+                                                groupArr.push(objGroup);
+                                            }
+
+                                        } else if (grCheckSource == 1 && grCheckTarget == 0) {
+                                            if (result[i].TargetNumber == inputSource) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 0;
+                                                groupArr.push(objGroup);
+
+                                            } else if (result[i].TargetNumber == inputTarget) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 1;
+                                                groupArr.push(objGroup);
+
+                                            } else {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 2;
+                                                groupArr.push(objGroup);
+                                            }
+                                        }
+                                    }
+                                }
+                                //document.write(JSON.stringify(groupArr));
+
+                                /*
+                                 Start building nodeArr and linkArr
+                                 */
+                                for (i = 0; i < result.length; i++) {
+                                    if (i == 0) {
+                                        var getGroupSource;
+                                        var getGroupTarget;
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                getGroupSource = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                getGroupTarget = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+
+                                        var objAddSource = {};
+                                        objAddSource.NodeName = result[i].Source;
+                                        objAddSource.PhoneNumber = result[i].SourceNumber;
+                                        objAddSource.textDisplay = "WhatsappID : " + result[i].SourceNumber;
+                                        objAddSource.groupIndex = getGroupSource;
+                                        objAddSource.Label = 'Whatsapp';
+                                        objAddSource.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objAddSource);
+
+                                        var objAddTarget = {};
+                                        objAddTarget.NodeName = result[i].Target;
+                                        objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                        objAddTarget.textDisplay = "WhatsappID : " + result[i].TargetNumber;
+                                        objAddTarget.groupIndex = getGroupTarget;
+                                        objAddTarget.Label = 'Whatsapp';
+                                        objAddTarget.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objAddTarget);
+
                                         var objLink = {};
-                                        objLink.source = getSourceIndex;
-                                        objLink.target = getTargetIndex;
+                                        objLink.source = 0;
+                                        objLink.target = 1;
                                         objLink.Type = linkLabel;
                                         objLink.prop = [];
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                        objLinkProp.date = result[i].Date;
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
-
                                         linkArr.push(objLink);
+
                                     } else {
-                                        var checkLink = 0;
-                                        for (k = 0; k < linkArr.length; k++) {
-                                            if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
-                                                var objLinkProp = {};
-                                                objLinkProp.Sender = result[i].SourceNumber;
-                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                                objLinkProp.Time = result[i].Time;
-                                                objLinkProp.message = result[i].Message;
-                                                linkArr[k].prop.push(objLinkProp);
-                                                checkLink++;
+                                        //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                        var checkSource = 0;
+                                        var checkTarget = 0;
+
+                                        //These variable are used for storing important data that will be used in linkArr
+                                        var getSourceIndex = 0;
+                                        var getTargetIndex = 0;
+                                        var getSourceNumber = "";
+                                        var getTargetNumber = "";
+                                        var getSourcePhone = "";
+                                        var getTargetPhone = "";
+                                        var getGroupSource;
+                                        var getGroupTarget;
+
+                                        //Get group for source
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                getGroupSource = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+                                        //Get group for target
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                getGroupTarget = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+                                        //Check the existence of source in nodeArr
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (result[i].Source == nodeArr[j].NodeName) {
+                                                getSourceNumber = nodeArr[j].PhoneNumber;
+                                                getSourceIndex = nodeArr[j].NodeIndex;
+                                                checkSource++;
+                                                break;
+                                            }
+                                        }
+                                        //Check the existence of target in nodeArr
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (result[i].Target == nodeArr[j].NodeName) {
+                                                getTargetNumber = nodeArr[j].PhoneNumber;
+                                                getTargetIndex = nodeArr[j].NodeIndex;
+                                                checkTarget++;
                                                 break;
                                             }
                                         }
 
-                                        //checkLink = 0 means no object in linkArr that represents communication between this source and target.
-                                        if (checkLink == 0) {
+                                        if (checkSource == 1 && checkTarget == 1) {
+                                            //First, we have to check an existence of the link.
+                                            var linkIndex = 0;
+                                            var linkExist = 0;
+                                            for (k = 0; k < linkArr.length; k++) {
+                                                if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
+                                                    linkExist++;
+                                                    linkIndex = k;
+                                                    break;
+                                                }
+                                            }
+                                            if (linkExist == 1) {
+                                                //There is already a link between source and target.
+                                                var objLinkProp = {};
+                                                objLinkProp.Sender = result[i].SourceNumber;
+                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.Time = result[i].Time;
+                                                objLinkProp.message = result[i].Message;
+                                                linkArr[linkIndex].prop.push(objLinkProp);
+                                            } else {
+                                                //Link between source and target haven't been created yet.
+                                                var objLink = {};
+                                                objLink.source = getSourceIndex;
+                                                objLink.target = getTargetIndex;
+                                                objLink.Type = linkLabel
+                                                objLink.prop = [];
+
+                                                var objLinkProp = {};
+                                                objLinkProp.Sender = result[i].SourceNumber;
+                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.Time = result[i].Time;
+                                                objLinkProp.message = result[i].Message;
+                                                objLink.prop.push(objLinkProp);
+                                                linkArr.push(objLink);
+                                            }
+                                        } else if (checkSource > 0 && checkTarget == 0) {
+                                            //result[i].Source already existed in nodeArr
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Target;
+                                            objAdd.PhoneNumber = result[i].TargetNumber;
+                                            objAdd.groupIndex = getGroupTarget;
+                                            objAdd.textDisplay = "WhatsappID : " + result[i].TargetNumber;
+                                            objAdd.Label = 'Whatsapp';
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAdd);
+
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = nodeArr.length - 1;
+                                            objLink.Type = linkLabel;
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceNumber;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            linkArr.push(objLink);
+
+                                        } else if (checkSource == 0 && checkTarget > 0) {
+                                            //result[i].Target already existed in nodeArr
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Source;
+                                            objAdd.PhoneNumber = result[i].SourceNumber;
+                                            objAdd.groupIndex = getGroupSource;
+                                            objAdd.textDisplay = "WhatsappID : " + result[i].SourceNumber;
+                                            objAdd.Label = 'Whatsapp';
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAdd);
+
+                                            var objLink = {};
+                                            objLink.source = nodeArr.length - 1;
+                                            objLink.target = getTargetIndex;
+                                            objLink.Type = linkLabel;
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceNumber;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+
+                                        } else {
+                                            var objAddSource = {};
+                                            objAddSource.NodeName = result[i].Source;
+                                            objAddSource.PhoneNumber = result[i].SourceNumber;
+                                            objAddSource.textDisplay = "WhatsappID : " + result[i].SourceNumber;
+                                            objAddSource.groupIndex = getGroupSource;
+                                            objAddSource.Label = 'Whatsapp';
+                                            objAddSource.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAddSource);
+
+                                            var objAddTarget = {};
+                                            objAddTarget.NodeName = result[i].Target;
+                                            objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                            objAddTarget.textDisplay = "WhatsappID : " + result[i].TargetNumber;
+                                            objAddTarget.groupIndex = getGroupTarget;
+                                            objAddSource.Label = 'Whatsapp';
+                                            objAddTarget.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAddTarget);
+
                                             var objLink = {};
                                             objLink.source = getSourceIndex;
                                             objLink.target = getTargetIndex;
@@ -1485,47 +2218,44 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                            objLinkProp.date = result[i].Date;
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
-
                                             linkArr.push(objLink);
+
                                         }
                                     }
                                 }
-                                if (noLoop == selections.length - 1) {
-                                    var finalResult = [];
-                                    finalResult.push(nodeArr);
-                                    finalResult.push(linkArr);
-                                    finalResult.push(groupArr);
-                                    //document.write(JSON.stringify(finalResult));
-                                    dataVisualizationSocial(finalResult);
-                                } else {
-                                    noLoop++;
-                                    recursive();
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allLineNodes = [];
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (nodeArr[i].Label == 'Whatsapp') {
+                                        allLineNodes.push(nodeArr[i].NodeName);
+                                    }
                                 }
 
+                                var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
+                                for (i = 0; i < allLineNodes.length; i++) {
+                                    if (i == 0) {
+                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                    } else {
+                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                    }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneForWhatsapp(nextQuery);
                             });
                 }
-            } else {
-                var linkType = selections[noLoop].linkType;
-                var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:FACEBOOK)-[r1]->(m:PHONE) MATCH (n:FACEBOOK)-[r2]->(l:FACEBOOK) MATCH (l:FACEBOOK)-[r3]->(p:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND l.PhoneNumber = '" + inputTarget + "' AND ((n.PhoneNumber = '" + inputSource + "' AND l.PhoneNumber = '" + inputTarget + "') OR (n.PhoneNumber = '" + inputTarget + "' AND l.PhoneNumber = '" + inputSource + "' )) RETURN collect(distinct r1) + collect(distinct r3) AS R;";
-                FetchSocialNodesFacebook(_query1, linkLabel);
 
-                //First time
-                function FetchSocialNodesFacebook(query, linkLabel) {
-                    var _queryString = query;
-                    //console.log(_queryString);
-
+                function FetchPhoneForWhatsapp(_query) {
                     d3.xhr("http://localhost:7474/db/data/transaction/commit")
                             .header("Content-Type", "application/json")
                             .mimeType("application/json")
                             .post(
                                     JSON.stringify({
                                         "statements": [{
-                                                "statement": _queryString,
+                                                "statement": _query,
                                                 "resultDataContents": ["row"]//, "graph" ]
                                             }]
                                     }), function (err, data) {
@@ -1538,162 +2268,42 @@ function queryManagement(selections) {
                                     alert("No data found. Please try again.");
                                 }
 
-                                //Create groupArr
                                 for (i = 0; i < result.length; i++) {
-                                    if (result[i].TargetType == 'Phone') {
-                                        var objGroup = {};
-                                        objGroup.NodeName = result[i].Target;
-                                        objGroup.groupIndex = groupArr.length;
-                                        groupArr.push(objGroup);
-                                    }
-                                }
 
-                                //document.write(JSON.stringify(groupArr));
-
-                                //Create nodeArr and linkArr
-                                for (i = 0; i < result.length; i++) {
                                     var getGroupIndex;
-
+                                    var getSourceIndex, getTargetIndex;
                                     for (j = 0; j < groupArr.length; j++) {
-                                        if (result[i].Target == groupArr[j].NodeName) {
-                                            getGroupIndex = groupArr[j].groupIndex;
+                                        if (groupArr[j].NodeName == result[i].Source) {
+                                            getGroupIndex = groupArr[j].group;
                                             break;
                                         }
                                     }
-                                    var objSource = {};
-                                    var objTarget = {};
-                                    var objLink = {};
-
-                                    objSource.NodeName = result[i].Source;
-                                    objSource.Label = result[i].SourceType;
-                                    objSource.NodeIndex = nodeArr.length;
-                                    objSource.groupIndex = getGroupIndex;
-                                    objSource.textDisplay = "FacebookID: " + result[i].FaceBookAccount;
-                                    nodeArr.push(objSource);
-
-                                    objTarget.NodeName = result[i].Target;
-                                    objTarget.Label = "Phone"
-                                    objTarget.NodeIndex = nodeArr.length;
-                                    objTarget.groupIndex = getGroupIndex;
-                                    objTarget.textDisplay = result[i].PhoneNumber;
-                                    nodeArr.push(objTarget);
-
-                                    objLink.source = objSource.NodeIndex;
-                                    objLink.target = objTarget.NodeIndex;
-                                    objLink.Type = result[i].Description;
-                                    objLink.prop = [];
-                                    linkArr.push(objLink);
-                                }
-                                //document.write(JSON.stringify(resultArr));
-
-                                var nextQuery;
-                                var inputSource = document.getElementById("sPhoneNo").value;
-                                var inputTarget = document.getElementById("tPhoneNo").value;
-                                if (linkLabel == 'Line') {
-                                    nextQuery = "MATCH (n:LINE)<-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else if (linkLabel == 'Facebook') {
-                                    nextQuery = "MATCH (n:FACEBOOK)<-[r:Facebook]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else {
-                                    nextQuery = "MATCH (n:WHATSAPP)<-[r:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                }
-                                fetchSocialCommunicationFacebook(nextQuery, linkLabel);
-                            });
-                }
-
-                function fetchSocialCommunicationFacebook(query, linkLabel) {
-                    var _query = query;
-                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
-                            .header("Content-Type", "application/json")
-                            .mimeType("application/json")
-                            .post(
-                                    JSON.stringify({
-                                        "statements": [{
-                                                "statement": _query,
-                                            }]
-                                    }), function (err, data) {
-                                var returnData = JSON.parse(data.responseText);
-                                //document.write(JSON.stringify(returnData));
-                                var result = [];
-
-                                if (returnData.results[0].data.length == 0) {
-                                    alert("No data found, please try again.");
-                                } else {
-                                    for (i = 0; i < returnData.results[0].data.length; i++) {
-                                        result.push(returnData.results[0].data[i].row[0]);
-                                    }
-                                }
-
-                                //document.write(JSON.stringify(result));
-
-                                var getSourceIndex;
-                                var getTargetIndex;
-                                var getSourceName;
-                                var getTargetName;
-                                for (i = 0; i < result.length; i++) {
 
                                     for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Source == nodeArr[j].NodeName) {
+                                        if (nodeArr[j].NodeName == result[i].Source) {
                                             getSourceIndex = nodeArr[j].NodeIndex;
                                             break;
                                         }
                                     }
 
-                                    for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Target == nodeArr[j].NodeName) {
-                                            getTargetIndex = nodeArr[j].NodeIndex;
-                                            break;
-                                        }
-                                    }
+                                    var objAdd = {};
+                                    objAdd.NodeName = result[i].Target;
+                                    objAdd.Label = result[i].TargetType;
+                                    objAdd.groupIndex = getGroupIndex;
+                                    objAdd.textDisplay = result[i].PhoneNumber;
+                                    objAdd.NodeIndex = nodeArr.length;
+                                    getTargetIndex = nodeArr.length;
+                                    nodeArr.push(objAdd);
 
-                                    if (i == 0) {
-                                        var objLink = {};
-                                        objLink.source = getSourceIndex;
-                                        objLink.target = getTargetIndex;
-                                        objLink.Type = linkLabel;
-                                        objLink.prop = [];
-
-                                        var objLinkProp = {};
-                                        objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                        objLinkProp.Time = result[i].Time;
-                                        objLinkProp.message = result[i].Message;
-                                        objLink.prop.push(objLinkProp);
-
-                                        linkArr.push(objLink);
-                                    } else {
-                                        var checkLink = 0;
-                                        for (k = 0; k < linkArr.length; k++) {
-                                            if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
-                                                var objLinkProp = {};
-                                                objLinkProp.Sender = result[i].SourceFacebook;
-                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                                objLinkProp.Time = result[i].Time;
-                                                objLinkProp.message = result[i].Message;
-                                                linkArr[k].prop.push(objLinkProp);
-                                                checkLink++;
-                                                break;
-                                            }
-                                        }
-
-                                        //checkLink = 0 means no object in linkArr that represents communication between this source and target.
-                                        if (checkLink == 0) {
-                                            var objLink = {};
-                                            objLink.source = getSourceIndex;
-                                            objLink.target = getTargetIndex;
-                                            objLink.Type = linkLabel;
-                                            objLink.prop = [];
-
-                                            var objLinkProp = {};
-                                            objLinkProp.Sender = result[i].SourceFacebook;
-                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                            objLinkProp.Time = result[i].Time;
-                                            objLinkProp.message = result[i].Message;
-                                            objLink.prop.push(objLinkProp);
-
-                                            linkArr.push(objLink);
-                                        }
-                                    }
+                                    var objLink = {};
+                                    objLink.source = getSourceIndex;
+                                    objLink.target = getTargetIndex;
+                                    objLink.Type = result[i].Description;
+                                    objLink.prop = [];
+                                    linkArr.push(objLink);
                                 }
+
+                                //After finish adding all the nodes and relationship into nodeArr and linkArr
                                 if (noLoop == selections.length - 1) {
                                     var finalResult = [];
                                     finalResult.push(nodeArr);
@@ -1705,16 +2315,619 @@ function queryManagement(selections) {
                                     noLoop++;
                                     recursive();
                                 }
-
                             });
                 }
 
+            } else {
+                var linkLabel = selections[noLoop].Type;
+                /*Add date filtering here*/
+                var _query = "MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time";
+                FetchSocialNodesFacebook(_query, linkLabel);
+
+                function FetchSocialNodesFacebook(_query, linkLabel) {
+                    console.log(_query);
+                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                            .header("Content-Type", "application/json")
+                            .mimeType("application/json")
+                            .post(
+                                    JSON.stringify({
+                                        "statements": [{
+                                                "statement": _query,
+                                                "resultDataContents": ["row"]//, "graph" ]
+                                            }]
+                                    }), function (err, data) {
+                                var returnData = JSON.parse(data.responseText);
+                                //document.write(JSON.stringify(returnData));
+                                var result = [];
+
+                                if (returnData.results[0].data.length == 0) {
+                                    /*No result found handler here*/
+                                    alert("No data found, please try again.");
+                                } else {
+                                    for (i = 0; i < returnData.results[0].data.length; i++) {
+                                        result.push(returnData.results[0].data[i].row[0]);
+                                    }
+                                }
+
+                                //Create groupArr
+                                for (i = 0; i < result.length; i++) {
+                                    if (i == 0) {
+                                        //both source and target will be added to groupArray.
+                                        if (((result[i].SourceNumber == inputSource) && (result[i].TargetNumber == inputTarget)) || ((result[i].SourceNumber == inputTarget) && (result[i].TargetNumber == inputSource))) {
+                                            if (result[i].SourceNumber == inputSource && result[i].TargetNumber == inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 0;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 0;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else if ((result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) || (result[i].SourceNumber != inputTarget && result[i].TargetNumber == inputSource)) {
+                                            if (result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 0;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 0;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else if ((result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) || (result[i].SourceNumber == inputTarget && result[i].TargetNumber != inputSource)) {
+                                            if (result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else {
+                                            var objGroupSource = {};
+                                            objGroupSource.NodeName = result[i].Source;
+                                            objGroupSource.number = result[i].SourceNumber;
+                                            objGroupSource.group = 2;
+                                            groupArr.push(objGroupSource);
+
+                                            var objGroupTarget = {};
+                                            objGroupTarget.NodeName = result[i].Target;
+                                            objGroupTarget.number = result[i].TargetNumber;
+                                            objGroupTarget.group = 2;
+                                            groupArr.push(objGroupTarget);
+                                        }
+
+                                    } else {
+                                        var grCheckSource = 0;
+                                        var grCheckTarget = 0;
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                grCheckSource++;
+                                                break;
+                                            }
+                                        }
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                grCheckTarget++;
+                                                break;
+                                            }
+                                        }
+
+                                        if (grCheckSource == 0 && grCheckTarget == 0) {
+                                            //Add both of source and target into groupArr
+                                            if (((result[i].SourceNumber == inputSource) && (result[i].TargetNumber == inputTarget)) || ((result[i].SourceNumber == inputTarget) && (result[i].TargetNumber == inputSource))) {
+                                                if (result[i].SourceNumber == inputSource && result[i].TargetNumber == inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 0;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 1;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 1;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 0;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else if ((result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) || (result[i].SourceNumber != inputTarget && result[i].TargetNumber == inputSource)) {
+                                                if (result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 0;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 2;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 2;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 0;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else if ((result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) || (result[i].SourceNumber == inputTarget && result[i].TargetNumber != inputSource)) {
+                                                if (result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 2;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 1;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 1;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 2;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            }
+
+                                        } else if (grCheckSource == 0 && grCheckTarget == 1) {
+                                            //Add source to groupArr
+                                            if (result[i].SourceNumber == inputSource) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 0;
+                                                groupArr.push(objGroup);
+
+                                            } else if (result[i].SourceNumber == inputTarget) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 1;
+                                                groupArr.push(objGroup);
+
+                                            } else {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 2;
+                                                groupArr.push(objGroup);
+                                            }
+
+                                        } else if (grCheckSource == 1 && grCheckTarget == 0) {
+                                            if (result[i].TargetNumber == inputSource) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 0;
+                                                groupArr.push(objGroup);
+
+                                            } else if (result[i].TargetNumber == inputTarget) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 1;
+                                                groupArr.push(objGroup);
+
+                                            } else {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 2;
+                                                groupArr.push(objGroup);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                //document.write(JSON.stringify(groupArr));
+
+                                /*
+                                 Start building nodeArr and linkArr
+                                 */
+                                for (i = 0; i < result.length; i++) {
+                                    if (i == 0) {
+                                        var getGroupSource;
+                                        var getGroupTarget;
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                getGroupSource = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                getGroupTarget = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+
+                                        var objAddSource = {};
+                                        objAddSource.NodeName = result[i].Source;
+                                        objAddSource.PhoneNumber = result[i].SourceNumber;
+                                        objAddSource.textDisplay = "FacebookID : " + result[i].SourceFacebook;
+                                        objAddSource.groupIndex = getGroupSource;
+                                        objAddSource.Label = 'Facebook';
+                                        objAddSource.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objAddSource);
+
+                                        var objAddTarget = {};
+                                        objAddTarget.NodeName = result[i].Target;
+                                        objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                        objAddTarget.textDisplay = "FacebookID : " + result[i].TargetFacebook;
+                                        objAddTarget.groupIndex = getGroupTarget;
+                                        objAddTarget.Label = 'Facebook';
+                                        objAddTarget.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objAddTarget);
+
+                                        var objLink = {};
+                                        objLink.source = 0;
+                                        objLink.target = 1;
+                                        objLink.Type = linkLabel;
+                                        objLink.prop = [];
+
+                                        var objLinkProp = {};
+                                        objLinkProp.Sender = result[i].SourceFacebook;
+                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.Time = result[i].Time;
+                                        objLinkProp.message = result[i].Message;
+                                        objLink.prop.push(objLinkProp);
+                                        linkArr.push(objLink);
+
+                                    } else {
+                                        //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                        var checkSource = 0;
+                                        var checkTarget = 0;
+
+                                        //These variable are used for storing important data that will be used in linkArr
+                                        var getSourceIndex = 0;
+                                        var getTargetIndex = 0;
+                                        var getSourceNumber = "";
+                                        var getTargetNumber = "";
+                                        var getSourcePhone = "";
+                                        var getTargetPhone = "";
+                                        var getGroupSource;
+                                        var getGroupTarget;
+
+                                        //Get group for source
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                getGroupSource = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+                                        //Get group for target
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                getGroupTarget = groupArr[j].group;
+                                                break;
+                                            }
+                                        }
+                                        //Check the existence of source in nodeArr
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (result[i].Source == nodeArr[j].NodeName) {
+                                                getSourceNumber = nodeArr[j].PhoneNumber;
+                                                getSourceIndex = nodeArr[j].NodeIndex;
+                                                checkSource++;
+                                                break;
+                                            }
+                                        }
+                                        //Check the existence of target in nodeArr
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (result[i].Target == nodeArr[j].NodeName) {
+                                                getTargetNumber = nodeArr[j].PhoneNumber;
+                                                getTargetIndex = nodeArr[j].NodeIndex;
+                                                checkTarget++;
+                                                break;
+                                            }
+                                        }
+
+                                        if (checkSource == 1 && checkTarget == 1) {
+                                            //First, we have to check an existence of the link.
+                                            var linkIndex = 0;
+                                            var linkExist = 0;
+                                            for (k = 0; k < linkArr.length; k++) {
+                                                if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
+                                                    linkExist++;
+                                                    linkIndex = k;
+                                                    break;
+                                                }
+                                            }
+                                            if (linkExist == 1) {
+                                                //There is already a link between source and target.
+                                                var objLinkProp = {};
+                                                objLinkProp.Sender = result[i].SourceFacebook;
+                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.Time = result[i].Time;
+                                                objLinkProp.message = result[i].Message;
+                                                linkArr[linkIndex].prop.push(objLinkProp);
+                                            } else {
+                                                //Link between source and target haven't been created yet.
+                                                var objLink = {};
+                                                objLink.source = getSourceIndex;
+                                                objLink.target = getTargetIndex;
+                                                objLink.Type = linkLabel
+                                                objLink.prop = [];
+
+                                                var objLinkProp = {};
+                                                objLinkProp.Sender = result[i].SourceFacebook;
+                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.Time = result[i].Time;
+                                                objLinkProp.message = result[i].Message;
+                                                objLink.prop.push(objLinkProp);
+                                                linkArr.push(objLink);
+                                            }
+                                        } else if (checkSource > 0 && checkTarget == 0) {
+                                            //result[i].Source already existed in nodeArr
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Target;
+                                            objAdd.PhoneNumber = result[i].TargetNumber;
+                                            objAdd.groupIndex = getGroupTarget;
+                                            objAdd.textDisplay = "FacebookID : " + result[i].TargetFacebook;
+                                            objAdd.Label = 'Facebook';
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAdd);
+
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = nodeArr.length - 1;
+                                            objLink.Type = linkLabel;
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceFacebookID;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            linkArr.push(objLink);
+
+                                        } else if (checkSource == 0 && checkTarget > 0) {
+                                            //result[i].Target already existed in nodeArr
+                                            var objAdd = {};
+                                            objAdd.NodeName = result[i].Source;
+                                            objAdd.PhoneNumber = result[i].SourceNumber;
+                                            objAdd.groupIndex = getGroupSource;
+                                            objAdd.textDisplay = "FacebookID : " + result[i].SourceFacebook;
+                                            objAdd.Label = 'Facebook';
+                                            objAdd.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAdd);
+
+                                            var objLink = {};
+                                            objLink.source = nodeArr.length - 1;
+                                            objLink.target = getTargetIndex;
+                                            objLink.Type = linkLabel;
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceFacebookID;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+
+                                        } else {
+                                            var objAddSource = {};
+                                            objAddSource.NodeName = result[i].Source;
+                                            objAddSource.PhoneNumber = result[i].SourceNumber;
+                                            objAddSource.textDisplay = "FacebookID : " + result[i].SourceFacebook;
+                                            objAddSource.groupIndex = getGroupSource;
+                                            objAddSource.Label = 'Facebook';
+                                            objAddSource.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAddSource);
+
+                                            var objAddTarget = {};
+                                            objAddTarget.NodeName = result[i].Target;
+                                            objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                            objAddTarget.textDisplay = "FacebookID : " + result[i].TargetFacebook;
+                                            objAddTarget.groupIndex = getGroupTarget;
+                                            objAddSource.Label = 'Facebook';
+                                            objAddTarget.NodeIndex = nodeArr.length;
+                                            nodeArr.push(objAddTarget);
+
+                                            var objLink = {};
+                                            objLink.source = 0;
+                                            objLink.target = 1;
+                                            objLink.Type = linkLabel;
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceFacebookID;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+
+                                        }
+                                    }
+                                }
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allFacebookNodes = [];
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (nodeArr[i].Label == 'Facebook') {
+                                        allFacebookNodes.push(nodeArr[i].NodeName);
+                                    }
+                                }
+
+                                var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                                for (i = 0; i < allFacebookNodes.length; i++) {
+                                    if (i == 0) {
+                                        nextQuery += "n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                    } else {
+                                        nextQuery += "OR n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                    }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneForFacebook(nextQuery);
+                            });
+                }
+
+                function FetchPhoneForFacebook(_query) {
+                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                            .header("Content-Type", "application/json")
+                            .mimeType("application/json")
+                            .post(
+                                    JSON.stringify({
+                                        "statements": [{
+                                                "statement": _query,
+                                                "resultDataContents": ["row"]//, "graph" ]
+                                            }]
+                                    }), function (err, data) {
+                                var returnData = JSON.parse(data.responseText);
+                                //document.write(JSON.stringify(returnData));
+                                var result = returnData.results[0].data[0].row[0];
+                                //document.write(JSON.stringify(result));
+                                var count = 0;
+                                if (result.length == 0) {
+                                    alert("No data found. Please try again.");
+                                }
+
+                                for (i = 0; i < result.length; i++) {
+
+                                    var getGroupIndex;
+                                    var getSourceIndex, getTargetIndex;
+                                    for (j = 0; j < groupArr.length; j++) {
+                                        if (groupArr[j].NodeName == result[i].Source) {
+                                            getGroupIndex = groupArr[j].group;
+                                            break;
+                                        }
+                                    }
+
+                                    for (j = 0; j < nodeArr.length; j++) {
+                                        if (nodeArr[j].NodeName == result[i].Source) {
+                                            getSourceIndex = nodeArr[j].NodeIndex;
+                                            break;
+                                        }
+                                    }
+
+                                    var objAdd = {};
+                                    objAdd.NodeName = result[i].Target;
+                                    objAdd.Label = result[i].TargetType;
+                                    objAdd.groupIndex = getGroupIndex;
+                                    objAdd.textDisplay = result[i].PhoneNumber;
+                                    objAdd.NodeIndex = nodeArr.length;
+                                    getTargetIndex = nodeArr.length;
+                                    nodeArr.push(objAdd);
+
+                                    var objLink = {};
+                                    objLink.source = getSourceIndex;
+                                    objLink.target = getTargetIndex;
+                                    objLink.Type = result[i].Description;
+                                    objLink.prop = [];
+                                    linkArr.push(objLink);
+                                }
+
+                                //After finish adding all the nodes and relationship into nodeArr and linkArr
+                                if (noLoop == selections.length - 1) {
+                                    var finalResult = [];
+                                    finalResult.push(nodeArr);
+                                    finalResult.push(linkArr);
+                                    finalResult.push(groupArr);
+                                    //document.write(JSON.stringify(finalResult));
+                                    dataVisualizationSocial(finalResult);
+                                } else {
+                                    noLoop++;
+                                    recursive();
+                                }
+                            });
+                }
             }
+
         }
         /*--------------------------------------------------------------------------------End of First Round------------------------------------------------------------------------*/
         else {//2nd round
             if (selections[noLoop].Type == 'Call') {
                 var linkType = selections[noLoop].linkType;
+                /*Add date filtering here*/
                 var _query = "MATCH (n:PHONE) " + linkType + " (m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) AS R";
                 console.log(_query);
                 FetchDatabaseForCall2round(_query);
@@ -1838,6 +3051,7 @@ function queryManagement(selections) {
 
             } else if (selections[noLoop].Type == 'SMS') {
                 var linkType = selections[noLoop].linkType;
+                /*Add date filtering here*/
                 var _query = "MATCH (n:PHONE) " + linkType + " (m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) AS R";
                 FetchDatabaseForSMS2round(_query);
 
@@ -1957,79 +3171,15 @@ function queryManagement(selections) {
                             });
                 }
 
-            } else if (selections[noLoop].Type == 'Line') {
+            } else if (selections[noLoop].Type == 'Whatsapp') {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:LINE)-[r1]->(m:PHONE) MATCH (n:LINE)-[r2]->(l:LINE) MATCH (l:LINE)-[r3]->(p:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND l.PhoneNumber = '" + inputTarget + "' AND ((n.PhoneNumber = '" + inputSource + "' AND l.PhoneNumber = '" + inputTarget + "') OR (n.PhoneNumber = '" + inputTarget + "' AND l.PhoneNumber = '" + inputSource + "' )) RETURN collect(distinct r1) + collect(distinct r3) AS R;";
-                FetchLineNodes2round(_query1, linkLabel);
+                /*Add date filtering here*/
+                var _query = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time ";
+                FetchSocialNodesWhatsapp2round(_query, linkLabel);
 
-                //After first round
-                function FetchLineNode2round(query, linkLabel) {
-                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
-                            .header("Content-Type", "application/json")
-                            .mimeType("application/json")
-                            .post(
-                                    JSON.stringify({
-                                        "statements": [{
-                                                "statement": _queryString,
-                                                "resultDataContents": ["row"]//, "graph" ]
-                                            }]
-                                    }), function (err, data) {
-                                var returnData = JSON.parse(data.responseText);
-                                //document.write(JSON.stringify(returnData));
-                                var result = returnData.results[0].data[0].row[0];
-                                //document.write(JSON.stringify(result));
-                                var count = 0;
-                                if (result.length == 0) {
-                                    alert("No data found. Please try again.");
-                                }
-
-                                for (i = 0; i < result.length; i++) {
-                                    var getTargetIndex;
-                                    var getGroupIndex;
-                                    for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Target == nodeArr[j].NodeName) {
-                                            getTargetIndex = nodeArr[j].NodeIndex;
-                                            getGroupIndex = nodeArr[j].groupIndex;
-                                            break;
-                                        }
-                                    }
-
-                                    //Due to target is Phone node which is already existed in nodeArr, we only need to add source node into nodeArr
-                                    var objAdd = {};
-                                    objAdd.NodeName = result[i].Source;
-                                    objAdd.NodeIndex = nodeArr.length;
-                                    objAdd.groupIndex = getGroupIndex;
-                                    objAdd.Label = result[i].SourceType;
-                                    objAdd.textDisplay = "LineID: " + result[i].LineID;
-                                    nodeArr.push(objAdd);
-
-                                    var objLink = {};
-                                    objLink.source = nodeArr.length - 1;
-                                    objLink.target = getTargetIndex;
-                                    objLink.Type = result[i].Description;
-                                    objLink.prop = [];
-                                    linkArr.push(objLink);
-                                }
-
-                                var nextQuery;
-                                var inputSource = document.getElementById("sPhoneNo").value;
-                                var inputTarget = document.getElementById("tPhoneNo").value;
-                                if (linkLabel == 'Line') {
-                                    nextQuery = "MATCH (n:LINE)<-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else if (linkLabel == 'Facebook') {
-                                    nextQuery = "MATCH (n:FACEBOOK)<-[r:Facebook]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else {
-                                    nextQuery = "MATCH (n:WHATSAPP)<-[r:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                }
-                                fetchSocialLinelCommunication(nextQuery, linkLabel);
-
-                            });
-
-                }
-
-                function fetchSocialLineCommunication(query, linkLabel) {
-                    var _query = query;
+                function FetchSocialNodesWhatsapp2round(_query, linkLabel) {
+                    console.log(_query);
                     d3.xhr("http://localhost:7474/db/data/transaction/commit")
                             .header("Content-Type", "application/json")
                             .mimeType("application/json")
@@ -2037,6 +3187,7 @@ function queryManagement(selections) {
                                     JSON.stringify({
                                         "statements": [{
                                                 "statement": _query,
+                                                "resultDataContents": ["row"]//, "graph" ]
                                             }]
                                     }), function (err, data) {
                                 var returnData = JSON.parse(data.responseText);
@@ -2051,208 +3202,421 @@ function queryManagement(selections) {
                                     }
                                 }
 
-                                //document.write(JSON.stringify(result));
+                                //Create groupArr
+                                for (i = 0; i < result.length; i++) {
+                                    if (i == 0) {
+                                        //both source and target will be added to groupArray.
+                                        if (((result[i].SourceNumber == inputSource) && (result[i].TargetNumber == inputTarget)) || ((result[i].SourceNumber == inputTarget) && (result[i].TargetNumber == inputSource))) {
+                                            if (result[i].SourceNumber == inputSource && result[i].TargetNumber == inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 0;
+                                                groupArr.push(objGroupSource);
 
-                                var getSourceIndex;
-                                var getTargetIndex;
-                                var getSourceName;
-                                var getTargetName;
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 0;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else if ((result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) || (result[i].SourceNumber != inputTarget && result[i].TargetNumber == inputSource)) {
+                                            if (result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 0;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 0;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else if ((result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) || (result[i].SourceNumber == inputTarget && result[i].TargetNumber != inputSource)) {
+                                            if (result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else {
+                                            var objGroupSource = {};
+                                            objGroupSource.NodeName = result[i].Source;
+                                            objGroupSource.number = result[i].SourceNumber;
+                                            objGroupSource.group = 2;
+                                            groupArr.push(objGroupSource);
+
+                                            var objGroupTarget = {};
+                                            objGroupTarget.NodeName = result[i].Target;
+                                            objGroupTarget.number = result[i].TargetNumber;
+                                            objGroupTarget.group = 2;
+                                            groupArr.push(objGroupTarget);
+                                        }
+
+                                    } else {
+                                        var grCheckSource = 0;
+                                        var grCheckTarget = 0;
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                grCheckSource++;
+                                                break;
+                                            }
+                                        }
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                grCheckTarget++;
+                                                break;
+                                            }
+                                        }
+
+                                        if (grCheckSource == 0 && grCheckTarget == 0) {
+                                            //Add both of source and target into groupArr
+                                            if (((result[i].SourceNumber == inputSource) && (result[i].TargetNumber == inputTarget)) || ((result[i].SourceNumber == inputTarget) && (result[i].TargetNumber == inputSource))) {
+                                                if (result[i].SourceNumber == inputSource && result[i].TargetNumber == inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 0;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 1;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 1;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 0;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else if ((result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) || (result[i].SourceNumber != inputTarget && result[i].TargetNumber == inputSource)) {
+                                                if (result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 0;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 2;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 2;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 0;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else if ((result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) || (result[i].SourceNumber == inputTarget && result[i].TargetNumber != inputSource)) {
+                                                if (result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 2;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 1;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 1;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 2;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            }
+
+                                        } else if (grCheckSource == 0 && grCheckTarget == 1) {
+                                            //Add source to groupArr
+                                            if (result[i].SourceNumber == inputSource) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 0;
+                                                groupArr.push(objGroup);
+
+                                            } else if (result[i].SourceNumber == inputTarget) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 1;
+                                                groupArr.push(objGroup);
+
+                                            } else {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 2;
+                                                groupArr.push(objGroup);
+                                            }
+
+                                        } else if (grCheckSource == 1 && grCheckTarget == 0) {
+                                            if (result[i].TargetNumber == inputSource) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 0;
+                                                groupArr.push(objGroup);
+
+                                            } else if (result[i].TargetNumber == inputTarget) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 1;
+                                                groupArr.push(objGroup);
+
+                                            } else {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 2;
+                                                groupArr.push(objGroup);
+                                            }
+                                        }
+                                    }
+                                }
+                                //document.write(JSON.stringify(groupArr));
+
+                                /*
+                                 Start building nodeArr and linkArr
+                                 */
                                 for (i = 0; i < result.length; i++) {
 
+                                    //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                    var checkSource = 0;
+                                    var checkTarget = 0;
+
+                                    //These variable are used for storing important data that will be used in linkArr
+                                    var getSourceIndex = 0;
+                                    var getTargetIndex = 0;
+                                    var getSourceNumber = "";
+                                    var getTargetNumber = "";
+                                    var getSourcePhone = "";
+                                    var getTargetPhone = "";
+                                    var getGroupSource;
+                                    var getGroupTarget;
+
+                                    //Get group for source
+                                    for (j = 0; j < groupArr.length; j++) {
+                                        if (groupArr[j].NodeName == result[i].Source) {
+                                            getGroupSource = groupArr[j].group;
+                                            break;
+                                        }
+                                    }
+                                    //Get group for target
+                                    for (j = 0; j < groupArr.length; j++) {
+                                        if (groupArr[j].NodeName == result[i].Target) {
+                                            getGroupTarget = groupArr[j].group;
+                                            break;
+                                        }
+                                    }
+                                    //Check the existence of source in nodeArr
                                     for (j = 0; j < nodeArr.length; j++) {
                                         if (result[i].Source == nodeArr[j].NodeName) {
+                                            getSourceNumber = nodeArr[j].PhoneNumber;
                                             getSourceIndex = nodeArr[j].NodeIndex;
+                                            checkSource++;
                                             break;
                                         }
                                     }
-
+                                    //Check the existence of target in nodeArr
                                     for (j = 0; j < nodeArr.length; j++) {
                                         if (result[i].Target == nodeArr[j].NodeName) {
+                                            getTargetNumber = nodeArr[j].PhoneNumber;
                                             getTargetIndex = nodeArr[j].NodeIndex;
+                                            checkTarget++;
                                             break;
                                         }
                                     }
 
-                                    if (i == 0) {
+                                    if (checkSource == 1 && checkTarget == 1) {
+                                        //First, we have to check an existence of the link.
+                                        var linkIndex = 0;
+                                        var linkExist = 0;
+                                        for (k = 0; k < linkArr.length; k++) {
+                                            if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
+                                                linkExist++;
+                                                linkIndex = k;
+                                                break;
+                                            }
+                                        }
+                                        if (linkExist == 1) {
+                                            //There is already a link between source and target.
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceNumber;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            linkArr[linkIndex].prop.push(objLinkProp);
+                                        } else {
+                                            //Link between source and target haven't been created yet.
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = getTargetIndex;
+                                            objLink.Type = linkLabel
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceNumber;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+                                        }
+                                    } else if (checkSource > 0 && checkTarget == 0) {
+                                        //result[i].Source already existed in nodeArr
+                                        var objAdd = {};
+                                        objAdd.NodeName = result[i].Target;
+                                        objAdd.PhoneNumber = result[i].TargetNumber;
+                                        objAdd.groupIndex = getGroupTarget;
+                                        objAdd.textDisplay = "WhatsappID : " + result[i].TargetNumber;
+                                        objAdd.Label = 'Whatsapp';
+                                        objAdd.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objAdd);
+
                                         var objLink = {};
                                         objLink.source = getSourceIndex;
+                                        objLink.target = nodeArr.length - 1;
+                                        objLink.Type = linkLabel;
+                                        objLink.prop = [];
+
+                                        var objLinkProp = {};
+                                        objLinkProp.Sender = result[i].SourceNumber;
+                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.Time = result[i].Time;
+                                        objLinkProp.message = result[i].Message;
+                                        linkArr.push(objLink);
+
+                                    } else if (checkSource == 0 && checkTarget > 0) {
+                                        //result[i].Target already existed in nodeArr
+                                        var objAdd = {};
+                                        objAdd.NodeName = result[i].Source;
+                                        objAdd.PhoneNumber = result[i].SourceNumber;
+                                        objAdd.groupIndex = getGroupSource;
+                                        objAdd.textDisplay = "WhatsappID : " + result[i].SourceNumber;
+                                        objAdd.Label = 'Whatsapp';
+                                        objAdd.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objAdd);
+
+                                        var objLink = {};
+                                        objLink.source = nodeArr.length - 1;
                                         objLink.target = getTargetIndex;
                                         objLink.Type = linkLabel;
                                         objLink.prop = [];
 
                                         var objLinkProp = {};
-                                        objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                        objLinkProp.Sender = result[i].SourceNumber;
+                                        objLinkProp.date = result[i].Date;
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
-
                                         linkArr.push(objLink);
+
                                     } else {
-                                        var checkLink = 0;
-                                        for (k = 0; k < linkArr.length; k++) {
-                                            if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
-                                                var objLinkProp = {};
-                                                objLinkProp.Sender = result[i].SourceLineID;
-                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                                objLinkProp.Time = result[i].Time;
-                                                objLinkProp.message = result[i].Message;
-                                                linkArr[k].prop.push(objLinkProp);
-                                                checkLink++;
-                                                break;
-                                            }
-                                        }
+                                        var objAddSource = {};
+                                        objAddSource.NodeName = result[i].Source;
+                                        objAddSource.PhoneNumber = result[i].SourceNumber;
+                                        objAddSource.textDisplay = "WhatsappID : " + result[i].SourceNumber;
+                                        objAddSource.groupIndex = getGroupSource;
+                                        objAddSource.Label = 'Whatsapp';
+                                        objAddSource.NodeIndex = nodeArr.length;
+                                        getSourceIndex = nodeArr.length;
+                                        nodeArr.push(objAddSource);
 
-                                        //checkLink = 0 means no object in linkArr that represents communication between this source and target.
-                                        if (checkLink == 0) {
-                                            var objLink = {};
-                                            objLink.source = getSourceIndex;
-                                            objLink.target = getTargetIndex;
-                                            objLink.Type = linkLabel;
-                                            objLink.prop = [];
+                                        var objAddTarget = {};
+                                        objAddTarget.NodeName = result[i].Target;
+                                        objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                        objAddTarget.textDisplay = "WhatsappID : " + result[i].TargetNumber;
+                                        objAddTarget.groupIndex = getGroupTarget;
+                                        objAddTarget.Label = 'Whatsapp';
+                                        objAddTarget.NodeIndex = nodeArr.length;
+                                        getTargetIndex = nodeArr.length;
+                                        nodeArr.push(objAddTarget);
 
-                                            var objLinkProp = {};
-                                            objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                            objLinkProp.Time = result[i].Time;
-                                            objLinkProp.message = result[i].Message;
-                                            objLink.prop.push(objLinkProp);
-
-                                            linkArr.push(objLink);
-                                        }
-                                    }
-                                }
-                                if (noLoop == selections.length - 1) {
-                                    var finalResult = [];
-                                    finalResult.push(nodeArr);
-                                    finalResult.push(linkArr);
-                                    finalResult.push(groupArr);
-                                    //document.write(JSON.stringify(finalResult[1]));
-                                    dataVisualizationSocial(finalResult);
-                                } else {
-                                    noLoop++;
-                                    recursive();
-                                }
-
-                            });
-                }
-
-            } else if (selections[noLoop].Type == 'Whatsapp') {
-                var linkType = selections[noLoop].linkType;
-                var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:WHATSAPP)-[r1]->(m:PHONE) MATCH (n:WHATSAPP)-[r2]->(l:WHATSAPP) MATCH (l:WHATSAPP)-[r3]->(p:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND l.PhoneNumber = '" + inputTarget + "' AND ((n.PhoneNumber = '" + inputSource + "' AND l.PhoneNumber = '" + inputTarget + "') OR (n.PhoneNumber = '" + inputTarget + "' AND l.PhoneNumber = '" + inputSource + "' )) RETURN collect(distinct r1) + collect(distinct r3) AS R;";
-                FetchWhatsappNodes2round(_query1, linkLabel);
-                //After first round
-                function FetchWhatsappNodes2round(query, linkLabel) {
-                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
-                            .header("Content-Type", "application/json")
-                            .mimeType("application/json")
-                            .post(
-                                    JSON.stringify({
-                                        "statements": [{
-                                                "statement": query,
-                                                "resultDataContents": ["row"]//, "graph" ]
-                                            }]
-                                    }), function (err, data) {
-                                var returnData = JSON.parse(data.responseText);
-                                //document.write(JSON.stringify(returnData));
-                                var result = returnData.results[0].data[0].row[0];
-                                //document.write(JSON.stringify(result));
-                                var count = 0;
-                                if (result.length == 0) {
-                                    alert("No data found. Please try again.");
-                                }
-
-                                for (i = 0; i < result.length; i++) {
-                                    var getTargetIndex = 0;
-                                    var getGroupIndex;
-                                    for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Target == nodeArr[j].NodeName) {
-                                            getTargetIndex = nodeArr[j].NodeIndex;
-                                            getGroupIndex = nodeArr[j].groupIndex;
-                                            break;
-                                        }
-                                    }
-
-                                    //Due to target is Phone node which is already existed in nodeArr, we only need to add source node into nodeArr
-                                    var objAdd = {};
-                                    objAdd.NodeName = result[i].Source;
-                                    objAdd.NodeIndex = nodeArr.length;
-                                    objAdd.groupIndex = getGroupIndex;
-                                    objAdd.Label = result[i].SourceType;
-                                    objAdd.textDisplay = "WhatsappID: " + result[i].Name;
-                                    nodeArr.push(objAdd);
-
-                                    var objLink = {};
-                                    objLink.source = nodeArr.length - 1;
-                                    objLink.target = getTargetIndex;
-                                    objLink.Type = result[i].Description;
-                                    objLink.prop = [];
-                                    linkArr.push(objLink);
-                                }
-
-                                var nextQuery;
-                                var inputSource = document.getElementById("sPhoneNo").value;
-                                var inputTarget = document.getElementById("tPhoneNo").value;
-                                if (linkLabel == 'Line') {
-                                    nextQuery = "MATCH (n:LINE)<-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else if (linkLabel == 'Facebook') {
-                                    nextQuery = "MATCH (n:FACEBOOK)<-[r:Facebook]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else {
-                                    nextQuery = "MATCH (n:WHATSAPP)<-[r:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                }
-                                fetchSocialWhatsappCommunication(nextQuery, linkLabel);
-
-                            });
-
-                }
-
-                function fetchSocialWhatsappCommunication(query, linkLabel) {
-                    var _query = query;
-                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
-                            .header("Content-Type", "application/json")
-                            .mimeType("application/json")
-                            .post(
-                                    JSON.stringify({
-                                        "statements": [{
-                                                "statement": _query,
-                                            }]
-                                    }), function (err, data) {
-                                var returnData = JSON.parse(data.responseText);
-                                //document.write(JSON.stringify(returnData));
-                                var result = [];
-
-                                if (returnData.results[0].data.length == 0) {
-                                    alert("No data found, please try again.");
-                                } else {
-                                    for (i = 0; i < returnData.results[0].data.length; i++) {
-                                        result.push(returnData.results[0].data[i].row[0]);
-                                    }
-                                }
-
-                                //document.write(JSON.stringify(result));
-
-                                var getSourceIndex;
-                                var getTargetIndex;
-                                var getSourceName;
-                                var getTargetName;
-                                for (i = 0; i < result.length; i++) {
-
-                                    for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Source == nodeArr[j].NodeName) {
-                                            getSourceIndex = nodeArr[j].NodeIndex;
-                                            break;
-                                        }
-                                    }
-
-                                    for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Target == nodeArr[j].NodeName) {
-                                            getTargetIndex = nodeArr[j].NodeIndex;
-                                            break;
-                                        }
-                                    }
-
-                                    if (i == 0) {
                                         var objLink = {};
                                         objLink.source = getSourceIndex;
                                         objLink.target = getTargetIndex;
@@ -2261,74 +3625,44 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                        objLinkProp.date = result[i].Date;
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
-
                                         linkArr.push(objLink);
-                                    } else {
-                                        var checkLink = 0;
-                                        for (k = 0; k < linkArr.length; k++) {
-                                            if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
-                                                var objLinkProp = {};
-                                                objLinkProp.Sender = result[i].SourceNumber;
-                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                                objLinkProp.Time = result[i].Time;
-                                                objLinkProp.message = result[i].Message;
-                                                linkArr[k].prop.push(objLinkProp);
-                                                checkLink++;
-                                                break;
-                                            }
-                                        }
 
-                                        //checkLink = 0 means no object in linkArr that represents communication between this source and target.
-                                        if (checkLink == 0) {
-                                            var objLink = {};
-                                            objLink.source = getSourceIndex;
-                                            objLink.target = getTargetIndex;
-                                            objLink.Type = linkLabel;
-                                            objLink.prop = [];
-
-                                            var objLinkProp = {};
-                                            objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                            objLinkProp.Time = result[i].Time;
-                                            objLinkProp.message = result[i].Message;
-                                            objLink.prop.push(objLinkProp);
-
-                                            linkArr.push(objLink);
-                                        }
                                     }
                                 }
-                                if (noLoop == selections.length - 1) {
-                                    var finalResult = [];
-                                    finalResult.push(nodeArr);
-                                    finalResult.push(linkArr);
-                                    finalResult.push(groupArr);
-                                    //document.write(JSON.stringify(finalResult[0]));
-                                    dataVisualizationSocial(finalResult);
-                                } else {
-                                    noLoop++;
-                                    recursive();
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allLineNodes = [];
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (nodeArr[i].Label == 'Whatsapp') {
+                                        allLineNodes.push(nodeArr[i].NodeName);
+                                    }
                                 }
+
+                                var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
+                                for (i = 0; i < allLineNodes.length; i++) {
+                                    if (i == 0) {
+                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                    } else {
+                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                    }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneForWhatsapp2round(nextQuery);
                             });
                 }
-            } else {
-                var linkType = selections[noLoop].linkType;
-                var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:FACEBOOK)-[r1]->(m:PHONE) MATCH (n:FACEBOOK)-[r2]->(l:FACEBOOK) MATCH (l:FACEBOOK)-[r3]->(p:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND l.PhoneNumber = '" + inputTarget + "' AND ((n.PhoneNumber = '" + inputSource + "' AND l.PhoneNumber = '" + inputTarget + "') OR (n.PhoneNumber = '" + inputTarget + "' AND l.PhoneNumber = '" + inputSource + "' )) RETURN collect(distinct r1) + collect(distinct r3) AS R;";
-                FetchFacebookNodes2round(_query1, linkLabel);
 
-                //After first round
-                function FetchFacebookNodes2round(query, linkLabel) {
+                function FetchPhoneForWhatsapp2round(_query) {
+                    console.log(_query);
                     d3.xhr("http://localhost:7474/db/data/transaction/commit")
                             .header("Content-Type", "application/json")
                             .mimeType("application/json")
                             .post(
                                     JSON.stringify({
                                         "statements": [{
-                                                "statement": query,
+                                                "statement": _query,
                                                 "resultDataContents": ["row"]//, "graph" ]
                                             }]
                                     }), function (err, data) {
@@ -2342,143 +3676,60 @@ function queryManagement(selections) {
                                 }
 
                                 for (i = 0; i < result.length; i++) {
-                                    var getTargetIndex;
+
                                     var getGroupIndex;
-                                    for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Target == nodeArr[j].NodeName) {
-                                            getTargetIndex = nodeArr[j].NodeIndex;
-                                            getGroupIndex = nodeArr[j].groupIndex;
+                                    var getSourceIndex, getTargetIndex;
+                                    var checkSource = 0, checkTarget = 0;
+                                    for (j = 0; j < groupArr.length; j++) {
+                                        if (groupArr[j].NodeName == result[i].Source) {
+                                            getGroupIndex = groupArr[j].group;
                                             break;
                                         }
                                     }
 
-                                    //Due to target is Phone node which is already existed in nodeArr, we only need to add source node into nodeArr
-                                    var objAdd = {};
-                                    objAdd.NodeName = result[i].Source;
-                                    objAdd.NodeIndex = nodeArr.length;
-                                    objAdd.groupIndex = getGroupIndex;
-                                    objAdd.Label = result[i].SourceType;
-                                    objAdd.textDisplay = "FacebookID: " + result[i].FaceBookAccount;
-                                    nodeArr.push(objAdd);
-
-                                    var objLink = {};
-                                    objLink.source = nodeArr.length - 1;
-                                    objLink.target = getTargetIndex;
-                                    objLink.Type = result[i].Description;
-                                    objLink.prop = [];
-                                    linkArr.push(objLink);
-                                }
-
-                                var nextQuery;
-                                var inputSource = document.getElementById("sPhoneNo").value;
-                                var inputTarget = document.getElementById("tPhoneNo").value;
-                                if (linkLabel == 'Line') {
-                                    nextQuery = "MATCH (n:LINE)<-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else if (linkLabel == 'Facebook') {
-                                    nextQuery = "MATCH (n:FACEBOOK)<-[r:Facebook]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                } else {
-                                    nextQuery = "MATCH (n:WHATSAPP)<-[r:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r ORDER BY r.Date,r.Time";
-                                }
-                                fetchSocialFacebookCommunication(nextQuery, linkLabel);
-
-                            });
-
-                }
-
-                function fetchSocialFacebookCommunication(query, linkLabel) {
-                    var _query = query;
-                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
-                            .header("Content-Type", "application/json")
-                            .mimeType("application/json")
-                            .post(
-                                    JSON.stringify({
-                                        "statements": [{
-                                                "statement": _query,
-                                            }]
-                                    }), function (err, data) {
-                                var returnData = JSON.parse(data.responseText);
-                                //document.write(JSON.stringify(returnData));
-                                var result = [];
-
-                                if (returnData.results[0].data.length == 0) {
-                                    alert("No data found, please try again.");
-                                } else {
-                                    for (i = 0; i < returnData.results[0].data.length; i++) {
-                                        result.push(returnData.results[0].data[i].row[0]);
-                                    }
-                                }
-
-                                //document.write(JSON.stringify(result));
-
-                                var getSourceIndex;
-                                var getTargetIndex;
-                                var getSourceName;
-                                var getTargetName;
-                                for (i = 0; i < result.length; i++) {
-
                                     for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Source == nodeArr[j].NodeName) {
+                                        if (nodeArr[j].NodeName == result[i].Source) {
                                             getSourceIndex = nodeArr[j].NodeIndex;
+                                            checkSource++;
                                             break;
                                         }
                                     }
 
                                     for (j = 0; j < nodeArr.length; j++) {
-                                        if (result[i].Target == nodeArr[j].NodeName) {
+                                        if (nodeArr[j].NodeName == result[i].Target) {
                                             getTargetIndex = nodeArr[j].NodeIndex;
+                                            checkTarget++;
                                             break;
                                         }
                                     }
 
-                                    if (i == 0) {
+                                    if (checkSource == 1 && checkTarget == 1) {
                                         var objLink = {};
                                         objLink.source = getSourceIndex;
                                         objLink.target = getTargetIndex;
-                                        objLink.Type = linkLabel;
+                                        objLink.Type = result[i].Description;
                                         objLink.prop = [];
-
-                                        var objLinkProp = {};
-                                        objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                        objLinkProp.Time = result[i].Time;
-                                        objLinkProp.message = result[i].Message;
-                                        objLink.prop.push(objLinkProp);
-
                                         linkArr.push(objLink);
-                                    } else {
-                                        var checkLink = 0;
-                                        for (k = 0; k < linkArr.length; k++) {
-                                            if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
-                                                var objLinkProp = {};
-                                                objLinkProp.Sender = result[i].SourceFacebook;
-                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                                objLinkProp.Time = result[i].Time;
-                                                objLinkProp.message = result[i].Message;
-                                                linkArr[k].prop.push(objLinkProp);
-                                                checkLink++;
-                                                break;
-                                            }
-                                        }
+                                    } else if (checkSource == 1 && checkTarget == 0) {
+                                        var objAdd = {};
+                                        objAdd.NodeName = result[i].Target;
+                                        objAdd.Label = result[i].TargetType;
+                                        objAdd.groupIndex = getGroupIndex;
+                                        objAdd.textDisplay = result[i].PhoneNumber;
+                                        objAdd.NodeIndex = nodeArr.length;
+                                        getTargetIndex = nodeArr.length;
+                                        nodeArr.push(objAdd);
 
-                                        //checkLink = 0 means no object in linkArr that represents communication between this source and target.
-                                        if (checkLink == 0) {
-                                            var objLink = {};
-                                            objLink.source = getSourceIndex;
-                                            objLink.target = getTargetIndex;
-                                            objLink.Type = linkLabel;
-                                            objLink.prop = [];
-
-                                            var objLinkProp = {};
-                                            objLinkProp.Sender = result[i].SourceID;
-                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                            objLinkProp.Time = result[i].Time;
-                                            objLinkProp.message = result[i].Message;
-                                            objLink.prop.push(objLinkProp);
-
-                                            linkArr.push(objLink);
-                                        }
+                                        var objLink = {};
+                                        objLink.source = getSourceIndex;
+                                        objLink.target = getTargetIndex;
+                                        objLink.Type = result[i].Description;
+                                        objLink.prop = [];
+                                        linkArr.push(objLink);
                                     }
                                 }
+
+                                //After finish adding all the nodes and relationship into nodeArr and linkArr
                                 if (noLoop == selections.length - 1) {
                                     var finalResult = [];
                                     finalResult.push(nodeArr);
@@ -2490,7 +3741,579 @@ function queryManagement(selections) {
                                     noLoop++;
                                     recursive();
                                 }
+                            });
+                }
+            } else {
 
+                var linkType = selections[noLoop].linkType;
+                var linkLabel = selections[noLoop].Type;
+                /*Add date filtering here*/
+                var _query = "MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time ";
+                FetchSocialNodesFacebook2round(_query, linkLabel);
+
+                function FetchSocialNodesFacebook2round(_query, linkLabel) {
+                    console.log(_query);
+                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                            .header("Content-Type", "application/json")
+                            .mimeType("application/json")
+                            .post(
+                                    JSON.stringify({
+                                        "statements": [{
+                                                "statement": _query,
+                                                "resultDataContents": ["row"]//, "graph" ]
+                                            }]
+                                    }), function (err, data) {
+                                var returnData = JSON.parse(data.responseText);
+                                //document.write(JSON.stringify(returnData));
+                                var result = [];
+
+                                if (returnData.results[0].data.length == 0) {
+                                    alert("No data found, please try again.");
+                                } else {
+                                    for (i = 0; i < returnData.results[0].data.length; i++) {
+                                        result.push(returnData.results[0].data[i].row[0]);
+                                    }
+                                }
+
+                                //Create groupArr
+                                for (i = 0; i < result.length; i++) {
+                                    if (i == 0) {
+                                        //both source and target will be added to groupArray.
+                                        if (((result[i].SourceNumber == inputSource) && (result[i].TargetNumber == inputTarget)) || ((result[i].SourceNumber == inputTarget) && (result[i].TargetNumber == inputSource))) {
+                                            if (result[i].SourceNumber == inputSource && result[i].TargetNumber == inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 0;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 0;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else if ((result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) || (result[i].SourceNumber != inputTarget && result[i].TargetNumber == inputSource)) {
+                                            if (result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 0;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 0;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else if ((result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) || (result[i].SourceNumber == inputTarget && result[i].TargetNumber != inputSource)) {
+                                            if (result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 1;
+                                                groupArr.push(objGroupTarget);
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 1;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            }
+                                        } else {
+                                            var objGroupSource = {};
+                                            objGroupSource.NodeName = result[i].Source;
+                                            objGroupSource.number = result[i].SourceNumber;
+                                            objGroupSource.group = 2;
+                                            groupArr.push(objGroupSource);
+
+                                            var objGroupTarget = {};
+                                            objGroupTarget.NodeName = result[i].Target;
+                                            objGroupTarget.number = result[i].TargetNumber;
+                                            objGroupTarget.group = 2;
+                                            groupArr.push(objGroupTarget);
+                                        }
+
+                                    } else {
+                                        var grCheckSource = 0;
+                                        var grCheckTarget = 0;
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Source) {
+                                                grCheckSource++;
+                                                break;
+                                            }
+                                        }
+
+                                        for (j = 0; j < groupArr.length; j++) {
+                                            if (groupArr[j].NodeName == result[i].Target) {
+                                                grCheckTarget++;
+                                                break;
+                                            }
+                                        }
+
+                                        if (grCheckSource == 0 && grCheckTarget == 0) {
+                                            //Add both of source and target into groupArr
+                                            if (((result[i].SourceNumber == inputSource) && (result[i].TargetNumber == inputTarget)) || ((result[i].SourceNumber == inputTarget) && (result[i].TargetNumber == inputSource))) {
+                                                if (result[i].SourceNumber == inputSource && result[i].TargetNumber == inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 0;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 1;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 1;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 0;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else if ((result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) || (result[i].SourceNumber != inputTarget && result[i].TargetNumber == inputSource)) {
+                                                if (result[i].SourceNumber == inputSource && result[i].TargetNumber != inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 0;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 2;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 2;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 0;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else if ((result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) || (result[i].SourceNumber == inputTarget && result[i].TargetNumber != inputSource)) {
+                                                if (result[i].SourceNumber != inputSource && result[i].TargetNumber == inputTarget) {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 2;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 1;
+                                                    groupArr.push(objGroupTarget);
+                                                } else {
+                                                    var objGroupSource = {};
+                                                    objGroupSource.NodeName = result[i].Source;
+                                                    objGroupSource.number = result[i].SourceNumber;
+                                                    objGroupSource.group = 1;
+                                                    groupArr.push(objGroupSource);
+
+                                                    var objGroupTarget = {};
+                                                    objGroupTarget.NodeName = result[i].Target;
+                                                    objGroupTarget.number = result[i].TargetNumber;
+                                                    objGroupTarget.group = 2;
+                                                    groupArr.push(objGroupTarget);
+                                                }
+                                            } else {
+                                                var objGroupSource = {};
+                                                objGroupSource.NodeName = result[i].Source;
+                                                objGroupSource.number = result[i].SourceNumber;
+                                                objGroupSource.group = 2;
+                                                groupArr.push(objGroupSource);
+
+                                                var objGroupTarget = {};
+                                                objGroupTarget.NodeName = result[i].Target;
+                                                objGroupTarget.number = result[i].TargetNumber;
+                                                objGroupTarget.group = 2;
+                                                groupArr.push(objGroupTarget);
+                                            }
+
+                                        } else if (grCheckSource == 0 && grCheckTarget == 1) {
+                                            //Add source to groupArr
+                                            if (result[i].SourceNumber == inputSource) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 0;
+                                                groupArr.push(objGroup);
+
+                                            } else if (result[i].SourceNumber == inputTarget) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 1;
+                                                groupArr.push(objGroup);
+
+                                            } else {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Source;
+                                                objGroup.number = result[i].SourceNumber;
+                                                objGroup.group = 2;
+                                                groupArr.push(objGroup);
+                                            }
+
+                                        } else if (grCheckSource == 1 && grCheckTarget == 0) {
+                                            if (result[i].TargetNumber == inputSource) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 0;
+                                                groupArr.push(objGroup);
+
+                                            } else if (result[i].TargetNumber == inputTarget) {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 1;
+                                                groupArr.push(objGroup);
+
+                                            } else {
+                                                var objGroup = {};
+                                                objGroup.NodeName = result[i].Target;
+                                                objGroup.number = result[i].TargetNumber;
+                                                objGroup.group = 2;
+                                                groupArr.push(objGroup);
+                                            }
+                                        }
+                                    }
+                                }
+                                //document.write(JSON.stringify(groupArr));
+
+                                /*
+                                 Start building nodeArr and linkArr
+                                 */
+                                for (i = 0; i < result.length; i++) {
+
+                                    //checkSource and checkTarget are indicators of finding result[i].Source and result[i].Target respectively.
+                                    var checkSource = 0;
+                                    var checkTarget = 0;
+
+                                    //These variable are used for storing important data that will be used in linkArr
+                                    var getSourceIndex = 0;
+                                    var getTargetIndex = 0;
+                                    var getSourceNumber = "";
+                                    var getTargetNumber = "";
+                                    var getSourcePhone = "";
+                                    var getTargetPhone = "";
+                                    var getGroupSource;
+                                    var getGroupTarget;
+
+                                    //Get group for source
+                                    for (j = 0; j < groupArr.length; j++) {
+                                        if (groupArr[j].NodeName == result[i].Source) {
+                                            getGroupSource = groupArr[j].group;
+                                            break;
+                                        }
+                                    }
+                                    //Get group for target
+                                    for (j = 0; j < groupArr.length; j++) {
+                                        if (groupArr[j].NodeName == result[i].Target) {
+                                            getGroupTarget = groupArr[j].group;
+                                            break;
+                                        }
+                                    }
+                                    //Check the existence of source in nodeArr
+                                    for (j = 0; j < nodeArr.length; j++) {
+                                        if (result[i].Source == nodeArr[j].NodeName) {
+                                            getSourceNumber = nodeArr[j].PhoneNumber;
+                                            getSourceIndex = nodeArr[j].NodeIndex;
+                                            checkSource++;
+                                            break;
+                                        }
+                                    }
+                                    //Check the existence of target in nodeArr
+                                    for (j = 0; j < nodeArr.length; j++) {
+                                        if (result[i].Target == nodeArr[j].NodeName) {
+                                            getTargetNumber = nodeArr[j].PhoneNumber;
+                                            getTargetIndex = nodeArr[j].NodeIndex;
+                                            checkTarget++;
+                                            break;
+                                        }
+                                    }
+
+                                    if (checkSource == 1 && checkTarget == 1) {
+                                        //First, we have to check an existence of the link.
+                                        var linkIndex = 0;
+                                        var linkExist = 0;
+                                        for (k = 0; k < linkArr.length; k++) {
+                                            if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
+                                                linkExist++;
+                                                linkIndex = k;
+                                                break;
+                                            }
+                                        }
+                                        if (linkExist == 1) {
+                                            //There is already a link between source and target.
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceFacebook;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            linkArr[linkIndex].prop.push(objLinkProp);
+                                        } else {
+                                            //Link between source and target haven't been created yet.
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = getTargetIndex;
+                                            objLink.Type = linkLabel
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Sender = result[i].SourceFacebook;
+                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.Time = result[i].Time;
+                                            objLinkProp.message = result[i].Message;
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+                                        }
+                                    } else if (checkSource > 0 && checkTarget == 0) {
+                                        //result[i].Source already existed in nodeArr
+                                        var objAdd = {};
+                                        objAdd.NodeName = result[i].Target;
+                                        objAdd.PhoneNumber = result[i].TargetNumber;
+                                        objAdd.groupIndex = getGroupTarget;
+                                        objAdd.textDisplay = "FacebookID : " + result[i].TargetFacebook;
+                                        objAdd.Label = 'Facebook';
+                                        objAdd.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objAdd);
+
+                                        var objLink = {};
+                                        objLink.source = getSourceIndex;
+                                        objLink.target = nodeArr.length - 1;
+                                        objLink.Type = linkLabel;
+                                        objLink.prop = [];
+
+                                        var objLinkProp = {};
+                                        objLinkProp.Sender = result[i].SourceFacebook;
+                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.Time = result[i].Time;
+                                        objLinkProp.message = result[i].Message;
+                                        linkArr.push(objLink);
+
+                                    } else if (checkSource == 0 && checkTarget > 0) {
+                                        //result[i].Target already existed in nodeArr
+                                        var objAdd = {};
+                                        objAdd.NodeName = result[i].Source;
+                                        objAdd.PhoneNumber = result[i].SourceNumber;
+                                        objAdd.groupIndex = getGroupSource;
+                                        objAdd.textDisplay = "FacebookID : " + result[i].SourceFacebook;
+                                        objAdd.Label = 'Facebook';
+                                        objAdd.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objAdd);
+
+                                        var objLink = {};
+                                        objLink.source = nodeArr.length - 1;
+                                        objLink.target = getTargetIndex;
+                                        objLink.Type = linkLabel;
+                                        objLink.prop = [];
+
+                                        var objLinkProp = {};
+                                        objLinkProp.Sender = result[i].SourceFacebook;
+                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.Time = result[i].Time;
+                                        objLinkProp.message = result[i].Message;
+                                        objLink.prop.push(objLinkProp);
+                                        linkArr.push(objLink);
+
+                                    } else {
+                                        var objAddSource = {};
+                                        objAddSource.NodeName = result[i].Source;
+                                        objAddSource.PhoneNumber = result[i].SourceNumber;
+                                        objAddSource.textDisplay = "FacebookID : " + result[i].SourceFacebook;
+                                        objAddSource.groupIndex = getGroupSource;
+                                        objAddSource.Label = 'Facebook';
+                                        objAddSource.NodeIndex = nodeArr.length;
+                                        getSourceIndex = nodeArr.length;
+                                        nodeArr.push(objAddSource);
+
+                                        var objAddTarget = {};
+                                        objAddTarget.NodeName = result[i].Target;
+                                        objAddTarget.PhoneNumber = result[i].TargetNumber;
+                                        objAddTarget.textDisplay = "FacebookID : " + result[i].TargetFacebook;
+                                        objAddTarget.groupIndex = getGroupTarget;
+                                        objAddTarget.Label = 'Facebook';
+                                        objAddTarget.NodeIndex = nodeArr.length;
+                                        getTargetIndex = nodeArr.length;
+                                        nodeArr.push(objAddTarget);
+
+                                        var objLink = {};
+                                        objLink.source = getSourceIndex;
+                                        objLink.target = getTargetIndex;
+                                        objLink.Type = linkLabel;
+                                        objLink.prop = [];
+
+                                        var objLinkProp = {};
+                                        objLinkProp.Sender = result[i].SourceNumber;
+                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.Time = result[i].Time;
+                                        objLinkProp.message = result[i].Message;
+                                        objLink.prop.push(objLinkProp);
+                                        linkArr.push(objLink);
+
+                                    }
+                                }
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allLineNodes = [];
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (nodeArr[i].Label == 'Facebook') {
+                                        allLineNodes.push(nodeArr[i].NodeName);
+                                    }
+                                }
+
+                                var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                                for (i = 0; i < allLineNodes.length; i++) {
+                                    if (i == 0) {
+                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                    } else {
+                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                    }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneForFacebook2round(nextQuery);
+                            });
+                }
+
+                function FetchPhoneForFacebook2round(_query) {
+                    console.log(_query);
+                    d3.xhr("http://localhost:7474/db/data/transaction/commit")
+                            .header("Content-Type", "application/json")
+                            .mimeType("application/json")
+                            .post(
+                                    JSON.stringify({
+                                        "statements": [{
+                                                "statement": _query,
+                                                "resultDataContents": ["row"]//, "graph" ]
+                                            }]
+                                    }), function (err, data) {
+                                var returnData = JSON.parse(data.responseText);
+                                //document.write(JSON.stringify(returnData));
+                                var result = returnData.results[0].data[0].row[0];
+                                //document.write(JSON.stringify(result));
+                                var count = 0;
+                                if (result.length == 0) {
+                                    alert("No data found. Please try again.");
+                                }
+
+                                for (i = 0; i < result.length; i++) {
+
+                                    var getGroupIndex;
+                                    var getSourceIndex, getTargetIndex;
+                                    var checkSource = 0, checkTarget = 0;
+                                    for (j = 0; j < groupArr.length; j++) {
+                                        if (groupArr[j].NodeName == result[i].Source) {
+                                            getGroupIndex = groupArr[j].group;
+                                            break;
+                                        }
+                                    }
+
+                                    for (j = 0; j < nodeArr.length; j++) {
+                                        if (nodeArr[j].NodeName == result[i].Source) {
+                                            getSourceIndex = nodeArr[j].NodeIndex;
+                                            checkSource++;
+                                            break;
+                                        }
+                                    }
+
+                                    for (j = 0; j < nodeArr.length; j++) {
+                                        if (nodeArr[j].NodeName == result[i].Target) {
+                                            getTargetIndex = nodeArr[j].NodeIndex;
+                                            checkTarget++;
+                                            break;
+                                        }
+                                    }
+
+                                    if (checkSource == 1 && checkTarget == 1) {
+                                        var objLink = {};
+                                        objLink.source = getSourceIndex;
+                                        objLink.target = getTargetIndex;
+                                        objLink.Type = result[i].Description;
+                                        objLink.prop = [];
+                                        linkArr.push(objLink);
+                                    } else if (checkSource == 1 && checkTarget == 0) {
+                                        var objAdd = {};
+                                        objAdd.NodeName = result[i].Target;
+                                        objAdd.Label = result[i].TargetType;
+                                        objAdd.groupIndex = getGroupIndex;
+                                        objAdd.textDisplay = result[i].PhoneNumber;
+                                        objAdd.NodeIndex = nodeArr.length;
+                                        getTargetIndex = nodeArr.length;
+                                        nodeArr.push(objAdd);
+
+                                        var objLink = {};
+                                        objLink.source = getSourceIndex;
+                                        objLink.target = getTargetIndex;
+                                        objLink.Type = result[i].Description;
+                                        objLink.prop = [];
+                                        linkArr.push(objLink);
+                                    }
+                                }
+
+                                //After finish adding all the nodes and relationship into nodeArr and linkArr
+                                if (noLoop == selections.length - 1) {
+                                    var finalResult = [];
+                                    finalResult.push(nodeArr);
+                                    finalResult.push(linkArr);
+                                    finalResult.push(groupArr);
+                                    //document.write(JSON.stringify(finalResult));
+                                    dataVisualizationSocial(finalResult);
+                                } else {
+                                    noLoop++;
+                                    recursive();
+                                }
                             });
                 }
             }

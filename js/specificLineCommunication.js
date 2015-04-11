@@ -4,16 +4,16 @@
  * and open the template in the editor.
  */
 
-function LineDatabase(){
+function LineDatabase() {
 
-	/*
-	Instruction
-	1. First, Get all PHONE and LINE nodes from database. Push all of them into nodeArr and create linkArr as well.
-	2. Then, connect with database again and request communication via LINE. Convert return results to an object and push it into prop[].
-	3. Visualize the data.
-
-	*/
-        clearDiv('graph');
+    /*
+     Instruction
+     1. First, Get all PHONE and LINE nodes from database. Push all of them into nodeArr and create linkArr as well.
+     2. Then, connect with database again and request communication via LINE. Convert return results to an object and push it into prop[].
+     3. Visualize the data.
+     
+     */
+    clearDiv('graph');
     clearDiv('output');
     var inputNumber = $("#phoneNo").val();
     var _query = "MATCH (n:LINE)-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' RETURN distinct r ORDER BY r.Date,r.Time";
@@ -257,8 +257,8 @@ function LineDatabase(){
                         }
                     }
                 }
-                
-                for(i=0;i<nodeArr.length;i++){
+
+                for (i = 0; i < nodeArr.length; i++) {
                     nodeArr[i].lineChat = [];
                 }
 
@@ -501,9 +501,9 @@ function dataVisualizationLine(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                if(d.Label == 'Line'){
+                if (d.Label == 'Line') {
                     var output = "";
-                    output =  d.textDisplay + "<br/>";
+                    output = d.textDisplay + "<br/>";
                     output += "LINE chat with: " + "<br/>"
                     for (i = 0; i < d.lineChat.length; i++) {
                         output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";

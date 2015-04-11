@@ -13,6 +13,8 @@ function queryManagementSXD(selections) {
             if (selections[noLoop].Type == 'Call') {
                 var linkType1 = selections[noLoop].linkType[0];
                 var linkType2 = selections[noLoop].linkType[1];
+                /*Add date filtering here*/
+                /*look for variable for each linkType in destination2.html. If i'm correct, linkType1 uses r1 and linkType2 uses r2*/
                 var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) + collect(distinct r2) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -34,6 +36,7 @@ function queryManagementSXD(selections) {
                             var groupArr = [];
                             var count = 0;
                             if (result.length == 0) {
+                                /*No result found handler here*/
                                 alert("No data found. Please try again.");
                             }
 
@@ -541,6 +544,8 @@ function queryManagementSXD(selections) {
             } else if (selections[noLoop].Type == 'SMS') {
                 var linkType1 = selections[noLoop].linkType[0];
                 var linkType2 = selections[noLoop].linkType[1];
+                /*Add date filtering here*/
+                /*look for variable for each linkType in destination2.html. If i'm correct, linkType1 uses r1 and linkType2 uses r2*/
                 var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) + collect(distinct r2) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -559,6 +564,7 @@ function queryManagementSXD(selections) {
                             //document.write(JSON.stringify(result));
                             var count = 0;
                             if (result.length == 0) {
+                                /*No result found handler here*/
                                 alert("No data found. Please try again.");
                             }
 
@@ -1075,7 +1081,12 @@ function queryManagementSXD(selections) {
             } else if (selections[noLoop].Type == 'Line') {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:LINE)<-[r1:LINEchat]->(x:LINE)<-[r2:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time UNION MATCH (n:LINE)<-[r1:LINEchat]->(x:LINE)<-[r2:LINEchat]->(m:LINE) WHERE m.PhoneNumber = '" + inputTarget + "' AND n.PhoneNumber = '" + inputSource + "' RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
+                var _query1 = "MATCH (n:LINE)<-[r1:LINEchat]->(x:LINE)<-[r2:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                /*Add date filtering here*/
+                _query1 += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time "
+                _query1 += "UNION MATCH (n:LINE)<-[r1:LINEchat]->(x:LINE)<-[r2:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                /*Add date filtering here*/
+                _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
                 FetchSocialNodesLineSXD(_query1, linkLabel);
 
                 function FetchSocialNodesLineSXD(_query1, linkLabel) {
@@ -1095,6 +1106,7 @@ function queryManagementSXD(selections) {
                                 var result = [];
 
                                 if (returnData.results[0].data.length == 0) {
+                                    /*No result found handler here*/
                                     alert("No data found, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
@@ -1621,6 +1633,7 @@ function queryManagementSXD(selections) {
                                 //document.write(JSON.stringify(result));
                                 var count = 0;
                                 if (result.length == 0) {
+                                    /*No result found handler here*/
                                     alert("No data found. Please try again.");
                                 }
 
@@ -1678,7 +1691,12 @@ function queryManagementSXD(selections) {
             } else if (selections[noLoop].Type == 'Whatsapp') {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time UNION MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE m.PhoneNumber = '" + inputTarget + "' AND n.PhoneNumber = '" + inputSource + "' RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
+                var _query1 = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                /*Add date filtering here*/
+                _query1 += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time "
+                _query1 += "UNION MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                /*Add date filtering here*/
+                _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
                 FetchSocialNodesWhatsappSXD(_query1, linkLabel);
 
                 function FetchSocialNodesWhatsappSXD(_query1, linkLabel) {
@@ -1698,6 +1716,7 @@ function queryManagementSXD(selections) {
                                 var result = [];
 
                                 if (returnData.results[0].data.length == 0) {
+                                    /*No result found handler here*/
                                     alert("No data found, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
@@ -2278,7 +2297,12 @@ function queryManagementSXD(selections) {
             } else {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:FACEBOOK)<-[r1:Facebook]->(x:FACEBOOK)<-[r2:Facebook]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time UNION MATCH (n:FACEBOOK)<-[r1:Facebook]->(x:FACEBOOK)<-[r2:Facebook]->(m:FACEBOOK) WHERE m.PhoneNumber = '" + inputTarget + "' AND n.PhoneNumber = '" + inputSource + "' RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
+                var _query1 = "MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(x:FACEBOOK)<-[r2:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                /*Add date filtering here*/
+                _query1 += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time "
+                _query1 += "UNION MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(x:FACEBOOK)<-[r2:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                /*Add date filtering here*/
+                _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
                 FetchSocialNodesFacebookSXD(_query1, linkLabel);
 
                 function FetchSocialNodesFacebookSXD(_query1, linkLabel) {
@@ -2298,6 +2322,7 @@ function queryManagementSXD(selections) {
                                 var result = [];
 
                                 if (returnData.results[0].data.length == 0) {
+                                    /*No result found handler here*/
                                     alert("No data found, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
@@ -2883,6 +2908,7 @@ function queryManagementSXD(selections) {
             if (selections[noLoop].Type == 'Call') {
                 var linkType1 = selections[noLoop].linkType[0];
                 var linkType2 = selections[noLoop].linkType[1];
+                /*Add date filtering here*/
                 var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) + collect(distinct r2) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -3240,6 +3266,7 @@ function queryManagementSXD(selections) {
             } else if (selections[noLoop].Type == 'SMS') {
                 var linkType1 = selections[noLoop].linkType[0];
                 var linkType2 = selections[noLoop].linkType[1];
+                /*Add date filtering here*/
                 var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) + collect(distinct r2) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -3607,7 +3634,13 @@ function queryManagementSXD(selections) {
             } else if (selections[noLoop].Type == 'Whatsapp') {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time UNION MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE m.PhoneNumber = '" + inputTarget + "' AND n.PhoneNumber = '" + inputSource + "' RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
+                var _query1 = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                /*Add date filtering here*/
+                _query1 += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time "
+                _query1 += "UNION MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                /*Add date filtering here*/
+                _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
+                
                 FetchSocialNodesWhatsappSXD2round(_query1, linkLabel);
 
                 function FetchSocialNodesWhatsappSXD2round(_query1, linkLabel) {
@@ -4180,7 +4213,13 @@ function queryManagementSXD(selections) {
             } else {
                 var linkType = selections[noLoop].linkType;
                 var linkLabel = selections[noLoop].Type;
-                var _query1 = "MATCH (n:FACEBOOK)<-[r1:Facebook]->(x:FACEBOOK)<-[r2:Facebook]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN distinct r1 as R ORDER BY r1.Date, r1.Time UNION MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE m.PhoneNumber = '" + inputTarget + "' AND n.PhoneNumber = '" + inputSource + "' RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
+                var _query1 = "MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(x:FACEBOOK)<-[r2:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                /*Add date filtering here*/
+                _query1 += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time "
+                _query1 += "UNION MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(x:FACEBOOK)<-[r2:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
+                /*Add date filtering here*/
+                _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
+                
                 FetchSocialNodesFacebookSXD2round(_query1, linkLabel);
 
                 function FetchSocialNodesFacebookSXD2round(_query1, linkLabel) {

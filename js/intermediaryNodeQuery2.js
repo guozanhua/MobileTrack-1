@@ -17,6 +17,7 @@ function createQueryForTwo(selections) {
             if (selections[noLoop].Type == 'Call') {
                 var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE) ";
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND d.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct r2) AS R ";
                 var _queryString = match + where + retur;
                 console.log(_queryString);
@@ -565,6 +566,7 @@ function createQueryForTwo(selections) {
             } else if (selections[noLoop].Type == 'SMS') {
                 var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE) ";
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND d.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct r2) AS R ";
                 var _queryString = match + where + retur;
                 console.log(_queryString);
@@ -1123,7 +1125,11 @@ function createQueryForTwo(selections) {
 
             } else if (selections[noLoop].Type == 'Line') {
                 var linkLabel = selections[noLoop].Type;
-                var _query = "MATCH (a:LINE)<-[r1:LINEchat]->(x1:LINE)<-[r2:LINEchat]->(x2:LINE)<-[r3:LINEchat]->(b:LINE) WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "'AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) AS R";
+                var _query = "MATCH (a:LINE)<-[r1:LINEchat]->(x1:LINE)<-[r2:LINEchat]->(x2:LINE)<-[r3:LINEchat]->(b:LINE) ";
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "'AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' "
+                /*Add date filtering here*/
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) AS R";
+                console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
@@ -1682,6 +1688,7 @@ function createQueryForTwo(selections) {
                         });
 
                 function FetchPhoneForLineSXXD(_query) {
+                    console.log("Fecth phone for Line");
                     d3.xhr("http://localhost:7474/db/data/transaction/commit")
                             .header("Content-Type", "application/json")
                             .mimeType("application/json")
@@ -1752,7 +1759,11 @@ function createQueryForTwo(selections) {
                 }
             } else if (selections[noLoop].Type == 'Whatsapp') {
                 var linkLabel = selections[noLoop].Type;
-                var _query = "MATCH (a:WHATSAPP)<-[r1:Whatsappchat]->(x1:WHATSAPP)<-[r2:Whatsappchat]->(x2:WHATSAPP)<-[r3:Whatsappchat]->(b:WHATSAPP) WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "'AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) AS R";
+                var _query = "MATCH (a:WHATSAPP)<-[r1:Whatsappchat]->(x1:WHATSAPP)<-[r2:Whatsappchat]->(x2:WHATSAPP)<-[r3:Whatsappchat]->(b:WHATSAPP) "
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "'AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' "
+                /*Add date filtering here*/
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) AS R";
+                console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
@@ -2309,6 +2320,7 @@ function createQueryForTwo(selections) {
                         });
 
                 function FetchPhoneForWhatsappSXXD(_query) {
+                    console.log("Fetch phone for Whatsapp");
                     d3.xhr("http://localhost:7474/db/data/transaction/commit")
                             .header("Content-Type", "application/json")
                             .mimeType("application/json")
@@ -2380,7 +2392,11 @@ function createQueryForTwo(selections) {
             }
             else {
                 var linkLabel = selections[noLoop].Type;
-                var _query = "MATCH (a:FACEBOOK)<-[r1:Facebook]->(x1:FACEBOOK)<-[r2:Facebook]->(x2:FACEBOOK)<-[r3:Facebook]->(b:FACEBOOK) WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "'AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) AS R";
+                var _query = "MATCH (a:FACEBOOK)<-[r1:Facebookchat]->(x1:FACEBOOK)<-[r2:Facebookchat]->(x2:FACEBOOK)<-[r3:Facebookchat]->(b:FACEBOOK) "
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "'AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' "
+                /*Add date filtering here*/
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) AS R";
+                console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
@@ -2903,6 +2919,7 @@ function createQueryForTwo(selections) {
                         });
 
                 function FetchPhoneForFacebookSXXD(_query) {
+                    console.log("Fetch Phone for Facebook")
                     d3.xhr("http://localhost:7474/db/data/transaction/commit")
                             .header("Content-Type", "application/json")
                             .mimeType("application/json")
@@ -2980,6 +2997,7 @@ function createQueryForTwo(selections) {
             if (selections[noLoop].Type == 'Call') {
                 var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE) ";
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND d.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct r2) AS R ";
                 var _queryString = match + where + retur;
                 console.log(_queryString);
@@ -3359,6 +3377,7 @@ function createQueryForTwo(selections) {
             } else if (selections[noLoop].Type == 'SMS') {
                 var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE) ";
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND d.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct r2) AS R ";
                 var _queryString = match + where + retur;
                 console.log(_queryString);
@@ -3741,7 +3760,11 @@ function createQueryForTwo(selections) {
 
             } else if (selections[noLoop].Type == 'Whatsapp') {
                 var linkLabel = selections[noLoop].Type;
-                var _query = "MATCH (a:WHATSAPP)<-[r1:Whatsappchat]->(x1:WHATSAPP)<-[r2:Whatsappchat]->(x2:WHATSAPP)<-[r3:Whatsappchat]->(b:WHATSAPP) WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "'AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) AS R";
+                var linkLabel = selections[noLoop].Type;
+                var _query = "MATCH (a:WHATSAPP)<-[r1:Whatsappchat]->(x1:WHATSAPP)<-[r2:Whatsappchat]->(x2:WHATSAPP)<-[r3:Whatsappchat]->(b:WHATSAPP) "
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "'AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' "
+                /*Add date filtering here*/
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) AS R";
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
@@ -4341,7 +4364,10 @@ function createQueryForTwo(selections) {
 
             } else if (selections[noLoop].Type == 'Facebook') {
                 var linkLabel = selections[noLoop].Type;
-                var _query = "MATCH (a:FACEBOOK)<-[r1:Facebook]->(x1:FACEBOOK)<-[r2:Facebook]->(x2:FACEBOOK)<-[r3:Facebook]->(b:FACEBOOK) WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "'AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) AS R";
+                var _query = "MATCH (a:FACEBOOK)<-[r1:Facebookchat]->(x1:FACEBOOK)<-[r2:Facebookchat]->(x2:FACEBOOK)<-[r3:Facebookchat]->(b:FACEBOOK) "
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "'AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' "
+                /*Add date filtering here*/
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) AS R";
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")

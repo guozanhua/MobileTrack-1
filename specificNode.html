@@ -347,9 +347,9 @@ function getdata(){
     buildQueryForSMS(sms,stat);
   }
   else if(communicationType == 3){
-    buildQueryForLine($('#phoneNo').val());
+    LineDatabase();
   }else if(communicationType == 4){
-    buildQueryForWhatsapp($('#phoneNo').val());
+    WhatsappDatabase();
   }else{
     alert("Please select communication type");
   }
