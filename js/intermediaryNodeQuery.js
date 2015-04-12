@@ -1595,24 +1595,39 @@ function queryManagementSXD(selections) {
                                         }
                                     }
                                 }
-                                //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allLineNodes = [];
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (nodeArr[i].Label == 'Line') {
-                                        allLineNodes.push(nodeArr[i].NodeName);
+
+                                if (result.length > 0) {
+                                    //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                    var allLineNodes = [];
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (nodeArr[i].Label == 'Line') {
+                                            allLineNodes.push(nodeArr[i].NodeName);
+                                        }
+                                    }
+
+                                    var nextQuery = "MATCH (n:LINE)-[r:Line]->(m:PHONE) WHERE "
+                                    for (i = 0; i < allLineNodes.length; i++) {
+                                        if (i == 0) {
+                                            nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                        } else {
+                                            nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                        }
+                                    }
+                                    nextQuery += "RETURN collect(distinct r) as R";
+                                    FetchPhoneForLineSXD(nextQuery);
+                                } else {
+                                    if (noLoop == selections.length - 1) {
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(groupArr);
+                                        dataVisualizationSXD(finalResult);
+                                    } else {
+                                        noLoop++;
+                                        recursiveSXD();
                                     }
                                 }
 
-                                var nextQuery = "MATCH (n:LINE)-[r:Line]->(m:PHONE) WHERE "
-                                for (i = 0; i < allLineNodes.length; i++) {
-                                    if (i == 0) {
-                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                    } else {
-                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
-                                    }
-                                }
-                                nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneForLineSXD(nextQuery);
                             });
                 }
 
@@ -2204,24 +2219,39 @@ function queryManagementSXD(selections) {
                                         }
                                     }
                                 }
-                                //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allLineNodes = [];
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (nodeArr[i].Label == 'Whatsapp') {
-                                        allLineNodes.push(nodeArr[i].NodeName);
+
+                                if (result.length > 0) {
+                                    //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                    var allLineNodes = [];
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (nodeArr[i].Label == 'Whatsapp') {
+                                            allLineNodes.push(nodeArr[i].NodeName);
+                                        }
+                                    }
+
+                                    var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
+                                    for (i = 0; i < allLineNodes.length; i++) {
+                                        if (i == 0) {
+                                            nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                        } else {
+                                            nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                        }
+                                    }
+                                    nextQuery += "RETURN collect(distinct r) as R";
+                                    FetchPhoneForWhatsappSXD(nextQuery);
+                                } else {
+                                    if (noLoop == selections.length - 1) {
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(groupArr);
+                                        dataVisualizationSXD(finalResult);
+                                    } else {
+                                        noLoop++;
+                                        recursiveSXD();
                                     }
                                 }
 
-                                var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
-                                for (i = 0; i < allLineNodes.length; i++) {
-                                    if (i == 0) {
-                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                    } else {
-                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
-                                    }
-                                }
-                                nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneForWhatsappSXD(nextQuery);
                             });
                 }
 
@@ -2811,24 +2841,37 @@ function queryManagementSXD(selections) {
                                         }
                                     }
                                 }
-                                //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allFacebookNodes = [];
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (nodeArr[i].Label == 'Facebook') {
-                                        allFacebookNodes.push(nodeArr[i].NodeName);
+                                if (noLoop == selections.length - 1) {
+                                    //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                    var allFacebookNodes = [];
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (nodeArr[i].Label == 'Facebook') {
+                                            allFacebookNodes.push(nodeArr[i].NodeName);
+                                        }
                                     }
-                                }
 
-                                var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
-                                for (i = 0; i < allFacebookNodes.length; i++) {
-                                    if (i == 0) {
-                                        nextQuery += "n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                    var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                                    for (i = 0; i < allFacebookNodes.length; i++) {
+                                        if (i == 0) {
+                                            nextQuery += "n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                        } else {
+                                            nextQuery += "OR n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                        }
+                                    }
+                                    nextQuery += "RETURN collect(distinct r) as R";
+                                    FetchPhoneForFacebookSXD(nextQuery);
+                                } else {
+                                    if (noLoop == selections.length - 1) {
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(groupArr);
+                                        dataVisualizationSXD(finalResult);
                                     } else {
-                                        nextQuery += "OR n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                        noLoop++;
+                                        recursiveSXD();
                                     }
                                 }
-                                nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneForFacebookSXD(nextQuery);
                             });
                 }
 
@@ -3623,7 +3666,6 @@ function queryManagementSXD(selections) {
                                 finalResult.push(nodeArr);
                                 finalResult.push(linkArr);
                                 finalResult.push(groupArr);
-                                //document.write(JSON.stringify(finalResult));
                                 dataVisualizationSXD(finalResult);
                             } else {
                                 noLoop++;
@@ -3640,7 +3682,7 @@ function queryManagementSXD(selections) {
                 _query1 += "UNION MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
                 _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
-                
+
                 FetchSocialNodesWhatsappSXD2round(_query1, linkLabel);
 
                 function FetchSocialNodesWhatsappSXD2round(_query1, linkLabel) {
@@ -3660,7 +3702,7 @@ function queryManagementSXD(selections) {
                                 var result = [];
 
                                 if (returnData.results[0].data.length == 0) {
-                                    alert("No data found, please try again.");
+                                    alert("No data found for Whatsapp, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
                                         result.push(returnData.results[0].data[i].row[0]);
@@ -4098,24 +4140,39 @@ function queryManagementSXD(selections) {
 
                                     }
                                 }
-                                //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allLineNodes = [];
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (nodeArr[i].Label == 'Whatsapp') {
-                                        allLineNodes.push(nodeArr[i].NodeName);
+
+                                if (noLoop == selections.length - 1) {
+                                    //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                    var allLineNodes = [];
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (nodeArr[i].Label == 'Whatsapp') {
+                                            allLineNodes.push(nodeArr[i].NodeName);
+                                        }
+                                    }
+
+                                    var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
+                                    for (i = 0; i < allLineNodes.length; i++) {
+                                        if (i == 0) {
+                                            nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                        } else {
+                                            nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                        }
+                                    }
+                                    nextQuery += "RETURN collect(distinct r) as R";
+                                    FetchPhoneForWhatsappSXD2round(nextQuery);
+                                } else {
+                                    if (noLoop == selections.length - 1) {
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(groupArr);
+                                        dataVisualizationSXD(finalResult);
+                                    } else {
+                                        noLoop++;
+                                        recursiveSXD();
                                     }
                                 }
 
-                                var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
-                                for (i = 0; i < allLineNodes.length; i++) {
-                                    if (i == 0) {
-                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                    } else {
-                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
-                                    }
-                                }
-                                nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneForWhatsappSXD2round(nextQuery);
                             });
                 }
 
@@ -4219,7 +4276,7 @@ function queryManagementSXD(selections) {
                 _query1 += "UNION MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(x:FACEBOOK)<-[r2:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
                 _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
-                
+
                 FetchSocialNodesFacebookSXD2round(_query1, linkLabel);
 
                 function FetchSocialNodesFacebookSXD2round(_query1, linkLabel) {
@@ -4239,7 +4296,7 @@ function queryManagementSXD(selections) {
                                 var result = [];
 
                                 if (returnData.results[0].data.length == 0) {
-                                    alert("No data found, please try again.");
+                                    alert("No data found for Facebook, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
                                         result.push(returnData.results[0].data[i].row[0]);
@@ -4677,24 +4734,37 @@ function queryManagementSXD(selections) {
 
                                     }
                                 }
-                                //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allLineNodes = [];
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (nodeArr[i].Label == 'Facebook') {
-                                        allLineNodes.push(nodeArr[i].NodeName);
+                                if (noLoop == selections.length - 1) {
+                                    //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                    var allLineNodes = [];
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (nodeArr[i].Label == 'Facebook') {
+                                            allLineNodes.push(nodeArr[i].NodeName);
+                                        }
                                     }
-                                }
 
-                                var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
-                                for (i = 0; i < allLineNodes.length; i++) {
-                                    if (i == 0) {
-                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                    } else {
-                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                    var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                                    for (i = 0; i < allLineNodes.length; i++) {
+                                        if (i == 0) {
+                                            nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                        } else {
+                                            nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                        }
+                                    }
+                                    nextQuery += "RETURN collect(distinct r) as R";
+                                    FetchPhoneForFacebookSXD2round(nextQuery);
+                                }else{
+                                    if(noLoop == selections.length-1){
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(groupArr);
+                                        dataVisualizationSXD(finalResult);
+                                    }else{
+                                        noLoop++;
+                                        recursiveSXD();
                                     }
                                 }
-                                nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneForFacebookSXD2round(nextQuery);
                             });
                 }
 
