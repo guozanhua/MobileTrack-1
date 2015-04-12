@@ -42,6 +42,7 @@ function ConnectDatabase(input, mode) {
                 if (mode == 1) {
                     clearDiv('graph');
                     clearDiv('output');
+                    clearDiv('summarize');
                     var nodeArr = [];
                     var linkArr = [];
                     var groupArr = [];

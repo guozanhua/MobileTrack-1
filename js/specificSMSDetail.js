@@ -1,9 +1,7 @@
 function FetchSMSDatabase(input) {
     clearDiv('graph');
     clearDiv('output');
-    var _queryString = input;/*"MATCH (n:PHONE)-[r:SMS]->(m:PHONE) WHERE n.PhoneNumber = '" + input + "' OR m.PhoneNumber = '" + input + "' RETURN collect(distinct r)"*/
-    //"MATCH (n:PHONE)-[r1]->(m:PHONE)-[r2]->(o:PHONE) WHERE m.PhoneNumber = '" + input + "' RETURN collect(distinct r1) + collect(distinct r2) AS R";
-    //"MATCH (n:PHONE)-[r1]->(m:PHONE) RETURN collect(distinct r1)";	
+    var _queryString = input;	
     console.log(_queryString);
     var inputNumber = document.getElementById("phoneNo").value;
 
