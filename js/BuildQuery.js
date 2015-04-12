@@ -16,7 +16,7 @@ function buildQueryForCall(callType,dur){
     }
     console.log(dur);
     if(datefrom != "" && dateto != ""){
-        query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +")"
+        query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +") "
     }
 
     if(dur == 3){ // 2-2.59 min
@@ -50,7 +50,7 @@ function buildQueryForSMS(smstype,status){
             query += "AND r.TargetNumber = '" + input + "' ";
     }
     if(datefrom != "" && dateto != ""){
-        query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +")"
+        query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +") "
     }
 
     if(status == 3){ 

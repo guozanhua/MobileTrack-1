@@ -13,11 +13,11 @@ function FacebookDatabase() {
     var datetoforquery = convertDatetoISO(dateto);
     var inputNumber = $("#phoneNo").val();
     var _query = "MATCH (n:FACEBOOK)-[r:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' ";
-    console.log(_query);
     if(datefrom != "" && dateto != ""){
-        query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +") "
+        _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +") "
     }
-    query += "RETURN distinct r ORDER BY r.Date,r.Time";
+    _query += "RETURN distinct r ORDER BY r.Date,r.Time";
+    console.log(_query);
     var nodeArr = [];
     var groupArr = [];
     var linkArr = [];

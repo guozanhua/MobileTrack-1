@@ -15,8 +15,16 @@ function LineDatabase() {
      */
     clearDiv('graph');
     clearDiv('output');
+    var datefrom = document.getElementById("datefrom").value;
+    var dateto = document.getElementById("dateto").value;
+    var datefromforquery = convertDatetoISO(datefrom);
+    var datetoforquery = convertDatetoISO(dateto);
     var inputNumber = $("#phoneNo").val();
-    var _query = "MATCH (n:LINE)-[r:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' RETURN distinct r ORDER BY r.Date,r.Time";
+    var _query = "MATCH (n:LINE)-[r:LINEchat]->(m:LINE) WHERE (n.PhoneNumber = '" + inputNumber + "') OR (m.PhoneNumber = '" + inputNumber + "') ";
+    if(datefrom != "" && dateto != ""){
+        _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +") "
+    }
+    _query += "RETURN distinct r ORDER BY r.Date,r.Time";
     console.log(_query);
     var nodeArr = [];
     var groupArr = [];
@@ -114,7 +122,7 @@ function LineDatabase() {
                         objLink.prop = [];
                         var objLinkProp = {};
                         objLinkProp.Sender = result[i].SourceLineID;
-                        objLinkProp.date = result[i].Date;
+                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                         objLinkProp.Time = result[i].Time;
                         objLinkProp.message = result[i].Message;
                         objLink.prop.push(objLinkProp);
@@ -138,44 +146,44 @@ function LineDatabase() {
                         }
 
                         if (countSource == 1 && countTarget == 1) {
-
-                            //First, we have to check an existence of the link.
-                            var linkIndex = 0;
-                            var linkExist = 0;
-                            for (k = 0; k < linkArr.length; k++) {
-                                if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
-                                    linkExist++;
-                                    linkIndex = k;
-                                    break;
+                            
+                                //First, we have to check an existence of the link.
+                                var linkIndex = 0;
+                                var linkExist = 0;
+                                for (k = 0; k < linkArr.length; k++) {
+                                    if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
+                                        linkExist++;
+                                        linkIndex = k;
+                                        break;
+                                    }
                                 }
-                            }
-                            if (linkExist == 1) {
-                                //There is already a link between source and target.
-                                var objLinkProp = {};
-                                objLinkProp.Sender = result[i].SourceLineID;
-                                objLinkProp.date = result[i].Date;
-                                objLinkProp.Time = result[i].Time;
-                                objLinkProp.message = result[i].Message;
-                                linkArr[linkIndex].prop.push(objLinkProp);
-                            } else {
-                                //Link between source and target haven't been created yet.
-                                var objLink = {};
-                                objLink.source = getSourceIndex;
-                                objLink.target = getTargetIndex;
-                                objLink.Type = "Line";
-                                objLink.prop = [];
+                                if (linkExist == 1) {
+                                    //There is already a link between source and target.
+                                    var objLinkProp = {};
+                                    objLinkProp.Sender = result[i].SourceLineID;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                    objLinkProp.Time = result[i].Time;
+                                    objLinkProp.message = result[i].Message;
+                                    linkArr[linkIndex].prop.push(objLinkProp);
+                                } else {
+                                    //Link between source and target haven't been created yet.
+                                    var objLink = {};
+                                    objLink.source = getSourceIndex;
+                                    objLink.target = getTargetIndex;
+                                    objLink.Type = "Line";
+                                    objLink.prop = [];
 
-                                var objLinkProp = {};
-                                objLinkProp.Sender = result[i].SourceLineID;
-                                objLinkProp.date = result[i].Date;
-                                objLinkProp.Time = result[i].Time;
-                                objLinkProp.message = result[i].Message;
-                                objLink.prop.push(objLinkProp);
-                                linkArr.push(objLink);
-                            }
+                                    var objLinkProp = {};
+                                    objLinkProp.Sender = result[i].SourceLineID;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                    objLinkProp.Time = result[i].Time;
+                                    objLinkProp.message = result[i].Message;
+                                    objLink.prop.push(objLinkProp);
+                                    linkArr.push(objLink);
+                                }
+                            
 
-
-                        } else if (countSource == 1 && countTarget == 0) {
+                        } else if (countSource == 1 && countTarget == 0 ) {
                             var objAdd = {};
                             objAdd.NodeName = result[i].Target;
                             objAdd.PhoneNumber = result[i].TargetNumber
@@ -193,14 +201,14 @@ function LineDatabase() {
 
                             var objLinkProp = {};
                             objLinkProp.Sender = result[i].SourceLineID;
-                            objLinkProp.date = result[i].Date;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                             objLinkProp.Time = result[i].Time;
                             objLinkProp.message = result[i].Message;
                             objLink.prop.push(objLinkProp);
                             linkArr.push(objLink);
 
 
-                        } else if (countSource == 0 && countTarget == 1) {
+                        } else if (countSource == 0 && countTarget == 1 ) {
                             var objAdd = {};
                             objAdd.NodeName = result[i].Source;
                             objAdd.PhoneNumber = result[i].SourceNumber;
@@ -218,12 +226,22 @@ function LineDatabase() {
 
                             var objLinkProp = {};
                             objLinkProp.Sender = result[i].SourceLineID;
-                            objLinkProp.date = result[i].Date;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                             objLinkProp.Time = result[i].Time;
                             objLinkProp.message = result[i].Message;
                             objLink.prop.push(objLinkProp);
                             linkArr.push(objLink);
                         } else {
+                            
+                                var objSource = {};
+                                objSource.NodeName = result[i].Source;
+                                objSource.PhoneNumber = result[i].SourceNumber;
+                                objSource.textDisplay = "LineID: " + result[i].SourceLineID;
+                                objSource.Label = "Line";
+                                objSource.NodeIndex = nodeArr.length;
+                                objSource.groupIndex = getGroupSource;
+                                getSourceIndex = objSource.NodeIndex;
+                                nodeArr.push(objSource);
 
                             var objSource = {};
                             objSource.NodeName = result[i].Source;
@@ -246,18 +264,20 @@ function LineDatabase() {
                             nodeArr.push(objTarget);
 
 
-                            var objLink = {};
-                            objLink.source = getSourceIndex;
-                            objLink.target = getTargetIndex;
-                            objLink.Type = "Line";
-                            objLink.prop = [];
-                            var objLinkProp = {};
-                            objLinkProp.Sender = result[i].SourceLineID;
-                            objLinkProp.date = result[i].Date;
-                            objLinkProp.Time = result[i].Time;
-                            objLinkProp.message = result[i].Message;
-                            objLink.prop.push(objLinkProp);
-                            linkArr.push(objLink);
+                                var objLink = {};
+                                objLink.source = getSourceIndex;
+                                objLink.target = getTargetIndex;
+                                objLink.Type = "Line";
+                                objLink.prop = [];
+                                var objLinkProp = {};
+                                objLinkProp.Sender = result[i].SourceLineID;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                objLinkProp.Time = result[i].Time;
+                                objLinkProp.message = result[i].Message;
+                                objLink.prop.push(objLinkProp);
+                                linkArr.push(objLink);
+                            
+
                         }
 
                     }
