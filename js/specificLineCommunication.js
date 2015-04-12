@@ -518,16 +518,7 @@ function dataVisualizationLine(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                if (d.Label == 'Line') {
-                    var output = "";
-                    output = d.textDisplay + "<br/>";
-                    output += "LINE chat with: " + "<br/>"
-                    for (i = 0; i < d.lineChat.length; i++) {
-                        output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";
-                    }
-
-                    return output;
-                }
+                return "<strong><span style='color:white'>" + d.textDisplay + "</span></strong>";
             });
 
     svg.call(tip);

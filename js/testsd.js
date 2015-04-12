@@ -48,7 +48,7 @@ function queryManagement(selections) {
                             var count = 0;
                             if (result.length == 0) {
                                 /*No result found handler here*/
-                                alert("No data found. Please try again.");
+                                alert("No data found for call. Please try again.");
                             }
 
                             //Create groupArr
@@ -361,7 +361,7 @@ function queryManagement(selections) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = (convertDatetoNormal(result[i].Date));
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLink.prop.push(objLinkProp)
                                     //}
                                     linkArr.push(objLink);
@@ -470,7 +470,7 @@ function queryManagement(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         //}
 
@@ -497,7 +497,7 @@ function queryManagement(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         //}
 
@@ -542,7 +542,7 @@ function queryManagement(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         //}
 
@@ -565,7 +565,7 @@ function queryManagement(selections) {
                             }
                         });
             } else if (selections[noLoop].Type == 'SMS') {
-               
+
                 var linkType = selections[noLoop].linkType;
                 /*Add date filtering here*/
                 var _query = "MATCH (n:PHONE) " + linkType + " (m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
@@ -944,7 +944,7 @@ function queryManagement(selections) {
                                             getSourceName = result[i].Source;
                                             getSourcePhone = result[i].SourceNumber;
                                             getSourceIndex = nodeArr[j].NodeIndex;
-                                            getDate = convertDatetoNormal(convertDatetoNormal(result[i].Date));
+                                            getDate = convertDatetoNormal(result[i].Date);
                                             getStat = result[i].Status;
                                             getMess = result[i].Message;
                                             checkSource++;
@@ -958,7 +958,7 @@ function queryManagement(selections) {
                                             getTargetName = result[i].Target;
                                             getTargetPhone = result[i].TargetNumber;
                                             getTargetIndex = nodeArr[j].NodeIndex;
-                                            getDate = convertDatetoNormal(convertDatetoNormal(result[i].Date));
+                                            getDate = convertDatetoNormal(result[i].Date);
                                             getStat = result[i].Status;
                                             getMess = result[i].Message;
                                             checkTarget++;
@@ -1016,7 +1016,7 @@ function queryManagement(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1045,7 +1045,7 @@ function queryManagement(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = convertDatetoNormal(convertDatetoNormal(result[i].Date));
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1145,7 +1145,7 @@ function queryManagement(selections) {
 
                                 if (returnData.results[0].data.length == 0) {
                                     /*No result found handler here*/
-                                    alert("No data found, please try again.");
+                                    alert("No data found for Line, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
                                         result.push(returnData.results[0].data[i].row[0]);
@@ -1459,7 +1459,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1528,7 +1528,7 @@ function queryManagement(selections) {
                                                 //There is already a link between source and target.
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceLineID;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[linkIndex].prop.push(objLinkProp);
@@ -1542,7 +1542,7 @@ function queryManagement(selections) {
 
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceLineID;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 objLink.prop.push(objLinkProp);
@@ -1567,7 +1567,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr.push(objLink);
@@ -1591,7 +1591,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -1624,7 +1624,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -1633,24 +1633,39 @@ function queryManagement(selections) {
                                         }
                                     }
                                 }
-                                //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allLineNodes = [];
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (nodeArr[i].Label == 'Line') {
-                                        allLineNodes.push(nodeArr[i].NodeName);
+
+                                if (nodeArr.length > 0) {
+                                    //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                    var allLineNodes = [];
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (nodeArr[i].Label == 'Line') {
+                                            allLineNodes.push(nodeArr[i].NodeName);
+                                        }
+                                    }
+
+                                    var nextQuery = "MATCH (n:LINE)-[r:Line]->(m:PHONE) WHERE "
+                                    for (i = 0; i < allLineNodes.length; i++) {
+                                        if (i == 0) {
+                                            nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                        } else {
+                                            nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                        }
+                                    }
+                                    nextQuery += "RETURN collect(distinct r) as R";
+                                    FetchPhoneForLine(nextQuery);
+                                } else {
+                                    if (noLoop == selections.length - 1) {
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(groupArr);
+                                        dataVisualizationSocial(finalResult);
+                                    } else {
+                                        noLoop++;
+                                        recursive();
                                     }
                                 }
 
-                                var nextQuery = "MATCH (n:LINE)-[r:Line]->(m:PHONE) WHERE "
-                                for (i = 0; i < allLineNodes.length; i++) {
-                                    if (i == 0) {
-                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                    } else {
-                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
-                                    }
-                                }
-                                nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneForLine(nextQuery);
                             });
                 }
 
@@ -1694,6 +1709,7 @@ function queryManagement(selections) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.groupIndex = getGroupIndex;
                                     objAdd.textDisplay = result[i].PhoneNumber;
@@ -1753,7 +1769,7 @@ function queryManagement(selections) {
 
                                 if (returnData.results[0].data.length == 0) {
                                     /*No result found handler here*/
-                                    alert("No data found, please try again.");
+                                    alert("No data found for Whatsapp, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
                                         result.push(returnData.results[0].data[i].row[0]);
@@ -2066,7 +2082,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -2135,7 +2151,7 @@ function queryManagement(selections) {
                                                 //There is already a link between source and target.
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceNumber;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[linkIndex].prop.push(objLinkProp);
@@ -2149,7 +2165,7 @@ function queryManagement(selections) {
 
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceNumber;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 objLink.prop.push(objLinkProp);
@@ -2174,7 +2190,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr.push(objLink);
@@ -2198,7 +2214,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2231,7 +2247,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2240,24 +2256,38 @@ function queryManagement(selections) {
                                         }
                                     }
                                 }
-                                //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allLineNodes = [];
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (nodeArr[i].Label == 'Whatsapp') {
-                                        allLineNodes.push(nodeArr[i].NodeName);
-                                    }
-                                }
 
-                                var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
-                                for (i = 0; i < allLineNodes.length; i++) {
-                                    if (i == 0) {
-                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                if (nodeArr.length > 0) {
+                                    //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                    var allLineNodes = [];
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (nodeArr[i].Label == 'Whatsapp') {
+                                            allLineNodes.push(nodeArr[i].NodeName);
+                                        }
+                                    }
+
+                                    var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
+                                    for (i = 0; i < allLineNodes.length; i++) {
+                                        if (i == 0) {
+                                            nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                        } else {
+                                            nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                        }
+                                    }
+                                    nextQuery += "RETURN collect(distinct r) as R";
+                                    FetchPhoneForWhatsapp(nextQuery);
+                                } else {
+                                    if (noLoop == selections.length - 1) {
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(groupArr);
+                                        dataVisualizationSocial(finalResult);
                                     } else {
-                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                        noLoop++;
+                                        recursive();
                                     }
                                 }
-                                nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneForWhatsapp(nextQuery);
                             });
                 }
 
@@ -2301,6 +2331,7 @@ function queryManagement(selections) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.groupIndex = getGroupIndex;
                                     objAdd.textDisplay = result[i].PhoneNumber;
@@ -2359,7 +2390,7 @@ function queryManagement(selections) {
 
                                 if (returnData.results[0].data.length == 0) {
                                     /*No result found handler here*/
-                                    alert("No data found, please try again.");
+                                    alert("No data found for Facebook, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
                                         result.push(returnData.results[0].data[i].row[0]);
@@ -2673,7 +2704,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -2742,7 +2773,7 @@ function queryManagement(selections) {
                                                 //There is already a link between source and target.
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceFacebook;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[linkIndex].prop.push(objLinkProp);
@@ -2756,7 +2787,7 @@ function queryManagement(selections) {
 
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceFacebook;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 objLink.prop.push(objLinkProp);
@@ -2781,7 +2812,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebookID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr.push(objLink);
@@ -2805,7 +2836,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebookID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2838,7 +2869,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebookID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2847,24 +2878,38 @@ function queryManagement(selections) {
                                         }
                                     }
                                 }
-                                //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allFacebookNodes = [];
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (nodeArr[i].Label == 'Facebook') {
-                                        allFacebookNodes.push(nodeArr[i].NodeName);
+                                if (result.length > 0) {
+                                    //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                    var allFacebookNodes = [];
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (nodeArr[i].Label == 'Facebook') {
+                                            allFacebookNodes.push(nodeArr[i].NodeName);
+                                        }
+                                    }
+
+                                    var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                                    for (i = 0; i < allFacebookNodes.length; i++) {
+                                        if (i == 0) {
+                                            nextQuery += "n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                        } else {
+                                            nextQuery += "OR n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                        }
+                                    }
+                                    nextQuery += "RETURN collect(distinct r) as R";
+                                    FetchPhoneForFacebook(nextQuery);
+                                } else {
+                                    if (noLoop == selections.length - 1) {
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(groupArr);
+                                        dataVisualizationSocial(finalResult);
+                                    } else {
+                                        noLoop++;
+                                        recursive();
                                     }
                                 }
 
-                                var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
-                                for (i = 0; i < allFacebookNodes.length; i++) {
-                                    if (i == 0) {
-                                        nextQuery += "n.Nodename = '" + allFacebookNodes[i] + "' ";
-                                    } else {
-                                        nextQuery += "OR n.Nodename = '" + allFacebookNodes[i] + "' ";
-                                    }
-                                }
-                                nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneForFacebook(nextQuery);
                             });
                 }
 
@@ -2908,6 +2953,7 @@ function queryManagement(selections) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.groupIndex = getGroupIndex;
                                     objAdd.textDisplay = result[i].PhoneNumber;
@@ -2951,7 +2997,7 @@ function queryManagement(selections) {
                 }
                 _query += "RETURN collect(distinct r1) AS R";
                 console.log(_query);
-                
+
                 FetchDatabaseForCall2round(_query);
 
                 function FetchDatabaseForCall2round(query) {
@@ -3014,10 +3060,77 @@ function queryManagement(selections) {
                                         }
                                     }
 
-                                    if (i == 0) {
+                                    if (checkSource == 1 && checkTarget == 1) {
+                                        if (i == 0) {
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = getTargetIndex;
+                                            objLink.Type = "Call";
+                                            objLink.prop = [];
+
+                                            var objLinkProp = {};
+                                            objLinkProp.Source = result[i].SourceNumber;
+                                            objLinkProp.Target = result[i].TargetNumber;
+                                            objLinkProp.dur = result[i].Duration;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+                                        } else {
+                                            for (k = 0; k < linkArr.length; k++) {
+                                                if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex && linkArr[k].Type == "Call") || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex && linkArr[k].Type == "Call")) {
+                                                    if (linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) {
+                                                        //if(checkDateRange(getDate) == "PASS"){
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Source = getSourcePhone;
+                                                        objLinkProp.Target = getTargetPhone;
+                                                        objLinkProp.dur = getDur;
+                                                        objLinkProp.date = getDate;
+                                                        linkArr[k].prop.push(objLinkProp);
+                                                        //}
+                                                    } else {
+                                                        //if(checkDateRange(getDate) == "PASS"){
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Source = getSourcePhone;
+                                                        objLinkProp.Target = getTargetPhone;
+                                                        objLinkProp.dur = getDur;
+                                                        objLinkProp.date = getDate;
+                                                        linkArr[k].prop.push(objLinkProp);
+                                                        //}			
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        var objSource = {};
+                                        objSource.NodeName = result[i].Source;
+                                        objSource.PhoneNumber = result[i].SourceNumber;
+                                        objSource.textDisplay = result[i].SourceNumber;
+                                        objSource.Label = 'Phone';
+                                        if (result[i].SourceNumber == inputSource) {
+                                            objSource.groupIndex = 0;
+                                        } else {
+                                            objSource.groupIndex = 1;
+                                        }
+                                        objSource.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objSource);
+
+                                        var objTarget = {};
+                                        objTarget.NodeName = result[i].Target;
+                                        objTarget.PhoneNumber = result[i].TargetNumber;
+                                        objTarget.textDisplay = result[i].TargetNumber;
+                                        objTarget.Label = 'Phone';
+                                        if (result[i].TargetNumber == inputSource) {
+                                            objTarget.groupIndex = 0;
+                                        } else {
+                                            objTarget.groupIndex = 1;
+                                        }
+                                        objTarget.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objTarget);
+
                                         var objLink = {};
-                                        objLink.source = getSourceIndex;
-                                        objLink.target = getTargetIndex;
+                                        objLink.source = nodeArr.length - 2;
+                                        objLink.target = nodeArr.length - 1;
                                         objLink.Type = "Call";
                                         objLink.prop = [];
 
@@ -3028,33 +3141,9 @@ function queryManagement(selections) {
                                         objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
-                                    } else {
-                                        for (k = 0; k < linkArr.length; k++) {
-                                            if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex && linkArr[k].Type == "Call") || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex && linkArr[k].Type == "Call")) {
-                                                if (linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) {
-                                                    //if(checkDateRange(getDate) == "PASS"){
-                                                    var objLinkProp = {};
-                                                    objLinkProp.Source = getSourcePhone;
-                                                    objLinkProp.Target = getTargetPhone;
-                                                    objLinkProp.dur = getDur;
-                                                    objLinkProp.date = getDate;
-                                                    linkArr[k].prop.push(objLinkProp);
-                                                    //}
-                                                } else {
-                                                    //if(checkDateRange(getDate) == "PASS"){
-                                                    var objLinkProp = {};
-                                                    objLinkProp.Source = getSourcePhone;
-                                                    objLinkProp.Target = getTargetPhone;
-                                                    objLinkProp.dur = getDur;
-                                                    objLinkProp.date = getDate;
-                                                    linkArr[k].prop.push(objLinkProp);
-                                                    //}			
-                                                }
-                                                break;
-                                            }
-                                        }
                                     }
                                 }
+
 
                                 if (noLoop == selections.length - 1) {
                                     var finalResult = [];
@@ -3136,51 +3225,94 @@ function queryManagement(selections) {
                                             break;
                                         }
                                     }
+                                    if (checkSource == 1 && checkTarget == 1) {
+                                        if (i == 0) {
+                                            var objLink = {};
+                                            objLink.source = getSourceIndex;
+                                            objLink.target = getTargetIndex;
+                                            objLink.Type = "SMS";
+                                            objLink.prop = [];
 
-                                    if (i == 0) {
+                                            var objLinkProp = {};
+                                            objLinkProp.Source = result[i].SourceNumber;
+                                            objLinkProp.Target = result[i].TargetNumber;
+                                            objLinkProp.status = result[i].Status;
+                                            objLinkProp.message = result[i].Message;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                            objLink.prop.push(objLinkProp);
+                                            linkArr.push(objLink);
+                                        } else {
+                                            for (k = 0; k < linkArr.length; k++) {
+                                                if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex && linkArr[k].Type == 'SMS') || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex && linkArr[k].Type == 'SMS')) {
+                                                    if (linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) {
+                                                        //if(checkDateRange(getDate) == "PASS"){
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Source = getSourcePhone;
+                                                        objLinkProp.Target = getTargetPhone;
+                                                        objLinkProp.message = result[i].Message;
+                                                        objLinkProp.status = result[i].Status;
+                                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                                        linkArr[k].prop.push(objLinkProp);
+                                                        //}
+                                                    } else {
+                                                        //if(checkDateRange(getDate) == "PASS"){
+                                                        var objLinkProp = {};
+                                                        objLinkProp.Source = getSourcePhone;
+                                                        objLinkProp.Target = getTargetPhone;
+                                                        objLinkProp.message = result[i].Message;
+                                                        objLinkProp.status = result[i].Status;
+                                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                                        linkArr[k].prop.push(objLinkProp);
+                                                        //}			
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }else {
+                                        var objSource = {};
+                                        objSource.NodeName = result[i].Source;
+                                        objSource.PhoneNumber = result[i].SourceNumber;
+                                        objSource.textDisplay = result[i].SourceNumber;
+                                        objSource.Label = 'Phone';
+                                        if (result[i].SourceNumber == inputSource) {
+                                            objSource.groupIndex = 0;
+                                        } else {
+                                            objSource.groupIndex = 1;
+                                        }
+                                        objSource.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objSource);
+
+                                        var objTarget = {};
+                                        objTarget.NodeName = result[i].Target;
+                                        objTarget.PhoneNumber = result[i].TargetNumber;
+                                        objTarget.textDisplay = result[i].TargetNumber;
+                                        objTarget.Label = 'Phone';
+                                        if (result[i].TargetNumber == inputSource) {
+                                            objTarget.groupIndex = 0;
+                                        } else {
+                                            objTarget.groupIndex = 1;
+                                        }
+                                        objTarget.NodeIndex = nodeArr.length;
+                                        nodeArr.push(objTarget);
+
                                         var objLink = {};
-                                        objLink.source = getSourceIndex;
-                                        objLink.target = getTargetIndex;
+                                        objLink.source = nodeArr.length - 2;
+                                        objLink.target = nodeArr.length - 1;
                                         objLink.Type = "SMS";
                                         objLink.prop = [];
 
                                         var objLinkProp = {};
-                                        objLinkProp.Source = result[i].SourceNumber;
-                                        objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.status = result[i].Status;
-                                        objLinkProp.message = result[i].Message;
-                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                        objLink.prop.push(objLinkProp);
+                                            objLinkProp.Source = result[i].SourceNumber;
+                                            objLinkProp.Target = result[i].TargetNumber;
+                                            objLinkProp.status = result[i].Status;
+                                            objLinkProp.message = result[i].Message;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                            objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
-                                    } else {
-                                        for (k = 0; k < linkArr.length; k++) {
-                                            if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex && linkArr[k].Type == 'SMS') || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex && linkArr[k].Type == 'SMS')) {
-                                                if (linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) {
-                                                    //if(checkDateRange(getDate) == "PASS"){
-                                                    var objLinkProp = {};
-                                                    objLinkProp.Source = getSourcePhone;
-                                                    objLinkProp.Target = getTargetPhone;
-                                                    objLinkProp.message = result[i].Message;
-                                                    objLinkProp.status = result[i].Status;
-                                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                                    linkArr[k].prop.push(objLinkProp);
-                                                    //}
-                                                } else {
-                                                    //if(checkDateRange(getDate) == "PASS"){
-                                                    var objLinkProp = {};
-                                                    objLinkProp.Source = getSourcePhone;
-                                                    objLinkProp.Target = getTargetPhone;
-                                                    objLinkProp.message = result[i].Message;
-                                                    objLinkProp.status = result[i].Status;
-                                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                                    linkArr[k].prop.push(objLinkProp);
-                                                    //}			
-                                                }
-                                                break;
-                                            }
-                                        }
                                     }
                                 }
+
 
                                 if (noLoop == selections.length - 1) {
                                     var finalResult = [];
@@ -3225,7 +3357,7 @@ function queryManagement(selections) {
                                 var result = [];
 
                                 if (returnData.results[0].data.length == 0) {
-                                    alert("No data found, please try again.");
+                                    alert("No data found for Whatsapp, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
                                         result.push(returnData.results[0].data[i].row[0]);
@@ -3557,7 +3689,7 @@ function queryManagement(selections) {
                                             //There is already a link between source and target.
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr[linkIndex].prop.push(objLinkProp);
@@ -3571,7 +3703,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -3596,7 +3728,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr.push(objLink);
@@ -3620,7 +3752,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -3655,7 +3787,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -3663,24 +3795,39 @@ function queryManagement(selections) {
 
                                     }
                                 }
-                                //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allLineNodes = [];
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (nodeArr[i].Label == 'Whatsapp') {
-                                        allLineNodes.push(nodeArr[i].NodeName);
+
+                                if (result.lenght > 0) {
+                                    //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                    var allLineNodes = [];
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (nodeArr[i].Label == 'Whatsapp') {
+                                            allLineNodes.push(nodeArr[i].NodeName);
+                                        }
+                                    }
+
+                                    var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
+                                    for (i = 0; i < allLineNodes.length; i++) {
+                                        if (i == 0) {
+                                            nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                        } else {
+                                            nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                        }
+                                    }
+                                    nextQuery += "RETURN collect(distinct r) as R";
+                                    FetchPhoneForWhatsapp2round(nextQuery);
+                                } else {
+                                    if (noLoop == selections.length - 1) {
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(groupArr);
+                                        dataVisualizationSocial(finalResult);
+                                    } else {
+                                        noLoop++;
+                                        recursive();
                                     }
                                 }
 
-                                var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
-                                for (i = 0; i < allLineNodes.length; i++) {
-                                    if (i == 0) {
-                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                    } else {
-                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
-                                    }
-                                }
-                                nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneForWhatsapp2round(nextQuery);
                             });
                 }
 
@@ -3743,6 +3890,7 @@ function queryManagement(selections) {
                                     } else if (checkSource == 1 && checkTarget == 0) {
                                         var objAdd = {};
                                         objAdd.NodeName = result[i].Target;
+                                        objAdd.PhoneNumber = result[i].PhoneNumber;
                                         objAdd.Label = result[i].TargetType;
                                         objAdd.groupIndex = getGroupIndex;
                                         objAdd.textDisplay = result[i].PhoneNumber;
@@ -3802,7 +3950,7 @@ function queryManagement(selections) {
                                 var result = [];
 
                                 if (returnData.results[0].data.length == 0) {
-                                    alert("No data found, please try again.");
+                                    alert("No data found for Facebook, please try again.");
                                 } else {
                                     for (i = 0; i < returnData.results[0].data.length; i++) {
                                         result.push(returnData.results[0].data[i].row[0]);
@@ -4134,7 +4282,7 @@ function queryManagement(selections) {
                                             //There is already a link between source and target.
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebook;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr[linkIndex].prop.push(objLinkProp);
@@ -4148,7 +4296,7 @@ function queryManagement(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebook;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -4173,7 +4321,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr.push(objLink);
@@ -4197,7 +4345,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -4232,7 +4380,7 @@ function queryManagement(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -4240,24 +4388,39 @@ function queryManagement(selections) {
 
                                     }
                                 }
-                                //After finished adding all the nodes and relationship into nodeArr and linkArr
-                                var allLineNodes = [];
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (nodeArr[i].Label == 'Facebook') {
-                                        allLineNodes.push(nodeArr[i].NodeName);
+
+                                if (result.length > 0) {
+                                    //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                    var allLineNodes = [];
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (nodeArr[i].Label == 'Facebook') {
+                                            allLineNodes.push(nodeArr[i].NodeName);
+                                        }
+                                    }
+
+                                    var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                                    for (i = 0; i < allLineNodes.length; i++) {
+                                        if (i == 0) {
+                                            nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                        } else {
+                                            nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                        }
+                                    }
+                                    nextQuery += "RETURN collect(distinct r) as R";
+                                    FetchPhoneForFacebook2round(nextQuery);
+                                } else {
+                                    if (noLoop == selections.length - 1) {
+                                        var finalResult = [];
+                                        finalResult.push(nodeArr);
+                                        finalResult.push(linkArr);
+                                        finalResult.push(groupArr);
+                                        dataVisualizationSocial(finalResult);
+                                    } else {
+                                        noLoop++;
+                                        recursive();
                                     }
                                 }
 
-                                var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
-                                for (i = 0; i < allLineNodes.length; i++) {
-                                    if (i == 0) {
-                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                    } else {
-                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
-                                    }
-                                }
-                                nextQuery += "RETURN collect(distinct r) as R";
-                                FetchPhoneForFacebook2round(nextQuery);
                             });
                 }
 
@@ -4320,6 +4483,7 @@ function queryManagement(selections) {
                                     } else if (checkSource == 1 && checkTarget == 0) {
                                         var objAdd = {};
                                         objAdd.NodeName = result[i].Target;
+                                        objAdd.PhoneNumber = result[i].PhoneNumber;
                                         objAdd.Label = result[i].TargetType;
                                         objAdd.groupIndex = getGroupIndex;
                                         objAdd.textDisplay = result[i].PhoneNumber;
@@ -4342,7 +4506,6 @@ function queryManagement(selections) {
                                     finalResult.push(nodeArr);
                                     finalResult.push(linkArr);
                                     finalResult.push(groupArr);
-                                    //document.write(JSON.stringify(finalResult));
                                     dataVisualizationSocial(finalResult);
                                 } else {
                                     noLoop++;
@@ -4382,6 +4545,8 @@ function dataVisualizationSocial(finalResult) {
             .links(finalResult[1])
             .size([width, height])
             .start();
+
+    SDsummarization(force.links());
 
     var marker = svg.append("defs").selectAll("marker")
             .data(["lowf", "mediumf", "highf"])
@@ -4462,102 +4627,7 @@ function dataVisualizationSocial(finalResult) {
             });
 
     link.on("click", function (d) {
-        if (d.Type == "Line") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-            for (var i = 0; i < propArr.length; i++) {
-                
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == "Whatsapp") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-            for (var i = 0; i < propArr.length; i++) {
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == "Facebook") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-            for (var i = 0; i < propArr.length; i++) {       
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";             
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == 'Call') {
-            console.log("Call click");
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>TARGET</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>DURATION</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr>";
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + convertTime(propArr[i].dur) + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-        } else {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>RECEIVER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:155px; border: 2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:125px; border: 2px solid white; color: white; text-align: center;'>STATUS</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:170px; border: 2px solid white; color: white; text-align: center;'>MESSAGE</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                // if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].status + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].message + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-        }
+        visualizeLinkDetailSD(d);
     });
 
     var tip = d3.tip()
@@ -4712,14 +4782,9 @@ function dataVisualizationSocial(finalResult) {
             var linkLabel = d3.select(".linkType3");
             linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;8");
 
-
-
-
-
-
         } else {
             console.log("what!!?")
-            clearDiv('mid');
+            clearDiv('graph');
         }
     }
 
@@ -4845,4 +4910,193 @@ function dataVisualizationSocial(finalResult) {
     }
 }
 
+function visualizeLinkDetailSD(d) {
+    if (d.Type == "Line") {
+        var propArr = d.prop;
+        var myTable = "<p style='color:#FF0000'>Line chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
 
+
+
+        for (var i = 0; i < propArr.length; i++) {
+            //if(checkDateRange(propArr[i].date) == "PASS"){
+            myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
+            myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
+            //}
+        }
+        myTable += "</table>";
+
+        document.getElementById("output").innerHTML = myTable;
+
+    } else if (d.Type == "Whatsapp") {
+
+        var propArr = d.prop;
+        var myTable = "<p style='color:#FF0000'>Whatsapp chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
+
+        for (var i = 0; i < propArr.length; i++) {
+            //if(checkDateRange(propArr[i].date) == "PASS"){
+            myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
+            myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
+            //}
+        }
+        myTable += "</table>";
+
+        document.getElementById("output").innerHTML = myTable;
+
+    } else if (d.Type == "Facebook") {
+        var propArr = d.prop;
+        var myTable = "<p style='color:#FF0000'>Facebook chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
+
+
+
+        for (var i = 0; i < propArr.length; i++) {
+            //if(checkDateRange(propArr[i].date) == "PASS"){
+            myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
+            myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
+            //}
+        }
+        myTable += "</table>";
+
+        document.getElementById("output").innerHTML = myTable;
+
+    } else if (d.Type == 'Call') {
+        var propArr = d.prop;
+        var myTable = "<p style='color:#FF0000'>Call between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>TARGET</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>DURATION</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr>";
+
+        for (var i = 0; i < propArr.length; i++) {
+            //if(checkDateRange(propArr[i].date) == "PASS"){
+            myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + convertTime(propArr[i].dur) + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td></tr>";
+            //}
+        }
+        myTable += "</table>";
+
+        document.getElementById("output").innerHTML = myTable;
+    } else {
+        var propArr = d.prop;
+        var myTable = "<p style='color:#FF0000'>SMS between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>RECEIVER</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:155px; border: 2px solid white; color: white; text-align: center;'>DATE</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:125px; border: 2px solid white; color: white; text-align: center;'>STATUS</th>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:170px; border: 2px solid white; color: white; text-align: center;'>MESSAGE</th></tr>";
+
+
+
+        for (var i = 0; i < propArr.length; i++) {
+            // if(checkDateRange(propArr[i].date) == "PASS"){
+            myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].status + "</td>";
+            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].message + "</td></tr>";
+            //}
+        }
+        myTable += "</table>";
+
+        document.getElementById("output").innerHTML = myTable;
+    }
+}
+
+function SDsummarization(finalResult) {
+    var inputSource = document.getElementById("sPhoneNo").value;
+    var inputTarget = document.getElementById("tPhoneNo").value;
+    var linkArr = finalResult;
+    if (linkArr.length > 0) {
+        var output = "<p>Visualizing communication flow between mobile phones using number " + inputSource + " and " + inputTarget + "</p><br/>";
+        var indexCall = [];
+        var indexSMS = [];
+        var indexLine = [];
+        var indexWhatsapp = [];
+        var indexFacebook = [];
+        //Find link.type = call
+        for (i = 0; i < linkArr.length; i++) {
+            if (linkArr[i].Type == "Call") {
+                indexCall.push(i);
+            } else if (linkArr[i].Type == "SMS") {
+                indexSMS.push(i);
+            } else if (linkArr[i].Type == "Line") {
+                indexLine.push(i);
+            } else if (linkArr[i].Type == "Whatsapp") {
+                indexWhatsapp.push(i);
+            } else if (linkArr[i].Type == "Facebook") {
+                indexFacebook.push(i);
+            }
+        }
+
+        if (indexCall.length > 0) {
+            if (indexCall.length > 1) {
+                var sumProp = 0;
+                for (i = 0; i < indexCall.length; i++) {
+                    sumProp = linkArr[indexCall[i]].prop.length + sumProp;
+                }
+                output += "Call log: " + sumProp + "<br/>"
+            } else {
+                output += "Call log from " + linkArr[indexCall[0]].source.PhoneNumber + " to " + linkArr[indexCall[0]].target.PhoneNumber + ": " + linkArr[indexCall[0]].prop.length + "<br/>"
+            }
+        }
+
+        if (indexSMS.length > 0) {
+            if (indexSMS.length > 1) {
+                var sumProp = 0;
+                for (i = 0; i < indexSMS.length; i++) {
+                    sumProp = linkArr[indexSMS[i]].prop.length + sumProp;
+                }
+                output += "Total SMS log: " + sumProp + "<br/>"
+            } else {
+                output += "SMS log from " + linkArr[indexSMS[0]].source.PhoneNumber + " to " + linkArr[indexSMS[0]].target.PhoneNumber + ": " + linkArr[indexCall[0]].prop.length + "<br/>"
+            }
+        }
+
+        if (indexLine.length > 0) {
+            var sumProp = 0;
+            for (i = 0; i < indexLine.length; i++) {
+                sumProp = linkArr[indexLine[i]].prop.length + sumProp;
+            }
+            output += "Total Line chat log: " + sumProp + "<br/>";
+        }
+
+        if (indexWhatsapp.length > 0) {
+            var sumProp = 0;
+            for (i = 0; i < indexWhatsapp.length; i++) {
+                sumProp = linkArr[indexWhatsapp[i]].prop.length + sumProp;
+            }
+            output += "Total Whatsapp chat log: " + sumProp + "<br/>";
+        }
+
+        if (indexFacebook.length > 0) {
+            var sumProp = 0;
+            for (i = 0; i < indexFacebook.length; i++) {
+                sumProp = linkArr[indexFacebook[i]].prop.length + sumProp;
+            }
+            output += "Total Facebook chat log: " + sumProp + "<br/>";
+        }
+    } else {
+        var output = "<p/>According to user's selection, no communication flow could be found between " + inputSource + " and " + inputTarget + "</p><br/>";
+    }
+
+    document.getElementById("summarize").innerHTML = output;
+}

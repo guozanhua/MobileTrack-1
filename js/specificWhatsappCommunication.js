@@ -500,15 +500,7 @@ function dataVisualizationWhatsapp(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                if(d.Label == 'Whatsapp'){
-                    var output = "";
-                    output = d.textDisplay + "<br/>";
-                    output += "Whatsapp chat with: " + "<br/>"
-                    for (i = 0; i < d.WhatsappChat.length; i++) {
-                        output += i + "). " + d.WhatsappChat[i].Account + " Freq: " + d.WhatsappChat[i].freq + "<br/>";
-                    }
-                    return output;
-                }
+                return "<strong><span style='color:white'>" + d.textDisplay + "</span></strong>";
             });
 
     svg.call(tip);

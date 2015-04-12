@@ -561,7 +561,7 @@ function dataVisualizationPhone(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                
+                return "<strong><span style='color:white'>" + d.textDisplay + "</span></strong>";
             });
 
     svg.call(tip);

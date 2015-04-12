@@ -508,16 +508,7 @@ function dataVisualizationFacebook(finalResult) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                if (d.Label == 'Facebook') {
-                    var output = "";
-                    output = d.textDisplay + "<br/>";
-                    output += "Facebook chat with: " + "<br/>"
-                    for (i = 0; i < d.facebookChat.length; i++) {
-                        output += i + "). " + d.facebookChat[i].Account + " Freq: " + d.facebookChat[i].freq + "<br/>";
-                    }
-
-                    return output;
-                }
+                return "<strong><span style='color:white'>" + d.textDisplay + "</span></strong>";
             });
 
     svg.call(tip);
