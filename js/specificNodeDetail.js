@@ -250,7 +250,8 @@ function drawD3(finalResult) {
     var mLinkNum = {};
     sortLinks();
     setLinkIndexAndNum();
-
+    
+    specificNodeSummarize(finalResult);
 
     var svg = d3.select('#graph').append('svg')
             .attr('width', width)
@@ -603,6 +604,48 @@ function drawD3(finalResult) {
 
 }
 
+function specificNodeSummarize(finalResult){
+    var indexPhone = 0;
+    var indexLine = [], lineExist = 0;
+    var indexFacebook =[], facebookExist = 0;
+    var indexWhatsapp = [], WhatsappExist = 0;
+    var nodeArr = finalResult[0];
+    //Find Phone Node, Line Node, Whatsapp Node and Facebook Node
+    for(i=0;i<nodeArr.length;i++){
+        if(nodeArr[i].Label == 'Phone'){
+            indexPhone = i;
+        }else if(nodeArr[i].Label == 'Line'){
+            indexLine.push(i);
+            lineExist++;
+        }else if(nodeArr[i].Label == 'Whatsapp'){
+            indexWhatsapp.push(i);
+            WhatsappExist++;
+        }else{
+            indexFacebook.push(i);
+            facebookExist++;
+        }
+    }
+    //Print it out on summarize pane
+    var output = "<p>Displaying information that were collected from mobile phone using number " + nodeArr[indexPhone].PhoneNumber + " </p><br/>";
+    output += "Coresponding social account are as the followings: " + "<br/>";
+    output += "<p>Line Account: <br/>"; 
+    for(i=0;i<indexLine.length;i++){
+        output += nodeArr[indexLine[i]].textDisplay + "<br/>";
+    }
+    output += "</p>"
+    output += "<p>Whatsapp Account: <br/>"; 
+    for(i=0;i<indexWhatsapp.length;i++){
+        output += nodeArr[indexWhatsapp[i]].textDisplay + "<br/>";
+    }
+    output += "</p>"
+    output += "<p>Facebook Account: <br/>"; 
+    for(i=0;i<indexFacebook.length;i++){
+        output += nodeArr[indexFacebook[i]].textDisplay + "<br/>";
+    }
+    output += "</p>"
+    
+    document.getElementById("summarize").innerHTML = output;
+}
 
 
 
