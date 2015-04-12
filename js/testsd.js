@@ -1728,7 +1728,6 @@ function queryManagement(selections) {
                 var linkLabel = selections[noLoop].Type;
                 /*Add date filtering here*/
                 var _query = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
-                var _query = "MATCH (n:LINE)<-[r1:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
                 if (datefrom != "" && dateto != "") {
                     _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
                 }
