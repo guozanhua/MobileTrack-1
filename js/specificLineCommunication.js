@@ -87,7 +87,7 @@ function LineDatabase() {
                         }
                     }
 
-                    if (i == 0 && checkDateRange(result[i].Date) == 'PASS') {
+                    if (i == 0) {
                         var objSource = {};
                         objSource.NodeName = result[i].Source;
                         objSource.PhoneNumber = result[i].SourceNumber;
@@ -138,44 +138,44 @@ function LineDatabase() {
                         }
 
                         if (countSource == 1 && countTarget == 1) {
-                            if (checkDateRange(result[i].Date) == 'PASS') {
-                                //First, we have to check an existence of the link.
-                                var linkIndex = 0;
-                                var linkExist = 0;
-                                for (k = 0; k < linkArr.length; k++) {
-                                    if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
-                                        linkExist++;
-                                        linkIndex = k;
-                                        break;
-                                    }
-                                }
-                                if (linkExist == 1) {
-                                    //There is already a link between source and target.
-                                    var objLinkProp = {};
-                                    objLinkProp.Sender = result[i].SourceLineID;
-                                    objLinkProp.date = result[i].Date;
-                                    objLinkProp.Time = result[i].Time;
-                                    objLinkProp.message = result[i].Message;
-                                    linkArr[linkIndex].prop.push(objLinkProp);
-                                } else {
-                                    //Link between source and target haven't been created yet.
-                                    var objLink = {};
-                                    objLink.source = getSourceIndex;
-                                    objLink.target = getTargetIndex;
-                                    objLink.Type = "Line";
-                                    objLink.prop = [];
 
-                                    var objLinkProp = {};
-                                    objLinkProp.Sender = result[i].SourceLineID;
-                                    objLinkProp.date = result[i].Date;
-                                    objLinkProp.Time = result[i].Time;
-                                    objLinkProp.message = result[i].Message;
-                                    objLink.prop.push(objLinkProp);
-                                    linkArr.push(objLink);
+                            //First, we have to check an existence of the link.
+                            var linkIndex = 0;
+                            var linkExist = 0;
+                            for (k = 0; k < linkArr.length; k++) {
+                                if ((linkArr[k].source == getSourceIndex && linkArr[k].target == getTargetIndex) || (linkArr[k].source == getTargetIndex && linkArr[k].target == getSourceIndex)) {
+                                    linkExist++;
+                                    linkIndex = k;
+                                    break;
                                 }
                             }
+                            if (linkExist == 1) {
+                                //There is already a link between source and target.
+                                var objLinkProp = {};
+                                objLinkProp.Sender = result[i].SourceLineID;
+                                objLinkProp.date = result[i].Date;
+                                objLinkProp.Time = result[i].Time;
+                                objLinkProp.message = result[i].Message;
+                                linkArr[linkIndex].prop.push(objLinkProp);
+                            } else {
+                                //Link between source and target haven't been created yet.
+                                var objLink = {};
+                                objLink.source = getSourceIndex;
+                                objLink.target = getTargetIndex;
+                                objLink.Type = "Line";
+                                objLink.prop = [];
 
-                        } else if (countSource == 1 && countTarget == 0 && checkDateRange(result[i].Date) == 'PASS') {
+                                var objLinkProp = {};
+                                objLinkProp.Sender = result[i].SourceLineID;
+                                objLinkProp.date = result[i].Date;
+                                objLinkProp.Time = result[i].Time;
+                                objLinkProp.message = result[i].Message;
+                                objLink.prop.push(objLinkProp);
+                                linkArr.push(objLink);
+                            }
+
+
+                        } else if (countSource == 1 && countTarget == 0) {
                             var objAdd = {};
                             objAdd.NodeName = result[i].Target;
                             objAdd.PhoneNumber = result[i].TargetNumber
@@ -200,7 +200,7 @@ function LineDatabase() {
                             linkArr.push(objLink);
 
 
-                        } else if (countSource == 0 && countTarget == 1 && checkDateRange(result[i].Date) == 'PASS') {
+                        } else if (countSource == 0 && countTarget == 1) {
                             var objAdd = {};
                             objAdd.NodeName = result[i].Source;
                             objAdd.PhoneNumber = result[i].SourceNumber;
@@ -224,44 +224,44 @@ function LineDatabase() {
                             objLink.prop.push(objLinkProp);
                             linkArr.push(objLink);
                         } else {
-                            if (checkDateRange(result[i].Date) == 'PASS') {
-                                var objSource = {};
-                                objSource.NodeName = result[i].Source;
-                                objSource.PhoneNumber = result[i].SourceNumber;
-                                objSource.textDisplay = "LineID: " + result[i].SourceLineID;
-                                objSource.Label = "Line";
-                                objSource.NodeIndex = nodeArr.length;
-                                objSource.groupIndex = getGroupSource;
-                                getSourceIndex = objSource.NodeIndex;
-                                nodeArr.push(objSource);
 
-                                var objTarget = {};
-                                objTarget.NodeName = result[i].Target;
-                                objTarget.PhoneNumber = result[i].TargetNumber;
-                                objTarget.textDisplay = "LineID: " + result[i].TargetLineID;
-                                objTarget.Label = "Line";
-                                objTarget.NodeIndex = nodeArr.length;
-                                objTarget.groupIndex = getGroupTarget;
-                                getTargetIndex = objSource.NodeIndex;
-                                nodeArr.push(objTarget);
+                            var objSource = {};
+                            objSource.NodeName = result[i].Source;
+                            objSource.PhoneNumber = result[i].SourceNumber;
+                            objSource.textDisplay = "LineID: " + result[i].SourceLineID;
+                            objSource.Label = "Line";
+                            objSource.NodeIndex = nodeArr.length;
+                            objSource.groupIndex = getGroupSource;
+                            getSourceIndex = objSource.NodeIndex;
+                            nodeArr.push(objSource);
+
+                            var objTarget = {};
+                            objTarget.NodeName = result[i].Target;
+                            objTarget.PhoneNumber = result[i].TargetNumber;
+                            objTarget.textDisplay = "LineID: " + result[i].TargetLineID;
+                            objTarget.Label = "Line";
+                            objTarget.NodeIndex = nodeArr.length;
+                            objTarget.groupIndex = getGroupTarget;
+                            getTargetIndex = objSource.NodeIndex;
+                            nodeArr.push(objTarget);
 
 
-                                var objLink = {};
-                                objLink.source = getSourceIndex;
-                                objLink.target = getTargetIndex;
-                                objLink.Type = "Line";
-                                objLink.prop = [];
-                                var objLinkProp = {};
-                                objLinkProp.Sender = result[i].SourceLineID;
-                                objLinkProp.date = result[i].Date;
-                                objLinkProp.Time = result[i].Time;
-                                objLinkProp.message = result[i].Message;
-                                objLink.prop.push(objLinkProp);
-                                linkArr.push(objLink);
-                            }
-
+                            var objLink = {};
+                            objLink.source = getSourceIndex;
+                            objLink.target = getTargetIndex;
+                            objLink.Type = "Line";
+                            objLink.prop = [];
+                            var objLinkProp = {};
+                            objLinkProp.Sender = result[i].SourceLineID;
+                            objLinkProp.date = result[i].Date;
+                            objLinkProp.Time = result[i].Time;
+                            objLinkProp.message = result[i].Message;
+                            objLink.prop.push(objLinkProp);
+                            linkArr.push(objLink);
                         }
+
                     }
+
                 }
 
                 for (i = 0; i < nodeArr.length; i++) {
@@ -482,7 +482,7 @@ function dataVisualizationLine(finalResult) {
     link.on("click", function (d) {
         if (d.Type == "Line") {
             var propArr = d.prop;
-            var myTable = "<p style='color:#FF0000'>Line Chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>"; 
+            var myTable = "<p style='color:#FF0000'>Line Chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
             myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>SENDER</th>";
             myTable += "<th style='background-color:#333333;height: 40px; width:250px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
             myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white;  color: white; text-align: center;'>DATE</th>";
@@ -794,21 +794,21 @@ function dataVisualizationLine(finalResult) {
 
 }
 
-function specificLineSummarize(finalResult){
+function specificLineSummarize(finalResult) {
     var nodeArr = finalResult[0];
     var index = 0;
     var inputSource = document.getElementById("phoneNo").value;
-    for(i=0;i<nodeArr.length;i++){
-        if(nodeArr[i].PhoneNumber == inputSource  && nodeArr[i].Label == 'Line'){       
+    for (i = 0; i < nodeArr.length; i++) {
+        if (nodeArr[i].PhoneNumber == inputSource && nodeArr[i].Label == 'Line') {
             index = i;
             break;
         }
     }
-    
+
     var output = "User's input Phone Number: " + inputSource + "<br/>";
     output += "Associated Line Account is " + nodeArr[index].textDisplay + "<br/>";
     output += "Chat with: " + "<br/>"
-    for(i=0;i<nodeArr[index].lineChat.length;i++){
+    for (i = 0; i < nodeArr[index].lineChat.length; i++) {
         output += i + "). " + nodeArr[index].lineChat[i].Account + " Freq: " + nodeArr[index].lineChat[i].freq + "<br/>";
     }
     document.getElementById("summarize").innerHTML = output;
