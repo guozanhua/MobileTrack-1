@@ -1710,168 +1710,15 @@ function dataVisualizationAllPhones(finalResult) {
             });
 
     link.on("click", function (d) {
-        if (d.Type == "Line") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == "Whatsapp") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == "Facebook") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == 'Call') {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>TARGET</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>DURATION</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr>";
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + convertTime(propArr[i].dur) + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-        } else {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>RECEIVER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:155px; border: 2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:125px; border: 2px solid white; color: white; text-align: center;'>STATUS</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:170px; border: 2px solid white; color: white; text-align: center;'>MESSAGE</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                // if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].status + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].message + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-        }
+        visualizeLinkDetail(d);
+        visualizeLinkSummary(d);
     });
 
     var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                var commuType = document.getElementById("spinnerbox").value;
-                var output = "";
-                if(commuType == 'call'){
-                    output = "Phone Number: " + d.PhoneNumber + "<br/>";
-                    output += "Call In: " + "<br/>"
-                    for (i = 0; i < d.callIn.length; i++) {
-                        output += i + "). " + d.callIn[i].PhoneNumber + " Freq: " + d.callIn[i].freq + "<br/>";
-                    }
-
-                    output += "Call Out: " + "<br/>"
-                    for (i = 0; i < d.callOut.length; i++) {
-                        output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
-                    }
-
-                    return output;
-                }else if(commuType == 'message'){
-                    output = "Phone Number: " + d.PhoneNumber + "<br/>";
-                    output += "SMS In: " + "<br/>"
-                    for (i = 0; i < d.callIn.length; i++) {
-                        output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
-                    }
-
-                    output += "SMS Out: " + "<br/>"
-                    for (i = 0; i < d.callOut.length; i++) {
-                        output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
-                    }
-
-                    return output;
-                }else if(commuType == 'line'){
-                    output =  d.textDisplay + "<br/>";
-                    output += "LINE chat with: " + "<br/>"
-                    for (i = 0; i < d.lineChat.length; i++) {
-                        output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";
-                    }
-
-                    return output;
-                }else if(commuType == 'whatsapp'){
-                    output = d.textDisplay + "<br/>";
-                    output += "Whatsapp chat with: " + "<br/>"
-                    for (i = 0; i < d.WhatsappChat.length; i++) {
-                        output += i + "). " + d.WhatsappChat[i].Account + " Freq: " + d.WhatsappChat[i].freq + "<br/>";
-                    }
-                    return output;
-                }else{
-                    output = d.textDisplay + "<br/>";
-                    output += "Facebook chat with: " + "<br/>"
-                    for (i = 0; i < d.facebookChat.length; i++) {
-                        output += i + "). " + d.facebookChat[i].Account + " Freq: " + d.facebookChat[i].freq + "<br/>";
-                    }
-
-                    return output;
-                }
+                return "<strong><span style='color:white'>" + d.textDisplay + "</span></strong>";
             });
 
     svg.call(tip);
@@ -1983,6 +1830,7 @@ function dataVisualizationAllPhones(finalResult) {
             .call(node_drag);
 
     node.on("click", function (d) {
+        visualizeNodeSummary(d);
         filterNode(d.NodeName);
     });
 
@@ -2277,4 +2125,199 @@ function dataVisualizationAllPhones(finalResult) {
 
 }
 
+function visualizeLinkDetail(d){
+    if (d.Type == "Line") {
+            var propArr = d.prop;
+            var myTable = "<p style='color:#FF0000'>Line chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+            myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
+
+
+
+            for (var i = 0; i < propArr.length; i++) {
+                //if(checkDateRange(propArr[i].date) == "PASS"){
+                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
+                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
+                //}
+            }
+            myTable += "</table>";
+
+            document.getElementById("output").innerHTML = myTable;
+
+        } else if (d.Type == "Whatsapp") {
+            
+            var propArr = d.prop;
+            var myTable = "<p style='color:#FF0000'>Whatsapp chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+            myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
+
+            for (var i = 0; i < propArr.length; i++) {
+                //if(checkDateRange(propArr[i].date) == "PASS"){
+                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
+                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
+                //}
+            }
+            myTable += "</table>";
+
+            document.getElementById("output").innerHTML = myTable;
+
+        } else if (d.Type == "Facebook") {
+            var propArr = d.prop;
+            var myTable = "<p style='color:#FF0000'>Facebook chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+            myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
+
+
+
+            for (var i = 0; i < propArr.length; i++) {
+                //if(checkDateRange(propArr[i].date) == "PASS"){
+                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
+                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
+                //}
+            }
+            myTable += "</table>";
+
+            document.getElementById("output").innerHTML = myTable;
+
+        } else if (d.Type == 'Call') {
+            var propArr = d.prop;
+            var myTable = "<p style='color:#FF0000'>Call between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+            myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>TARGET</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>DURATION</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr>";
+
+            for (var i = 0; i < propArr.length; i++) {
+                //if(checkDateRange(propArr[i].date) == "PASS"){
+                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + convertTime(propArr[i].dur) + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td></tr>";
+                //}
+            }
+            myTable += "</table>";
+
+            document.getElementById("output").innerHTML = myTable;
+        } else {
+            var propArr = d.prop;
+            var myTable = "<p style='color:#FF0000'>SMS between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+            myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>RECEIVER</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:155px; border: 2px solid white; color: white; text-align: center;'>DATE</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:125px; border: 2px solid white; color: white; text-align: center;'>STATUS</th>";
+            myTable += "<th style='background-color:#333333;height: 40px; width:170px; border: 2px solid white; color: white; text-align: center;'>MESSAGE</th></tr>";
+
+
+
+            for (var i = 0; i < propArr.length; i++) {
+                // if(checkDateRange(propArr[i].date) == "PASS"){
+                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].status + "</td>";
+                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].message + "</td></tr>";
+                //}
+            }
+            myTable += "</table>";
+
+            document.getElementById("output").innerHTML = myTable;
+        }
+}
+
+function visualizeLinkSummary(d){
+    if(d.Type == 'Line'){
+        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        summary += "Source: " + d.source.textDisplay + " is a Line account related with "+ d.source.PhoneNumber + "<br/>";
+        summary += "Target: " + d.target.textDisplay + " is a Line account related with "+ d.target.PhoneNumber + "<br/>";
+        summary += "Type of Communication: " + d.Type + "<br/>";
+        summary += "Total Line Chat Log: " + d.prop.length;
+    }else if(d.Type == 'Whatsapp'){
+        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        summary += "Source: " + d.source.textDisplay + " is a Whatsapp account related with "+ d.source.PhoneNumber + "<br/>";
+        summary += "Target: " + d.target.textDisplay + " is a Whatsapp account related with "+ d.source.PhoneNumber + "<br/>";
+        summary += "Type of Communication: " + d.Type + "<br/>";
+        summary += "Total Whatsapp Chat Log: " + d.prop.length;
+    }else if(d.Type == 'Facebook'){
+        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        summary += "Source: " + d.source.textDisplay + " is a Facebook account related with "+ d.source.PhoneNumber + "<br/>";
+        summary += "Target: " + d.target.textDisplay + " is a Facebook account related with "+ d.source.PhoneNumber + "<br/>";
+        summary += "Type of Communication: " + d.Type + "<br/>";
+        summary += "Total Facebook Chat Log: " + d.prop.length;
+    }else if(d.Type == 'Call'){
+        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        summary += "Source: " + d.source.textDisplay + "<br/>";
+        summary += "Target: " + d.target.textDisplay + "<br/>";
+        summary += "Type of Communication: " + d.Type + "<br/>";
+        summary += "Total Call Log: " + d.prop.length;
+    }else{
+        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        summary += "Source: " + d.source.textDisplay + "<br/>";
+        summary += "Target: " + d.target.textDisplay + "<br/>";
+        summary += "Type of Communication: " + d.Type + "<br/>";
+        summary += "Total SMS Log: " + d.prop.length;
+    }
+    
+    document.getElementById("summarize").innerHTML = summary;
+}
+
+function visualizeNodeSummary(d){
+    var commuType = document.getElementById("spinnerbox").value;
+        var output = "";
+        if(commuType == 'call'){
+            output = "Phone Number: " + d.PhoneNumber + "<br/>";
+            output += "Call In: " + "<br/>"
+            for (i = 0; i < d.callIn.length; i++) {
+                output += i + "). " + d.callIn[i].PhoneNumber + " Freq: " + d.callIn[i].freq + "<br/>";
+            }
+
+            output += "Call Out: " + "<br/>"
+            for (i = 0; i < d.callOut.length; i++) {
+                output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
+            }
+
+        }else if(commuType == 'message'){
+            output = "Phone Number: " + d.PhoneNumber + "<br/>";
+            output += "SMS In: " + "<br/>"
+            for (i = 0; i < d.smsIn.length; i++) {
+                output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
+            }
+
+            output += "SMS Out: " + "<br/>"
+            for (i = 0; i < d.smsOut.length; i++) {
+                output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
+            }
+
+        }else if(commuType == 'line'){
+            output =  d.textDisplay + "<br/>";
+            output += "LINE chat with: " + "<br/>"
+            for (i = 0; i < d.lineChat.length; i++) {
+                output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";
+            }
+        }else if(commuType == 'whatsapp'){
+            output = d.textDisplay + "<br/>";
+            output += "Whatsapp chat with: " + "<br/>"
+            for (i = 0; i < d.WhatsappChat.length; i++) {
+                output += i + "). " + d.WhatsappChat[i].Account + " Freq: " + d.WhatsappChat[i].freq + "<br/>";
+            }
+        }else{
+            output = d.textDisplay + "<br/>";
+            output += "Facebook chat with: " + "<br/>"
+            for (i = 0; i < d.facebookChat.length; i++) {
+                output += i + "). " + d.facebookChat[i].Account + " Freq: " + d.facebookChat[i].freq + "<br/>";
+            }
+        }
+        document.getElementById("summarize").innerHTML = output;
+}
 
