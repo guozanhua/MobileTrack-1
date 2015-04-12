@@ -7,9 +7,17 @@
 function FacebookDatabase() {
     clearDiv('graph');
     clearDiv('output');
+    var datefrom = document.getElementById("datefrom").value;
+    var dateto = document.getElementById("dateto").value;
+    var datefromforquery = convertDatetoISO(datefrom);
+    var datetoforquery = convertDatetoISO(dateto);
     var inputNumber = $("#phoneNo").val();
-    var _query = "MATCH (n:FACEBOOK)-[r:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' RETURN distinct r ORDER BY r.Date,r.Time";
+    var _query = "MATCH (n:FACEBOOK)-[r:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' ";
     console.log(_query);
+    if(datefrom != "" && dateto != ""){
+        query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +") "
+    }
+    query += "RETURN distinct r ORDER BY r.Date,r.Time";
     var nodeArr = [];
     var groupArr = [];
     var linkArr = [];
@@ -79,7 +87,7 @@ function FacebookDatabase() {
                         }
                     }
 
-                    if (i == 0 && checkDateRange(result[i].Date) == 'PASS') {
+                    if (i == 0 ) {
                         var objSource = {};
                         objSource.NodeName = result[i].Source;
                         objSource.PhoneNumber = result[i].SourceNumber;
@@ -106,7 +114,7 @@ function FacebookDatabase() {
                         objLink.prop = [];
                         var objLinkProp = {};
                         objLinkProp.Sender = result[i].SourceFacebook;
-                        objLinkProp.date = result[i].Date;
+                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                         objLinkProp.Time = result[i].Time;
                         objLinkProp.message = result[i].Message;
                         objLink.prop.push(objLinkProp);
@@ -130,7 +138,7 @@ function FacebookDatabase() {
                         }
 
                         if (countSource == 1 && countTarget == 1) {
-                            if (checkDateRange(result[i].Date) == 'PASS') {
+                            
                                 //First, we have to check an existence of the link.
                                 var linkIndex = 0;
                                 var linkExist = 0;
@@ -145,7 +153,7 @@ function FacebookDatabase() {
                                     //There is already a link between source and target.
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceFacebook;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     linkArr[linkIndex].prop.push(objLinkProp);
@@ -159,15 +167,15 @@ function FacebookDatabase() {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceFacebook;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
                                     linkArr.push(objLink);
-                                }
+                                
                             }
 
-                        } else if (countSource == 1 && countTarget == 0 && checkDateRange(result[i].Date) == 'PASS') {
+                        } else if (countSource == 1 && countTarget == 0 ) {
                             var objAdd = {};
                             objAdd.NodeName = result[i].Target;
                             objAdd.PhoneNumber = result[i].TargetNumber;
@@ -185,14 +193,14 @@ function FacebookDatabase() {
 
                             var objLinkProp = {};
                             objLinkProp.Sender = result[i].SourceFacebook;
-                            objLinkProp.date = result[i].Date;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                             objLinkProp.Time = result[i].Time;
                             objLinkProp.message = result[i].Message;
                             objLink.prop.push(objLinkProp);
                             linkArr.push(objLink);
 
 
-                        } else if (countSource == 0 && countTarget == 1 && checkDateRange(result[i].Date) == 'PASS') {
+                        } else if (countSource == 0 && countTarget == 1 ) {
                             var objAdd = {};
                             objAdd.NodeName = result[i].Source;
                             objAdd.PhoneNumber = result[i].SourceNumber;
@@ -210,13 +218,13 @@ function FacebookDatabase() {
 
                             var objLinkProp = {};
                             objLinkProp.Sender = result[i].SourceFacebook;
-                            objLinkProp.date = result[i].Date;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                             objLinkProp.Time = result[i].Time;
                             objLinkProp.message = result[i].Message;
                             objLink.prop.push(objLinkProp);
                             linkArr.push(objLink);
                         } else {
-                            if (checkDateRange(result[i].Date) == 'PASS') {
+                            
                                 var objSource = {};
                                 objSource.NodeName = result[i].Source;
                                 objSource.PhoneNumber = result[i].SourceNumber;
@@ -245,12 +253,12 @@ function FacebookDatabase() {
                                 objLink.prop = [];
                                 var objLinkProp = {};
                                 objLinkProp.Sender = result[i].SourceFacebook;
-                                objLinkProp.date = result[i].Date;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                 objLinkProp.Time = result[i].Time;
                                 objLinkProp.message = result[i].Message;
                                 objLink.prop.push(objLinkProp);
                                 linkArr.push(objLink);
-                            }
+                            
 
                         }
                     }
