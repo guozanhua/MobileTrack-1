@@ -6,7 +6,7 @@ function WhatsappDatabase() {
     var dateto = document.getElementById("dateto").value;
     var datefromforquery = convertDatetoISO(datefrom);
     var datetoforquery = convertDatetoISO(dateto);
-    var _query = "MATCH (n:WHATSAPP)-[r:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "' ";
+    var _query = "MATCH (n:WHATSAPP)-[r:Whatsappchat]->(m:WHATSAPP) WHERE (n.PhoneNumber = '" + inputNumber + "' OR m.PhoneNumber = '" + inputNumber + "') ";
     if(datefrom != "" && dateto != ""){
         _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +") "
     }
