@@ -6,12 +6,27 @@
         <link rel="stylesheet" type="text/css" href="css/styles.css" >
         <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
         <link rel="stylesheet" type="text/css" href="css/graph.css" >
-
+        <link rel="stylesheet" type="text/css" href="css/navbar.css" >
     </head>
     <body>
+
+
         <div id="doc" class="yui-t1">
             <div id="hd">
                 <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:100%"></h1></div>
+            </div>
+
+            <div id="wrapper">
+                <nav role="navigation" id="access">
+                    <a class="skip-link icon-reorder" title="Accéder au menu" href="#menu">Menu</a>
+                    <ul id="menu">
+                        <li class="active"><a class="icon-home" href="mainmenu.html">Home</a></li><!-- whitespace
+                        --><li><a class="icon-group" href="specificNode.html">Specific Number</a></li><!-- whitespace
+                        --><li><a class="icon-leaf" href="destination.html">Phone - Phone</a></li><!-- whitespace
+                        --><li><a class="icon-picture" href="maindestination.html">Find the middle-man</a></li><!-- whitespace
+                        --><li><a class="icon-envelope-alt" href="select.html">Multiple Phones</a></li>
+                    </ul>
+                </nav>
             </div>
 
             <div class="yui-b">
@@ -415,7 +430,21 @@
 
             </script>
 
-
+            
+            <script>
+                /*Navigation Bar Controller*/
+                ;
+                (function ($) {
+                    "use strict";
+                    $(document).ready(function () {
+                        $('#access').on('touchstart click', '.skip-link', function (event) {
+                            $(this).toggleClass('focus');
+                            $($(this).attr('href')).toggleClass('target');
+                            event.preventDefault();
+                        }).find('.skip-link').append('<span>' + $('#menu .active').text() + '</span>');
+                    });
+                })(jQuery);
+            </script>
 
     </body>
 </html>
