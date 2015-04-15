@@ -69,4 +69,17 @@ img {border:0px}
     overflow: auto;
 }
 
+#progressDiv {
+    position:fixed;
+    background-color:#fff;
+    width:600px;
+    height:50px;
+    border:5px solid #FF0000;
+    z-index: 9002;
+    margin-top: -250px;
+    overflow: auto;
+}
+
 #popUpDiv a {position:relative; top:20px; left:550px}
+
+#progressDiv p {position:static; top:20px; bottom: 20px; text-align: center}

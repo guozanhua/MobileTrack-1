@@ -15,6 +15,10 @@ function createQueryForThree(selections) {
     var inputTarget = document.getElementById("targetPhoneNo").value;
 
     var noLoop = 0;
+    
+    popup("progressDiv");
+    document.getElementById("progressDisplay").innerHTML = "Please wait while the data are being processed ..";
+    
     recursiveSXXXD();
 
     function recursiveSXXXD() {
@@ -5035,6 +5039,7 @@ function createQueryForThree(selections) {
 }
 
 function threeInterNodeVisualization(finalResult) {
+    hideProgressBar();
     var sourceNumber = document.getElementById("sourcePhoneNo").value;
     var targetNumber = document.getElementById("targetPhoneNo").value;
 
