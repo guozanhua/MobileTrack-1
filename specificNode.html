@@ -6,7 +6,7 @@
         <link rel="stylesheet" type="text/css" href="css/styles.css" >
         <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
         <link rel="stylesheet" type="text/css" href="css/graph.css" >
-        <link rel="stylesheet" type="text/css" href="css/navbar.css" >
+        <link rel="stylesheet" type="text/css" href="css/bar.css" >
     </head>
     <body>
 
@@ -16,17 +16,28 @@
                 <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:100%"></h1></div>
             </div>
 
-            <div id="wrapper">
-                <nav role="navigation" id="access">
-                    <a class="skip-link icon-reorder" title="Accéder au menu" href="#menu">Menu</a>
-                    <ul id="menu">
-                        <li class="active"><a class="icon-home" href="mainmenu.html">Main Menus</a></li><!-- whitespace
-                        --><li><a class="icon-group" href="specificNode.html">Specific Number</a></li><!-- whitespace
-                        --><li><a class="icon-leaf" href="destination.html">Phone - Phone</a></li><!-- whitespace
-                        --><li><a class="icon-picture" href="maindestination.html">Find the middle-man</a></li><!-- whitespace
-                        --><li><a class="icon-envelope-alt" href="select.html">Multiple Phones</a></li>
-                    </ul>
-                </nav>
+       <div id='cssmenu'>
+              <ul>
+                  <li><a href="select.html.html"><span>Multiple Phone</span></a></li>
+                  
+                  
+                       <li class='has-sub'><a href='#'><span>Find the middle-man</span></a>
+                          <ul>
+                             <li class='has-sub'><a href="destination2.html"><span>S--X--D</span></a>
+                                
+                             </li>
+                             <li class='has-sub'><a href="destination3.html">><span>S--X--X--D</span></a>
+                                
+                             </li> <li class='has-sub'><a href="destination4.html">><span>S--X--X--X--D</span></a>
+                                
+                             </li>
+                             
+                          </ul>
+                       </li>
+                       <li><a href="destination.html">><span>Phone - Phone</span></a></li>
+                       <li class='active'><a href="specificNode.html"><span>Specific Number</span></a></li>
+                        <li><a href="mainmenu.html"><span>Main Menu</span></a></li>
+                </ul>
             </div>
 
             <div class="yui-b">
@@ -40,14 +51,14 @@
 
                         <form id="phonenumber" >
 
-                            <u><p align = "center"><label><font face="supermarket" class="font" size="4">PHONE NUMBER</label></p></font></u>
+                            <u><p align = "center"><label><font face="supermarket" class="font" size="4">Phone Number</label></p></font></u>
                             <p align = "center"><input type="text"align = "center" class="wrapper-dropdown-6" id="phoneNo"maxlength="10"></input></p>
                         </form>
 
                         <p align = "center"><button id="submitBtn" class="color green button"  onclick="querySpecificNode($('#phoneNo').val())">Submit</button></p>
                     </div>
 
-                    <p align = "center"><button id="suggestBtn"class="color red button" >Suggest PhoneNumber</button></p>
+                    <p align = "center"><button id="suggestBtn"class="color red button" >Suggest Phone Number</button></p>
 
                     <div>
 
@@ -55,7 +66,7 @@
 
                     <br>
                     <div>
-                        <u><label><font face="supermarket" class="font" size="4"color="white">CONMUNICATION TYPE :</font></label></u>
+                        <u><label><font face="supermarket" class="font" size="4"color="white">Communication Type :</font></label></u>
                         <select id= "spinnerbox" class="wrapper-dropdown-3"name="communicationList" onchange="doSomething();">
                             <option value="select">SELECT</option>
                             <option value="call">CALL</option>
@@ -70,7 +81,7 @@
 
                     <div>
                         <form id="typeboxcall" style="display:none">
-                            <u><label><font face="supermarket"size="4"color="white" class="font" >TYPE :</font></label></u>
+                            <u><label><font face="supermarket"size="4"color="white" class="font" >Type :</font></label></u>
                             <select id="typecall" class="wrapper-dropdown-3">
                                 <option value="all">All</option>
                                 <option value="incoming">INCOMING</option>
@@ -82,7 +93,7 @@
 
                     <div>
                         <form id="typeboxmessage" style="display:none">
-                            <u><label><font face="supermarket"size="4"color="white"class="font"  >TYPE :</font></label></u>
+                            <u><label><font face="supermarket"size="4"color="white"class="font"  >Type :</font></label></u>
                             <select id="typesms"class="wrapper-dropdown-3" >
                                 <option value="all">ALL</option>
                                 <option value="send">SEND</option>
@@ -98,9 +109,9 @@
                         <form id="date_form" action="demo_form.asp" style="display:none">
                             <div><class="wrapper-dropdown-5">
 
-                                    <u><label><font face="supermarket" size="4"color="white"class="font" >DATE FROM :</font></label></u>
+                                    <u><label><font face="supermarket" size="4"color="white"class="font" >Date from :</font></label></u>
                                     <input id="datefrom" class="wrapper-dropdown-2"type="date" name="bday"><br>
-                                    <u><label><font face="supermarket" size="4" color="white"class="font" >TO :</font></label></u>
+                                    <u><label><font face="supermarket" size="4" color="white"class="font" >To :</font></label></u>
                                     <input id="dateto" class="wrapper-dropdown-2"type="date" name="bday"><br>
                                     </div>
 
@@ -111,7 +122,7 @@
                                     <br/>
                                     <div>
                                         <form id="durationbox" style="display:none">
-                                            <u><label><font face="supermarket" size="4"color="white"class="font" >DURATION :</font></label ></u>
+                                            <u><label><font face="supermarket" size="4"color="white"class="font" >Duration :</font></label ></u>
                                             <select id="duration" class="wrapper-dropdown-3">
                                                 <option value="01">0-1 MINUTE</option>
                                                 <option value="12">1-2 MINUTE</option>
@@ -125,7 +136,7 @@
 
                                     <div>
                                         <form id="statusSMS" style="display:none">
-                                            <u><label><font face="supermarket" size="4"color="white"class="font" >STATUS :</font></label ></u>
+                                            <u><label><font face="supermarket" size="4"color="white"class="font" >Status :</font></label ></u>
                                             <select id="status" class="wrapper-dropdown-3">
                                                 <option value="all">ALL STATUS</option>
                                                 <option value="read">READ</option>
@@ -139,7 +150,7 @@
                                     <br>
                                     <div>
                                         <form id="frequency" style="display:none">
-                                            <u><label><font face="supermarket" size="4"color="white"class="font" >FREQUENCY :</font></label ></u>
+                                            <u><label><font face="supermarket" size="4"color="white"class="font" >Frequency :</font></label ></u>
                                             <select id="status" class="wrapper-dropdown-3">
                                                 <option value="all">ALL</option>
                                                 <option value="3">3</option>
