@@ -165,6 +165,22 @@ border-top-left-radius: 8px;
   content: '+';
   margin-left: 5px;
 }
+
+#cssmenu ul li.has-sub active{
+    border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  -webkit-transition: all .5s ease;
+  -o-transition: all .5s ease;
+  transition: all .5s ease;
+  -webkit-transform: perspective(10px) rotateX(1.5deg);
+  -webkit-transform-origin: bottom;
+  -moz-transform: perspective(10px) rotateX(1.5deg);
+  -moz-transform-origin: bottom;
+  transform: perspective(10px) rotateX(1.5deg);
+  transform-origin: bottom;
+  background: #1b9bff;
+  color: #ffffff;
+}
 #cssmenu ul li.last ul {
   left: auto;
   right: 0;
