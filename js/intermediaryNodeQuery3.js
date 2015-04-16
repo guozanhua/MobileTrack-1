@@ -5516,32 +5516,26 @@ function sxxxdSummarize(linkArr) {
      * 4. If linkArr[i].target matches with hobThree[j], insert linkArr[i].source into hobTwo.
      */
     for (i = 0; i < linkArr.length; i++) {
-        if ((linkArr[i].source.PhoneNumber != inputSource || linkArr[i].source.PhoneNumber != inputTarget)
-                && (linkArr[i].target.PhoneNumber != inputTarget || linkArr[i].target.PhoneNumber != inputSource)) {
-
+        if ((linkArr[i].source.PhoneNumber != inputSource && linkArr[i].source.PhoneNumber != inputTarget)
+                && (linkArr[i].target.PhoneNumber != inputTarget && linkArr[i].target.PhoneNumber != inputSource)) {
+            console.log("comparing: " + linkArr[i].source.PhoneNumber + " AND " + linkArr[i].target.PhoneNumber);
             var foundHopOne = 0;
             for (j = 0; j < hobOne.length; j++) {
-                if (linkArr[i].source.PhoneNumber == hobOne[j]) {
+                if (linkArr[i].source.PhoneNumber == hobOne[j] || linkArr[i].target.PhoneNumber == hobOne[j]) {
                     var foundHopTwo = 0;
-                    for (k = 0; k < hobTwo.length; k++) {
-                        if (linkArr[i].target.PhoneNumber == hobTwo[k]) {
-                            foundHopTwo++;
-                            break;
+                    if(linkArr[i].source.PhoneNumber == hobOne[j]){
+                        for (k = 0; k < hobTwo.length; k++) {
+                            if (linkArr[i].target.PhoneNumber == hobTwo[k]) {
+                                foundHopTwo++;
+                                break;
+                            }
                         }
-                    }
 
-                    if (foundHopTwo == 0) {
-                        hobTwo.push(linkArr[i].target.PhoneNumber);
-                    }
-                    foundHopOne++;
-                    break;
-                }
-            }
-
-            if (foundHopOne > 0) {
-                for (j = 0; j < hobThree.length; j++) {
-                    if (linkArr[i].target.PhoneNumber == hobThree[j]) {
-                        var foundHopTwo = 0;
+                        if (foundHopTwo == 0) {
+                            hobTwo.push(linkArr[i].target.PhoneNumber);
+                        }
+                        
+                    }else{
                         for (k = 0; k < hobTwo.length; k++) {
                             if (linkArr[i].source.PhoneNumber == hobTwo[k]) {
                                 foundHopTwo++;
@@ -5552,7 +5546,40 @@ function sxxxdSummarize(linkArr) {
                         if (foundHopTwo == 0) {
                             hobTwo.push(linkArr[i].source.PhoneNumber);
                         }
-                        foundHopOne++;
+                    }
+                    foundHopOne++;
+                    break;  
+                }
+            }
+
+            if (foundHopOne == 0) {
+                for (j = 0; j < hobThree.length; j++) {
+                    if (linkArr[i].target.PhoneNumber == hobThree[j] || linkArr[i].source.PhoneNumber == hobThree[j]) {
+                        if(linkArr[i].target.PhoneNumber == hobThree[j]){
+                            var foundHopTwo = 0;
+                            for (k = 0; k < hobTwo.length; k++) {
+                                if (linkArr[i].source.PhoneNumber == hobTwo[k]) {
+                                    foundHopTwo++;
+                                    break;
+                                }
+                            }
+
+                            if (foundHopTwo == 0) {
+                                hobTwo.push(linkArr[i].source.PhoneNumber);
+                            }
+                        }else{
+                            var foundHopTwo = 0;
+                            for (k = 0; k < hobTwo.length; k++) {
+                                if (linkArr[i].target.PhoneNumber == hobTwo[k]) {
+                                    foundHopTwo++;
+                                    break;
+                                }
+                            }
+
+                            if (foundHopTwo == 0) {
+                                hobTwo.push(linkArr[i].target.PhoneNumber);
+                            }
+                        }        
                         break;
                     }
                 }

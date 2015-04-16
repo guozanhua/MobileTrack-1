@@ -9,6 +9,10 @@ function createQueryForTwo(selections) {
     var inputTarget = document.getElementById("targetPhoneNo").value;
 
     var noLoop = 0;
+    
+    popup("progressDiv");
+    document.getElementById("progressDisplay").innerHTML = "Please wait while the data are being processed ..";
+    
     recursiveSXXD();
 
     function recursiveSXXD() {
@@ -5051,6 +5055,7 @@ function createQueryForTwo(selections) {
 }
 
 function twoInterNodeVisualization(finalResult) {
+    hideProgressBar();
     var sourceNumber = document.getElementById("sourcePhoneNo").value;
     var targetNumber = document.getElementById("targetPhoneNo").value;
 

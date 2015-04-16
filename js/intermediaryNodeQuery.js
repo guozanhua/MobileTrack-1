@@ -11,6 +11,10 @@ function queryManagementSXD(selections) {
     clearDiv('graph');
     clearDiv('output');
     var noLoop = 0;
+    
+    popup("progressDiv");
+    document.getElementById("progressDisplay").innerHTML = "Please wait while the data are being processed ..";
+    
     recursiveSXD();
     function recursiveSXD() {
         if (noLoop == 0) {
@@ -4938,6 +4942,7 @@ function queryManagementSXD(selections) {
 /*--------------------------------------------------------------------------------Visualization Area------------------------------------------------------------------------*/
 
 function dataVisualizationSXD(finalResult) {
+    hideProgressBar();
     var width = 800, height = 800;
     var groupArr = finalResult[2];
     var mLinkNum = {};
