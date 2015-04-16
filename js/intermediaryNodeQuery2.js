@@ -1667,24 +1667,39 @@ function createQueryForTwo(selections) {
                                 }
                             }
 
-                            //After finished adding all the nodes and relationship into nodeArr and linkArr
-                            var allLineNodes = [];
-                            for (i = 0; i < nodeArr.length; i++) {
-                                if (nodeArr[i].Label == 'Line') {
-                                    allLineNodes.push(nodeArr[i].NodeName);
+                            if (result.length > 0) {
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allLineNodes = [];
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (nodeArr[i].Label == 'Line') {
+                                        allLineNodes.push(nodeArr[i].NodeName);
+                                    }
+                                }
+
+                                var nextQuery = "MATCH (n:LINE)-[r:Line]->(m:PHONE) WHERE "
+                                for (i = 0; i < allLineNodes.length; i++) {
+                                    if (i == 0) {
+                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                    } else {
+                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                    }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneForLineSXXD(nextQuery);
+                            } else {
+                                if (noLoop == selections.length - 1) {
+                                    var finalResult = [];
+                                    finalResult.push(nodeArr);
+                                    finalResult.push(linkArr);
+                                    finalResult.push(groupArr);
+                                    twoInterNodeVisualization(finalResult);
+                                } else {
+                                    noLoop++;
+                                    recursiveSXXD();
                                 }
                             }
 
-                            var nextQuery = "MATCH (n:LINE)-[r:Line]->(m:PHONE) WHERE "
-                            for (i = 0; i < allLineNodes.length; i++) {
-                                if (i == 0) {
-                                    nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                } else {
-                                    nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
-                                }
-                            }
-                            nextQuery += "RETURN collect(distinct r) as R";
-                            FetchPhoneForLineSXXD(nextQuery);
+
                         });
 
                 function FetchPhoneForLineSXXD(_query) {
@@ -1728,6 +1743,7 @@ function createQueryForTwo(selections) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.groupIndex = getGroupIndex;
                                     objAdd.textDisplay = result[i].PhoneNumber;
@@ -2299,24 +2315,39 @@ function createQueryForTwo(selections) {
                                 }
                             }
 
-                            //After finished adding all the nodes and relationship into nodeArr and linkArr
-                            var allLineNodes = [];
-                            for (i = 0; i < nodeArr.length; i++) {
-                                if (nodeArr[i].Label == 'Whatsapp') {
-                                    allLineNodes.push(nodeArr[i].NodeName);
+                            if (result.length > 0) {
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allLineNodes = [];
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (nodeArr[i].Label == 'Whatsapp') {
+                                        allLineNodes.push(nodeArr[i].NodeName);
+                                    }
+                                }
+
+                                var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
+                                for (i = 0; i < allLineNodes.length; i++) {
+                                    if (i == 0) {
+                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                    } else {
+                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                    }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneForWhatsappSXXD(nextQuery);
+                            } else {
+                                if (noLoop == selections.length - 1) {
+                                    var finalResult = [];
+                                    finalResult.push(nodeArr);
+                                    finalResult.push(linkArr);
+                                    finalResult.push(groupArr);
+                                    twoInterNodeVisualization(finalResult);
+                                } else {
+                                    noLoop++;
+                                    recursiveSXXD();
                                 }
                             }
 
-                            var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
-                            for (i = 0; i < allLineNodes.length; i++) {
-                                if (i == 0) {
-                                    nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                } else {
-                                    nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
-                                }
-                            }
-                            nextQuery += "RETURN collect(distinct r) as R";
-                            FetchPhoneForWhatsappSXXD(nextQuery);
+
                         });
 
                 function FetchPhoneForWhatsappSXXD(_query) {
@@ -2360,6 +2391,7 @@ function createQueryForTwo(selections) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.groupIndex = getGroupIndex;
                                     objAdd.textDisplay = result[i].PhoneNumber;
@@ -2898,24 +2930,38 @@ function createQueryForTwo(selections) {
                                     }
                                 }
                             }
-                            //After finished adding all the nodes and relationship into nodeArr and linkArr
-                            var allFacebookNodes = [];
-                            for (i = 0; i < nodeArr.length; i++) {
-                                if (nodeArr[i].Label == 'Facebook') {
-                                    allFacebookNodes.push(nodeArr[i].NodeName);
+                            if (result.length > 0) {
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allFacebookNodes = [];
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (nodeArr[i].Label == 'Facebook') {
+                                        allFacebookNodes.push(nodeArr[i].NodeName);
+                                    }
+                                }
+
+                                var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                                for (i = 0; i < allFacebookNodes.length; i++) {
+                                    if (i == 0) {
+                                        nextQuery += "n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                    } else {
+                                        nextQuery += "OR n.Nodename = '" + allFacebookNodes[i] + "' ";
+                                    }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneForFacebookSXXD(nextQuery);
+                            } else {
+                                if (noLoop == selections.length - 1) {
+                                    var finalResult = [];
+                                    finalResult.push(nodeArr);
+                                    finalResult.push(linkArr);
+                                    finalResult.push(groupArr);
+                                    twoInterNodeVisualization(finalResult);
+                                } else {
+                                    noLoop++;
+                                    recursiveSXXD();
                                 }
                             }
 
-                            var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
-                            for (i = 0; i < allFacebookNodes.length; i++) {
-                                if (i == 0) {
-                                    nextQuery += "n.Nodename = '" + allFacebookNodes[i] + "' ";
-                                } else {
-                                    nextQuery += "OR n.Nodename = '" + allFacebookNodes[i] + "' ";
-                                }
-                            }
-                            nextQuery += "RETURN collect(distinct r) as R";
-                            FetchPhoneForFacebookSXXD(nextQuery);
                         });
 
                 function FetchPhoneForFacebookSXXD(_query) {
@@ -2959,6 +3005,7 @@ function createQueryForTwo(selections) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.groupIndex = getGroupIndex;
                                     objAdd.textDisplay = result[i].PhoneNumber;
@@ -4252,24 +4299,39 @@ function createQueryForTwo(selections) {
                                 }
                             }
 
-                            //After finished adding all the nodes and relationship into nodeArr and linkArr
-                            var allLineNodes = [];
-                            for (i = 0; i < nodeArr.length; i++) {
-                                if (nodeArr[i].Label == 'Whatsapp') {
-                                    allLineNodes.push(nodeArr[i].NodeName);
+                            if (result.length > 0) {
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allLineNodes = [];
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (nodeArr[i].Label == 'Whatsapp') {
+                                        allLineNodes.push(nodeArr[i].NodeName);
+                                    }
+                                }
+
+                                var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
+                                for (i = 0; i < allLineNodes.length; i++) {
+                                    if (i == 0) {
+                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                    } else {
+                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                    }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneForWhatsappSXXD2round(nextQuery);
+                            } else {
+                                if (noLoop == selections.length - 1) {
+                                    var finalResult = [];
+                                    finalResult.push(nodeArr);
+                                    finalResult.push(linkArr);
+                                    finalResult.push(groupArr);
+                                    twoInterNodeVisualization(finalResult);
+                                } else {
+                                    noLoop++;
+                                    recursiveSXXD();
                                 }
                             }
 
-                            var nextQuery = "MATCH (n:WHATSAPP)-[r:WhatsappAccount]->(m:PHONE) WHERE "
-                            for (i = 0; i < allLineNodes.length; i++) {
-                                if (i == 0) {
-                                    nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                } else {
-                                    nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
-                                }
-                            }
-                            nextQuery += "RETURN collect(distinct r) as R";
-                            FetchPhoneForWhatsappSXXD2round(nextQuery);
+
                         });
 
                 function FetchPhoneForWhatsappSXXD2round(_query) {
@@ -4331,6 +4393,7 @@ function createQueryForTwo(selections) {
                                     } else if (checkSource == 1 && checkTarget == 0) {
                                         var objAdd = {};
                                         objAdd.NodeName = result[i].Target;
+                                        objAdd.PhoneNumber = result[i].PhoneNumber;
                                         objAdd.Label = result[i].TargetType;
                                         objAdd.groupIndex = getGroupIndex;
                                         objAdd.textDisplay = result[i].PhoneNumber;
@@ -4854,24 +4917,39 @@ function createQueryForTwo(selections) {
                                     });
                                 }
                             }
-                            //After finished adding all the nodes and relationship into nodeArr and linkArr
-                            var allLineNodes = [];
-                            for (i = 0; i < nodeArr.length; i++) {
-                                if (nodeArr[i].Label == 'Facebook') {
-                                    allLineNodes.push(nodeArr[i].NodeName);
+
+                            if (result.length > 0) {
+                                //After finished adding all the nodes and relationship into nodeArr and linkArr
+                                var allLineNodes = [];
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (nodeArr[i].Label == 'Facebook') {
+                                        allLineNodes.push(nodeArr[i].NodeName);
+                                    }
+                                }
+
+                                var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
+                                for (i = 0; i < allLineNodes.length; i++) {
+                                    if (i == 0) {
+                                        nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
+                                    } else {
+                                        nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
+                                    }
+                                }
+                                nextQuery += "RETURN collect(distinct r) as R";
+                                FetchPhoneForFacebookSXXD2round(nextQuery);
+                            } else {
+                                if (noLoop == selections.length - 1) {
+                                    var finalResult = [];
+                                    finalResult.push(nodeArr);
+                                    finalResult.push(linkArr);
+                                    finalResult.push(groupArr);
+                                    twoInterNodeVisualization(finalResult);
+                                } else {
+                                    noLoop++;
+                                    recursiveSXXD();
                                 }
                             }
 
-                            var nextQuery = "MATCH (n:FACEBOOK)-[r:FacebookApp]->(m:PHONE) WHERE "
-                            for (i = 0; i < allLineNodes.length; i++) {
-                                if (i == 0) {
-                                    nextQuery += "n.Nodename = '" + allLineNodes[i] + "' ";
-                                } else {
-                                    nextQuery += "OR n.Nodename = '" + allLineNodes[i] + "' ";
-                                }
-                            }
-                            nextQuery += "RETURN collect(distinct r) as R";
-                            FetchPhoneForFacebookSXXD2round(nextQuery);
                         });
 
                 function FetchPhoneForFacebookSXXD2round(_query) {
@@ -4933,6 +5011,7 @@ function createQueryForTwo(selections) {
                                     } else if (checkSource == 1 && checkTarget == 0) {
                                         var objAdd = {};
                                         objAdd.NodeName = result[i].Target;
+                                        objAdd.PhoneNumber = result[i].PhoneNumber;
                                         objAdd.Label = result[i].TargetType;
                                         objAdd.groupIndex = getGroupIndex;
                                         objAdd.textDisplay = result[i].PhoneNumber;
@@ -4999,6 +5078,8 @@ function twoInterNodeVisualization(finalResult) {
             .links(finalResult[1])
             .size([width, height])
             .start();
+    
+    sxxdSummarize(force.links());
 
     var marker = svg.append("defs").selectAll("marker")
             .data(["lowf", "mediumf", "highf"])
@@ -5079,111 +5160,7 @@ function twoInterNodeVisualization(finalResult) {
             });
 
     link.on("click", function (d) {
-        if (d.Type == "Line") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == "Whatsapp") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == "Facebook") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == 'Call') {
-            console.log("Call click");
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>TARGET</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>DURATION</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr>";
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + convertTime(propArr[i].dur) + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-        } else {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>RECEIVER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:155px; border: 2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:125px; border: 2px solid white; color: white; text-align: center;'>STATUS</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:170px; border: 2px solid white; color: white; text-align: center;'>MESSAGE</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                // if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].status + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].message + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-        }
+         visualizeLinkDetail(d);
     });
 
     var tip = d3.tip()
@@ -5471,6 +5448,92 @@ function twoInterNodeVisualization(finalResult) {
         }
     }
 
+}
+
+function sxxdSummarize(linkArr) {
+    var inputSource = document.getElementById("sourcePhoneNo").value;
+    var inputTarget = document.getElementById("targetPhoneNo").value;
+    var hobOne = [];
+    var hobTwo = [];
+    
+    //Find middle-man
+    for(i=0;i<linkArr.length;i++){
+        if(i==0){
+            if(linkArr[i].source.PhoneNumber == inputSource && linkArr[i].target.PhoneNumber != inputSource){
+                hobOne.push(linkArr[i].target.PhoneNumber);
+            }else if(linkArr[i].target.PhoneNumber == inputTarget && linkArr[i].source.PhoneNumber != inputTarget){
+                hobTwo.push(linkArr[i].source.PhoneNumber);
+            }else if(linkArr[i].source.PhoneNumber == inputTarget && linkArr[i].target.PhoneNumber != inputTarget){
+                hobTwo.push(linkArr[i].target.PhoneNumber);
+            }else if(linkArr[i].target.PhoneNumber == inputSource && linkArr[i].source.PhoneNumber != inputSource){
+                hobOne.push(linkArr[i].source.PhoneNumber);
+            }
+        }else{
+            var hobOneExist = 0;
+            var hobTwoExist = 0;
+            if (linkArr[i].source.PhoneNumber == inputSource && linkArr[i].target.PhoneNumber != inputSource) {
+                for (j = 0; j < hobOne.length; j++) {
+                    if (hobOne[j] == linkArr[i].target.PhoneNumber) {
+                        hobOneExist++;
+                        break;
+                    }
+                }
+
+                if (hobOneExist == 0) {
+                    hobOne.push(linkArr[i].target.PhoneNumber);
+                }
+            } else if (linkArr[i].target.PhoneNumber == inputSource && linkArr[i].source.PhoneNumber != inputSource) {
+                for (j = 0; j < hobOne.length; j++) {
+                    if (hobOne[j] == linkArr[i].source.PhoneNumber) {
+                        hobOneExist++;
+                        break;
+                    }
+                }
+
+                if (hobOneExist == 0) {
+                    hobOne.push(linkArr[i].source.PhoneNumber);
+                }
+            } else if (linkArr[i].source.PhoneNumber == inputTarget && linkArr[i].target.PhoneNumber != inputTarget) {
+                for (j = 0; j < hobTwo.length; j++) {
+                    if (hobTwo[j] == linkArr[i].target.PhoneNumber) {
+                        hobTwoExist++;
+                        break;
+                    }
+                }
+
+                if (hobTwoExist == 0) {
+                    hobTwo.push(linkArr[i].target.PhoneNumber);
+                }
+            } else if (linkArr[i].target.PhoneNumber == inputTarget && linkArr[i].source.PhoneNumber != inputTarget) {
+                for (j = 0; j < hobTwo.length; j++) {
+                    if (hobTwo[j] == linkArr[i].source.PhoneNumber) {
+                        hobTwoExist++;
+                        break;
+                    }
+                }
+
+                if (hobTwoExist == 0) {
+                    hobTwo.push(linkArr[i].source.PhoneNumber);
+                }
+            }
+        }
+    }
+    
+    //Displaying in summarize
+    var output = "<p style='color:red'>All the possible middle-man between <span style = 'color:white'>" + inputSource + "</span> and <span style = 'color:white'>" + inputTarget + "</span> are listed below</p><br/>";
+    output += "<p>Hob One: <br/>";
+    for (i = 0; i < hobOne.length; i++) {
+        output += hobOne[i] + "<br/>";
+    }
+    output += "</p><br/>";
+    
+    output += "<p>Hob Two: <br/>";
+    for (i = 0; i < hobTwo.length; i++) {
+        output += hobTwo[i] + "<br/>";
+    }
+    output += "</p><br/>";
+    
+    document.getElementById("summarize").innerHTML = output;
 }
 
 

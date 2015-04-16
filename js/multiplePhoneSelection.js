@@ -551,7 +551,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                 finalResult.push(linkArr);
                                 finalResult.push(groupArr);
                                 //document.write(JSON.stringify(finalResult));
-                                dataVisualizationMultiplePhones(finalResult);
+                                dataVisualizationMultiplePhones(finalResult, selectPhonesArr);
                             } else {
                                 noLoop++;
                                 var passArr = [];
@@ -1051,7 +1051,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                 finalResult.push(linkArr);
                                 finalResult.push(groupArr);
                                 //document.write(JSON.stringify(finalResult));
-                                dataVisualizationMultiplePhones(finalResult);
+                                dataVisualizationMultiplePhones(finalResult, selectPhonesArr);
                             } else {
                                 noLoop++;
                                 var passArr = [];
@@ -1626,6 +1626,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.groupIndex = getGroupIndex;
                                     objAdd.textDisplay = result[i].PhoneNumber;
@@ -1648,7 +1649,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     finalResult.push(linkArr);
                                     finalResult.push(groupArr);
                                     //document.write(JSON.stringify(finalResult));
-                                    dataVisualizationMultiplePhones(finalResult);
+                                    dataVisualizationMultiplePhones(finalResult, selectPhonesArr);
                                 } else {
                                     noLoop++;
                                     var passArr = [];
@@ -2187,6 +2188,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.groupIndex = getGroupIndex;
                                     objAdd.textDisplay = result[i].PhoneNumber;
@@ -2209,7 +2211,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     finalResult.push(linkArr);
                                     finalResult.push(groupArr);
                                     //document.write(JSON.stringify(finalResult));
-                                    dataVisualizationMultiplePhones(finalResult);
+                                    dataVisualizationMultiplePhones(finalResult, selectPhonesArr);
                                 } else {
                                     noLoop++;
                                     var passArr = [];
@@ -2747,6 +2749,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.groupIndex = getGroupIndex;
                                     objAdd.textDisplay = result[i].PhoneNumber;
@@ -2769,7 +2772,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     finalResult.push(linkArr);
                                     finalResult.push(groupArr);
                                     //document.write(JSON.stringify(finalResult));
-                                    dataVisualizationMultiplePhones(finalResult);
+                                    dataVisualizationMultiplePhones(finalResult, selectPhonesArr);
                                 } else {
                                     noLoop++;
                                     var passArr = [];
@@ -3141,7 +3144,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                 finalResult.push(linkArr);
                                 finalResult.push(groupArr);
                                 //document.write(JSON.stringify(finalResult));
-                                dataVisualizationMultiplePhones(finalResult);
+                                dataVisualizationMultiplePhones(finalResult, selectPhonesArr);
                             } else {
                                 noLoop++;
                                 var passArr = [];
@@ -3507,7 +3510,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                 finalResult.push(linkArr);
                                 finalResult.push(groupArr);
                                 //document.write(JSON.stringify(finalResult));
-                                dataVisualizationMultiplePhones(finalResult);
+                                dataVisualizationMultiplePhones(finalResult, selectPhonesArr);
                             } else {
                                 noLoop++;
                                 var passArr = [];
@@ -4019,6 +4022,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     } else if (checkSource == 1 && checkTarget == 0) {
                                         var objAdd = {};
                                         objAdd.NodeName = result[i].Target;
+                                        objAdd.PhoneNumber = result[i].PhoneNumber;
                                         objAdd.Label = result[i].TargetType;
                                         objAdd.groupIndex = getGroupIndex;
                                         objAdd.textDisplay = result[i].PhoneNumber;
@@ -4042,7 +4046,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     finalResult.push(linkArr);
                                     finalResult.push(groupArr);
                                     //document.write(JSON.stringify(finalResult));
-                                    dataVisualizationMultiplePhones(finalResult);
+                                    dataVisualizationMultiplePhones(finalResult, selectPhonesArr);
                                 } else {
                                     noLoop++;
                                     var passArr = [];
@@ -4555,6 +4559,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     } else if (checkSource == 1 && checkTarget == 0) {
                                         var objAdd = {};
                                         objAdd.NodeName = result[i].Target;
+                                        objAdd.PhoneNumber = result[i].PhoneNumber;
                                         objAdd.Label = result[i].TargetType;
                                         objAdd.groupIndex = getGroupIndex;
                                         objAdd.textDisplay = result[i].PhoneNumber;
@@ -4578,7 +4583,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     finalResult.push(linkArr);
                                     finalResult.push(groupArr);
                                     //document.write(JSON.stringify(finalResult));
-                                    dataVisualizationMultiplePhones(finalResult);
+                                    dataVisualizationMultiplePhones(finalResult, selectPhonesArr);
                                 } else {
                                     noLoop++;
                                     var passArr = [];
@@ -4595,7 +4600,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
     }
 }
 
-function dataVisualizationMultiplePhones(finalResult) {
+function dataVisualizationMultiplePhones(finalResult, selectPhonesArr) {
 
     var width = 800, height = 800;
     var groupArr = finalResult[2];
@@ -4635,6 +4640,8 @@ function dataVisualizationMultiplePhones(finalResult) {
             .links(finalResult[1])
             .size([width, height])
             .start();
+
+    multipleSummarize(finalResult[0], selectPhonesArr);
 
     var marker = svg.append("defs").selectAll("marker")
             .data(["lowf", "mediumf", "highf"])
@@ -4715,184 +4722,14 @@ function dataVisualizationMultiplePhones(finalResult) {
             });
 
     link.on("click", function (d) {
-        if (d.Type == "Line") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == "Whatsapp") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == "Facebook") {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-                myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-
-        } else if (d.Type == 'Call') {
-            console.log("Call click");
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>TARGET</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>DURATION</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr>";
-
-            for (var i = 0; i < propArr.length; i++) {
-                //if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + convertTime(propArr[i].dur) + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-        } else {
-            var propArr = d.prop;
-            var myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>RECEIVER</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:155px; border: 2px solid white; color: white; text-align: center;'>DATE</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:125px; border: 2px solid white; color: white; text-align: center;'>STATUS</th>";
-            myTable += "<th style='background-color:#333333;height: 40px; width:170px; border: 2px solid white; color: white; text-align: center;'>MESSAGE</th></tr>";
-
-
-
-            for (var i = 0; i < propArr.length; i++) {
-                // if(checkDateRange(propArr[i].date) == "PASS"){
-                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].status + "</td>";
-                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].message + "</td></tr>";
-                //}
-            }
-            myTable += "</table>";
-
-            document.getElementById("output").innerHTML = myTable;
-        }
+        visualizeLinkDetail(d);
     });
 
     var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                var output = "";
-                var count = 0;
-                if(document.getElementById("mchk1").checked){
-                    if(d.Label == 'Phone'){
-                        output = "Phone Number: " + d.PhoneNumber + "<br/>";
-                        output += "Call In: " + "<br/>"
-                        for (i = 0; i < d.callIn.length; i++) {
-                            output += i + "). " + d.callIn[i].PhoneNumber + " Freq: " + d.callIn[i].freq + "<br/>";
-                        }
 
-                        output += "Call Out: " + "<br/>"
-                        for (i = 0; i < d.callOut.length; i++) {
-                            output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
-                        }
-                    }
-                    count = 1;
-                }
-                
-                if(document.getElementById("mchk2").checked){
-                    if(d.Label == 'Phone'){
-                        if(count == 0){
-                            output = "Phone Number: " + d.PhoneNumber + "<br/>";
-                        }   
-                        output += "SMS In: " + "<br/>"
-                        for (i = 0; i < d.smsIn.length; i++) {
-                            output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
-                        }
-
-                        output += "SMS Out: " + "<br/>"
-                        for (i = 0; i < d.smsOut.length; i++) {
-                            output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
-                        }
-                    }
-                    
-                }
-               
-                if(document.getElementById("mchk3").checked){
-                    if(d.Label == 'Line'){
-                        output =  d.textDisplay + "<br/>";
-                        output += "LINE chat with: " + "<br/>"
-                        for (i = 0; i < d.lineChat.length; i++) {
-                            output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";
-                        }
-                    }
-                    
-                }
-                
-                if(document.getElementById("mchk4").checked){
-                    if(d.Label == 'Whatsapp'){
-                        output = d.textDisplay + "<br/>";
-                        output += "Whatsapp chat with: " + "<br/>"
-                        for (i = 0; i < d.WhatsappChat.length; i++) {
-                            output += i + "). " + d.WhatsappChat[i].Account + " Freq: " + d.WhatsappChat[i].freq + "<br/>";
-                        }
-                    }
-                    
-                }
-                
-                if(document.getElementById("mchk5").checked){
-                    if(d.Label == 'Facebook'){
-                        output = d.textDisplay + "<br/>";
-                        output += "Facebook chat with: " + "<br/>"
-                        for (i = 0; i < d.facebookChat.length; i++) {
-                            output += i + "). " + d.facebookChat[i].Account + " Freq: " + d.facebookChat[i].freq + "<br/>";
-                        }
-                    }
-                }
-                
-                return output;
             });
 
     svg.call(tip);
@@ -4931,10 +4768,27 @@ function dataVisualizationMultiplePhones(finalResult) {
                 return "node " + d.Label;
             })
             .attr("r", function (d) {
-                if (d.Label == 'Phone')
-                    return 10;
-                else
-                    return 8;
+                var userSelectNumber = 0;
+                for (i = 0; i < selectPhonesArr.length; i++) {
+                    if (d.PhoneNumber == selectPhonesArr[i]) {
+                        userSelectNumber++;
+                        break;
+                    }
+                }
+
+                if (userSelectNumber == 1) {
+                    if (d.Label == 'Phone') {
+                        return 15;
+                    } else {
+                        return 12;
+                    }
+                } else {
+                    if (d.Label == 'Phone') {
+                        return 10;
+                    } else {
+                        return 8;
+                    }
+                }
             })
             .style("fill", function (d) {
                 return color(d.groupIndex);
@@ -4943,7 +4797,7 @@ function dataVisualizationMultiplePhones(finalResult) {
             .on('mouseout', tip.hide)
             .call(node_drag);
 
-    node.on("dblclick", function (d) {
+    node.on("click", function (d) {
         filterNode(d.NodeName);
     });
 
@@ -5190,6 +5044,221 @@ function dataVisualizationMultiplePhones(finalResult) {
         }
     }
 }
+var outputArr = [];
 
+function multipleSummarize(d, selectPhonesArr) {
+    var header = "<p style='color:red'>User's selected phone numbers are listed below. Click on each number to see more detail</p><br/>";
+    outputArr = [];
 
+    for (i = 0; i < selectPhonesArr.length; i++) {
+        for (j = 0; j < d.length; j++) {
+            if (d[j].PhoneNumber == selectPhonesArr[i]) {
+                if (j == 0) {
+                    var output = {};
+                    output.PhoneNumber = d[j].PhoneNumber;
+                    output.summary = "";
+                    if (d[j].Label == 'Phone') {
+                        output.summary += "Phone Number: " + d[j].PhoneNumber + "<br/>";
+                        if (document.getElementById("mchk1").checked) {
+                            output.summary += "Call In: " + "<br/>"
+                            for (k = 0; k < d[j].callIn.length; k++) {
+                                output.summary += k + "). " + d[j].callIn[k].PhoneNumber + " Freq: " + d[j].callIn[k].freq + "<br/>";
+                            }
 
+                            output.summary += "Call Out: " + "<br/>"
+                            for (k = 0; k < d[j].callOut.length; k++) {
+                                output.summary += k + "). " + d[j].callOut[k].PhoneNumber + " Freq: " + d[j].callOut[k].freq + "<br/>";
+                            }
+                        }
+
+                        if (document.getElementById("mchk2").checked) {
+                            output.summary += "SMS In: " + "<br/>"
+                            for (k = 0; k < d[j].smsIn.length; k++) {
+                                output.summary += k + "). " + d[j].smsIn[k].PhoneNumber + " Freq: " + d[j].smsIn[k].freq + "<br/>";
+                            }
+
+                            output.summary += "SMS Out: " + "<br/>"
+                            for (k = 0; k < d[j].smsOut.length; k++) {
+                                output.summary += k + "). " + d[j].smsOut[k].PhoneNumber + " Freq: " + d[j].smsOut[k].freq + "<br/>";
+                            }
+                        }
+                    }
+
+                    else if (d[j].Label == 'Line') {
+                        if (document.getElementById("mchk3").checked) {
+                            output.summary += d[j].textDisplay + "<br/>";
+                            output.summary += "LINE chat with: " + "<br/>"
+                            for (k = 0; k < d[j].lineChat.length; k++) {
+                                output.summary += k + "). " + d[j].lineChat[k].Account + " Freq: " + d[j].lineChat[k].freq + "<br/>";
+                            }
+                        }
+                    }
+
+                    else if (d[j].Label == 'Whatsapp') {
+                        if (document.getElementById("mchk4").checked) {
+                            output.summary += d[j].textDisplay + "<br/>";
+                            output.summary += "Whatsapp chat with: " + "<br/>"
+                            for (k = 0; k < d[j].WhatsappChat.length; k++) {
+                                output.summary += k + "). " + d[j].WhatsappChat[k].Account + " Freq: " + d[j].WhatsappChat[k].freq + "<br/>";
+                            }
+                        }
+                    }
+
+                    else if (d[j].Label == 'Facebook') {
+                        if (document.getElementById("mchk5").checked) {
+                            output.summary += d[j].textDisplay + "<br/>";
+                            output.summary += "Facebook chat with: " + "<br/>"
+                            for (k = 0; k < d[j].facebookChat.length; k++) {
+                                output.summary += k + "). " + d[j].facebookChat[k].Account + " Freq: " + d[j].facebookChat[k].freq + "<br/>";
+                            }
+                        }
+                    }
+                    header += selectPhonesArr[i] + " <button id = 'viewbtn' value = '" + i + "' onclick='multipleSummarizeArea(this.value)'>View</button><br/>"
+                    outputArr.push(output);
+                } else {
+                    //check the existence of summary in outputArr
+                    var indexOutput = 0;
+                    var outputExist = 0;
+                    for (k = 0; k < outputArr.length; k++) {
+                        if (outputArr[k].PhoneNumber == d[j].PhoneNumber) {
+                            indexOutput = k;
+                            outputExist++;
+                            break;
+                        }
+                    }
+
+                    if (outputExist > 0) {
+                        if (d[j].Label == 'Phone') {
+                            outputArr[indexOutput].summary += "Phone Number: " + d[j].PhoneNumber + "<br/>";
+                            if (document.getElementById("mchk1").checked) {
+                                outputArr[indexOutput].summary += "Call In: " + "<br/>"
+                                for (k = 0; k < d[j].callIn.length; k++) {
+                                    outputArr[indexOutput].summary += k + "). " + d[j].callIn[k].PhoneNumber + " Freq: " + d[j].callIn[k].freq + "<br/>";
+                                }
+
+                                outputArr[indexOutput].summary += "Call Out: " + "<br/>"
+                                for (k = 0; k < d[j].callOut.length; k++) {
+                                    outputArr[indexOutput].summary += k + "). " + d[j].callOut[k].PhoneNumber + " Freq: " + d[j].callOut[k].freq + "<br/>";
+                                }
+                            }
+
+                            if (document.getElementById("mchk2").checked) {
+                                outputArr[indexOutput].summary += "SMS In: " + "<br/>"
+                                for (k = 0; k < d[j].smsIn.length; k++) {
+                                    outputArr[indexOutput].summary += k + "). " + d[j].smsIn[k].PhoneNumber + " Freq: " + d[j].smsIn[k].freq + "<br/>";
+                                }
+
+                                outputArr[indexOutput].summary += "SMS Out: " + "<br/>"
+                                for (k = 0; k < d[j].smsOut.length; k++) {
+                                    outputArr[indexOutput].summary += k + "). " + d[j].smsOut[k].PhoneNumber + " Freq: " + d[j].smsOut[k].freq + "<br/>";
+                                }
+                            }
+                        }
+
+                        else if (d[j].Label == 'Line') {
+                            if (document.getElementById("mchk3").checked) {
+                                outputArr[indexOutput].summary += d[j].textDisplay + "<br/>";
+                                outputArr[indexOutput].summary += "LINE chat with: " + "<br/>"
+                                for (k = 0; k < d[j].lineChat.length; k++) {
+                                    outputArr[indexOutput].summary += k + "). " + d[j].lineChat[k].Account + " Freq: " + d[j].lineChat[k].freq + "<br/>";
+                                }
+                            }
+                        }
+
+                        else if (d[j].Label == 'Whatsapp') {
+                            if (document.getElementById("mchk4").checked) {
+                                outputArr[indexOutput].summary += d[j].textDisplay + "<br/>";
+                                outputArr[indexOutput].summary += "Whatsapp chat with: " + "<br/>"
+                                for (k = 0; k < d[j].WhatsappChat.length; k++) {
+                                    outputArr[indexOutput].summary += k + "). " + d[j].WhatsappChat[k].Account + " Freq: " + d[j].WhatsappChat[k].freq + "<br/>";
+                                }
+                            }
+                        }
+
+                        else if (d[j].Label == 'Facebook') {
+                            if (document.getElementById("mchk5").checked) {
+                                outputArr[indexOutput].summary += d[j].textDisplay + "<br/>";
+                                outputArr[indexOutput].summary += "Facebook chat with: " + "<br/>"
+                                for (k = 0; k < d[j].facebookChat.length; k++) {
+                                    outputArr[indexOutput].summary += k + "). " + d[j].facebookChat[k].Account + " Freq: " + d[j].facebookChat[k].freq + "<br/>";
+                                }
+                            }
+                        }
+                    } else {
+                        console.log(d[j].PhoneNumber);
+                        var output = {};
+                        output.PhoneNumber = d[j].PhoneNumber;
+                        output.summary = "";
+                        if (d[j].Label == 'Phone') {
+                            output.summary += "Phone Number: " + d[j].PhoneNumber + "<br/>";
+                            if (document.getElementById("mchk1").checked) {
+                                output.summary += "Call In: " + "<br/>"
+                                for (k = 0; k < d[j].callIn.length; k++) {
+                                    output.summary += k + "). " + d[j].callIn[k].PhoneNumber + " Freq: " + d[j].callIn[k].freq + "<br/>";
+                                }
+
+                                output.summary += "Call Out: " + "<br/>"
+                                for (k = 0; k < d[j].callOut.length; k++) {
+                                    output.summary += k + "). " + d[j].callOut[k].PhoneNumber + " Freq: " + d[j].callOut[k].freq + "<br/>";
+                                }
+                            }
+
+                            if (document.getElementById("mchk2").checked) {
+                                output.summary += "SMS In: " + "<br/>"
+                                for (k = 0; k < d[j].smsIn.length; k++) {
+                                    output.summary += k + "). " + d[j].smsIn[k].PhoneNumber + " Freq: " + d[j].smsIn[k].freq + "<br/>";
+                                }
+
+                                output += "SMS Out: " + "<br/>"
+                                for (k = 0; k < d[j].smsOut.length; k++) {
+                                    output.summary += k + "). " + d[j].smsOut[k].PhoneNumber + " Freq: " + d[j].smsOut[k].freq + "<br/>";
+                                }
+                            }
+                        }
+
+                        else if (d[j].Label == 'Line') {
+                            if (document.getElementById("mchk3").checked) {
+                                output.summary += d[j].textDisplay + "<br/>";
+                                output.summary += "LINE chat with: " + "<br/>"
+                                for (k = 0; k < d[j].lineChat.length; k++) {
+                                    output.summary += k + "). " + d[j].lineChat[k].Account + " Freq: " + d[j].lineChat[k].freq + "<br/>";
+                                }
+                            }
+                        }
+
+                        else if (d[j].Label == 'Whatsapp') {
+                            if (document.getElementById("mchk4").checked) {
+                                output.summary += d[j].textDisplay + "<br/>";
+                                output.summary += "Whatsapp chat with: " + "<br/>"
+                                for (k = 0; k < d[j].WhatsappChat.length; k++) {
+                                    output.summary += k + "). " + d[j].WhatsappChat[k].Account + " Freq: " + d[j].WhatsappChat[k].freq + "<br/>";
+                                }
+                            }
+                        }
+
+                        else if (d[j].Label == 'Facebook') {
+                            if (document.getElementById("mchk5").checked) {
+                                output.summary += d[j].textDisplay + "<br/>";
+                                output.summary += "Facebook chat with: " + "<br/>"
+                                for (k = 0; k < d[j].facebookChat.length; k++) {
+                                    output.summary += k + "). " + d[j].facebookChat[k].Account + " Freq: " + d[j].facebookChat[k].freq + "<br/>";
+                                }
+                            }
+                        }
+                        header += selectPhonesArr[i] + " <button id = 'viewbtn' value = '" + i + "' onclick='multipleSummarizeArea(this.value)'>View</button><br/>"
+                        outputArr.push(output);
+                    }
+                }
+            }
+            else {
+                //Do nothing. Just keep on the iteration
+            }
+        }
+    }
+    document.getElementById("summarize").innerHTML = header;
+}
+
+function multipleSummarizeArea(btnVal) {
+    document.getElementById("popUpdisplay").innerHTML = outputArr[btnVal].summary;
+    popup('popUpDiv');
+}

@@ -19,7 +19,7 @@ body{text-align:center;}
 
 	
 	float:left;
-    width:17%;
+        width:17%;
 	margin-right:0.2%;
 	margin-top: 5px;
 
@@ -30,13 +30,13 @@ body{text-align:center;}
 .yui-t1 .yui-a {
 
 	float:left;
-    width:55%;
+     width:55%;
 	margin-right:0.2%;
 	margin-top: 5px;}
 .yui-t1 .yui-c {
 	
 	float:left;
-    width:27.6%;
+        width:27.6%;
 	margin-top: 5px;}
 
 
@@ -272,9 +272,9 @@ P.blocktext {
 #header{
 
 	margin-left:auto; 
-    margin-right:auto;
+        margin-right:auto;
 	height:10%;
-	background-color:#E8E8E8;
+	background-color:#0c0c0c;
 }
 	
 	
@@ -292,8 +292,8 @@ P.blocktext {
 }
 
 #input{
-	height:100%;
-    min-height:1200px;
+	
+    min-height:1300px;
 	background-color: #0c0c0c;
     background-size: 100%;
     /*background-color: black;*/
@@ -305,8 +305,8 @@ P.blocktext {
 	
 #graph{
 	z-index:-1; 
-	height:100%;
-    min-height:1200px;
+	
+    height:1300px;
 	/*width:815px;*/
 	background-color:#111111;
 	margin-bottom:10px;
@@ -318,7 +318,7 @@ P.blocktext {
 
 #output{
 	height:100%;
-    min-height:858px;
+    height:823px;
 	background-color:#0c0c0c;
 	margin-bottom:1%;
 	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
