@@ -4,6 +4,10 @@ function queryManagementSXD(selections) {
     var groupArr = [];
     var inputSource = document.getElementById("sourcePhoneNo").value;
     var inputTarget = document.getElementById("targetPhoneNo").value;
+    var datefrom = document.getElementById("datefrom").value;
+    var dateto = document.getElementById("dateto").value;
+    var datefromforquery = convertDatetoISO(datefrom);
+    var datetoforquery = convertDatetoISO(dateto);
     clearDiv('graph');
     clearDiv('output');
     var noLoop = 0;
@@ -15,7 +19,12 @@ function queryManagementSXD(selections) {
                 var linkType2 = selections[noLoop].linkType[1];
                 /*Add date filtering here*/
                 /*look for variable for each linkType in destination2.html. If i'm correct, linkType1 uses r1 and linkType2 uses r2*/
-                var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) + collect(distinct r2) AS R";
+                var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
@@ -352,7 +361,7 @@ function queryManagementSXD(selections) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLink.prop.push(objLinkProp);
                                     linkArr.push(objLink);
 
@@ -421,7 +430,7 @@ function queryManagementSXD(selections) {
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
                                             objLinkProp.dur = result[i].Duration;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             linkArr[linkIndex].prop.push(objLinkProp);
                                         } else {
                                             //Link between source and target haven't been created yet.
@@ -435,7 +444,7 @@ function queryManagementSXD(selections) {
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
                                             objLinkProp.dur = result[i].Duration;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLink.prop.push(objLinkProp);
                                             linkArr.push(objLink);
                                         }
@@ -460,7 +469,7 @@ function queryManagementSXD(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
@@ -485,7 +494,7 @@ function queryManagementSXD(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
@@ -520,7 +529,7 @@ function queryManagementSXD(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
@@ -546,7 +555,12 @@ function queryManagementSXD(selections) {
                 var linkType2 = selections[noLoop].linkType[1];
                 /*Add date filtering here*/
                 /*look for variable for each linkType in destination2.html. If i'm correct, linkType1 uses r1 and linkType2 uses r2*/
-                var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) + collect(distinct r2) AS R";
+                var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
@@ -877,7 +891,7 @@ function queryManagementSXD(selections) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -947,7 +961,7 @@ function queryManagementSXD(selections) {
                                             var objLinkProp = {};
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             //objLinkProp.time = result[i].Time;
                                             objLinkProp.status = result[i].Status;
                                             objLinkProp.message = result[i].Message;
@@ -963,7 +977,7 @@ function queryManagementSXD(selections) {
                                             var objLinkProp = {};
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             //objLinkProp.time = result[i].Time;
                                             objLinkProp.status = result[i].Status;
                                             objLinkProp.message = result[i].Message;
@@ -990,7 +1004,7 @@ function queryManagementSXD(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1017,7 +1031,7 @@ function queryManagementSXD(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1054,7 +1068,7 @@ function queryManagementSXD(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1083,9 +1097,17 @@ function queryManagementSXD(selections) {
                 var linkLabel = selections[noLoop].Type;
                 var _query1 = "MATCH (n:LINE)<-[r1:LINEchat]->(x:LINE)<-[r2:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
+                if (datefrom != "" && dateto != "") {
+                    _query1 += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query1 += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
                 _query1 += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time "
                 _query1 += "UNION MATCH (n:LINE)<-[r1:LINEchat]->(x:LINE)<-[r2:LINEchat]->(m:LINE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
+                if (datefrom != "" && dateto != "") {
+                    _query1 += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query1 += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
                 _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
                 FetchSocialNodesLineSXD(_query1, linkLabel);
 
@@ -1421,7 +1443,7 @@ function queryManagementSXD(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1490,7 +1512,7 @@ function queryManagementSXD(selections) {
                                                 //There is already a link between source and target.
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceLineID;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[linkIndex].prop.push(objLinkProp);
@@ -1504,7 +1526,7 @@ function queryManagementSXD(selections) {
 
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceLineID;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 objLink.prop.push(objLinkProp);
@@ -1529,7 +1551,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr.push(objLink);
@@ -1553,7 +1575,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -1586,7 +1608,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -1709,9 +1731,17 @@ function queryManagementSXD(selections) {
                 var linkLabel = selections[noLoop].Type;
                 var _query1 = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
+                if (datefrom != "" && dateto != "") {
+                    _query1 += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query1 += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
                 _query1 += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time "
                 _query1 += "UNION MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
+                if (datefrom != "" && dateto != "") {
+                    _query1 += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query1 += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
                 _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
                 FetchSocialNodesWhatsappSXD(_query1, linkLabel);
 
@@ -2046,7 +2076,7 @@ function queryManagementSXD(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -2115,7 +2145,7 @@ function queryManagementSXD(selections) {
                                                 //There is already a link between source and target.
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceNumber;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[linkIndex].prop.push(objLinkProp);
@@ -2129,7 +2159,7 @@ function queryManagementSXD(selections) {
 
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceNumber;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 objLink.prop.push(objLinkProp);
@@ -2154,7 +2184,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr.push(objLink);
@@ -2178,7 +2208,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2211,7 +2241,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2331,9 +2361,17 @@ function queryManagementSXD(selections) {
                 var linkLabel = selections[noLoop].Type;
                 var _query1 = "MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(x:FACEBOOK)<-[r2:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
+                if (datefrom != "" && dateto != "") {
+                    _query1 += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query1 += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
                 _query1 += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time "
                 _query1 += "UNION MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(x:FACEBOOK)<-[r2:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
+                if (datefrom != "" && dateto != "") {
+                    _query1 += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query1 += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
                 _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
                 FetchSocialNodesFacebookSXD(_query1, linkLabel);
 
@@ -2669,7 +2707,7 @@ function queryManagementSXD(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -2738,7 +2776,7 @@ function queryManagementSXD(selections) {
                                                 //There is already a link between source and target.
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceFacebook;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 linkArr[linkIndex].prop.push(objLinkProp);
@@ -2752,7 +2790,7 @@ function queryManagementSXD(selections) {
 
                                                 var objLinkProp = {};
                                                 objLinkProp.Sender = result[i].SourceFacebook;
-                                                objLinkProp.date = result[i].Date;
+                                                objLinkProp.date = convertDatetoNormal(result[i].Date);
                                                 objLinkProp.Time = result[i].Time;
                                                 objLinkProp.message = result[i].Message;
                                                 objLink.prop.push(objLinkProp);
@@ -2777,7 +2815,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebookID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr.push(objLink);
@@ -2801,7 +2839,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebookID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2834,7 +2872,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebookID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2954,7 +2992,12 @@ function queryManagementSXD(selections) {
                 var linkType1 = selections[noLoop].linkType[0];
                 var linkType2 = selections[noLoop].linkType[1];
                 /*Add date filtering here*/
-                var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) + collect(distinct r2) AS R";
+                var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
@@ -3032,7 +3075,7 @@ function queryManagementSXD(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         linkArr[linkIndex].prop.push(objLinkProp);
                                     } else {
                                         //Link between source and target haven't been created yet.
@@ -3046,7 +3089,7 @@ function queryManagementSXD(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
                                     }
@@ -3147,7 +3190,7 @@ function queryManagementSXD(selections) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLink.prop.push(objLinkProp);
                                     linkArr.push(objLink);
                                 } else {
@@ -3289,7 +3332,7 @@ function queryManagementSXD(selections) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLink.prop.push(objLinkProp);
                                     linkArr.push(objLink);
                                 }
@@ -3312,7 +3355,12 @@ function queryManagementSXD(selections) {
                 var linkType1 = selections[noLoop].linkType[0];
                 var linkType2 = selections[noLoop].linkType[1];
                 /*Add date filtering here*/
-                var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' RETURN collect(distinct r1) + collect(distinct r2) AS R";
+                var _query = "MATCH (n:PHONE)" + linkType1 + "(x:PHONE)" + linkType2 + "(m:PHONE) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' ";
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
@@ -3388,7 +3436,7 @@ function queryManagementSXD(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -3404,7 +3452,7 @@ function queryManagementSXD(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -3457,7 +3505,7 @@ function queryManagementSXD(selections) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -3509,7 +3557,7 @@ function queryManagementSXD(selections) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -3653,7 +3701,7 @@ function queryManagementSXD(selections) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -3680,9 +3728,17 @@ function queryManagementSXD(selections) {
                 var linkLabel = selections[noLoop].Type;
                 var _query1 = "MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
+                if (datefrom != "" && dateto != "") {
+                    _query1 += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query1 += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
                 _query1 += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time "
                 _query1 += "UNION MATCH (n:WHATSAPP)<-[r1:Whatsappchat]->(x:WHATSAPP)<-[r2:Whatsappchat]->(m:WHATSAPP) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
+                if (datefrom != "" && dateto != "") {
+                    _query1 += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query1 += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
                 _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
 
                 FetchSocialNodesWhatsappSXD2round(_query1, linkLabel);
@@ -4036,7 +4092,7 @@ function queryManagementSXD(selections) {
                                             //There is already a link between source and target.
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr[linkIndex].prop.push(objLinkProp);
@@ -4050,7 +4106,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -4075,7 +4131,7 @@ function queryManagementSXD(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr.push(objLink);
@@ -4099,7 +4155,7 @@ function queryManagementSXD(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -4134,7 +4190,7 @@ function queryManagementSXD(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -4275,9 +4331,17 @@ function queryManagementSXD(selections) {
                 var linkLabel = selections[noLoop].Type;
                 var _query1 = "MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(x:FACEBOOK)<-[r2:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
+                if (datefrom != "" && dateto != "") {
+                    _query1 += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query1 += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
                 _query1 += "RETURN distinct r1 as R ORDER BY r1.Date, r1.Time "
                 _query1 += "UNION MATCH (n:FACEBOOK)<-[r1:Facebookchat]->(x:FACEBOOK)<-[r2:Facebookchat]->(m:FACEBOOK) WHERE n.PhoneNumber = '" + inputSource + "' AND m.PhoneNumber = '" + inputTarget + "' "
                 /*Add date filtering here*/
+                if (datefrom != "" && dateto != "") {
+                    _query1 += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query1 += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
                 _query1 += "RETURN distinct r2 as R ORDER BY r2.Date,r2.Time";
 
                 FetchSocialNodesFacebookSXD2round(_query1, linkLabel);
@@ -4631,7 +4695,7 @@ function queryManagementSXD(selections) {
                                             //There is already a link between source and target.
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebook;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr[linkIndex].prop.push(objLinkProp);
@@ -4645,7 +4709,7 @@ function queryManagementSXD(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebook;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -4670,7 +4734,7 @@ function queryManagementSXD(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr.push(objLink);
@@ -4694,7 +4758,7 @@ function queryManagementSXD(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -4729,7 +4793,7 @@ function queryManagementSXD(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
