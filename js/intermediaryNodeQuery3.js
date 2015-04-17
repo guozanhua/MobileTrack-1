@@ -13,6 +13,11 @@ function createQueryForThree(selections) {
 
     var inputSource = document.getElementById("sourcePhoneNo").value;
     var inputTarget = document.getElementById("targetPhoneNo").value;
+    
+    var datefrom = document.getElementById("datefrom").value;
+    var dateto = document.getElementById("dateto").value;
+    var datefromforquery = convertDatetoISO(datefrom);
+    var datetoforquery = convertDatetoISO(dateto);
 
     var noLoop = 0;
     
@@ -25,19 +30,25 @@ function createQueryForThree(selections) {
         console.log(noLoop);
         if (noLoop == 0) {
             if (selections[noLoop].Type == 'Call') {
-                var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
-                var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
-                /*Add date filtering here*/
-                var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
-                var _queryString = match + where + retur;
-                console.log(_queryString);
+                var _query = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
+                //add date
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(x1.Date) >= toInt(" + datefromforquery + ") AND toInt(x1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(x2.Date) >= toInt(" + datefromforquery + ") AND toInt(x2.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
+               
+                console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
                         .post(
                                 JSON.stringify({
                                     "statements": [{
-                                            "statement": _queryString,
+                                            "statement": _query,
                                             "resultDataContents": ["row"]//, "graph" ]
                                         }]
                                 }), function (err, data) {
@@ -365,7 +376,7 @@ function createQueryForThree(selections) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLink.prop.push(objLinkProp);
                                     linkArr.push(objLink);
                                 } else {
@@ -435,7 +446,7 @@ function createQueryForThree(selections) {
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
                                             objLinkProp.dur = result[i].Duration;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             linkArr[linkIndex].prop.push(objLinkProp);
                                         } else {
                                             //Link between source and target haven't been created yet.
@@ -454,7 +465,7 @@ function createQueryForThree(selections) {
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
                                             objLinkProp.dur = result[i].Duration;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLink.prop.push(objLinkProp);
                                             linkArr.push(objLink);
                                         }
@@ -484,7 +495,7 @@ function createQueryForThree(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
@@ -514,7 +525,7 @@ function createQueryForThree(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
@@ -554,7 +565,7 @@ function createQueryForThree(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
                                     }
@@ -574,19 +585,25 @@ function createQueryForThree(selections) {
                         });
 
             } else if (selections[noLoop].Type == 'SMS') {
-                var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
-                var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
-                /*Add date filtering here*/
-                var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
-                var _queryString = match + where + retur;
-                console.log(_queryString);
+                var _query = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
+                //add date
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(x1.Date) >= toInt(" + datefromforquery + ") AND toInt(x1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(x2.Date) >= toInt(" + datefromforquery + ") AND toInt(x2.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
+                
+                console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
                         .post(
                                 JSON.stringify({
                                     "statements": [{
-                                            "statement": _queryString,
+                                            "statement": _query,
                                             "resultDataContents": ["row"]//, "graph" ]
                                         }]
                                 }), function (err, data) {
@@ -913,7 +930,7 @@ function createQueryForThree(selections) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -985,7 +1002,7 @@ function createQueryForThree(selections) {
                                             var objLinkProp = {};
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             //objLinkProp.time = result[i].Time;
                                             objLinkProp.status = result[i].Status;
                                             objLinkProp.message = result[i].Message;
@@ -1006,7 +1023,7 @@ function createQueryForThree(selections) {
                                             var objLinkProp = {};
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             //objLinkProp.time = result[i].Time;
                                             objLinkProp.status = result[i].Status;
                                             objLinkProp.message = result[i].Message;
@@ -1038,7 +1055,7 @@ function createQueryForThree(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1070,7 +1087,7 @@ function createQueryForThree(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1112,7 +1129,7 @@ function createQueryForThree(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -1135,11 +1152,17 @@ function createQueryForThree(selections) {
 
             } else if (selections[noLoop].Type == 'Line') {
                 var linkLabel = selections[noLoop].Type;
-                var match = "MATCH (a:LINE)<-[r1:LINEchat]->(x1:LINE)<-[r2:LINEchat]->(x2:LINE)<-[r3:LINEchat]->(x3:LINE)<-[r4:LINEchat]->(b:LINE) "
-                var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
-                /*Add date filtering here*/
-                var retur = "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
-                var _query = match + where + retur;
+                var _query = "MATCH (a:LINE)<-[r1:LINEchat]->(x1:LINE)<-[r2:LINEchat]->(x2:LINE)<-[r3:LINEchat]->(x3:LINE)<-[r4:LINEchat]->(b:LINE) "
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
+                //add date
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r3.Date) >= toInt(" + datefromforquery + ") AND toInt(r3.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r4.Date) >= toInt(" + datefromforquery + ") AND toInt(r4.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
+                
 
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
@@ -1468,7 +1491,7 @@ function createQueryForThree(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceLineID;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
@@ -1537,7 +1560,7 @@ function createQueryForThree(selections) {
                                             //There is already a link between source and target.
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr[linkIndex].prop.push(objLinkProp);
@@ -1551,7 +1574,7 @@ function createQueryForThree(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -1576,7 +1599,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr.push(objLink);
@@ -1600,7 +1623,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1633,7 +1656,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1783,11 +1806,17 @@ function createQueryForThree(selections) {
                 }
             } else if (selections[noLoop].Type == 'Whatsapp') {
                 var linkLabel = selections[noLoop].Type;
-                var match = "MATCH (a:WHATSAPP)<-[r1:Whatsappchat]->(x1:WHATSAPP)<-[r2:Whatsappchat]->(x2:WHATSAPP)<-[r3:Whatsappchat]->(x3:WHATSAPP)<-[r4:Whatsappchat]->(b:WHATSAPP) "
-                var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
-                /*Add date filtering here*/
-                var retur = "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
-                var _query = match + where + retur;
+                var _query = "MATCH (a:WHATSAPP)<-[r1:Whatsappchat]->(x1:WHATSAPP)<-[r2:Whatsappchat]->(x2:WHATSAPP)<-[r3:Whatsappchat]->(x3:WHATSAPP)<-[r4:Whatsappchat]->(b:WHATSAPP) "
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
+                //add date
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r3.Date) >= toInt(" + datefromforquery + ") AND toInt(r3.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r4.Date) >= toInt(" + datefromforquery + ") AND toInt(r4.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
+                
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
@@ -2113,7 +2142,7 @@ function createQueryForThree(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
@@ -2182,7 +2211,7 @@ function createQueryForThree(selections) {
                                             //There is already a link between source and target.
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr[linkIndex].prop.push(objLinkProp);
@@ -2196,7 +2225,7 @@ function createQueryForThree(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2221,7 +2250,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr.push(objLink);
@@ -2245,7 +2274,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -2278,7 +2307,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -2430,11 +2459,17 @@ function createQueryForThree(selections) {
             }
             else {
                 var linkLabel = selections[noLoop].Type;
-                var match = "MATCH (a:FACEBOOK)<-[r1:Facebookchat]->(x1:FACEBOOK)<-[r2:Facebookchat]->(x2:FACEBOOK)<-[r3:Facebookchat]->(x3:FACEBOOK)<-[r4:Facebookchat]->(b:FACEBOOK) "
-                var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
-                /*Add date filtering here*/
-                var retur = "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
-                var _query = match + where + retur;
+                var _query = "MATCH (a:FACEBOOK)<-[r1:Facebookchat]->(x1:FACEBOOK)<-[r2:Facebookchat]->(x2:FACEBOOK)<-[r3:Facebookchat]->(x3:FACEBOOK)<-[r4:Facebookchat]->(b:FACEBOOK) "
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
+                //add date
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r3.Date) >= toInt(" + datefromforquery + ") AND toInt(r3.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r4.Date) >= toInt(" + datefromforquery + ") AND toInt(r4.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
+                
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
@@ -2762,7 +2797,7 @@ function createQueryForThree(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceFacebook;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
@@ -2831,7 +2866,7 @@ function createQueryForThree(selections) {
                                             //There is already a link between source and target.
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebook;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr[linkIndex].prop.push(objLinkProp);
@@ -2845,7 +2880,7 @@ function createQueryForThree(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebook;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -2870,7 +2905,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebookID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr.push(objLink);
@@ -2894,7 +2929,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebookID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -2927,7 +2962,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebookID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -3047,12 +3082,18 @@ function createQueryForThree(selections) {
         /*------------------------------------------------------------------------------------End of First Round----------------------------------------------------------------------*/
         else {
             if (selections[noLoop].Type == 'Call') {
-                var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
-                var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
-                /*Add date filtering here*/
-                var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
-                var _queryString = match + where + retur;
-                console.log(_queryString);
+                var _query = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
+                //add date
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(x1.Date) >= toInt(" + datefromforquery + ") AND toInt(x1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(x2.Date) >= toInt(" + datefromforquery + ") AND toInt(x2.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
+                
+                console.log(_query);
 
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
@@ -3060,7 +3101,7 @@ function createQueryForThree(selections) {
                         .post(
                                 JSON.stringify({
                                     "statements": [{
-                                            "statement": _queryString,
+                                            "statement": _query,
                                             "resultDataContents": ["row"]//, "graph" ]
                                         }]
                                 }), function (err, data) {
@@ -3130,7 +3171,7 @@ function createQueryForThree(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         linkArr[linkIndex].prop.push(objLinkProp);
                                     } else {
                                         //Link between source and target haven't been created yet.
@@ -3149,7 +3190,7 @@ function createQueryForThree(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
                                     }
@@ -3260,7 +3301,7 @@ function createQueryForThree(selections) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLink.prop.push(objLinkProp);
                                     linkArr.push(objLink);
                                 } else {
@@ -3407,7 +3448,7 @@ function createQueryForThree(selections) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLink.prop.push(objLinkProp);
                                     linkArr.push(objLink);
                                 }
@@ -3427,12 +3468,18 @@ function createQueryForThree(selections) {
                         });
 
             } else if (selections[noLoop].Type == 'SMS') {
-                var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
-                var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
-                /*Add date filtering here*/
-                var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
-                var _queryString = match + where + retur;
-                console.log(_queryString);
+                var _query = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
+                //add date
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(x1.Date) >= toInt(" + datefromforquery + ") AND toInt(x1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(x2.Date) >= toInt(" + datefromforquery + ") AND toInt(x2.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
+              
+                console.log(_query);
 
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
@@ -3440,7 +3487,7 @@ function createQueryForThree(selections) {
                         .post(
                                 JSON.stringify({
                                     "statements": [{
-                                            "statement": _queryString,
+                                            "statement": _query,
                                             "resultDataContents": ["row"]//, "graph" ]
                                         }]
                                 }), function (err, data) {
@@ -3502,7 +3549,7 @@ function createQueryForThree(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -3523,7 +3570,7 @@ function createQueryForThree(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -3581,7 +3628,7 @@ function createQueryForThree(selections) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -3638,7 +3685,7 @@ function createQueryForThree(selections) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -3787,7 +3834,7 @@ function createQueryForThree(selections) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -3811,11 +3858,17 @@ function createQueryForThree(selections) {
 
             } else if (selections[noLoop].Type == 'Whatsapp') {
                 var linkLabel = selections[noLoop].Type;
-                var match = "MATCH (a:WHATSAPP)<-[r1:Whatsappchat]->(x1:WHATSAPP)<-[r2:Whatsappchat]->(x2:WHATSAPP)<-[r3:Whatsappchat]->(x3:WHATSAPP)<-[r4:Whatsappchat]->(b:WHATSAPP) "
-                var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
-                /*Add date filtering here*/
-                var retur = "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
-                var _query = match + where + retur;
+                var _query = "MATCH (a:WHATSAPP)<-[r1:Whatsappchat]->(x1:WHATSAPP)<-[r2:Whatsappchat]->(x2:WHATSAPP)<-[r3:Whatsappchat]->(x3:WHATSAPP)<-[r4:Whatsappchat]->(b:WHATSAPP) "
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
+                //add date
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r3.Date) >= toInt(" + datefromforquery + ") AND toInt(r3.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r4.Date) >= toInt(" + datefromforquery + ") AND toInt(r4.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
+                
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
@@ -4161,7 +4214,7 @@ function createQueryForThree(selections) {
                                         //There is already a link between source and target.
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr[linkIndex].prop.push(objLinkProp);
@@ -4175,7 +4228,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -4200,7 +4253,7 @@ function createQueryForThree(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     linkArr.push(objLink);
@@ -4224,7 +4277,7 @@ function createQueryForThree(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
@@ -4259,7 +4312,7 @@ function createQueryForThree(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
@@ -4429,11 +4482,18 @@ function createQueryForThree(selections) {
 
             } else if (selections[noLoop].Type == 'Facebook') {
                 var linkLabel = selections[noLoop].Type;
-                var match = "MATCH (a:FACEBOOK)<-[r1:Facebookchat]->(x1:FACEBOOK)<-[r2:Facebookchat]->(x2:FACEBOOK)<-[r3:Facebookchat]->(x3:FACEBOOK)<-[r4:Facebookchat]->(b:FACEBOOK) "
-                var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
-                /*Add date filtering here*/
-                var retur = "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
-                var _query = match + where + retur;
+                var _query = "MATCH (a:FACEBOOK)<-[r1:Facebookchat]->(x1:FACEBOOK)<-[r2:Facebookchat]->(x2:FACEBOOK)<-[r3:Facebookchat]->(x3:FACEBOOK)<-[r4:Facebookchat]->(b:FACEBOOK) "
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
+                //add date
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r2.Date) >= toInt(" + datefromforquery + ") AND toInt(r2.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r3.Date) >= toInt(" + datefromforquery + ") AND toInt(r3.Date) <= toInt(" + datetoforquery + ") "
+                    _query += " AND toInt(r4.Date) >= toInt(" + datefromforquery + ") AND toInt(r4.Date) <= toInt(" + datetoforquery + ") "
+                }
+                _query += "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
+                console.log(_query);
+                
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
                         .header("Content-Type", "application/json")
                         .mimeType("application/json")
@@ -4779,7 +4839,7 @@ function createQueryForThree(selections) {
                                         //There is already a link between source and target.
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr[linkIndex].prop.push(objLinkProp);
@@ -4793,7 +4853,7 @@ function createQueryForThree(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -4818,7 +4878,7 @@ function createQueryForThree(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceFacebook;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     linkArr.push(objLink);
@@ -4842,7 +4902,7 @@ function createQueryForThree(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceFacebook;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
@@ -4877,7 +4937,7 @@ function createQueryForThree(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
