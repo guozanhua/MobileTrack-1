@@ -10,6 +10,12 @@ function queryAllPhones(selections) {
     promptArr.push(linkArr);
     promptArr.push(countRelArr);
 
+    /*Date filtering*/
+    var datefrom = document.getElementById("datefromAll").value;
+    var dateto = document.getElementById("datetoAll").value;
+    var datefromforquery = convertDatetoISO(datefrom);
+    var datetoforquery = convertDatetoISO(dateto);
+
     var noLoop = 0;
     recursiveAllPhone(promptArr);
     function recursiveAllPhone(promptArr) {
@@ -19,8 +25,34 @@ function queryAllPhones(selections) {
         countRelArr = promptArr[2];
         if (noLoop == 0) {
             if (selections[noLoop].Type == 'Call') {
-                //create Query for Call
-                var _query = "MATCH (n:PHONE)<-[r:Call]->(m:PHONE) "
+                /*create Query for Call*/
+
+                /*Operation*/
+
+                var _query = "MATCH (n:PHONE)-[r:Call]->(m:PHONE) ";
+
+                var dur = document.getElementById("durationAll").value;
+                /*Duration*/
+                if (dur == "23") { // 2-2.59 min
+                    _query += "WHERE toInt(r.Duration) > 120000 ";
+                    _query += "AND toInt(r.Duration) < 180000 ";
+                } else if (dur == "12") {// 1-1.59 min
+                    _query += "WHERE toInt(r.Duration) > 60000 ";
+                    _query += "AND toInt(r.Duration) < 120000 ";
+                } else {
+                    //Do nothing
+
+                }
+
+
+                if (datefrom != "" && dateto != "") {
+                    if (dur == "01") {
+                        _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") ";
+                    } else {
+                        _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") ";
+                    }
+                }
+
                 _query += "RETURN collect(distinct r) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -236,7 +268,7 @@ function queryAllPhones(selections) {
                                 nodeArr[i].callIn = [];
                                 nodeArr[i].matchFreq = 0;
                             }
-                            
+
                             var inputFreq = 0;
                             //Listed of callTo and callIn for each node
                             linkArr.forEach(function (link) {
@@ -297,7 +329,30 @@ function queryAllPhones(selections) {
 
             } else if (selections[noLoop].Type == 'SMS') {
                 //create Query for SMS
-                var _query = "MATCH (n:PHONE)<-[r:SMS]->(m:PHONE) "
+                var _query = "MATCH (n:PHONE)-[r:SMS]->(m:PHONE) "
+                /*Date filtering*/
+                if (datefrom != "" && dateto != "") {
+                    _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                }
+
+                /*Status Filtering*/
+                var status = document.getElementById("statusAll").value;
+                if (status == "read") {
+                    if (datefrom != "" && dateto != "") {
+                        _query += "AND r.Status = 'read' ";
+                    } else {
+                        _query += "WHERE r.Status = 'read' ";
+                    }
+                } else if (status == "unread") {
+                    if (datefrom != "" && dateto != "") {
+                        _query += "AND r.Status = 'unread' ";
+                    } else {
+                        _query += "WHERE r.Status = 'unread' "
+                    }
+                } else {
+                    //do nothing
+                }
+
                 _query += "RETURN collect(distinct r) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -576,7 +631,11 @@ function queryAllPhones(selections) {
                         });
 
             } else if (selections[noLoop].Type == 'Line') {
-                var _query = "MATCH (n:LINE)<-[r:LINEchat]->(m:LINE) ";
+                var _query = "MATCH (n:LINE)-[r:LINEchat]->(m:LINE) ";
+                /*Date filtering*/
+                if (datefrom != "" && dateto != "") {
+                    _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") ";
+                }
                 _query += "RETURN distinct r ORDER BY r.Date,r.Time";
                 console.log(_query);
                 var linkLabel = selections[noLoop].Type;
@@ -912,7 +971,11 @@ function queryAllPhones(selections) {
                             });
                 }
             } else if (selections[noLoop].Type == 'Whatsapp') {
-                var _query = "MATCH (n:WHATSAPP)<-[r:Whatsappchat]->(m:WHATSAPP) ";
+                var _query = "MATCH (n:WHATSAPP)-[r:Whatsappchat]->(m:WHATSAPP) ";
+                /*Date filtering*/
+                if (datefrom != "" && dateto != "") {
+                    _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") ";
+                }
                 _query += "RETURN distinct r ORDER BY r.Date,r.Time";
                 console.log(_query);
                 var linkLabel = selections[noLoop].Type;
@@ -1249,7 +1312,11 @@ function queryAllPhones(selections) {
                             });
                 }
             } else {
-                var _query = "MATCH (n:FACEBOOK)<-[r:Facebookchat]->(m:FACEBOOK) ";
+                var _query = "MATCH (n:FACEBOOK)-[r:Facebookchat]->(m:FACEBOOK) ";
+                /*Date filtering*/
+                if (datefrom != "" && dateto != "") {
+                    _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") ";
+                }
                 _query += "RETURN distinct r ORDER BY r.Date,r.Time";
                 console.log(_query);
                 var linkLabel = selections[noLoop].Type;
@@ -1764,7 +1831,7 @@ function dataVisualizationAllPhones(finalResult) {
             })
             .style("fill", function (d) {
                 var commuType = document.getElementById("spinnerbox").value;
-                if(commuType == 'call'){
+                if (commuType == 'call') {
                     var sum = d.callIn.length + d.callOut.length;
                     if (sum > 15) {
                         return "#FF0000";
@@ -1773,7 +1840,7 @@ function dataVisualizationAllPhones(finalResult) {
                     } else {
                         return "#00FF00";
                     }
-                }else if(commuType == 'message'){
+                } else if (commuType == 'message') {
                     var sum = d.smsIn.length + d.smsOut.length;
                     if (sum > 15) {
                         return "#FF0000";
@@ -1782,8 +1849,8 @@ function dataVisualizationAllPhones(finalResult) {
                     } else {
                         return "#00FF00";
                     }
-                }else if(commuType == 'line'){
-                    if(d.Label == 'Line'){
+                } else if (commuType == 'line') {
+                    if (d.Label == 'Line') {
                         var sum = d.lineChat.length;
                         if (sum > 15) {
                             return "#FF0000";
@@ -1792,12 +1859,12 @@ function dataVisualizationAllPhones(finalResult) {
                         } else {
                             return "#00FF00";
                         }
-                    }else{
+                    } else {
                         return "#2a2a2a"
                     }
-                    
-                }else if(commuType == 'whatsapp'){
-                    if(d.Label == 'Whatsapp'){
+
+                } else if (commuType == 'whatsapp') {
+                    if (d.Label == 'Whatsapp') {
                         var sum = d.WhatsappChat.length;
                         if (sum > 15) {
                             return "#FF0000";
@@ -1806,11 +1873,11 @@ function dataVisualizationAllPhones(finalResult) {
                         } else {
                             return "#00FF00";
                         }
-                    }else{
+                    } else {
                         return "#2a2a2a"
                     }
-                }else{
-                    if(d.Label == 'Facebook'){
+                } else {
+                    if (d.Label == 'Facebook') {
                         var sum = d.facebookChat.length;
                         if (sum > 15) {
                             return "#FF0000";
@@ -1819,11 +1886,11 @@ function dataVisualizationAllPhones(finalResult) {
                         } else {
                             return "#00FF00";
                         }
-                    }else{
+                    } else {
                         return "#2a2a2a"
                     }
                 }
-                    
+
             })
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide)
@@ -1855,25 +1922,25 @@ function dataVisualizationAllPhones(finalResult) {
 
             var phoneArr = [];
             var commuBox = document.getElementById("spinnerbox").value;
-            if(commuBox == 'call' || commuBox == 'message'){
+            if (commuBox == 'call' || commuBox == 'message') {
                 for (i = 0; i < finalResult[0].length; i++) {
                     if (finalResult[0][i].Label == 'Phone') {
                         phoneArr.push(finalResult[0][i]);
                     }
                 }
-            }else if(commuBox == 'line'){
+            } else if (commuBox == 'line') {
                 for (i = 0; i < finalResult[0].length; i++) {
                     if (finalResult[0][i].Label == 'Line') {
                         phoneArr.push(finalResult[0][i]);
                     }
                 }
-            }else if(commuBox == 'whatsapp'){
+            } else if (commuBox == 'whatsapp') {
                 for (i = 0; i < finalResult[0].length; i++) {
                     if (finalResult[0][i].Label == 'Whatsapp') {
                         phoneArr.push(finalResult[0][i]);
                     }
                 }
-            }else{
+            } else {
                 for (i = 0; i < finalResult[0].length; i++) {
                     if (finalResult[0][i].Label == 'Facebook') {
                         phoneArr.push(finalResult[0][i]);
@@ -1886,17 +1953,17 @@ function dataVisualizationAllPhones(finalResult) {
                         .attr('class', 'nodeCircle' + (i + 1))
                         .style("background", function () {
                             var sum = 0;
-                            if(commuBox == 'call')
+                            if (commuBox == 'call')
                                 sum = phoneArr[i].callIn.length + phoneArr[i].callOut.length;
-                            else if(commuBox == 'message')
+                            else if (commuBox == 'message')
                                 sum = phoneArr[i].smsIn.length + phoneArr[i].smsOut.length;
-                            else if(commuBox == 'line')
+                            else if (commuBox == 'line')
                                 sum = phoneArr[i].lineChat.length;
-                            else if(commuBox == 'whatsapp')
+                            else if (commuBox == 'whatsapp')
                                 sum = phoneArr[i].WhatsappChat.length;
                             else
                                 sum = phoneArr[i].facebookChat.length;
-                            
+
                             if (sum > 15) {
                                 return "#FF0000";
                             } else if (sum > 10) {
@@ -2124,88 +2191,114 @@ function dataVisualizationAllPhones(finalResult) {
     }
 
 }
-function visualizeLinkSummary(d){
-    if(d.Type == 'Line'){
+function visualizeLinkSummary(d) {
+    if (d.Type == 'Line') {
         var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
-        summary += "Source: " + d.source.textDisplay + " is a Line account related with "+ d.source.PhoneNumber + "<br/>";
-        summary += "Target: " + d.target.textDisplay + " is a Line account related with "+ d.target.PhoneNumber + "<br/>";
+        summary += "Source: " + d.source.textDisplay + " is a Line account related with " + d.source.PhoneNumber + "<br/>";
+        summary += "Target: " + d.target.textDisplay + " is a Line account related with " + d.target.PhoneNumber + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Line Chat Log: " + d.prop.length;
-    }else if(d.Type == 'Whatsapp'){
+    } else if (d.Type == 'Whatsapp') {
         var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
-        summary += "Source: " + d.source.textDisplay + " is a Whatsapp account related with "+ d.source.PhoneNumber + "<br/>";
-        summary += "Target: " + d.target.textDisplay + " is a Whatsapp account related with "+ d.source.PhoneNumber + "<br/>";
+        summary += "Source: " + d.source.textDisplay + " is a Whatsapp account related with " + d.source.PhoneNumber + "<br/>";
+        summary += "Target: " + d.target.textDisplay + " is a Whatsapp account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Whatsapp Chat Log: " + d.prop.length;
-    }else if(d.Type == 'Facebook'){
+    } else if (d.Type == 'Facebook') {
         var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
-        summary += "Source: " + d.source.textDisplay + " is a Facebook account related with "+ d.source.PhoneNumber + "<br/>";
-        summary += "Target: " + d.target.textDisplay + " is a Facebook account related with "+ d.source.PhoneNumber + "<br/>";
+        summary += "Source: " + d.source.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "<br/>";
+        summary += "Target: " + d.target.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Facebook Chat Log: " + d.prop.length;
-    }else if(d.Type == 'Call'){
+    } else if (d.Type == 'Call') {
         var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
         summary += "Source: " + d.source.textDisplay + "<br/>";
         summary += "Target: " + d.target.textDisplay + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Call Log: " + d.prop.length;
-    }else{
+    } else {
         var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
         summary += "Source: " + d.source.textDisplay + "<br/>";
         summary += "Target: " + d.target.textDisplay + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total SMS Log: " + d.prop.length;
     }
-    
+
     document.getElementById("summarize").innerHTML = summary;
 }
 
-function visualizeNodeSummary(d){
+function visualizeNodeSummary(d) {
     var commuType = document.getElementById("spinnerbox").value;
-        var output = "";
-        if(commuType == 'call'){
-            output = "Phone Number: " + d.PhoneNumber + "<br/>";
-            output += "Call In: " + "<br/>"
+    var output = "";
+    if (commuType == 'call') {
+        output = "Phone Number: " + d.PhoneNumber + "<br/>";
+        var operation = document.getElementById("typecallAll").value;
+        if (operation == 'incoming') {
+            output += "Incoming Call: " + "<br/>"
+            for (i = 0; i < d.callIn.length; i++) {
+                output += i + "). " + d.callIn[i].PhoneNumber + " Freq: " + d.callIn[i].freq + "<br/>";
+            }
+        } else if (operation == 'outgoing') {
+            output += "Outgoing Call: " + "<br/>"
+            for (i = 0; i < d.callOut.length; i++) {
+                output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
+            }
+        } else {
+            output += "Incoming Call: " + "<br/>"
             for (i = 0; i < d.callIn.length; i++) {
                 output += i + "). " + d.callIn[i].PhoneNumber + " Freq: " + d.callIn[i].freq + "<br/>";
             }
 
-            output += "Call Out: " + "<br/>"
+            output += "Outgoing Call: " + "<br/>"
             for (i = 0; i < d.callOut.length; i++) {
                 output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
             }
+        }
 
-        }else if(commuType == 'message'){
-            output = "Phone Number: " + d.PhoneNumber + "<br/>";
-            output += "SMS In: " + "<br/>"
+    } else if (commuType == 'message') {
+        output = "Phone Number: " + d.PhoneNumber + "<br/>";
+        var smsType = document.getElementById("typesmsAll").value;
+        if (smsType == 'send') {
+            output += "Send to: " + "<br/>"
+            for (i = 0; i < d.smsOut.length; i++) {
+                output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
+            }
+        } else if (smsType == 'received') {
+            output += "Received from: " + "<br/>"
             for (i = 0; i < d.smsIn.length; i++) {
                 output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
             }
-
-            output += "SMS Out: " + "<br/>"
+        }
+        else {
+            output += "Send to: " + "<br/>"
             for (i = 0; i < d.smsOut.length; i++) {
                 output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
             }
 
-        }else if(commuType == 'line'){
-            output =  d.textDisplay + "<br/>";
-            output += "LINE chat with: " + "<br/>"
-            for (i = 0; i < d.lineChat.length; i++) {
-                output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";
-            }
-        }else if(commuType == 'whatsapp'){
-            output = d.textDisplay + "<br/>";
-            output += "Whatsapp chat with: " + "<br/>"
-            for (i = 0; i < d.WhatsappChat.length; i++) {
-                output += i + "). " + d.WhatsappChat[i].Account + " Freq: " + d.WhatsappChat[i].freq + "<br/>";
-            }
-        }else{
-            output = d.textDisplay + "<br/>";
-            output += "Facebook chat with: " + "<br/>"
-            for (i = 0; i < d.facebookChat.length; i++) {
-                output += i + "). " + d.facebookChat[i].Account + " Freq: " + d.facebookChat[i].freq + "<br/>";
+            output += "Received from: " + "<br/>"
+            for (i = 0; i < d.smsIn.length; i++) {
+                output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
             }
         }
-        document.getElementById("summarize").innerHTML = output;
+    } else if (commuType == 'line') {
+        output = d.textDisplay + "<br/>";
+        output += "LINE chat with: " + "<br/>"
+        for (i = 0; i < d.lineChat.length; i++) {
+            output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";
+        }
+    } else if (commuType == 'whatsapp') {
+        output = d.textDisplay + "<br/>";
+        output += "Whatsapp chat with: " + "<br/>"
+        for (i = 0; i < d.WhatsappChat.length; i++) {
+            output += i + "). " + d.WhatsappChat[i].Account + " Freq: " + d.WhatsappChat[i].freq + "<br/>";
+        }
+    } else {
+        output = d.textDisplay + "<br/>";
+        output += "Facebook chat with: " + "<br/>"
+        for (i = 0; i < d.facebookChat.length; i++) {
+            output += i + "). " + d.facebookChat[i].Account + " Freq: " + d.facebookChat[i].freq + "<br/>";
+        }
+    }
+    document.getElementById("summarize").innerHTML = output;
 }
 

@@ -27,6 +27,7 @@ function createQueryForThree(selections) {
             if (selections[noLoop].Type == 'Call') {
                 var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
                 var _queryString = match + where + retur;
                 console.log(_queryString);
@@ -575,6 +576,7 @@ function createQueryForThree(selections) {
             } else if (selections[noLoop].Type == 'SMS') {
                 var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
                 var _queryString = match + where + retur;
                 console.log(_queryString);
@@ -1135,6 +1137,7 @@ function createQueryForThree(selections) {
                 var linkLabel = selections[noLoop].Type;
                 var match = "MATCH (a:LINE)<-[r1:LINEchat]->(x1:LINE)<-[r2:LINEchat]->(x2:LINE)<-[r3:LINEchat]->(x3:LINE)<-[r4:LINEchat]->(b:LINE) "
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
                 var _query = match + where + retur;
 
@@ -1782,6 +1785,7 @@ function createQueryForThree(selections) {
                 var linkLabel = selections[noLoop].Type;
                 var match = "MATCH (a:WHATSAPP)<-[r1:Whatsappchat]->(x1:WHATSAPP)<-[r2:Whatsappchat]->(x2:WHATSAPP)<-[r3:Whatsappchat]->(x3:WHATSAPP)<-[r4:Whatsappchat]->(b:WHATSAPP) "
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
                 var _query = match + where + retur;
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -2428,6 +2432,7 @@ function createQueryForThree(selections) {
                 var linkLabel = selections[noLoop].Type;
                 var match = "MATCH (a:FACEBOOK)<-[r1:Facebookchat]->(x1:FACEBOOK)<-[r2:Facebookchat]->(x2:FACEBOOK)<-[r3:Facebookchat]->(x3:FACEBOOK)<-[r4:Facebookchat]->(b:FACEBOOK) "
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
                 var _query = match + where + retur;
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -3044,6 +3049,7 @@ function createQueryForThree(selections) {
             if (selections[noLoop].Type == 'Call') {
                 var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
                 var _queryString = match + where + retur;
                 console.log(_queryString);
@@ -3423,6 +3429,7 @@ function createQueryForThree(selections) {
             } else if (selections[noLoop].Type == 'SMS') {
                 var match = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE)" + selections[noLoop].linkType[3] + "(e:PHONE) ";
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND e.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' AND d.PhoneNumber <> '" + inputTarget + "' AND d.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct x1) + collect(distinct x2) + collect(distinct r2) AS R ";
                 var _queryString = match + where + retur;
                 console.log(_queryString);
@@ -3806,6 +3813,7 @@ function createQueryForThree(selections) {
                 var linkLabel = selections[noLoop].Type;
                 var match = "MATCH (a:WHATSAPP)<-[r1:Whatsappchat]->(x1:WHATSAPP)<-[r2:Whatsappchat]->(x2:WHATSAPP)<-[r3:Whatsappchat]->(x3:WHATSAPP)<-[r4:Whatsappchat]->(b:WHATSAPP) "
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
                 var _query = match + where + retur;
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -4423,6 +4431,7 @@ function createQueryForThree(selections) {
                 var linkLabel = selections[noLoop].Type;
                 var match = "MATCH (a:FACEBOOK)<-[r1:Facebookchat]->(x1:FACEBOOK)<-[r2:Facebookchat]->(x2:FACEBOOK)<-[r3:Facebookchat]->(x3:FACEBOOK)<-[r4:Facebookchat]->(b:FACEBOOK) "
                 var where = "WHERE a.PhoneNumber = '" + inputSource + "' AND b.PhoneNumber = '" + inputTarget + "' AND x1.PhoneNumber <> '" + inputTarget + "' AND x2.PhoneNumber <> '" + inputSource + "' AND x3.PhoneNumber <> '" + inputTarget + "' AND x3.PhoneNumber <> '" + inputSource + "' ";
+                /*Add date filtering here*/
                 var retur = "RETURN collect(distinct r1) + collect(distinct r2) + collect(distinct r3) + collect(distinct r4) AS R";
                 var _query = match + where + retur;
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")

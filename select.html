@@ -73,11 +73,10 @@
                         <form id="typeboxcall2" style="display:none">
 
                             &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket"class="font2"size="3"color="white" >TYPE:</font></label>
-                            <select id="typecall" class="wrapper-dropdown-6">
+                            <select id="typecallMulti" class="wrapper-dropdown-6">
                                 <option value="all">All</option>
                                 <option value="incoming">INCOMING</option>
                                 <option value="outgoing">OUTGOING</option>
-                                <option value="missed">MISSED</option>
                             </select>
                         </form>
                     </div>
@@ -85,7 +84,7 @@
                     <div>
                         <form id="durationbox2" style="display:none">
                             &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket" class="font2"size="3"color="white">DURATION:</font></label >
-                            <select id="duration" class="wrapper-dropdown-6">
+                            <select id="durationMulti" class="wrapper-dropdown-6">
                                 <option value="01">0-1 MINUTE</option>
                                 <option value="12">1-2 MINUTE</option>
                                 <option value="23">2-3 MINUTE</option>
@@ -110,8 +109,7 @@
                                 <option value="all">ALL</option>
                                 <option value="send">SEND</option>
                                 <option value="received">RECEIVED</option>
-
-                            </select><br>
+                            </select><br/>
 
                         </form>
                     </div>
@@ -136,9 +134,9 @@
                         <form id="date_form2" action="demo_form.asp" style="display:none">
 
                             <u><label><font face="supermarket" class="font"size="4"color="white">DATE FROM :</font></label></u>
-                            <input id="datefrom" class="wrapper-dropdown-2"type="date" name="bday"><br>
+                            <input id="datefromMulti" class="wrapper-dropdown-2"type="date" name="bday"><br>
                             <u><label><font face="supermarket" class="font"size="4" color="white">TO :</font></label></u>
-                            <input id="dateto" class="wrapper-dropdown-2"type="date" name="bday">
+                            <input id="datetoMulti" class="wrapper-dropdown-2"type="date" name="bday">
 
                         </form>
                     </div>
@@ -162,11 +160,10 @@
                     <div>
                         <form id="typeboxcall" style="display:none">
                             <u><label><font face="supermarket"class="font"size="4"color="white" >TYPE :</font></label></u>
-                            <select id="typecall" class="wrapper-dropdown-3">
+                            <select id="typecallAll" class="wrapper-dropdown-3">
                                 <option value="all">All</option>
                                 <option value="incoming">INCOMING</option>
                                 <option value="outgoing">OUTGOING</option>
-                                <option value="missed">MISSED</option>
                             </select>
                         </form>
                     </div>
@@ -174,7 +171,7 @@
                     <div>
                         <form id="typeboxmessage" style="display:none">
                             <u><label><font face="supermarket"size="4"color="white" >TYPE :</font></label></u>
-                            <select id="typesms"class="wrapper-dropdown-3" >
+                            <select id="typesmsAll"class="wrapper-dropdown-3" >
                                 <option value="all">ALL</option>
                                 <option value="send">SEND</option>
                                 <option value="received">RECEIVED</option>
@@ -186,12 +183,12 @@
                     <br>
                     <div>
 
-                        <form id="date_form" action="demo_form.asp" style="display:none">
+                        <form id="date_formAll" action="demo_form.asp" style="display:none">
 
                             <label><font face="supermarket" class="font"size="4"color="white">DATE FROM :</font></label>
-                            <input id="datefrom" class="wrapper-dropdown-2"type="date" name="bday"><br>
+                            <input id="datefromAll" class="wrapper-dropdown-2"type="date" name="bday"><br>
                             <label><font face="supermarket" class="font"size="4" color="white">TO :</font></label>
-                            <input id="dateto" class="wrapper-dropdown-2"type="date" name="bday">
+                            <input id="datetoAll" class="wrapper-dropdown-2"type="date" name="bday">
 
                         </form>
                     </div>
@@ -203,7 +200,7 @@
                     <div>
                         <form id="durationbox" style="display:none">
                             <u><label><font face="supermarket" class="font"size="4"color="white">DURATION :</font></label ></u>
-                            <select id="duration" class="wrapper-dropdown-3">
+                            <select id="durationAll" class="wrapper-dropdown-3">
                                 <option value="01">0-1 MINUTE</option>
                                 <option value="12">1-2 MINUTE</option>
                                 <option value="23">2-3 MINUTE</option>
@@ -217,7 +214,7 @@
                     <div>
                         <form id="statusSMS" style="display:none">
                             <u><label><font face="supermarket"  class="font"size="4"color="white">STATUS :</font></label ></u>
-                            <select id="status" class="wrapper-dropdown-3">
+                            <select id="statusAll" class="wrapper-dropdown-3">
                                 <option value="all">ALL STATUS</option>
                                 <option value="read">READ</option>
                                 <option value="unread">UNREAD</option>
@@ -231,7 +228,7 @@
                     <div>
                         <form id="frequency" style="display:none">
                             <u><label><font face="supermarket" size="4"color="white"class="font" >FREQUENCY :</font></label ></u>
-                            <select id="status" class="wrapper-dropdown-3">
+                            <select id="frequencyAll" class="wrapper-dropdown-3">
                                 <option value="all">ALL</option>
                                 <option value="3">3</option>
                                 <option value="6">6</option>
@@ -242,7 +239,7 @@
                     </div>    <div>
                         <form id="frequency" style="display:none">
                             <u><label><font face="supermarket" size="4"color="white"class="font" >FREQUENCY :</font></label ></u>
-                            <select id="status" class="wrapper-dropdown-3">
+                            <select id="frequencyMul" class="wrapper-dropdown-3">
                                 <option value="all">ALL</option>
                                 <option value="3">3</option>
                                 <option value="6">6</option>
