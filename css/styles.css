@@ -19,7 +19,7 @@ body{text-align:center;}
 
 	
 	float:left;
-        width:17%;
+        width:19%;
 	margin-right:0.2%;
 	margin-top: 5px;
 
@@ -30,7 +30,7 @@ body{text-align:center;}
 .yui-t1 .yui-a {
 
 	float:left;
-     width:55%;
+     width:53%;
 	margin-right:0.2%;
 	margin-top: 5px;}
 .yui-t1 .yui-c {
@@ -112,6 +112,27 @@ body {
     /* Size and position */
     position: relative;
     width: 85%;
+    margin: 0 auto;
+    padding: 2%;
+    height:100%;
+    /* Styles */
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.15);
+    box-shadow: 0 1px 1px rgba(50,50,50,0.1);
+    cursor: pointer;
+    outline: none;
+
+    /* Font settings */
+    font-weight: bold;
+    color: #456FA8;
+
+}
+
+.wrapper-dropdown-7 {
+    /* Size and position */
+    position: relative;
+    width: 10%;
     margin: 0 auto;
     padding: 2%;
     height:100%;
@@ -294,6 +315,7 @@ P.blocktext {
 #input{
 	
     min-height:1300px;
+    max-height: 1300px;
 	background-color: #0c0c0c;
     background-size: 100%;
     /*background-color: black;*/
@@ -301,6 +323,7 @@ P.blocktext {
 	padding-right:5%; 
    	padding-left:5%;
     border:5px solid rgba(0,0,0,0.40);
+    overflow: auto;
 }
 	
 #graph{
