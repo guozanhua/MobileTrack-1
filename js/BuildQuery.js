@@ -1,4 +1,4 @@
-function buildQueryForCall(callType,dur){
+function buildQueryForCall(callType){
     var query = "";
     var input = $('#phoneNo').val();
     var datefrom = document.getElementById("datefrom").value;
@@ -14,20 +14,20 @@ function buildQueryForCall(callType,dur){
     }else{// Outgoing call based on the input from user mean SourceNumber must equal to input
             query += "AND r.SourceNumber = '" + input + "' ";
     }
-    console.log(dur);
+    
     if(datefrom != "" && dateto != ""){
         query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery +") "
     }
-
-    if(dur == 3){ // 2-2.59 min
-            query += "AND toInt(r.Duration) > 120000 ";
-            query += "AND toInt(r.Duration) < 180000 ";
-    }else if(dur == 2){// 1-1.59 min
-            query += "AND toInt(r.Duration) > 60000 ";
-            query += "AND toInt(r.Duration) < 120000 "; 
-    }else{
-            //Do nothing
+    
+    if(document.getElementById("sdd").checked){
+        var durFrom = document.getElementById("fmin").value*1000*60;
+        var durTo = document.getElementById("smin").value*1000*60;
+        console.log(durFrom);
+        console.log(durTo);
+        query += "AND toInt(r.Duration) > " + durFrom + " ";
+        query += "AND toInt(r.Duration) < " + durTo + " ";
     }
+
     query += "RETURN collect(distinct r)";
     FetchDatabase(query);
     console.log(query);// show the query
