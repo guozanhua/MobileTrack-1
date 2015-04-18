@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
         <link rel="stylesheet" type="text/css" href="css/graph.css" >
         <link rel="stylesheet" type="text/css" href="css/bar.css" >
-        <link rel="stylesheet" type="text/css" href="css/table2.css" >
+        <link rel="stylesheet" type="text/css" href="css/table.css" >
     </head>
     <body>
 
@@ -535,13 +535,13 @@
                                 phoneNumberArr.push(objAdd);
                             }
                             //document.write(JSON.stringify(phoneNumberArr));
-                            myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>PhoneNumber</th>";
-                            myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>Model</th>";
-                            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>Owner</th>";
+                            myTable = "<table><tr><th class='styleheadtable1'>PhoneNumber";
+                            myTable += "<th class='styleheadtable1'>Model</th>";
+                            myTable += "<th class='styleheadtable1'>Owner</th>";
                             for (var i = 0; i < phoneNumberArr.length; i++) {
-                                myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + phoneNumberArr[i].PhoneNumber + "</td>";
-                                myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + phoneNumberArr[i].Model + "</td>";
-                                myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + phoneNumberArr[i].Owner + "</td></tr>";
+                                myTable += "<tr class='styletable1'><td class='stylerowtable1'>" + phoneNumberArr[i].PhoneNumber + "</td>";
+                                myTable += "<td class='stylerowtable1'>" + phoneNumberArr[i].Model + "</td>";
+                                myTable += "<td class='stylerowtable1'>" + phoneNumberArr[i].Owner + "</td></tr>";
                             }
                             myTable += "</table>";
                             $('#suggestBtn').magnificPopup({
