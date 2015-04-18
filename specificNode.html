@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
         <link rel="stylesheet" type="text/css" href="css/graph.css" >
         <link rel="stylesheet" type="text/css" href="css/bar.css" >
-        <link rel="stylesheet" type="text/css" href="css/table2.css" >
+<!--        <link rel="stylesheet" type="text/css" href="css/table2.css" >-->
     </head>
     <body>
 
@@ -17,27 +17,27 @@
                 <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:100%"></h1></div>
             </div>
 
-       <div id='cssmenu'>
-              <ul>
-                  <li><a href="select.html"><span>Multiple Phone</span></a></li>
-                  
-                  
-                       <li class='has-sub'><a href='#'><span>Find the middle-man</span></a>
-                          <ul>
-                             <li class='has-sub'><a href="destination2.html"><span>S--X--D</span></a>
-                                
-                             </li>
-                             <li class='has-sub'><a href="destination3.html"><span>S--X--X--D</span></a>
-                                
-                             </li> <li class='has-sub'><a href="destination4.html"><span>S--X--X--X--D</span></a>
-                                
-                             </li>
-                             
-                          </ul>
-                       </li>
-                       <li><a href="destination.html"><span>Phone - Phone</span></a></li>
-                       <li class='active'><a href="specificNode.html"><span>Specific Number</span></a></li>
-                        <li><a href="mainmenu.html"><span>Main Menu</span></a></li>
+            <div id='cssmenu'>
+                <ul>
+                    <li><a href="select.html"><span>Multiple Phone</span></a></li>
+
+
+                    <li class='has-sub'><a href='#'><span>Find the middle-man</span></a>
+                        <ul>
+                            <li class='has-sub'><a href="destination2.html"><span>S--X--D</span></a>
+
+                            </li>
+                            <li class='has-sub'><a href="destination3.html"><span>S--X--X--D</span></a>
+
+                            </li> <li class='has-sub'><a href="destination4.html"><span>S--X--X--X--D</span></a>
+
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li><a href="destination.html"><span>Phone - Phone</span></a></li>
+                    <li class='active'><a href="specificNode.html"><span>Specific Number</span></a></li>
+                    <li><a href="mainmenu.html"><span>Main Menu</span></a></li>
                 </ul>
             </div>
 
@@ -73,7 +73,7 @@
                             <option value="call">CALL</option>
                             <option value="message">MESSAGE</option>
                             <option value="line">LINE</option>
-                            <option value="whatapp">WHATAPP</option>
+                            <option value="whatapp">WHATSAPP</option>
                             <option value="facebook">FACEBOOK</option>
 
                         </select>
@@ -109,7 +109,6 @@
                     <div  >
                         <form id="date_form" action="demo_form.asp" style="display:none">
                             <div><class="wrapper-dropdown-5">
-
                                     <u><label><font face="supermarket" size="4"color="white"class="font" >Date from :</font></label></u>
                                     <input id="datefrom" class="wrapper-dropdown-2"type="date" name="bday"><br>
                                     <u><label><font face="supermarket" size="4" color="white"class="font" >To :</font></label></u>
@@ -120,90 +119,83 @@
                                     </div>
                                     <br/>
                                     <br/>
-                                   
-                                    
-                                <div>
-                                 <form id="durationbox" style="display:none">
-                                         <u><label><font face="supermarket"class="font" size="4" color="white"  >Duration :</font></label ></u>
-                                             <br>
-                                         <form id="selecttype"> 
-                                        <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="ddd" name="read" id="ddd" onchange="specificduration2()">Default Duration</font>
-                                            <br>
-                                         <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="sdd" name="read" id="sdd" onchange="specificduration()">Specific Duration</font>
 
-                                         </form>
-                                  </form>
-                                </div>
-                                    
-                                 <div >
-                                 <form id="durationrange"class="wrapper-dropdown-5" style="display:none">
-                                         <p align = "center"><label><font face="supermarket"class="font" size="4" color="white"  >Duration range</font></label ></p>
-                                           <p align = "center">
-                                         <form id="inputduration"> 
-                                            <input type="text"align = "center" class="wrapper-dropdown-7" id="fmin" maxlength="5"></input>
-                                        <font face="supermarket" size="4" class="font"color="white">mins-</font>
-                                            
-                                          <input type="text"align = "center" class="wrapper-dropdown-7" id="smin" maxlength="5"></input>
-                                        <font face="supermarket" size="4" class="font"color="white">mins</font>
 
-                                         </form>
-                                           </p>
-                                  
-                                </div>
-                                    
-                                    
-                                    
-                                <div>
-                                 <form id="frequency" style="display:none">
-                                         <u><label><font face="supermarket"class="font" size="4" color="white"  >Frequency :</font></label ></u>
-                                             <br>
-                                         <form id="selecttype"> 
-                                        <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="ddf" name="read" id="ddf" onchange="specificfrequency2()" >Default Frequency</font>
-                                            <br>
-                                         <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="sdf" name="read" id="sdf" onchange="specificfrequency()">Specific Frequency</font>
-
-                                         </form>
-                                  </form>
-                                </div>
-                                    
-                                <div  >
-                                 <form id="frequencyoperator" class="wrapper-dropdown-5"style="display:none">
-                                         <p align = "center"><label><font face="supermarket"class="font" size="4" color="white"  >Operator :</font></label >
-                                          
-                                         <form id="operatortype"> 
-                                        <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="moreequ" name="read" id="moreequ" >>=</font>
-                                           
-                                         <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="thanequ" name="read" id="thanequ"><=</font>
-
-                                         
-                                         </p>
-                                  
-                                
-                                    
-                                
-                                
-                                         <p align = "center"><label><font face="supermarket"class="font" size="4" color="white"  >Frequency :</font></label >
-                                             
-                                          <input type="text"align = "center" class="wrapper-dropdown-7" id="fof" maxlength="5"></input>
-                                      
-                                       </p>    
-
-                                 </form>
-                                  
-                                </div>
-<!--                                    <div>
+                                    <div>
                                         <form id="durationbox" style="display:none">
-                                            <u><label><font face="supermarket" size="4"color="white"class="font" >Duration :</font></label ></u>
-                                            <select id="duration" class="wrapper-dropdown-3">
-                                                <option value="01">0-1 MINUTE</option>
-                                                <option value="12">1-2 MINUTE</option>
-                                                <option value="23">2-3 MINUTE</option>
-                                                 <option value="34">3-4 MINUTE</option>
-                                                <option value="45">4-5 MINUTE</option>
-                                                <option value="5">MORE 5 MINUTE</option> 
-                                            </select>
+                                            <u><label><font face="supermarket"class="font" size="4" color="white"  >Duration :</font></label ></u>
+                                            <br/>
+                                            <form id="selecttype"> 
+                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="ddd" id="ddd" onchange="defaultduration()">Default Duration</font>
+                                                <br/>
+                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="sdd" id="sdd" onchange="specificduration()">Specific Duration</font>
+                                            </form>
                                         </form>
-                                    </div>-->
+
+                                    </div>
+
+                                    <div >
+                                        <form id="durationrange"class="wrapper-dropdown-5" style="display:none">
+                                            <p align = "center"><label><font face="supermarket"class="font" size="4" color="white"  >Duration range</font></label ></p>
+                                            <p align = "center">
+                                            <form id="inputduration"> 
+                                                <input type="text"align = "center" class="wrapper-dropdown-7" id="fmin" maxlength="5"></input>
+                                                <font face="supermarket" size="4" class="font"color="white">mins-</font>
+
+                                                <input type="text"align = "center" class="wrapper-dropdown-7" id="smin" maxlength="5"></input>
+                                                <font face="supermarket" size="4" class="font"color="white">mins</font>
+                                            </form>
+                                            </p>
+
+                                    </div>
+
+
+
+                                    <div>
+                                        <form id="frequency" style="display:none">
+                                            <u><label><font face="supermarket"class="font" size="4" color="white"  >Frequency :</font></label ></u>
+                                            <br>
+                                            <form id="selecttype"> 
+                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="ddf" name="read" id="ddf" onchange="specificfrequency2()" >Default Frequency</font>
+                                                <br>
+                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="sdf" name="read" id="sdf" onchange="specificfrequency()">Specific Frequency</font>
+
+                                            </form>
+                                        </form>
+                                    </div>
+
+                                    <div  >
+                                        <form id="frequencyoperator" class="wrapper-dropdown-5"style="display:none">
+                                            <p align = "center"><label><font face="supermarket"class="font" size="4" color="white"  >Operator :</font></label >
+
+                                            <form id="operatortype"> 
+                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="moreequ" id="moreequ" >>=</font>
+
+                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="thanequ" id="thanequ"><=</font>
+                                                </p>
+
+                                                <p align = "center"><label><font face="supermarket"class="font" size="4" color="white"  >Frequency :</font></label >
+
+                                                    <input type="text"align = "center" class="wrapper-dropdown-7" id="fof" maxlength="5"></input>
+
+                                                </p>    
+
+                                            </form>
+
+                                    </div>
+                                    <!--                                    <div>
+                                                                            <form id="durationbox" style="display:none">
+                                                                                <u><label><font face="supermarket" size="4"color="white"class="font" >Duration :</font></label ></u>
+                                                                                <select id="duration" class="wrapper-dropdown-3">
+                                                                                    <option value="01">0-1 MINUTE</option>
+                                                                                    <option value="12">1-2 MINUTE</option>
+                                                                                    <option value="23">2-3 MINUTE</option>
+                                                                                     <option value="34">3-4 MINUTE</option>
+                                                                                    <option value="45">4-5 MINUTE</option>
+                                                                                    <option value="5">MORE 5 MINUTE</option> 
+                                                                                </select>
+                                                                            </form>
+                                                                        </div>-->
 
                                     <div>
                                         <form id="statusSMS" style="display:none">
@@ -219,18 +211,18 @@
                                         </form>
                                     </div>
                                     <br>
-<!--                                    <div>
-                                        <form id="frequency" style="display:none">
-                                            <u><label><font face="supermarket" size="4"color="white"class="font" >Frequency :</font></label ></u>
-                                            <select id="status" class="wrapper-dropdown-3">
-                                                <option value="all">ALL</option>
-                                                <option value="3">3</option>
-                                                <option value="6">6</option>
-                                                <option value="6">9</option>
-
-                                            </select>
-                                        </form>
-                                    </div>-->
+                                    <!--                                    <div>
+                                                                            <form id="frequency" style="display:none">
+                                                                                <u><label><font face="supermarket" size="4"color="white"class="font" >Frequency :</font></label ></u>
+                                                                                <select id="status" class="wrapper-dropdown-3">
+                                                                                    <option value="all">ALL</option>
+                                                                                    <option value="3">3</option>
+                                                                                    <option value="6">6</option>
+                                                                                    <option value="6">9</option>
+                                    
+                                                                                </select>
+                                                                            </form>
+                                                                        </div>-->
 
                                     <br/>
                                     <div>
@@ -302,7 +294,7 @@
                                                 document.getElementById("statusSMS").style.display = "none";
                                                 document.getElementById("frequency").style.display = "none";
                                                 document.getElementById("durationrange").style.display = "none";
-                                                 document.getElementById("frequencyoperator").style.display = "none";
+                                                document.getElementById("frequencyoperator").style.display = "none";
                                                 console.log(a);
 
                                                 if (a == "call") {
@@ -347,50 +339,50 @@
                                                 }
                                             }
             </script>
-            
-             <script>
+
+            <script>
 
 
-        function specificduration() {
-            var a = document.getElementById("sdd").value;
-                document.getElementById("durationrange").style.display = "none";
-            if (a == "sdd") {
-                document.getElementById("durationrange").style.display = "block";
-            }
-            
-        }
-        
-         function specificduration2() {
-            var a = document.getElementById("ddd").value;
-                document.getElementById("durationrange").style.display = "none";
-           
-            
-        }
-    </script>
-    <script>
-        function specificfrequency() {
-            var a = document.getElementById("sdf").value;
-           
-            if (a == "sdf") {
-                document.getElementById("frequencyoperator").style.display = "block";
-               
-                //document.getElementById("typeboxcall").style.display="block";
-            }
+                function specificduration() {
+                    var a = document.getElementById("sdd").value;
+                    document.getElementById("durationrange").style.display = "none";
+                    if (a == "sdd") {
+                        document.getElementById("durationrange").style.display = "block";
+                    }
+                    document.getElementById("ddd").checked = false;
 
-            writecheck();
+                }
 
-        }
-        
-           function specificfrequency2() {
-            var a = document.getElementById("ddf").value;
-           document.getElementById("frequencyoperator").style.display = "none";
-            
-            writecheck();
+                function defaultduration() {
+                    var a = document.getElementById("ddd").value;
+                    document.getElementById("durationrange").style.display = "none";
+                    document.getElementById("sdd").checked = false;
+                }
+            </script>
+            <script>
+                function specificfrequency() {
+                    var a = document.getElementById("sdf").value;
 
-        }
-    </script>
-            
-            
+                    if (a == "sdf") {
+                        document.getElementById("frequencyoperator").style.display = "block";
+
+                        //document.getElementById("typeboxcall").style.display="block";
+                    }
+
+                    writecheck();
+
+                }
+
+                function specificfrequency2() {
+                    var a = document.getElementById("ddf").value;
+                    document.getElementById("frequencyoperator").style.display = "none";
+
+                    writecheck();
+
+                }
+            </script>
+
+
             <script>
                 function getdata() {
                     var communicationType;
@@ -557,7 +549,7 @@
 
             </script>
 
-            
+
             <script>
                 /*Navigation Bar Controller*/
                 ;
