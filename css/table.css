@@ -1,0 +1,158 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 17 เม.ย. 2558, 19:39:03
+    Author     : Meewan
+*/
+
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
+
+body {
+ 
+  font-family: "Roboto", helvetica, arial, sans-serif;
+  font-size: 2.0vmin;
+  
+  text-rendering: optimizeLegibility;
+}
+
+div.table-title {
+   display: block;
+  margin: auto;
+  max-width: 600px;
+  padding:5px;
+  width: 100%;
+}
+
+.table-title h3 {
+   color: #fafafa;
+   font-size: 2.0vmin;
+  
+   font-style:normal;
+   font-family: "Roboto", helvetica, arial, sans-serif;
+   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+   text-transform:uppercase;
+}
+
+
+/*** Table Styles **/
+
+.table-fill {
+  background: white;
+  border-radius:6px;
+  border-collapse: collapse;
+  height: 100%;
+  margin: auto;
+  max-width:600px;
+  padding:5px;
+  width: 100%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  animation: float 5s infinite;
+}
+ 
+.styleheadtable1 {
+  color:white;
+  background:#d74f35;
+  border-bottom:5px solid #af2f17;
+  border-right: 1px solid #343a45;
+  font-size:2.3vmin;
+  font-weight: 300;
+
+  padding:20px;
+  text-align:center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  vertical-align:middle;
+}
+
+.styleheadtable1:first-child {
+  border-top-left-radius:6px;
+}
+ 
+.styleheadtable1:last-child {
+  border-top-right-radius:6px;
+  border-right:none;
+}
+  
+.styletable1 {
+  border-top: 1px solid #C1C3D1;
+  border-bottom-: 1px solid #C1C3D1;
+  color:#666B85;
+  font-size:2.0vmin;
+  font-weight:normal;
+  text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+}
+ 
+.styletable1:hover .stylerowtable1 {
+  background:#4E5066;
+  color:#FFFFFF;
+  border-top: 1px solid #22262e;
+  border-bottom: 1px solid #22262e;
+}
+ 
+.styletable1:first-child {
+  border-top:none;
+}
+
+.styletable1:last-child {
+  border-bottom:none;
+}
+ 
+.styletable1:nth-child(odd) .stylerowtable1 {
+  background:#EBEBEB;
+}
+ 
+.styletable1:nth-child(odd):hover .stylerowtable1 {
+  background:#4E5066;
+}
+
+.styletable1:last-child .stylerowtable1:first-child {
+  border-bottom-left-radius:6px;
+}
+ 
+.styletable1:last-child .stylerowtable1:last-child {
+  border-bottom-right-radius:6px;
+}
+ 
+.stylerowtable1 {
+  background:#FFFFFF;
+  padding:20px;
+  text-align:center;
+  vertical-align:middle;
+  font-weight:300;
+  font-size:2.0vmin;
+  width: 200px;
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #C1C3D1;
+}
+
+.stylerowtable1:last-child {
+  border-right: 0px;
+}
+
+.styleheadtable1.text-left {
+  text-align: left;
+}
+
+.styleheadtable1.text-center {
+  text-align: center;
+}
+
+.styleheadtable1.text-right {
+  text-align: right;
+}
+
+.stylerowtable1.text-left {
+  text-align: left;
+}
+
+.stylerowtable1.text-center {
+  text-align: center;
+}
+
+.stylerowtable1.text-right {
+  text-align: right;
+}
+
+

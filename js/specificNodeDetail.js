@@ -626,26 +626,34 @@ function specificNodeSummarize(finalResult){
         }
     }
     //Print it out on summarize pane
-    var output = "<p>Displaying information that were collected from mobile phone using number " + nodeArr[indexPhone].PhoneNumber + " </p><br/>";
-    output += "Coresponding social account are as the followings: " + "<br/>";
-    output += "<p>Line Account: <br/>"; 
+    var output = "<u><h3 class='text'>Displaying information that were collected from mobile phone using number " + nodeArr[indexPhone].PhoneNumber + " </h3></u>";
+    output += "<h3 class='text2'>Coresponding social account are as the followings  " + "</h3>";
+    output += "<table><th class='styleheadtable2'>Line Account </th><br/>"; 
+    output +="<table><th class='stylerowtable2 '>"
     for(i=0;i<indexLine.length;i++){
-        output += nodeArr[indexLine[i]].textDisplay + "<br/>";
+        output +=  nodeArr[indexLine[i]].textDisplay ;
     }
-    output += "</p>"
-    output += "<p>Whatsapp Account: <br/>"; 
+    "</th><br/>"
+    output += "</table>"
+    output += "<table><th class='styleheadtable2'>Whatsapp Account </th><br/>"; 
+     output +="<table><th class='stylerowtable2 '>"
     for(i=0;i<indexWhatsapp.length;i++){
         output += nodeArr[indexWhatsapp[i]].textDisplay + "<br/>";
     }
-    output += "</p>"
-    output += "<p>Facebook Account: <br/>"; 
+    "</th><br/>"
+    output += "</table>"
+    output += "<table><th class='styleheadtable2'>Facebook Account </th><br/>";
+     output +="<table><th class='stylerowtable2 '>" 
     for(i=0;i<indexFacebook.length;i++){
         output += nodeArr[indexFacebook[i]].textDisplay + "<br/>";
     }
-    output += "</p>"
+       "</th><br/>"
+    output += "</table>"
     
     document.getElementById("summarize").innerHTML = output;
 }
+
+
 
 
 

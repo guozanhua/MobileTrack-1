@@ -1,0 +1,173 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 20 เม.ย. 2558, 18:10:05
+    Author     : Meewan
+*/
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
+
+body {
+ 
+  font-family: "Roboto", helvetica, arial, sans-serif;
+  font-size: 2.0vmin;
+  
+  text-rendering: optimizeLegibility;
+}
+
+div.table-title {
+   display: block;
+  margin: auto;
+  max-width: 600px;
+  padding:5px;
+  width: 100%;
+}
+
+.text {
+   color: #fafafa;
+   font-size:2.0vmin;
+  text-align: center;
+  
+   
+   font-family: arial,"Roboto", helvetica,  sans-serif;
+   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+
+}
+
+.text2 {
+   color: #fafafa;
+   font-size: 1.8vmin;
+   text-align: center;
+   
+   font-family: arial,"Roboto", helvetica,  sans-serif;
+   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+
+}
+
+
+/*** Table Styles **/
+
+.table-fill {
+  background: white;
+  border-radius:6px;
+  border-collapse: collapse;
+  height: 100%;
+  margin: auto;
+  max-width:600px;
+  padding:5px;
+  width: 100%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  animation: float 5s infinite;
+}
+ 
+.styleheadtable2 {
+  color:white;
+
+  background:#d74f35;
+  border-bottom:5px solid #af2f17;
+  border-right: 1px solid #343a45;
+  font-size:2.0vmin;
+  font-weight: 200;
+  width: 510px;
+  padding:5px;
+  text-align:center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  vertical-align:middle;
+}
+
+
+
+
+.styleheadtable2:first-child {
+  border-top-left-radius:6px;
+}
+ 
+.styleheadtable2:last-child {
+  border-top-right-radius:6px;
+  border-right:none;
+}
+  
+.styletable2 {
+  border-top: 1px solid #C1C3D1;
+  border-bottom-: 1px solid #C1C3D1;
+  color:#666B85;
+  font-size:2.0vmin;
+  font-weight:normal;
+  text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+}
+ 
+.styletable2:hover .stylerowtable1 {
+  background:#4E5066;
+  color:#FFFFFF;
+  border-top: 1px solid #22262e;
+  border-bottom: 1px solid #22262e;
+}
+ 
+.styletable2:first-child {
+  border-top:none;
+}
+
+.styletable2:last-child {
+  border-bottom:none;
+}
+ 
+.styletable2:nth-child(odd) .stylerowtable2 {
+  background:#EBEBEB;
+}
+ 
+.styletable2:nth-child(odd):hover .stylerowtable2 {
+  background:#4E5066;
+}
+
+.styletable2:last-child .stylerowtable2:first-child {
+  border-bottom-left-radius:6px;
+}
+ 
+.styletable2:last-child .stylerowtable2:last-child {
+  border-bottom-right-radius:6px;
+}
+ 
+.stylerowtable2 {
+  
+  background:#FFFFFF;
+  padding:5px;
+  text-align:center;
+  vertical-align:middle;
+  font-weight:300;
+  font-size:1.8vmin;
+  width: 510px;
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #C1C3D1;
+  color:black;
+}
+
+.stylerowtable2:last-child {
+  border-right: 0px;
+}
+
+.styleheadtable2.text-left {
+  text-align: left;
+}
+
+.styleheadtable2.text-center {
+  text-align: center;
+}
+
+.styleheadtable2.text-right {
+  text-align: right;
+}
+
+.stylerowtable2.text-left {
+  text-align: left;
+}
+
+.stylerowtable2.text-center {
+  text-align: center;
+}
+
+.stylerowtable2.text-right {
+  text-align: right;
+}
+
