@@ -423,8 +423,7 @@ function dataVisualizationPhone(finalResult) {
             .nodes(finalResult[0])
             .links(finalResult[1].filter(function(d){
                 if(d.prop.length >= inputFreq)
-                    console.log("FROM: " + d.source + "/ TO: " + d.target);
-                return d.prop.length >= inputFreq;
+                    return d.prop.length >= inputFreq;
             }))
             .size([width, height])
             .start();
