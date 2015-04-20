@@ -240,116 +240,116 @@ function FetchDatabase(input) {
                                 }
                             }
                         } else if (checkSource > 0 && checkTarget == 0) { // source is matched with the existing node in nodeArr
-                            
-                                var objAdd = {};
-                                objAdd.NodeName = result[i].Target;
-                                objAdd.PhoneNumber = result[i].TargetNumber;
-                                objAdd.NodeIndex = nodeArr.length;
-                                objAdd.groupIndex = getGroupTarget;
-                                objAdd.textDisplay = result[i].TargetNumber;
-                                objAdd.Label = "Phone";
-                                nodeArr.push(objAdd);
 
-                                var objLink = {};
-                                objLink.source = getSourceIndex;
-                                objLink.target = nodeArr.length - 1;
-                                objLink.Type = "Call"
-                                objLink.prop = [];
-                                var objLinkProp = {};
-                                objLinkProp.Source = result[i].SourceNumber;
-                                objLinkProp.Target = result[i].TargetNumber;
-                                objLinkProp.dur = result[i].Duration;
-                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                objLink.prop.push(objLinkProp);
-                                linkArr.push(objLink);
-                            
+                            var objAdd = {};
+                            objAdd.NodeName = result[i].Target;
+                            objAdd.PhoneNumber = result[i].TargetNumber;
+                            objAdd.NodeIndex = nodeArr.length;
+                            objAdd.groupIndex = getGroupTarget;
+                            objAdd.textDisplay = result[i].TargetNumber;
+                            objAdd.Label = "Phone";
+                            nodeArr.push(objAdd);
+
+                            var objLink = {};
+                            objLink.source = getSourceIndex;
+                            objLink.target = nodeArr.length - 1;
+                            objLink.Type = "Call"
+                            objLink.prop = [];
+                            var objLinkProp = {};
+                            objLinkProp.Source = result[i].SourceNumber;
+                            objLinkProp.Target = result[i].TargetNumber;
+                            objLinkProp.dur = result[i].Duration;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
+                            objLink.prop.push(objLinkProp);
+                            linkArr.push(objLink);
+
 
                             //(3.3)
                         } else if (checkSource == 0 && checkTarget > 0) { // target is matched with the existing node in nodeArr 
-                            
-                                var objAdd = {};
-                                objAdd.NodeName = result[i].Source;
-                                objAdd.PhoneNumber = result[i].SourceNumber;
-                                objAdd.NodeIndex = nodeArr.length;
-                                objAdd.groupIndex = getGroupSource;
-                                objAdd.textDisplay = result[i].SourceNumber;
-                                objAdd.Label = "Phone";
-                                nodeArr.push(objAdd);
 
-                                var objLink = {};
-                                objLink.source = nodeArr.length - 1;
-                                objLink.target = getTargetIndex;
-                                objLink.Type = "Call"
-                                objLink.prop = [];
+                            var objAdd = {};
+                            objAdd.NodeName = result[i].Source;
+                            objAdd.PhoneNumber = result[i].SourceNumber;
+                            objAdd.NodeIndex = nodeArr.length;
+                            objAdd.groupIndex = getGroupSource;
+                            objAdd.textDisplay = result[i].SourceNumber;
+                            objAdd.Label = "Phone";
+                            nodeArr.push(objAdd);
 
-                                var objLinkProp = {};
-                                objLinkProp.Source = result[i].SourceNumber;
-                                objLinkProp.Target = result[i].TargetNumber;
-                                objLinkProp.dur = result[i].Duration;
-                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                objLink.prop.push(objLinkProp);
-                                linkArr.push(objLink);
-                                //document.write("Add " + result[i].Source + "</br>");
-                            
+                            var objLink = {};
+                            objLink.source = nodeArr.length - 1;
+                            objLink.target = getTargetIndex;
+                            objLink.Type = "Call"
+                            objLink.prop = [];
+
+                            var objLinkProp = {};
+                            objLinkProp.Source = result[i].SourceNumber;
+                            objLinkProp.Target = result[i].TargetNumber;
+                            objLinkProp.dur = result[i].Duration;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
+                            objLink.prop.push(objLinkProp);
+                            linkArr.push(objLink);
+                            //document.write("Add " + result[i].Source + "</br>");
+
 
                             //(3.4)
                         } else { // No match in an array
-                            
-                                //Add source to nodeArr
-                                var objSource = {};
-                                var sourceIndex;
-                                objSource.NodeName = result[i].Source;
-                                objSource.PhoneNumber = result[i].SourceNumber;
-                                objSource.NodeIndex = nodeArr.length;
-                                objSource.groupIndex = getGroupSource;
-                                objSource.textDisplay = result[i].SourceNumber;
-                                objSource.Label = 'Phone';
-                                sourceIndex = objSource.NodeIndex;
-                                nodeArr.push(objSource);
 
-                                //Add target to nodeArr
-                                var objTarget = {};
-                                var targetIndex;
-                                objTarget.NodeName = result[i].Target;
-                                objTarget.PhoneNumber = result[i].TargetNumber;
-                                objTarget.NodeIndex = nodeArr.length;
-                                objTarget.groupIndex = getGroupTarget;
-                                objTarget.textDisplay = result[i].TargetNumber;
-                                objTarget.Label = 'Phone'
-                                targetIndex = objTarget.NodeIndex;
-                                nodeArr.push(objTarget);
-                                //Add relationship to linkArr
-                                var objLink = {};
-                                objLink.source = sourceIndex;
-                                objLink.target = targetIndex;
-                                objLink.Type = "Call"
-                                objLink.prop = [];
+                            //Add source to nodeArr
+                            var objSource = {};
+                            var sourceIndex;
+                            objSource.NodeName = result[i].Source;
+                            objSource.PhoneNumber = result[i].SourceNumber;
+                            objSource.NodeIndex = nodeArr.length;
+                            objSource.groupIndex = getGroupSource;
+                            objSource.textDisplay = result[i].SourceNumber;
+                            objSource.Label = 'Phone';
+                            sourceIndex = objSource.NodeIndex;
+                            nodeArr.push(objSource);
 
-                                var objLinkProp = {};
-                                objLinkProp.Source = result[i].SourceNumber;
-                                objLinkProp.Target = result[i].TargetNumber;
-                                objLinkProp.dur = result[i].Duration;
-                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                objLink.prop.push(objLinkProp);
+                            //Add target to nodeArr
+                            var objTarget = {};
+                            var targetIndex;
+                            objTarget.NodeName = result[i].Target;
+                            objTarget.PhoneNumber = result[i].TargetNumber;
+                            objTarget.NodeIndex = nodeArr.length;
+                            objTarget.groupIndex = getGroupTarget;
+                            objTarget.textDisplay = result[i].TargetNumber;
+                            objTarget.Label = 'Phone'
+                            targetIndex = objTarget.NodeIndex;
+                            nodeArr.push(objTarget);
+                            //Add relationship to linkArr
+                            var objLink = {};
+                            objLink.source = sourceIndex;
+                            objLink.target = targetIndex;
+                            objLink.Type = "Call"
+                            objLink.prop = [];
 
-                                linkArr.push(objLink);
-                                //document.write("Add " + result[i].Source + " " + result[i].Target + "</br>");
-                            
+                            var objLinkProp = {};
+                            objLinkProp.Source = result[i].SourceNumber;
+                            objLinkProp.Target = result[i].TargetNumber;
+                            objLinkProp.dur = result[i].Duration;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
+                            objLink.prop.push(objLinkProp);
+
+                            linkArr.push(objLink);
+                            //document.write("Add " + result[i].Source + " " + result[i].Target + "</br>");
+
                         }
                     }
                 }
-                
-                
-                for(i=0;i<nodeArr.length;i++){
+
+
+                for (i = 0; i < nodeArr.length; i++) {
                     nodeArr[i].callOut = [];
                     nodeArr[i].callIn = [];
                     nodeArr[i].matchFreq = 0;
                 }
-                
-                var inputFreq = 0;
+
+                var inputFreq = document.getElementById("fof").value;
 
                 linkArr.forEach(function (link) {
-                    if(link.prop.length >= inputFreq){
+                    if (document.getElementById("ddf").checked) {
                         for (i = 0; i < nodeArr.length; i++) {
                             if (link.source == nodeArr[i].NodeIndex) {
                                 for (j = 0; j < nodeArr.length; j++) {
@@ -381,8 +381,79 @@ function FetchDatabase(input) {
                                 break;
                             }
                         }
+                    } else {
+                        if (document.getElementById("morethan").checked) {
+                            if (link.prop.length >= inputFreq) {
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.source == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.target == nodeArr[j].NodeIndex) {
+                                                var objCallOut = {};
+                                                objCallOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                objCallOut.freq = link.prop.length;
+                                                nodeArr[i].callOut.push(objCallOut);
+                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.target == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.source == nodeArr[j].NodeIndex) {
+                                                var objCallIn = {};
+                                                objCallIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                objCallIn.freq = link.prop.length;
+                                                nodeArr[i].callIn.push(objCallIn);
+                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        } else if (document.getElementById("lessthan").checked) {
+                            if (link.prop.length <= inputFreq) {
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.source == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.target == nodeArr[j].NodeIndex) {
+                                                var objCallOut = {};
+                                                objCallOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                objCallOut.freq = link.prop.length;
+                                                nodeArr[i].callOut.push(objCallOut);
+                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                for (i = 0; i < nodeArr.length; i++) {
+                                    if (link.target == nodeArr[i].NodeIndex) {
+                                        for (j = 0; j < nodeArr.length; j++) {
+                                            if (link.source == nodeArr[j].NodeIndex) {
+                                                var objCallIn = {};
+                                                objCallIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                objCallIn.freq = link.prop.length;
+                                                nodeArr[i].callIn.push(objCallIn);
+                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                     }
-                    
+
+
                 });
 
                 //document.write(JSON.stringify(nodeArr));
@@ -400,11 +471,9 @@ function dataVisualizationPhone(finalResult) {
     var width = 800, height = 800;
     var groupArr = finalResult[2];
     var mLinkNum = {};
-    var inputFreq = 0;
+    var inputFreq = document.getElementById('fof').value;
     sortLinks();
     setLinkIndexAndNum();
-    
-    specificCallSummarize(finalResult);
 
     var svg = d3.select('#graph').append('svg')
             .attr('width', width)
@@ -421,17 +490,27 @@ function dataVisualizationPhone(finalResult) {
                 }
             })
             .nodes(finalResult[0])
-            .links(finalResult[1].filter(function(d){
-                if(d.prop.length >= inputFreq)
+            .links(finalResult[1].filter(function (d) {
+                if (document.getElementById('ddf').checked) {
+                    inputFreq = 0;
                     return d.prop.length >= inputFreq;
+                } else {
+                    if (document.getElementById('morethan').checked) {
+                        return d.prop.length >= inputFreq;
+                    } else if (document.getElementById('lessthan').checked) {
+                        return d.prop.length <= inputFreq;
+                    }
+                }
             }))
             .size([width, height])
             .start();
-    
-    var nodeData = finalResult[0].filter(function(d){
+
+    var nodeData = finalResult[0].filter(function (d) {
         return d.matchFreq > 0;
     });
-    
+
+    specificCallSummarize(nodeData);
+
     var marker = svg.append("defs").selectAll("marker")
             .data(["lowf", "mediumf", "highf"])
             .enter().append("marker")
@@ -645,22 +724,22 @@ function dataVisualizationPhone(finalResult) {
             colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coresponding&nbsp;Nodes");
 
             var nonInputPhone = [];
-            for(i=0;i<nodeData.length;i++){
-                if(nodeData[i].PhoneNumber != inputSource){
+            for (i = 0; i < nodeData.length; i++) {
+                if (nodeData[i].PhoneNumber != inputSource) {
                     nonInputPhone.push(nodeData[i].PhoneNumber);
                 }
             }
-            
-            for(i=0;i<nonInputPhone.length;i++){
+
+            for (i = 0; i < nonInputPhone.length; i++) {
                 nodeColor.append('div')
-                    .attr('class', 'nodeCircle' + (i+3))
-                    .style('background', function (d) {
-                        return color[1];
-                    })
-                var colorLabel = d3.select(".nodeCircle" + (i+3));
+                        .attr('class', 'nodeCircle' + (i + 3))
+                        .style('background', function (d) {
+                            return color[1];
+                        })
+                var colorLabel = d3.select(".nodeCircle" + (i + 3));
                 colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + nonInputPhone[i]);
             }
-            
+
             //DisplayType
             d3.select("#displayType")
                     .append('div')
@@ -810,27 +889,33 @@ function dataVisualizationPhone(finalResult) {
     }
 }
 
-function specificCallSummarize(finalResult){
-    var d = finalResult[0];
-    var index = 0;
-    var inputSource = document.getElementById("phoneNo").value;
-    for(i=0;i<d.length;i++){
-        if(d[i].PhoneNumber == inputSource){
-            index = i;
-            break;
+function specificCallSummarize(finalResult) {
+    var d = finalResult;
+
+    if (d.length == 0) {
+        alert("No data could be found");
+    } else {
+        var index = 0;
+        var inputSource = document.getElementById("phoneNo").value;
+        for (i = 0; i < d.length; i++) {
+            if (d[i].PhoneNumber == inputSource) {
+                index = i;
+                break;
+            }
         }
-    }
-    
-    var output = "User's input Phone Number: " + inputSource + "<br/>";
-    output += "Receive Call from: " + "<br/>"
-    for (i = 0; i < d[index].callIn.length; i++) {
-        output += (i+1) + "). " + d[index].callIn[i].PhoneNumber + " Freq: " + d[index].callIn[i].freq + "<br/>";
+
+        var output = "User's input Phone Number: " + inputSource + "<br/>";
+        output += "Receive Call from: " + "<br/>"
+        for (i = 0; i < d[index].callIn.length; i++) {
+            output += (i + 1) + "). " + d[index].callIn[i].PhoneNumber + " Freq: " + d[index].callIn[i].freq + "<br/>";
+        }
+
+        output += "Dialing Call to: " + "<br/>"
+        for (i = 0; i < d[index].callOut.length; i++) {
+            output += (i + 1) + "). " + d[index].callOut[i].PhoneNumber + " Freq: " + d[index].callOut[i].freq + "<br/>";
+        }
+
+        document.getElementById("summarize").innerHTML = output;
     }
 
-    output += "Dialing Call to: " + "<br/>"
-    for (i = 0; i < d[index].callOut.length; i++) {
-        output += (i+1) + "). " + d[index].callOut[i].PhoneNumber + " Freq: " + d[index].callOut[i].freq + "<br/>";
-    }
-
-    document.getElementById("summarize").innerHTML = output;
 }
