@@ -158,10 +158,10 @@ function visualizeLinkDetail(d) {
     if (d.Type == "Line") {
         var propArr = d.prop;
         var myTable = "<p style='color:#FF0000'>Line chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
-        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
+        myTable += "<table id='myTable' class='tablesorter'><thead><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr></thead><tbody>";
 
 
 
@@ -173,7 +173,7 @@ function visualizeLinkDetail(d) {
             myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
             //}
         }
-        myTable += "</table>";
+        myTable += "</tbody></table>";
 
         document.getElementById("output").innerHTML = myTable;
 
@@ -181,10 +181,10 @@ function visualizeLinkDetail(d) {
 
         var propArr = d.prop;
         var myTable = "<p style='color:#FF0000'>Whatsapp chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
-        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
+        myTable += "<table id='myTable' class='tablesorter'><thead><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr></thead><tbody>";
 
         for (var i = 0; i < propArr.length; i++) {
             //if(checkDateRange(propArr[i].date) == "PASS"){
@@ -194,17 +194,17 @@ function visualizeLinkDetail(d) {
             myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
             //}
         }
-        myTable += "</table>";
+        myTable += "</tbody></table>";
 
         document.getElementById("output").innerHTML = myTable;
 
     } else if (d.Type == "Facebook") {
         var propArr = d.prop;
         var myTable = "<p style='color:#FF0000'>Facebook chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
-        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
+        myTable += "<table id='myTable' class='tablesorter'><thead><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr></thead><tbody>";
 
 
 
@@ -216,17 +216,17 @@ function visualizeLinkDetail(d) {
             myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
             //}
         }
-        myTable += "</table>";
+        myTable += "</tbody></table>";
 
         document.getElementById("output").innerHTML = myTable;
 
     } else if (d.Type == 'Call') {
         var propArr = d.prop;
         var myTable = "<p style='color:#FF0000'>Call between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
-        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
+        myTable += "<table id='myTable' class='tablesorter'><thead><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>TARGET</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>DURATION</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr>";
+        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr></thead><tbody>";
 
         for (var i = 0; i < propArr.length; i++) {
             //if(checkDateRange(propArr[i].date) == "PASS"){
@@ -236,19 +236,17 @@ function visualizeLinkDetail(d) {
             myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td></tr>";
             //}
         }
-        myTable += "</table>";
+        myTable += "</tbody></table>";
 
         document.getElementById("output").innerHTML = myTable;
     } else {
         var propArr = d.prop;
         var myTable = "<p style='color:#FF0000'>SMS between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
-        myTable += "<table><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
+        myTable += "<table id='myTable' class='tablesorter'><thead><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>RECEIVER</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:155px; border: 2px solid white; color: white; text-align: center;'>DATE</th>";
         myTable += "<th style='background-color:#333333;height: 40px; width:125px; border: 2px solid white; color: white; text-align: center;'>STATUS</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:170px; border: 2px solid white; color: white; text-align: center;'>MESSAGE</th></tr>";
-
-
+        myTable += "<th style='background-color:#333333;height: 40px; width:170px; border: 2px solid white; color: white; text-align: center;'>MESSAGE</th></tr></thead><tbody>";
 
         for (var i = 0; i < propArr.length; i++) {
             // if(checkDateRange(propArr[i].date) == "PASS"){
@@ -259,9 +257,13 @@ function visualizeLinkDetail(d) {
             myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].message + "</td></tr>";
             //}
         }
-        myTable += "</table>";
+        myTable += "</tbody></table>";
 
         document.getElementById("output").innerHTML = myTable;
+
+        $(function () {
+            $('#myTable').tablesorter();
+        });
     }
 }
 
@@ -270,7 +272,7 @@ function hideDiv() {
     document.getElementById("popUpDiv").style.display = 'none';
 }
 
-function hideProgressBar(){
+function hideProgressBar() {
     document.getElementById("blanket").style.display = 'none';
     document.getElementById("progressDiv").style.display = 'none';
 }

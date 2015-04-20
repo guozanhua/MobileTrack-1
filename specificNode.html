@@ -7,11 +7,24 @@
         <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
         <link rel="stylesheet" type="text/css" href="css/graph.css" >
         <link rel="stylesheet" type="text/css" href="css/bar.css" >
-<!--        <link rel="stylesheet" type="text/css" href="css/table2.css" >-->
+        <!--        <link rel="stylesheet" type="text/css" href="css/table2.css" >-->
+
+        <script src='js/d3.v3.min.js'></script>
+        <script src="js/d3.tip.js"></script>
+        <script type="text/javascript" src="js/specificNodeDetail.js"></script>
+        <script type="text/javascript" src="js/specificPhoneDetail.js"></script>
+        <script type="text/javascript" src="js/specificSMSDetail.js"></script>
+        <script type="text/javascript" src="js/specificFacebookDetail.js"></script>
+        <script type="text/javascript" src="js/specificLineCommunication.js"></script>
+        <script type="text/javascript" src="js/specificWhatsappCommunication.js"></script>
+        <script type="text/javascript" src="js/BuildQuery.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
+        <script type="text/javascript" src="js/helperfunction.js"></script>
+       <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
+
     </head>
     <body>
-
-
         <div id="doc" class="yui-t1">
             <div id="hd">
                 <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:100%"></h1></div>
@@ -244,6 +257,7 @@
                             </div>  
                     </div>
 
+                    
                     <div class="yui-a">
                         <div id="graph">
 
@@ -270,74 +284,62 @@
 
             </div>
 
-            <script src='js/d3.v3.min.js'></script>
-            <script src="js/d3.tip.js"></script>
-            <script type="text/javascript" src="js/specificNodeDetail.js"></script>
-            <script type="text/javascript" src="js/specificPhoneDetail.js"></script>
-            <script type="text/javascript" src="js/specificSMSDetail.js"></script>
-            <script type="text/javascript" src="js/specificFacebookDetail.js"></script>
-            <script type="text/javascript" src="js/specificLineCommunication.js"></script>
-            <script type="text/javascript" src="js/specificWhatsappCommunication.js"></script>
-            <script type="text/javascript" src="js/BuildQuery.js"></script>
-            <script type="text/javascript" src="js/jquery.min.js"></script>
-            <script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
-            <script type="text/javascript" src="js/helperfunction.js"></script>
 
             <script>
-                                            function doSomething() {
-                                                var a = document.getElementById("spinnerbox").value;
+                function doSomething() {
+                    var a = document.getElementById("spinnerbox").value;
 
-                                                document.getElementById("date_form").style.display = "none";
-                                                document.getElementById("durationbox").style.display = "none"
-                                                document.getElementById("typeboxcall").style.display = "none";
-                                                document.getElementById("typeboxmessage").style.display = "none";
-                                                document.getElementById("statusSMS").style.display = "none";
-                                                document.getElementById("frequency").style.display = "none";
-                                                document.getElementById("durationrange").style.display = "none";
-                                                document.getElementById("frequencyoperator").style.display = "none";
-                                                console.log(a);
+                    document.getElementById("date_form").style.display = "none";
+                    document.getElementById("durationbox").style.display = "none"
+                    document.getElementById("typeboxcall").style.display = "none";
+                    document.getElementById("typeboxmessage").style.display = "none";
+                    document.getElementById("statusSMS").style.display = "none";
+                    document.getElementById("frequency").style.display = "none";
+                    document.getElementById("durationrange").style.display = "none";
+                    document.getElementById("frequencyoperator").style.display = "none";
+                    console.log(a);
 
-                                                if (a == "call") {
-                                                    document.getElementById("date_form").style.display = "block";
+                    if (a == "call") {
+                        document.getElementById("date_form").style.display = "block";
 
-                                                    document.getElementById("durationbox").style.display = "block";
-                                                    document.getElementById("typeboxcall").style.display = "block";
-                                                    document.getElementById("frequency").style.display = "block";
-                                                }
-                                                else if (a == "message") {
-                                                    document.getElementById("date_form").style.display = "block";
+                        document.getElementById("durationbox").style.display = "block";
+                        document.getElementById("typeboxcall").style.display = "block";
+                        document.getElementById("frequency").style.display = "block";
+                    }
+                    else if (a == "message") {
+                        document.getElementById("date_form").style.display = "block";
 
-                                                    document.getElementById("typeboxmessage").style.display = "block";
-                                                    document.getElementById("statusSMS").style.display = "block";
-                                                    document.getElementById("frequency").style.display = "block";
-                                                }
-                                                else if (a == "line") {
-                                                    document.getElementById("date_form").style.display = "block";
-                                                    document.getElementById("frequency").style.display = "block";
-
-
-                                                }
-                                                else if (a == "facebook") {
-                                                    document.getElementById("date_form").style.display = "block";
-                                                    document.getElementById("frequency").style.display = "block";
+                        document.getElementById("typeboxmessage").style.display = "block";
+                        document.getElementById("statusSMS").style.display = "block";
+                        document.getElementById("frequency").style.display = "block";
+                    }
+                    else if (a == "line") {
+                        document.getElementById("date_form").style.display = "block";
+                        document.getElementById("frequency").style.display = "block";
 
 
-                                                }
-                                                else if (a == "whatapp") {
-                                                    document.getElementById("date_form").style.display = "block";
-                                                    document.getElementById("frequency").style.display = "block";
+                    }
+                    else if (a == "facebook") {
+                        document.getElementById("date_form").style.display = "block";
+                        document.getElementById("frequency").style.display = "block";
 
 
-                                                }
-                                                else {
-                                                    /*document.getElementById("date_form").style.display="none";
-                                                     document.getElementById("phonenumber").style.display="none";
-                                                     document.getElementById("durationbox").style.display="none"
-                                                     document.getElementById("typeboxcall").style.display="none";
-                                                     document.getElementById("typeboxmessage").style.display="none";
-                                                     document.getElementById("status").style.display="none";*/
-                                                }
-                                            }
+                    }
+                    else if (a == "whatapp") {
+                        document.getElementById("date_form").style.display = "block";
+                        document.getElementById("frequency").style.display = "block";
+
+
+                    }
+                    else {
+                        /*document.getElementById("date_form").style.display="none";
+                         document.getElementById("phonenumber").style.display="none";
+                         document.getElementById("durationbox").style.display="none"
+                         document.getElementById("typeboxcall").style.display="none";
+                         document.getElementById("typeboxmessage").style.display="none";
+                         document.getElementById("status").style.display="none";*/
+                    }
+                }
             </script>
 
             <script>
@@ -391,22 +393,22 @@
                         var e = document.getElementById("typecall").value;
                         var dateFrom = document.getElementById("datefrom").value;
                         var dateTo = document.getElementById("dateto").value;
-                        
+
                         if (e == "all") {
                             call = 1;
-                            
+
                         }
                         else if (e == "incoming") {
                             call = 2;
-                            
+
                         }
                         else if (e == "outgoing") {
                             call = 3;
-                            
+
                         }
                         else {
                             call = 4;
-                            
+
                         }
                     } else if (a == "message") {
                         communicationType = 2;
@@ -498,15 +500,16 @@
                                 phoneNumberArr.push(objAdd);
                             }
                             //document.write(JSON.stringify(phoneNumberArr));
-                            myTable = "<table><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>PhoneNumber</th>";
+                            myTable = "<table><thead><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>PhoneNumber</th>";
                             myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>Model</th>";
-                            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>Owner</th>";
+                            myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>Owner</th></tr></thead><tbody>";
                             for (var i = 0; i < phoneNumberArr.length; i++) {
                                 myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + phoneNumberArr[i].PhoneNumber + "</td>";
                                 myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + phoneNumberArr[i].Model + "</td>";
                                 myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + phoneNumberArr[i].Owner + "</td></tr>";
                             }
-                            myTable += "</table>";
+                            myTable += "</tbody></table>";
+                            console.log('done creating table');
                             $('#suggestBtn').magnificPopup({
                                 items: {
                                     src: '<div class="white-popup">' +
@@ -517,6 +520,8 @@
                                 closeBtnInside: true
                             });
                         });
+
+
 
             </script>
 
