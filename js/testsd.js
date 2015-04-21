@@ -4915,7 +4915,9 @@ function SDsummarization(finalResult) {
     var inputTarget = document.getElementById("tPhoneNo").value;
     var linkArr = finalResult;
     if (linkArr.length > 0) {
-        var output = "<p>Visualizing communication flow between mobile phones using number " + inputSource + " and " + inputTarget + "</p><br/>";
+        
+        var output = "<h3 class='text2'>Visualizing communication flow between mobile phones using number</h3>" ;
+            output += "<h3 class='text3'>" + inputSource + " and " + inputTarget + "</h3>";
         var indexCall = [];
         var indexSMS = [];
         var indexLine = [];
@@ -4935,7 +4937,7 @@ function SDsummarization(finalResult) {
                 indexFacebook.push(i);
             }
         }
-
+        output += "<table><thead><th class='styleheadtable2'>List</th><th class='styleheadtable3'>Frequency </th></thead><tbody>";
         if (indexCall.length > 0) {
             if (indexCall.length > 1) {
                 var sumProp = 0;
@@ -4944,7 +4946,11 @@ function SDsummarization(finalResult) {
                 }
                 output += "Call log: " + sumProp + "<br/>"
             } else {
-                output += "Call log from " + linkArr[indexCall[0]].source.PhoneNumber + " to " + linkArr[indexCall[0]].target.PhoneNumber + ": " + linkArr[indexCall[0]].prop.length + "<br/>"
+                
+                output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
+                output += "Call log from " + linkArr[indexCall[0]].source.PhoneNumber + " to " + linkArr[indexCall[0]].target.PhoneNumber + ": </td><td class='stylerowtable3 '>";
+                output += linkArr[indexCall[0]].prop.length +"</td></tr>";
+                output += "</br>";
             }
         }
 
@@ -4956,7 +4962,10 @@ function SDsummarization(finalResult) {
                 }
                 output += "Total SMS log: " + sumProp + "<br/>"
             } else {
-                output += "SMS log from " + linkArr[indexSMS[0]].source.PhoneNumber + " to " + linkArr[indexSMS[0]].target.PhoneNumber + ": " + linkArr[indexCall[0]].prop.length + "<br/>"
+                output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
+                output += "SMS log from " + linkArr[indexSMS[0]].source.PhoneNumber + " to " + linkArr[indexSMS[0]].target.PhoneNumber + ": </td><td class='stylerowtable3 '>";
+                output += linkArr[indexCall[0]].prop.length +"</td></tr>";
+                output += "</br>";
             }
         }
 
