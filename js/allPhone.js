@@ -1101,8 +1101,6 @@ function queryAllPhones(selections) {
                                         }
                                     }
                                 }
-
-
                             });
 
 
@@ -1409,7 +1407,6 @@ function queryAllPhones(selections) {
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
-
                                     }
                                 }
                             }
@@ -1418,39 +1415,114 @@ function queryAllPhones(selections) {
                                 nodeArr[i].matchFreq = 0;
                             }
 
-                            linkArr.forEach(function (link) {
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (link.source == nodeArr[i].NodeIndex) {
-                                        for (j = 0; j < nodeArr.length; j++) {
-                                            if (link.target == nodeArr[j].NodeIndex) {
-                                                var objWhatsappChat = {};
-                                                objWhatsappChat.PhoneNumber = nodeArr[j].PhoneNumber;
-                                                objWhatsappChat.freq = link.prop.length; //Will change to lineId soon!!
-                                                nodeArr[i].WhatsappChat.push(objWhatsappChat);
-                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
-                                                break;
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
+                            var inputFreq = document.getElementById("fof").value;
 
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (link.target == nodeArr[i].NodeIndex) {
-                                        for (j = 0; j < nodeArr.length; j++) {
-                                            if (link.source == nodeArr[j].NodeIndex) {
-                                                var objWhatsappChat = {};
-                                                objWhatsappChat.Account = nodeArr[j].textDisplay;
-                                                objWhatsappChat.freq = link.prop.length;//Will change to linkID soon!!
-                                                nodeArr[i].WhatsappChat.push(objWhatsappChat);
-                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
-                                                break;
+                            linkArr.forEach(function (link) {
+                                if (document.getElementById("ddf").checked) {
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.source == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.target == nodeArr[j].NodeIndex) {
+                                                    var objWhatsappChat = {};
+                                                    objWhatsappChat.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                    objWhatsappChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                    nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.target == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.source == nodeArr[j].NodeIndex) {
+                                                    var objWhatsappChat = {};
+                                                    objWhatsappChat.Account = nodeArr[j].textDisplay;
+                                                    objWhatsappChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                    nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    if (document.getElementById("morethan").checked) {
+                                        if (link.prop.length >= inputFreq) {
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.target == nodeArr[j].NodeIndex) {
+                                                            var objWhatsappChat = {};
+                                                            objWhatsappChat.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                            objWhatsappChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                            nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.source == nodeArr[j].NodeIndex) {
+                                                            var objWhatsappChat = {};
+                                                            objWhatsappChat.Account = nodeArr[j].textDisplay;
+                                                            objWhatsappChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                            nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
                                             }
                                         }
-                                        break;
+                                    } else if (document.getElementById("lessthan").checked) {
+                                        if (link.prop.length <= inputFreq) {
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.target == nodeArr[j].NodeIndex) {
+                                                            var objWhatsappChat = {};
+                                                            objWhatsappChat.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                            objWhatsappChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                            nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.source == nodeArr[j].NodeIndex) {
+                                                            var objWhatsappChat = {};
+                                                            objWhatsappChat.Account = nodeArr[j].textDisplay;
+                                                            objWhatsappChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                            nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             });
+
 
                             //After finished adding all the nodes and relationship into nodeArr and linkArr
                             var allWhatsappNodes = [];
@@ -1765,36 +1837,110 @@ function queryAllPhones(selections) {
                                 nodeArr[i].matchFreq = 0;
                             }
 
-                            linkArr.forEach(function (link) {
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (link.source == nodeArr[i].NodeIndex) {
-                                        for (j = 0; j < nodeArr.length; j++) {
-                                            if (link.target == nodeArr[j].NodeIndex) {
-                                                var objFacebookChat = {};
-                                                objFacebookChat.Account = nodeArr[j].textDisplay;
-                                                objFacebookChat.freq = link.prop.length; //Will change to lineId soon!!
-                                                nodeArr[i].facebookChat.push(objFacebookChat);
-                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
-                                                break;
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
+                            var inputFreq = document.getElementById("fof").value;
 
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (link.target == nodeArr[i].NodeIndex) {
-                                        for (j = 0; j < nodeArr.length; j++) {
-                                            if (link.source == nodeArr[j].NodeIndex) {
-                                                var objFacebookChat = {};
-                                                objFacebookChat.Account = nodeArr[j].textDisplay;
-                                                objFacebookChat.freq = link.prop.length;//Will change to linkID soon!!
-                                                nodeArr[i].facebookChat.push(objFacebookChat);
-                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
-                                                break;
+                            linkArr.forEach(function (link) {
+                                if (document.getElementById("ddf").checked) {
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.source == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.target == nodeArr[j].NodeIndex) {
+                                                    var objFacebookChat = {};
+                                                    objFacebookChat.Account = nodeArr[j].textDisplay;
+                                                    objFacebookChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                    nodeArr[i].facebookChat.push(objFacebookChat);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.target == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.source == nodeArr[j].NodeIndex) {
+                                                    var objFacebookChat = {};
+                                                    objFacebookChat.Account = nodeArr[j].textDisplay;
+                                                    objFacebookChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                    nodeArr[i].facebookChat.push(objFacebookChat);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    if (document.getElementById("morethan").checked) {
+                                        if (link.prop.length >= inputFreq) {
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.target == nodeArr[j].NodeIndex) {
+                                                            var objFacebookChat = {};
+                                                            objFacebookChat.Account = nodeArr[j].textDisplay;
+                                                            objFacebookChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                            nodeArr[i].facebookChat.push(objFacebookChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.source == nodeArr[j].NodeIndex) {
+                                                            var objFacebookChat = {};
+                                                            objFacebookChat.Account = nodeArr[j].textDisplay;
+                                                            objFacebookChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                            nodeArr[i].facebookChat.push(objFacebookChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
                                             }
                                         }
-                                        break;
+                                    } else if (document.getElementById("lessthan").checked) {
+                                        if (link.prop.length <= inputFreq) {
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.target == nodeArr[j].NodeIndex) {
+                                                            var objFacebookChat = {};
+                                                            objFacebookChat.Account = nodeArr[j].textDisplay;
+                                                            objFacebookChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                            nodeArr[i].facebookChat.push(objFacebookChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.source == nodeArr[j].NodeIndex) {
+                                                            var objFacebookChat = {};
+                                                            objFacebookChat.Account = nodeArr[j].textDisplay;
+                                                            objFacebookChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                            nodeArr[i].facebookChat.push(objFacebookChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             });
@@ -1931,7 +2077,7 @@ function dataVisualizationAllPhones(finalResult) {
             })
             .nodes(finalResult[0])
             .links(finalResult[1].filter(function (d) {
-                if(d.Type == 'Call' || d.Type == 'SMS' || d.Type == 'Line' || d.Type == 'Whatsapp' || d.Type == 'Facebook'){
+                if (d.Type == 'Call' || d.Type == 'SMS' || d.Type == 'Line' || d.Type == 'Whatsapp' || d.Type == 'Facebook') {
                     if (document.getElementById('ddf').checked) {
                         inputFreq = 0;
                         return d.prop.length >= inputFreq;
@@ -1942,10 +2088,10 @@ function dataVisualizationAllPhones(finalResult) {
                             return d.prop.length <= inputFreq;
                         }
                     }
-                }else{
+                } else {
                     return d;
                 }
-                    
+
             }))
             .size([width, height])
             .start();
