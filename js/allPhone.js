@@ -107,7 +107,7 @@ function queryAllPhones(selections) {
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
                                     objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLink.prop.push(objLinkProp);
                                     linkArr.push(objLink);
 
@@ -160,7 +160,7 @@ function queryAllPhones(selections) {
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
                                             objLinkProp.dur = result[i].Duration;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             linkArr[linkIndex].prop.push(objLinkProp);
                                         } else {
                                             //Link between source and target haven't been created yet.
@@ -174,7 +174,7 @@ function queryAllPhones(selections) {
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
                                             objLinkProp.dur = result[i].Duration;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLink.prop.push(objLinkProp);
                                             linkArr.push(objLink);
                                         }
@@ -199,7 +199,7 @@ function queryAllPhones(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
@@ -223,7 +223,7 @@ function queryAllPhones(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
@@ -255,7 +255,7 @@ function queryAllPhones(selections) {
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
                                         objLinkProp.dur = result[i].Duration;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLink.prop.push(objLinkProp);
                                         linkArr.push(objLink);
 
@@ -409,7 +409,7 @@ function queryAllPhones(selections) {
                                     var objLinkProp = {};
                                     objLinkProp.Source = result[i].SourceNumber;
                                     objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     //objLinkProp.time = result[i].Time;
                                     objLinkProp.status = result[i].Status;
                                     objLinkProp.message = result[i].Message;
@@ -463,7 +463,7 @@ function queryAllPhones(selections) {
                                             var objLinkProp = {};
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             //objLinkProp.time = result[i].Time;
                                             objLinkProp.status = result[i].Status;
                                             objLinkProp.message = result[i].Message;
@@ -479,7 +479,7 @@ function queryAllPhones(selections) {
                                             var objLinkProp = {};
                                             objLinkProp.Source = result[i].SourceNumber;
                                             objLinkProp.Target = result[i].TargetNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             //objLinkProp.time = result[i].Time;
                                             objLinkProp.status = result[i].Status;
                                             objLinkProp.message = result[i].Message;
@@ -505,7 +505,7 @@ function queryAllPhones(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -531,7 +531,7 @@ function queryAllPhones(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -566,7 +566,7 @@ function queryAllPhones(selections) {
                                         var objLinkProp = {};
                                         objLinkProp.Source = result[i].SourceNumber;
                                         objLinkProp.Target = result[i].TargetNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         //objLinkProp.time = result[i].Time;
                                         objLinkProp.status = result[i].Status;
                                         objLinkProp.message = result[i].Message;
@@ -690,7 +690,7 @@ function queryAllPhones(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceLineID;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
@@ -743,7 +743,7 @@ function queryAllPhones(selections) {
                                             //There is already a link between source and target.
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr[linkIndex].prop.push(objLinkProp);
@@ -757,7 +757,7 @@ function queryAllPhones(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceLineID;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -782,7 +782,7 @@ function queryAllPhones(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr.push(objLink);
@@ -805,7 +805,7 @@ function queryAllPhones(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -838,7 +838,7 @@ function queryAllPhones(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceLineID;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1030,7 +1030,7 @@ function queryAllPhones(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SoureNumber;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
@@ -1083,7 +1083,7 @@ function queryAllPhones(selections) {
                                             //There is already a link between source and target.
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr[linkIndex].prop.push(objLinkProp);
@@ -1097,7 +1097,7 @@ function queryAllPhones(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceNumber;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -1123,7 +1123,7 @@ function queryAllPhones(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr.push(objLink);
@@ -1146,7 +1146,7 @@ function queryAllPhones(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1179,7 +1179,7 @@ function queryAllPhones(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceNumber;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1371,7 +1371,7 @@ function queryAllPhones(selections) {
 
                                     var objLinkProp = {};
                                     objLinkProp.Sender = result[i].SourceFacebook;
-                                    objLinkProp.date = result[i].Date;
+                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
                                     objLinkProp.Time = result[i].Time;
                                     objLinkProp.message = result[i].Message;
                                     objLink.prop.push(objLinkProp);
@@ -1424,7 +1424,7 @@ function queryAllPhones(selections) {
                                             //There is already a link between source and target.
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebook;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             linkArr[linkIndex].prop.push(objLinkProp);
@@ -1438,7 +1438,7 @@ function queryAllPhones(selections) {
 
                                             var objLinkProp = {};
                                             objLinkProp.Sender = result[i].SourceFacebook;
-                                            objLinkProp.date = result[i].Date;
+                                            objLinkProp.date = convertDatetoNormal(result[i].Date);
                                             objLinkProp.Time = result[i].Time;
                                             objLinkProp.message = result[i].Message;
                                             objLink.prop.push(objLinkProp);
@@ -1464,7 +1464,7 @@ function queryAllPhones(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         linkArr.push(objLink);
@@ -1487,7 +1487,7 @@ function queryAllPhones(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
@@ -1520,7 +1520,7 @@ function queryAllPhones(selections) {
 
                                         var objLinkProp = {};
                                         objLinkProp.Sender = result[i].SourceFacebook;
-                                        objLinkProp.date = result[i].Date;
+                                        objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
                                         objLink.prop.push(objLinkProp);
