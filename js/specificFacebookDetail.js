@@ -777,12 +777,15 @@ function specificFacebookSummarize(finalResult) {
 
     var output = "<h3 class='text2'>User's input Phone Number: " + inputSource + "</h3>";
     output += "<h3 class='text2'>Associated Facebook Account is " + nodeArr[index].textDisplay + "</h3>";
-    output += "<table><th class='styleheadtable2'>Chat with</th> " + "<br/>"
-    output +="<table><th class='stylerowtable2 '>"
+     output += "<table><thead><th colspan='3' class='styleheadtable2'>Chat with </th></thead><tbody>";
+    
     for (i = 0; i < nodeArr[index].facebookChat.length; i++) {
-        output += i + "). " + nodeArr[index].facebookChat[i].Account + " Freq: " + nodeArr[index].facebookChat[i].freq + "<br/>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i+1) + ").  </td><td>" ;
+        output += nodeArr[index].facebookChat[i].Account+ "</td><td>";
+        output += " Freq: " + nodeArr[index].facebookChat[i].freq + "</td></tr>";
     }
-    output += "</table>"
+    output += "</tbody></table>"
     document.getElementById("summarize").innerHTML = output;
 }
 

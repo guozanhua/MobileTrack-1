@@ -822,17 +822,25 @@ function specificCallSummarize(finalResult){
     }
     
     var output = "<h3 class='text2'>User's input Phone Number: " + inputSource + "</h3>";
-    output += "<table><th class='styleheadtable2'>Receive Call from: </th>" + "<br/>"
-    output +="<table><th class='stylerowtable2 '>"
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Receive Call from </th></thead><tbody>";
+    
     for (i = 0; i < d[index].callIn.length; i++) {
-        output += (i+1) + "). " + d[index].callIn[i].PhoneNumber + " Freq: " + d[index].callIn[i].freq + "<br/>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>"
+        output += (i+1) + ").</td><td> " ;
+        output += d[index].callIn[i].PhoneNumber + "</td><td>";
+        output += "Freq: " + d[index].callIn[i].freq + "</td></tr>";
+        
     }
-    output += "</table>"
-    output += "<table><th class='styleheadtable2'>Dialing Call to: </th>" + "<br/>"
-    output +="<table><th class='stylerowtable2 '>"
+    output += "</tbody></table>";
+    output += "</br>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Dialing Call to </th></thead><tbody>";
+    
     for (i = 0; i < d[index].callOut.length; i++) {
-        output += (i+1) + "). " + d[index].callOut[i].PhoneNumber + " Freq: " + d[index].callOut[i].freq + "<br/>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i+1) + "). </td><td>";
+        output += d[index].callOut[i].PhoneNumber+ "</td><td>";
+        output += "Freq: "+ d[index].callOut[i].freq+ "</td></tr>";
     }
-    output += "</table>"
+    output += "</tbody></table>"
     document.getElementById("summarize").innerHTML = output;
 }

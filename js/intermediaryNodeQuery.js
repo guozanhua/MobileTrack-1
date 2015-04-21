@@ -5409,10 +5409,15 @@ function sxdSummarize(linkArr) {
     }
 
     //Displaying all the possible middle-mans.
-    var output = "<p style='color:red'>All the possible middle-man between <span style = 'color:white'>" + inputSource + "</span> and <span style = 'color:white'>" + inputTarget + "</span> are listed below</p><br/>";
+    var output = "<h3 class='text2'>All the possible middle-man between</h3>" ;
+    output += "<h3 class='text3'>" + inputSource + " and " + inputTarget + "</h3>";
+    output += "<h3 class='text2'>are listed below</h3>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Possible Middle-Man </th></thead><tbody>";
     for (i = 0; i < middlemanArr.length; i++) {
-        output += middlemanArr[i] + "<br/>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i+1) + ").  </td><td>" ;
+        output += middlemanArr[i] +"</td></tr>";
     }
-    
+     output += "</tbody></table>"
     document.getElementById("summarize").innerHTML = output;
 }

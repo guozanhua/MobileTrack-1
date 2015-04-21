@@ -4950,7 +4950,7 @@ function SDsummarization(finalResult) {
                 output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
                 output += "Call log from " + linkArr[indexCall[0]].source.PhoneNumber + " to " + linkArr[indexCall[0]].target.PhoneNumber + ": </td><td class='stylerowtable3 '>";
                 output += linkArr[indexCall[0]].prop.length +"</td></tr>";
-                output += "</br>";
+                
             }
         }
 
@@ -4965,7 +4965,7 @@ function SDsummarization(finalResult) {
                 output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
                 output += "SMS log from " + linkArr[indexSMS[0]].source.PhoneNumber + " to " + linkArr[indexSMS[0]].target.PhoneNumber + ": </td><td class='stylerowtable3 '>";
                 output += linkArr[indexCall[0]].prop.length +"</td></tr>";
-                output += "</br>";
+               
             }
         }
 
@@ -4974,7 +4974,10 @@ function SDsummarization(finalResult) {
             for (i = 0; i < indexLine.length; i++) {
                 sumProp = linkArr[indexLine[i]].prop.length + sumProp;
             }
-            output += "Total Line chat log: " + sumProp + "<br/>";
+            output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
+            output += "Total Line chat log" + ": </td><td class='stylerowtable3 '>";
+            output += sumProp +"</td></tr>";
+            
         }
 
         if (indexWhatsapp.length > 0) {
@@ -4982,7 +4985,9 @@ function SDsummarization(finalResult) {
             for (i = 0; i < indexWhatsapp.length; i++) {
                 sumProp = linkArr[indexWhatsapp[i]].prop.length + sumProp;
             }
-            output += "Total Whatsapp chat log: " + sumProp + "<br/>";
+            output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
+            output += "Total Whatsapp chat log: " + ": </td><td class='stylerowtable3 '>";
+            output += sumProp +"</td></tr>";
         }
 
         if (indexFacebook.length > 0) {
@@ -4990,8 +4995,11 @@ function SDsummarization(finalResult) {
             for (i = 0; i < indexFacebook.length; i++) {
                 sumProp = linkArr[indexFacebook[i]].prop.length + sumProp;
             }
-            output += "Total Facebook chat log: " + sumProp + "<br/>";
+            output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
+            output += "Total Facebook chat log: " + ": </td><td class='stylerowtable3 '>";
+            output += sumProp +"</td></tr>";
         }
+         output += "</tbody></table>";
     } else {
         var output = "<p/>According to user's selection, no communication flow could be found between " + inputSource + " and " + inputTarget + "</p><br/>";
     }
