@@ -573,27 +573,32 @@ function specificNodeSummarize(finalResult){
     //Print it out on summarize pane
     var output = "<u><h3 class='text'>Displaying information that were collected from mobile phone using number " + nodeArr[indexPhone].PhoneNumber + " </h3></u>";
     output += "<h3 class='text2'>Coresponding social account are as the followings  " + "</h3>";
-    output += "<table><th class='styleheadtable2'>Line Account </th><br/>"; 
-    output +="<table><th class='stylerowtable2 '>"
+    
+    output += "<table><thead><th class='styleheadtable2'>Line Account </th></thead><tbody>"; 
     for(i=0;i<indexLine.length;i++){
-        output +=  nodeArr[indexLine[i]].textDisplay ;
+        output +="<tr class='stylerowtable2 '><td>";
+        output +=  nodeArr[indexLine[i]].textDisplay +"</td></tr>";
     }
-    "</th><br/>"
-    output += "</table>"
-    output += "<table><th class='styleheadtable2'>Whatsapp Account </th><br/>"; 
-     output +="<table><th class='stylerowtable2 '>"
-    for(i=0;i<indexWhatsapp.length;i++){
-        output += nodeArr[indexWhatsapp[i]].textDisplay + "<br/>";
+    output +="</tbody></table>";
+    
+    output +="<br>"
+    output += "<table><thead><th class='styleheadtable2'>Whatsapp Account </th></thead><tbody>"; 
+    
+    for(i=0;i<indexWhatsapp.length;i++){ 
+        output +="<tr class='stylerowtable2 '><td>";
+        output += nodeArr[indexWhatsapp[i]].textDisplay + "</td></tr>";
     }
-    "</th><br/>"
-    output += "</table>"
-    output += "<table><th class='styleheadtable2'>Facebook Account </th><br/>";
-     output +="<table><th class='stylerowtable2 '>" 
+    output +="</tbody></table>";
+    
+    output +="<br>"
+    output += "<table><thead><th class='styleheadtable2'>Facebook Account </th></thead><tbody>";
+      
     for(i=0;i<indexFacebook.length;i++){
+        output +="<tr class='stylerowtable2 '><td>";
         output += nodeArr[indexFacebook[i]].textDisplay + "<br/>";
     }
-       "</th><br/>"
-    output += "</table>"
+    output +="</tbody></table>";
+    
     
     document.getElementById("summarize").innerHTML = output;
 }

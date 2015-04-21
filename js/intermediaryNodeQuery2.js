@@ -5520,18 +5520,28 @@ function sxxdSummarize(linkArr) {
     }
     
     //Displaying in summarize
-    var output = "<p style='color:red'>All the possible middle-man between <span style = 'color:white'>" + inputSource + "</span> and <span style = 'color:white'>" + inputTarget + "</span> are listed below</p><br/>";
-    output += "<p>Hob One: <br/>";
-    for (i = 0; i < hobOne.length; i++) {
-        output += hobOne[i] + "<br/>";
-    }
-    output += "</p><br/>";
+    var output = "<h3 class='text2'>All the possible middle-man between</h3>" ;
+    output += "<h3 class='text3'>" + inputSource + " and " + inputTarget + "</h3>";
+    output += "<h3 class='text2'>are listed below</h3>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Hob One </th></thead><tbody>";
     
-    output += "<p>Hob Two: <br/>";
-    for (i = 0; i < hobTwo.length; i++) {
-        output += hobTwo[i] + "<br/>";
+    for (i = 0; i < hobOne.length; i++) {
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i+1) + ").  </td><td>" ;
+        output += hobOne[i] +"</td></tr>";
     }
-    output += "</p><br/>";
+    output += "</tbody></table>"
+    output += "</br>";
+    
+   output += "<table><thead><th colspan='3' class='styleheadtable2'>Hob Two </th></thead><tbody>";
+    
+    for (i = 0; i < hobTwo.length; i++) {
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i+1) + ").  </td><td>" ;
+        output += hobTwo[i] +"</td></tr>";
+    }
+    output += "</tbody></table>"
+    
     
     document.getElementById("summarize").innerHTML = output;
 }

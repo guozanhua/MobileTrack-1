@@ -2518,31 +2518,42 @@ function dataVisualizationAllPhones(finalResult) {
 }
 function visualizeLinkSummary(d) {
     if (d.Type == 'Line') {
-        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        
+        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
         summary += "Source: " + d.source.textDisplay + " is a Line account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Target: " + d.target.textDisplay + " is a Line account related with " + d.target.PhoneNumber + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Line Chat Log: " + d.prop.length;
     } else if (d.Type == 'Whatsapp') {
-        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
         summary += "Source: " + d.source.textDisplay + " is a Whatsapp account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Target: " + d.target.textDisplay + " is a Whatsapp account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Whatsapp Chat Log: " + d.prop.length;
     } else if (d.Type == 'Facebook') {
-        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
         summary += "Source: " + d.source.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Target: " + d.target.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Facebook Chat Log: " + d.prop.length;
     } else if (d.Type == 'Call') {
-        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
-        summary += "Source: " + d.source.textDisplay + "<br/>";
-        summary += "Target: " + d.target.textDisplay + "<br/>";
-        summary += "Type of Communication: " + d.Type + "<br/>";
-        summary += "Total Call Log: " + d.prop.length;
+        var summary = "<h3 class='text2'>You have clicked on the link between </h3>";
+        summary += "<h3 class='text2'>" + d.source.textDisplay + " and " + d.target.textDisplay + "</h3>" ;
+        summary += "<table><thead><th colspan='3' class='styleheadtable2'>Link Summalize </th></thead><tbody>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Source: </td><td>" 
+        summary += d.source.textDisplay + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Target: </td><td>" 
+        summary += d.target.textDisplay + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Type of Communication: </td><td>" 
+        summary += d.Type + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Total Call Log: </td><td>" 
+        summary += d.prop.length +"</td></tr>";
     } else {
-        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
         summary += "Source: " + d.source.textDisplay + "<br/>";
         summary += "Target: " + d.target.textDisplay + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
@@ -2556,73 +2567,139 @@ function visualizeNodeSummary(d) {
     var commuType = document.getElementById("spinnerbox").value;
     var output = "";
     if (commuType == 'call') {
-        output = "Phone Number: " + d.PhoneNumber + "<br/>";
+        output = "<h3 class='text2'>Phone Number: " + d.PhoneNumber + "</h3>";
         var operation = document.getElementById("typecallAll").value;
         if (operation == 'incoming') {
-            output += "Incoming Call: " + "<br/>"
+            output += "<table><thead><th colspan='3' class='styleheadtable2'>Incoming Call </th></thead><tbody>";
+            
             for (i = 0; i < d.callIn.length; i++) {
-                output += i + "). " + d.callIn[i].PhoneNumber + " Freq: " + d.callIn[i].freq + "<br/>";
+                output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+                output += (i+1) + "). </td><td>" 
+                output += d.callIn[i].PhoneNumber+ "</td><td>"; 
+                output += " Freq: " + d.callIn[i].freq +"</td></tr>";
             }
+             output += "</tbody></table>"
+             output += "</br>";
+             
         } else if (operation == 'outgoing') {
-            output += "Outgoing Call: " + "<br/>"
+            output += "<table><thead><th colspan='3' class='styleheadtable2'>Outgoing Call </th></thead><tbody>";
+            
             for (i = 0; i < d.callOut.length; i++) {
-                output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
+                output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+                output += (i+1) + "). </td><td>" 
+                output += d.callOut[i].PhoneNumber+ "</td><td>";  
+                output += " Freq: " + d.callOut[i].freq +"</td></tr>";
             }
+            output += "</tbody></table>"
+             output += "</br>";
         } else {
-            output += "Incoming Call: " + "<br/>"
+            output += "<table><thead><th colspan='3' class='styleheadtable2'>Incoming Call </th></thead><tbody>";
+            
             for (i = 0; i < d.callIn.length; i++) {
-                output += i + "). " + d.callIn[i].PhoneNumber + " Freq: " + d.callIn[i].freq + "<br/>";
+                output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+                output += (i+1) + "). </td><td>" 
+                output += d.callIn[i].PhoneNumber+ "</td><td>"; 
+                output += " Freq: " + d.callIn[i].freq +"</td></tr>";
             }
-
-            output += "Outgoing Call: " + "<br/>"
+            output += "</tbody></table>"
+             output += "</br>";
+            
+            output += "<table><thead><th colspan='3' class='styleheadtable2'>Outgoing Call </th></thead><tbody>";
+            
             for (i = 0; i < d.callOut.length; i++) {
-                output += i + "). " + d.callOut[i].PhoneNumber + " Freq: " + d.callOut[i].freq + "<br/>";
+                output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+                output += (i+1) + "). </td><td>" 
+                output += d.callOut[i].PhoneNumber+ "</td><td>"; 
+                output += " Freq: " + d.callOut[i].freq +"</td></tr>";
             }
+            output += "</tbody></table>"
+             
         }
 
     } else if (commuType == 'message') {
-        output = "Phone Number: " + d.PhoneNumber + "<br/>";
+        output = "<h3 class='text2'>Phone Number: " + d.PhoneNumber + "</h3>";
         var smsType = document.getElementById("typesmsAll").value;
         if (smsType == 'send') {
-            output += "Send to: " + "<br/>"
+            output += "<table><thead><th colspan='3' class='styleheadtable2'>Send to </th></thead><tbody>";
+            
             for (i = 0; i < d.smsOut.length; i++) {
-                output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
+                output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+                output += (i+1) + "). </td><td>" 
+                output += d.smsOut[i].PhoneNumber+ "</td><td>";  
+                output += " Freq: " + d.smsOut[i].freq +"</td></tr>";
             }
+            output += "</tbody></table>"
+             output += "</br>";
         } else if (smsType == 'received') {
-            output += "Received from: " + "<br/>"
+            output += "<table><thead><th colspan='3' class='styleheadtable2'>Receive from </th></thead><tbody>";
+            
             for (i = 0; i < d.smsIn.length; i++) {
-                output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
+                output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+                output += (i+1) + "). </td><td>" 
+                output += d.smsIn[i].PhoneNumber+ "</td><td>"; 
+                output += " Freq: " + d.smsIn[i].freq +"</td></tr>";
             }
+             output += "</tbody></table>"
+             output += "</br>";
         }
         else {
-            output += "Send to: " + "<br/>"
+           output += "<table><thead><th colspan='3' class='styleheadtable2'>Send to </th></thead><tbody>";
+            
             for (i = 0; i < d.smsOut.length; i++) {
-                output += i + "). " + d.smsOut[i].PhoneNumber + " Freq: " + d.smsOut[i].freq + "<br/>";
+                output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+                output += (i+1) + "). </td><td>" 
+                output += d.smsOut[i].PhoneNumber+ "</td><td>";  
+                output += " Freq: " + d.smsOut[i].freq +"</td></tr>";
             }
+            output += "</tbody></table>"
+            output += "</br>";
 
-            output += "Received from: " + "<br/>"
+            output += "<table><thead><th colspan='3' class='styleheadtable2'>Receive from </th></thead><tbody>";
+            
             for (i = 0; i < d.smsIn.length; i++) {
-                output += i + "). " + d.smsIn[i].PhoneNumber + " Freq: " + d.smsIn[i].freq + "<br/>";
+                output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+                output += (i+1) + "). </td><td>" 
+                output += d.smsIn[i].PhoneNumber+ "</td><td>"; 
+                output += " Freq: " + d.smsIn[i].freq +"</td></tr>";
             }
+             output += "</tbody></table>"
+             
         }
     } else if (commuType == 'line') {
-        output = d.textDisplay + "<br/>";
-        output += "LINE chat with: " + "<br/>"
+        output = "<h3 class='text2'>" + d.textDisplay + "</h3>";
+        output += "<table><thead><th colspan='3' class='styleheadtable2'>LINE chat with </th></thead><tbody>";
+        
         for (i = 0; i < d.lineChat.length; i++) {
-            output += i + "). " + d.lineChat[i].Account + " Freq: " + d.lineChat[i].freq + "<br/>";
-        }
+            output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+            output += (i+1) + "). </td><td>" 
+            output += d.lineIn[i].PhoneNumber+ "</td><td>"; 
+            output += " Freq: " + d.lineIn[i].freq +"</td></tr>";
+            }
+             output += "</tbody></table>"
+            
     } else if (commuType == 'whatsapp') {
-        output = d.textDisplay + "<br/>";
-        output += "Whatsapp chat with: " + "<br/>"
+        output = "<h3 class='text2'>" + d.textDisplay + "</h3>";
+        output += "<table><thead><th colspan='3' class='styleheadtable2'>Whatsapp chat with </th></thead><tbody>";
+        
         for (i = 0; i < d.WhatsappChat.length; i++) {
-            output += i + "). " + d.WhatsappChat[i].Account + " Freq: " + d.WhatsappChat[i].freq + "<br/>";
-        }
+            output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+            output += (i+1) + "). </td><td>" 
+            output += d.WhatsappChat[i].PhoneNumber+ "</td><td>"; 
+            output += " Freq: " + d.WhatsappChat[i].freq +"</td></tr>";
+            }
+             output += "</tbody></table>"
+            
     } else {
-        output = d.textDisplay + "<br/>";
-        output += "Facebook chat with: " + "<br/>"
+        output = "<h3 class='text2'>" + d.textDisplay + "</h3>";
+        output += "<table><thead><th colspan='3' class='styleheadtable2'>Facebook chat with </th></thead><tbody>";
+        
         for (i = 0; i < d.facebookChat.length; i++) {
-            output += i + "). " + d.facebookChat[i].Account + " Freq: " + d.facebookChat[i].freq + "<br/>";
-        }
+            output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+            output += (i+1) + "). </td><td>" 
+            output += d.facebookChat[i].PhoneNumber+ "</td><td>"; 
+            output += " Freq: " + d.facebookChat[i].freq +"</td></tr>";
+            }
+             output += "</tbody></table>"
     }
     document.getElementById("summarize").innerHTML = output;
 }

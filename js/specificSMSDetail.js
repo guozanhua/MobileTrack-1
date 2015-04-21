@@ -750,16 +750,27 @@ function specificSMSSummarize(finalResult) {
         }
     }
 
-    var output = "User's input Phone Number: " + inputSource + "<br/>";
-    output += "Received SMS from: " + "<br/>"
+   var output = "<h3 class='text2'>User's input Phone Number: " + inputSource + "</h3>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Receive SMS from </th></thead><tbody>";
+    
     for (i = 0; i < d[index].smsIn.length; i++) {
-        output += (i + 1) + "). " + d[index].smsIn[i].PhoneNumber + " Freq: " + d[index].smsIn[i].freq + "<br/>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>"
+        output += (i+1) + ").</td><td> " ;
+        output += d[index].smsIn[i].PhoneNumber + "</td><td>";
+        output += "Freq: " + d[index].smsIn[i].freq + "</td></tr>";
+        
     }
-
-    output += "Send SMS to: " + "<br/>"
+    output += "</tbody></table>";
+    output += "</br>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Send SMS to </th></thead><tbody>";
+    
     for (i = 0; i < d[index].smsOut.length; i++) {
-        output += (i + 1) + "). " + d[index].smsOut[i].PhoneNumber + " Freq: " + d[index].smsOut[i].freq + "<br/>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i+1) + "). </td><td>";
+        output += d[index].smsOut[i].PhoneNumber+ "</td><td>";
+        output += "Freq: "+ d[index].smsOut[i].freq+ "</td></tr>";
     }
+    output += "</tbody></table>"
 
     document.getElementById("summarize").innerHTML = output;
 }
