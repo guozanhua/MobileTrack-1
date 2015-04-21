@@ -371,7 +371,7 @@ P.blocktext {
 
     float:right;
     height: 165px;
-    width: 150px;
+    width: 100%;
     border: 1px white solid;
     background: grey;
     overflow: auto;
@@ -381,7 +381,7 @@ P.blocktext {
 
     float:right;
     height: 165px;
-    width: 150px;
+    width: 100%;
     border: 1px white solid;
     background: grey;
     overflow: auto;
@@ -391,7 +391,7 @@ P.blocktext {
 
     float:right;
     height: 165px;
-    width: 150px;
+    width: 100%;
     border: 1px white solid;
     background: grey;
     overflow: auto;

@@ -723,22 +723,22 @@ function dataVisualizationPhone(finalResult) {
             var colorLabel = d3.select(".nodeCircle2");
             colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coresponding&nbsp;Nodes");
 
-            var nonInputPhone = [];
-            for (i = 0; i < nodeData.length; i++) {
-                if (nodeData[i].PhoneNumber != inputSource) {
-                    nonInputPhone.push(nodeData[i].PhoneNumber);
-                }
-            }
-
-            for (i = 0; i < nonInputPhone.length; i++) {
-                nodeColor.append('div')
-                        .attr('class', 'nodeCircle' + (i + 3))
-                        .style('background', function (d) {
-                            return color[1];
-                        })
-                var colorLabel = d3.select(".nodeCircle" + (i + 3));
-                colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + nonInputPhone[i]);
-            }
+//            var nonInputPhone = [];
+//            for (i = 0; i < nodeData.length; i++) {
+//                if (nodeData[i].PhoneNumber != inputSource) {
+//                    nonInputPhone.push(nodeData[i].PhoneNumber);
+//                }
+//            }
+//
+//            for (i = 0; i < nonInputPhone.length; i++) {
+//                nodeColor.append('div')
+//                        .attr('class', 'nodeCircle' + (i + 3))
+//                        .style('background', function (d) {
+//                            return color[1];
+//                        })
+//                var colorLabel = d3.select(".nodeCircle" + (i + 3));
+//                colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + nonInputPhone[i]);
+//            }
 
             //DisplayType
             d3.select("#displayType")
