@@ -2193,31 +2193,42 @@ function dataVisualizationAllPhones(finalResult) {
 }
 function visualizeLinkSummary(d) {
     if (d.Type == 'Line') {
-        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        
+        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
         summary += "Source: " + d.source.textDisplay + " is a Line account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Target: " + d.target.textDisplay + " is a Line account related with " + d.target.PhoneNumber + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Line Chat Log: " + d.prop.length;
     } else if (d.Type == 'Whatsapp') {
-        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
         summary += "Source: " + d.source.textDisplay + " is a Whatsapp account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Target: " + d.target.textDisplay + " is a Whatsapp account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Whatsapp Chat Log: " + d.prop.length;
     } else if (d.Type == 'Facebook') {
-        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
         summary += "Source: " + d.source.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Target: " + d.target.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Facebook Chat Log: " + d.prop.length;
     } else if (d.Type == 'Call') {
-        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
-        summary += "Source: " + d.source.textDisplay + "<br/>";
-        summary += "Target: " + d.target.textDisplay + "<br/>";
-        summary += "Type of Communication: " + d.Type + "<br/>";
-        summary += "Total Call Log: " + d.prop.length;
+        var summary = "<h3 class='text2'>You have clicked on the link between </h3>";
+        summary += "<h3 class='text2'>" + d.source.textDisplay + " and " + d.target.textDisplay + "</h3>" ;
+        summary += "<table><thead><th colspan='3' class='styleheadtable2'>Link Summalize </th></thead><tbody>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Source: </td><td>" 
+        summary += d.source.textDisplay + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Target: </td><td>" 
+        summary += d.target.textDisplay + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Type of Communication: </td><td>" 
+        summary += d.Type + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Total Call Log: </td><td>" 
+        summary += d.prop.length +"</td></tr>";
     } else {
-        var summary = "<p>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</p><br/>"
+        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
         summary += "Source: " + d.source.textDisplay + "<br/>";
         summary += "Target: " + d.target.textDisplay + "<br/>";
         summary += "Type of Communication: " + d.Type + "<br/>";
