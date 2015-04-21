@@ -22,7 +22,7 @@
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
         <script type="text/javascript" src="js/helperfunction.js"></script>
-       <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
+        <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
 
     </head>
     <body>
@@ -170,37 +170,30 @@
                                             <u><label><font face="supermarket"class="font" size="4" color="white"  >Frequency :</font></label ></u>
                                             <br>
                                             <form id="selecttype"> 
-                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="ddf" name="read" id="ddf" onchange="specificfrequency2()" >Default Frequency</font>
+                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="ddf" id="ddf" onchange="defaultfrequency()" >Default Frequency</font>
                                                 <br>
-                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="sdf" name="read" id="sdf" onchange="specificfrequency()">Specific Frequency</font>
+                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="sdf" id="sdf" onchange="specificfrequency()">Specific Frequency</font>
 
                                             </form>
-                                        </form>
+
                                     </div>
 
-                                    <div  >
+                                    <div>
                                         <form id="frequencyoperator" class="wrapper-dropdown-5"style="display:none">
+             
                                             <p align = "center"><label><font face="supermarket"class="font" size="4" color="white"  >Operator :</font></label >
+                                            <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="" id="morethan" onchange="frequencyMoreThan()">>=</font>
 
-                                            <form id="operatortype"> 
-                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="moreequ" name="read" id="moreequ" >>=</font>
+                                            <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="" id="lessthan" onchange="frequencyLessThan()"><=</font>
+                                            </p>
 
-                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="thanequ" name="read" id="thanequ"><=</font>
+                                            <p align = "center"><label><font face="supermarket"class="font" size="4" color="white"  >Frequency :</font></label >
 
+                                                <input type="text"align = "center" class="wrapper-dropdown-7" id="fof" maxlength="5"></input>
 
-                                                </p>
+                                            </p>    
+                                        </form>
 
-
-
-
-
-                                                <p align = "center"><label><font face="supermarket"class="font" size="4" color="white"  >Frequency :</font></label >
-
-                                                    <input type="text"align = "center" class="wrapper-dropdown-7" id="fof" maxlength="5"></input>
-
-                                                </p>    
-
-                                            </form>
 
                                     </div>
                                     <!--                                    <div>
@@ -264,7 +257,7 @@
                             </div>  
                     </div>
 
-                    
+
                     <div class="yui-a">
                         <div id="graph">
 
@@ -350,8 +343,6 @@
             </script>
 
             <script>
-
-
                 function specificduration() {
                     var a = document.getElementById("sdd").value;
                     document.getElementById("durationrange").style.display = "none";
@@ -368,22 +359,31 @@
                     document.getElementById("sdd").checked = false;
                 }
             </script>
+
             <script>
                 function specificfrequency() {
+                    document.getElementById('ddf').checked=false;
                     var a = document.getElementById("sdf").value;
 
                     if (a == "sdf") {
                         document.getElementById("frequencyoperator").style.display = "block";
-
                         //document.getElementById("typeboxcall").style.display="block";
                     }
-
                 }
 
-                function specificfrequency2() {
+                function defaultfrequency() {
+                    document.getElementById('sdf').checked=false;
                     var a = document.getElementById("ddf").value;
                     document.getElementById("frequencyoperator").style.display = "none";
-
+                    
+                }
+                
+                function frequencyMoreThan(){
+                    document.getElementById('lessthan').checked=false;
+                }
+                
+                function frequencyLessThan(){
+                    document.getElementById('morethan').checked=false;
                 }
             </script>
 
@@ -516,8 +516,8 @@
                                 myTable += "<td class='stylerowtable1'>" + phoneNumberArr[i].Owner + "</td></tr>";
                             }
                             myTable += "</table>";
-                            
-                            
+
+
                             $('#suggestBtn').magnificPopup({
                                 items: {
                                     src: '<div class="white-popup">' +
