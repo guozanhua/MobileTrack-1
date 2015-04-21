@@ -5,6 +5,7 @@ function queryAllPhones(selections) {
 
     clearDiv('graph');
     clearDiv('output');
+    clearDiv('summarize');
     var promptArr = [];
     promptArr.push(nodeArr);
     promptArr.push(linkArr);
@@ -25,34 +26,23 @@ function queryAllPhones(selections) {
         countRelArr = promptArr[2];
         if (noLoop == 0) {
             if (selections[noLoop].Type == 'Call') {
-                /*create Query for Call*/
-
-                /*Operation*/
 
                 var _query = "MATCH (n:PHONE)-[r:Call]->(m:PHONE) ";
 
-                var dur = document.getElementById("durationAll").value;
-                /*Duration*/
-                if (dur == "23") { // 2-2.59 min
-                    _query += "WHERE toInt(r.Duration) > 120000 ";
-                    _query += "AND toInt(r.Duration) < 180000 ";
-                } else if (dur == "12") {// 1-1.59 min
-                    _query += "WHERE toInt(r.Duration) > 60000 ";
-                    _query += "AND toInt(r.Duration) < 120000 ";
+                /*Duration and Date Filtering*/
+                if (document.getElementById("sdd").checked) {
+                    var durFrom = document.getElementById("fmin").value * 1000 * 60;
+                    var durTo = document.getElementById("smin").value * 1000 * 60;
+                    _query += "WHERE toInt(r.Duration) > " + durFrom + " ";
+                    _query += "AND toInt(r.Duration) < " + durTo + " ";
+                    if (datefrom != "" && dateto != "") {
+                        _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                    }
                 } else {
-                    //Do nothing
-
-                }
-
-
-                if (datefrom != "" && dateto != "") {
-                    if (dur == "01") {
-                        _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") ";
-                    } else {
-                        _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") ";
+                    if (datefrom != "" && dateto != "") {
+                        _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
                     }
                 }
-
                 _query += "RETURN collect(distinct r) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -269,10 +259,11 @@ function queryAllPhones(selections) {
                                 nodeArr[i].matchFreq = 0;
                             }
 
-                            var inputFreq = 0;
                             //Listed of callTo and callIn for each node
+                            var inputFreq = document.getElementById("fof").value;
+
                             linkArr.forEach(function (link) {
-                                if (link.prop.length >= inputFreq) {
+                                if (document.getElementById("ddf").checked) {
                                     for (i = 0; i < nodeArr.length; i++) {
                                         if (link.source == nodeArr[i].NodeIndex) {
                                             for (j = 0; j < nodeArr.length; j++) {
@@ -304,7 +295,78 @@ function queryAllPhones(selections) {
                                             break;
                                         }
                                     }
+                                } else {
+                                    if (document.getElementById("morethan").checked) {
+                                        if (link.prop.length >= inputFreq) {
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.target == nodeArr[j].NodeIndex) {
+                                                            var objCallOut = {};
+                                                            objCallOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                            objCallOut.freq = link.prop.length;
+                                                            nodeArr[i].callOut.push(objCallOut);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.source == nodeArr[j].NodeIndex) {
+                                                            var objCallIn = {};
+                                                            objCallIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                            objCallIn.freq = link.prop.length;
+                                                            nodeArr[i].callIn.push(objCallIn);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    } else if (document.getElementById("lessthan").checked) {
+                                        if (link.prop.length <= inputFreq) {
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.target == nodeArr[j].NodeIndex) {
+                                                            var objCallOut = {};
+                                                            objCallOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                            objCallOut.freq = link.prop.length;
+                                                            nodeArr[i].callOut.push(objCallOut);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.source == nodeArr[j].NodeIndex) {
+                                                            var objCallIn = {};
+                                                            objCallIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                            objCallIn.freq = link.prop.length;
+                                                            nodeArr[i].callIn.push(objCallIn);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
+
 
                             });
 
@@ -324,7 +386,6 @@ function queryAllPhones(selections) {
                                 passArr.push(countRelArr);
                                 recursiveAllPhone(passArr);
                             }
-
                         });
 
             } else if (selections[noLoop].Type == 'SMS') {
@@ -374,7 +435,7 @@ function queryAllPhones(selections) {
 
                             var count = 0;
                             if (result.length == 0) {
-                                alert("No data found. Please try again.");
+                                alert("No data found for SMS. Please try again.");
                             }
 
                             /*
@@ -579,39 +640,120 @@ function queryAllPhones(selections) {
                             for (i = 0; i < nodeArr.length; i++) {
                                 nodeArr[i].smsOut = [];
                                 nodeArr[i].smsIn = [];
+                                nodeArr[i].matchFreq = 0;
                             }
 
+                            var inputFreq = document.getElementById("fof").value;
+
                             linkArr.forEach(function (link) {
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (link.source == nodeArr[i].NodeIndex) {
-                                        for (j = 0; j < nodeArr.length; j++) {
-                                            if (link.target == nodeArr[j].NodeIndex) {
-                                                var objSMSOut = {};
-                                                objSMSOut.PhoneNumber = nodeArr[j].PhoneNumber;
-                                                objSMSOut.freq = link.prop.length;
-                                                nodeArr[i].smsOut.push(objSMSOut);
-                                                break;
+                                if (document.getElementById("ddf").checked) {
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.source == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.target == nodeArr[j].NodeIndex) {
+                                                    var objSMSOut = {};
+                                                    objSMSOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                    objSMSOut.freq = link.prop.length;
+                                                    nodeArr[i].smsOut.push(objSMSOut);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.target == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.source == nodeArr[j].NodeIndex) {
+                                                    var objSMSIn = {};
+                                                    objSMSIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                    objSMSIn.freq = link.prop.length;
+                                                    nodeArr[i].smsIn.push(objSMSIn);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    if (document.getElementById("morethan").checked) {
+                                        if (link.prop.length >= inputFreq) {
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.target == nodeArr[j].NodeIndex) {
+                                                            var objSMSOut = {};
+                                                            objSMSOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                            objSMSOut.freq = link.prop.length;
+                                                            nodeArr[i].smsOut.push(objSMSOut);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.source == nodeArr[j].NodeIndex) {
+                                                            var objSMSIn = {};
+                                                            objSMSIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                            objSMSIn.freq = link.prop.length;
+                                                            nodeArr[i].smsIn.push(objSMSIn);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
                                             }
                                         }
-                                        break;
+                                    } else if (document.getElementById("lessthan").checked) {
+                                        if (link.prop.length <= inputFreq) {
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.target == nodeArr[j].NodeIndex) {
+                                                            var objSMSOut = {};
+                                                            objSMSOut.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                            objSMSOut.freq = link.prop.length;
+                                                            nodeArr[i].smsOut.push(objSMSOut);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.source == nodeArr[j].NodeIndex) {
+                                                            var objSMSIn = {};
+                                                            objSMSIn.PhoneNumber = nodeArr[j].PhoneNumber;
+                                                            objSMSIn.freq = link.prop.length;
+                                                            nodeArr[i].smsIn.push(objSMSIn);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
 
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (link.target == nodeArr[i].NodeIndex) {
-                                        for (j = 0; j < nodeArr.length; j++) {
-                                            if (link.source == nodeArr[j].NodeIndex) {
-                                                var objSMSIn = {};
-                                                objSMSIn.PhoneNumber = nodeArr[j].PhoneNumber;
-                                                objSMSIn.freq = link.prop.length;
-                                                nodeArr[i].smsIn.push(objSMSIn);
-                                                break;
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
+
                             });
+
+
 
                             //After finish adding all the nodes and relationship into nodeArr and linkArr
                             if (noLoop == selections.length - 1) {
@@ -850,43 +992,125 @@ function queryAllPhones(selections) {
 
                             for (i = 0; i < nodeArr.length; i++) {
                                 nodeArr[i].lineChat = [];
+                                nodeArr[i].matchFreq = 0;
                             }
 
+                            var inputFreq = document.getElementById("fof").value;
+
                             linkArr.forEach(function (link) {
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (link.source == nodeArr[i].NodeIndex) {
-                                        for (j = 0; j < nodeArr.length; j++) {
-                                            if (link.target == nodeArr[j].NodeIndex) {
-                                                var objLineChat = {};
-                                                objLineChat.Account = nodeArr[j].textDisplay;
-                                                objLineChat.freq = link.prop.length; //Will change to lineId soon!!
-                                                nodeArr[i].lineChat.push(objLineChat);
-                                                break;
+                                if (document.getElementById("ddf").checked) {
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.source == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.target == nodeArr[j].NodeIndex) {
+                                                    var objLineChat = {};
+                                                    objLineChat.Account = nodeArr[j].textDisplay;
+                                                    objLineChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                    nodeArr[i].lineChat.push(objLineChat);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                    for (i = 0; i < nodeArr.length; i++) {
+                                        if (link.target == nodeArr[i].NodeIndex) {
+                                            for (j = 0; j < nodeArr.length; j++) {
+                                                if (link.source == nodeArr[j].NodeIndex) {
+                                                    var objLineChat = {};
+                                                    objLineChat.Account = nodeArr[j].textDisplay;
+                                                    objLineChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                    nodeArr[i].lineChat.push(objLineChat);
+                                                    nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    if (document.getElementById("morethan").checked) {
+                                        if (link.prop.length >= inputFreq) {
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.target == nodeArr[j].NodeIndex) {
+                                                            var objLineChat = {};
+                                                            objLineChat.Account = nodeArr[j].textDisplay;
+                                                            objLineChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                            nodeArr[i].lineChat.push(objLineChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.source == nodeArr[j].NodeIndex) {
+                                                            var objLineChat = {};
+                                                            objLineChat.Account = nodeArr[j].textDisplay;
+                                                            objLineChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                            nodeArr[i].lineChat.push(objLineChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
                                             }
                                         }
-                                        break;
+                                    } else if (document.getElementById("lessthan").checked) {
+                                        if (link.prop.length <= inputFreq) {
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.target == nodeArr[j].NodeIndex) {
+                                                            var objLineChat = {};
+                                                            objLineChat.Account = nodeArr[j].textDisplay;
+                                                            objLineChat.freq = link.prop.length; //Will change to lineId soon!!
+                                                            nodeArr[i].lineChat.push(objLineChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (i = 0; i < nodeArr.length; i++) {
+                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                    for (j = 0; j < nodeArr.length; j++) {
+                                                        if (link.source == nodeArr[j].NodeIndex) {
+                                                            var objLineChat = {};
+                                                            objLineChat.Account = nodeArr[j].textDisplay;
+                                                            objLineChat.freq = link.prop.length;//Will change to linkID soon!!
+                                                            nodeArr[i].lineChat.push(objLineChat);
+                                                            nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
 
-                                for (i = 0; i < nodeArr.length; i++) {
-                                    if (link.target == nodeArr[i].NodeIndex) {
-                                        for (j = 0; j < nodeArr.length; j++) {
-                                            if (link.source == nodeArr[j].NodeIndex) {
-                                                var objLineChat = {};
-                                                objLineChat.Account = nodeArr[j].textDisplay;
-                                                objLineChat.freq = link.prop.length;//Will change to linkID soon!!
-                                                nodeArr[i].lineChat.push(objLineChat);
-                                                break;
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
+
                             });
+
+
+
                             //After finished adding all the nodes and relationship into nodeArr and linkArr
                             var allLineNodes = [];
                             for (i = 0; i < nodeArr.length; i++) {
-                                if (nodeArr[i].Label == 'Line') {
+                                if (nodeArr[i].Label == 'Line' && nodeArr[i].matchFreq > 0) {
                                     allLineNodes.push(nodeArr[i].NodeName);
                                 }
                             }
@@ -924,7 +1148,6 @@ function queryAllPhones(selections) {
                                 }
 
                                 for (i = 0; i < result.length; i++) {
-
                                     var getSourceIndex, getTargetIndex, getRelIn, getRelOut;
 
                                     for (j = 0; j < nodeArr.length; j++) {
@@ -938,17 +1161,19 @@ function queryAllPhones(selections) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.textDisplay = result[i].PhoneNumber;
                                     objAdd.NodeIndex = nodeArr.length;
                                     objAdd.RelIn = getRelIn;
                                     objAdd.RelOut = getRelOut;
+                                    objAdd.matchFreq = 1;
                                     getTargetIndex = nodeArr.length;
                                     nodeArr.push(objAdd);
 
                                     var objLink = {};
                                     objLink.source = getSourceIndex;
-                                    objLink.target = nodeArr.length - 1;
+                                    objLink.target = getTargetIndex;
                                     objLink.Type = result[i].Description;
                                     objLink.prop = [];
                                     linkArr.push(objLink);
@@ -1190,6 +1415,7 @@ function queryAllPhones(selections) {
                             }
                             for (i = 0; i < nodeArr.length; i++) {
                                 nodeArr[i].WhatsappChat = [];
+                                nodeArr[i].matchFreq = 0;
                             }
 
                             linkArr.forEach(function (link) {
@@ -1201,6 +1427,7 @@ function queryAllPhones(selections) {
                                                 objWhatsappChat.PhoneNumber = nodeArr[j].PhoneNumber;
                                                 objWhatsappChat.freq = link.prop.length; //Will change to lineId soon!!
                                                 nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
                                                 break;
                                             }
                                         }
@@ -1216,6 +1443,7 @@ function queryAllPhones(selections) {
                                                 objWhatsappChat.Account = nodeArr[j].textDisplay;
                                                 objWhatsappChat.freq = link.prop.length;//Will change to linkID soon!!
                                                 nodeArr[i].WhatsappChat.push(objWhatsappChat);
+                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
                                                 break;
                                             }
                                         }
@@ -1227,7 +1455,7 @@ function queryAllPhones(selections) {
                             //After finished adding all the nodes and relationship into nodeArr and linkArr
                             var allWhatsappNodes = [];
                             for (i = 0; i < nodeArr.length; i++) {
-                                if (nodeArr[i].Label == 'Whatsapp') {
+                                if (nodeArr[i].Label == 'Whatsapp' && nodeArr[i].matchFreq > 0) {
                                     allWhatsappNodes.push(nodeArr[i].NodeName);
                                 }
                             }
@@ -1279,11 +1507,13 @@ function queryAllPhones(selections) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.textDisplay = result[i].PhoneNumber;
                                     objAdd.NodeIndex = nodeArr.length;
                                     objAdd.RelIn = getRelIn;
                                     objAdd.RelOut = getRelOut;
+                                    objAdd.matchFreq = 1;
                                     getTargetIndex = nodeArr.length;
                                     nodeArr.push(objAdd);
 
@@ -1532,6 +1762,7 @@ function queryAllPhones(selections) {
 
                             for (i = 0; i < nodeArr.length; i++) {
                                 nodeArr[i].facebookChat = [];
+                                nodeArr[i].matchFreq = 0;
                             }
 
                             linkArr.forEach(function (link) {
@@ -1543,6 +1774,7 @@ function queryAllPhones(selections) {
                                                 objFacebookChat.Account = nodeArr[j].textDisplay;
                                                 objFacebookChat.freq = link.prop.length; //Will change to lineId soon!!
                                                 nodeArr[i].facebookChat.push(objFacebookChat);
+                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
                                                 break;
                                             }
                                         }
@@ -1558,6 +1790,7 @@ function queryAllPhones(selections) {
                                                 objFacebookChat.Account = nodeArr[j].textDisplay;
                                                 objFacebookChat.freq = link.prop.length;//Will change to linkID soon!!
                                                 nodeArr[i].facebookChat.push(objFacebookChat);
+                                                nodeArr[i].matchFreq = nodeArr[i].matchFreq + 1;
                                                 break;
                                             }
                                         }
@@ -1569,7 +1802,7 @@ function queryAllPhones(selections) {
                             //After finished adding all the nodes and relationship into nodeArr and linkArr
                             var allFacebookNodes = [];
                             for (i = 0; i < nodeArr.length; i++) {
-                                if (nodeArr[i].Label == 'Facebook') {
+                                if (nodeArr[i].Label == 'Facebook' && nodeArr[i].matchFreq > 0) {
                                     allFacebookNodes.push(nodeArr[i].NodeName);
                                 }
                             }
@@ -1621,11 +1854,13 @@ function queryAllPhones(selections) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.textDisplay = result[i].PhoneNumber;
                                     objAdd.NodeIndex = nodeArr.length;
                                     objAdd.RelIn = getRelIn;
                                     objAdd.RelOut = getRelOut;
+                                    objAdd.matchFreq = 1;
                                     getTargetIndex = nodeArr.length;
                                     nodeArr.push(objAdd);
 
@@ -1664,6 +1899,7 @@ function dataVisualizationAllPhones(finalResult) {
     var mLinkNum = {};
     sortLinks();
     setLinkIndexAndNum();
+    var inputFreq = document.getElementById('fof').value;
 
     var svg = d3.select('#graph').append('svg')
             .attr("width", width)
@@ -1694,9 +1930,29 @@ function dataVisualizationAllPhones(finalResult) {
                 }
             })
             .nodes(finalResult[0])
-            .links(finalResult[1])
+            .links(finalResult[1].filter(function (d) {
+                if(d.Type == 'Call' || d.Type == 'SMS' || d.Type == 'Line' || d.Type == 'Whatsapp' || d.Type == 'Facebook'){
+                    if (document.getElementById('ddf').checked) {
+                        inputFreq = 0;
+                        return d.prop.length >= inputFreq;
+                    } else {
+                        if (document.getElementById('morethan').checked) {
+                            return d.prop.length >= inputFreq;
+                        } else if (document.getElementById('lessthan').checked) {
+                            return d.prop.length <= inputFreq;
+                        }
+                    }
+                }else{
+                    return d;
+                }
+                    
+            }))
             .size([width, height])
             .start();
+
+    var nodeData = finalResult[0].filter(function (d) {
+        return d.matchFreq > 0;
+    });
 
     var marker = svg.append("defs").selectAll("marker")
             .data(["lowf", "mediumf", "highf"])
@@ -1714,9 +1970,9 @@ function dataVisualizationAllPhones(finalResult) {
 
 
     var linkClass = function (d) {
-        if (d.prop.length > 8) {
+        if (d.prop.length > 30) {
             return "link highf";
-        } else if (d.prop.length > 5) {
+        } else if (d.prop.length > 15) {
             return "link mediumf"
         } else if (d.prop.length > 0) {
             return "link lowf";
@@ -1736,9 +1992,9 @@ function dataVisualizationAllPhones(finalResult) {
             .on("mouseover", fadeLink(.1))
             .on("mouseout", fadeLink(1))
             .attr("marker-end", function (d) {
-                if (d.prop.length > 8 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
+                if (d.prop.length > 30 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
                     return 'url(#highf)';
-                } else if (d.prop.length > 5 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
+                } else if (d.prop.length > 15 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
                     return 'url(#mediumf)';
                 } else if (d.prop.length > 0 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
                     return 'url(#lowf)';
@@ -1818,7 +2074,7 @@ function dataVisualizationAllPhones(finalResult) {
     }
     // Now it's the nodes turn. Each node is drawn as a circle.
     var node = svg.selectAll('.node')
-            .data(finalResult[0])
+            .data(nodeData)
             .enter().append('circle')
             .attr("class", function (d) {
                 return "node " + d.Label;
@@ -1908,7 +2164,7 @@ function dataVisualizationAllPhones(finalResult) {
         clearDiv('displayType');
         clearDiv('displayLink');
 
-        if (finalResult[0].length != 0) {
+        if (nodeData.length != 0) {
             //DisplayNode
             d3.select("#displayNode")
                     .append('div')
@@ -1923,27 +2179,27 @@ function dataVisualizationAllPhones(finalResult) {
             var phoneArr = [];
             var commuBox = document.getElementById("spinnerbox").value;
             if (commuBox == 'call' || commuBox == 'message') {
-                for (i = 0; i < finalResult[0].length; i++) {
-                    if (finalResult[0][i].Label == 'Phone') {
-                        phoneArr.push(finalResult[0][i]);
+                for (i = 0; i < nodeData.length; i++) {
+                    if (nodeData[i].Label == 'Phone') {
+                        phoneArr.push(nodeData[i]);
                     }
                 }
             } else if (commuBox == 'line') {
-                for (i = 0; i < finalResult[0].length; i++) {
-                    if (finalResult[0][i].Label == 'Line') {
-                        phoneArr.push(finalResult[0][i]);
+                for (i = 0; i < nodeData.length; i++) {
+                    if (nodeData[i].Label == 'Line') {
+                        phoneArr.push(nodeData[i]);
                     }
                 }
             } else if (commuBox == 'whatsapp') {
-                for (i = 0; i < finalResult[0].length; i++) {
-                    if (finalResult[0][i].Label == 'Whatsapp') {
-                        phoneArr.push(finalResult[0][i]);
+                for (i = 0; i < nodeData.length; i++) {
+                    if (nodeData[i].Label == 'Whatsapp') {
+                        phoneArr.push(nodeData[i]);
                     }
                 }
             } else {
-                for (i = 0; i < finalResult[0].length; i++) {
-                    if (finalResult[0][i].Label == 'Facebook') {
-                        phoneArr.push(finalResult[0][i]);
+                for (i = 0; i < nodeData.length; i++) {
+                    if (nodeData[i].Label == 'Facebook') {
+                        phoneArr.push(nodeData[i]);
                     }
                 }
             }
@@ -2027,12 +2283,12 @@ function dataVisualizationAllPhones(finalResult) {
             linkType.append('div')
                     .attr('class', 'linkType2')
             var linkLabel = d3.select(".linkType2");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;5");
+            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;15");
 
             linkType.append('div')
                     .attr('class', 'linkType3')
             var linkLabel = d3.select(".linkType3");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;8");
+            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;30");
 
             //DisplayNodeMeaning
             var nodeType = d3.select("#colorpane3");
@@ -2064,13 +2320,14 @@ function dataVisualizationAllPhones(finalResult) {
 
 
         } else {
+            alert('No data matches your criteria. Please try again');
             console.log("what!!?")
-            clearDiv('mid');
+            clearDiv('graph');
         }
     }
 
     var texts = svg.selectAll(".text")
-            .data(finalResult[0])
+            .data(nodeData)
             .enter().append("text")
             .attr("class", "text")
             .attr("text-anchor", "middle")
