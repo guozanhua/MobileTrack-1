@@ -3796,7 +3796,7 @@ function queryManagement(selections) {
                                     }
                                 }
 
-                                if (result.lenght > 0) {
+                                if (result.length > 0) {
                                     //After finished adding all the nodes and relationship into nodeArr and linkArr
                                     var allLineNodes = [];
                                     for (i = 0; i < nodeArr.length; i++) {
