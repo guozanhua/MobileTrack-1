@@ -775,12 +775,14 @@ function specificFacebookSummarize(finalResult) {
         }
     }
 
-    var output = "User's input Phone Number: " + inputSource + "<br/>";
-    output += "Associated Facebook Account is " + nodeArr[index].textDisplay + "<br/>";
-    output += "Chat with: " + "<br/>"
+    var output = "<h3 class='text2'>User's input Phone Number: " + inputSource + "</h3>";
+    output += "<h3 class='text2'>Associated Facebook Account is " + nodeArr[index].textDisplay + "</h3>";
+    output += "<table><th class='styleheadtable2'>Chat with</th> " + "<br/>"
+    output +="<table><th class='stylerowtable2 '>"
     for (i = 0; i < nodeArr[index].facebookChat.length; i++) {
         output += i + "). " + nodeArr[index].facebookChat[i].Account + " Freq: " + nodeArr[index].facebookChat[i].freq + "<br/>";
     }
+    output += "</table>"
     document.getElementById("summarize").innerHTML = output;
 }
 

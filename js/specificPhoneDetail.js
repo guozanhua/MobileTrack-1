@@ -821,16 +821,18 @@ function specificCallSummarize(finalResult){
         }
     }
     
-    var output = "User's input Phone Number: " + inputSource + "<br/>";
-    output += "Receive Call from: " + "<br/>"
+    var output = "<h3 class='text2'>User's input Phone Number: " + inputSource + "</h3>";
+    output += "<table><th class='styleheadtable2'>Receive Call from: </th>" + "<br/>"
+    output +="<table><th class='stylerowtable2 '>"
     for (i = 0; i < d[index].callIn.length; i++) {
         output += (i+1) + "). " + d[index].callIn[i].PhoneNumber + " Freq: " + d[index].callIn[i].freq + "<br/>";
     }
-
-    output += "Dialing Call to: " + "<br/>"
+    output += "</table>"
+    output += "<table><th class='styleheadtable2'>Dialing Call to: </th>" + "<br/>"
+    output +="<table><th class='stylerowtable2 '>"
     for (i = 0; i < d[index].callOut.length; i++) {
         output += (i+1) + "). " + d[index].callOut[i].PhoneNumber + " Freq: " + d[index].callOut[i].freq + "<br/>";
     }
-
+    output += "</table>"
     document.getElementById("summarize").innerHTML = output;
 }

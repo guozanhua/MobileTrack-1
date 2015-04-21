@@ -806,16 +806,19 @@ function specificSMSSummarize(finalResult) {
         }
     }
 
-    var output = "User's input Phone Number: " + inputSource + "<br/>";
-    output += "Received SMS from: " + "<br/>"
+    var output = "<h3 class='text2'>User's input Phone Number: " + inputSource + "</h3>";
+    output += "<table><th class='styleheadtable2'>Received SMS from </th>" + "<br/>"
+    output +="<table><th class='stylerowtable2 '>"
     for (i = 0; i < d[index].smsIn.length; i++) {
         output += (i + 1) + "). " + d[index].smsIn[i].PhoneNumber + " Freq: " + d[index].smsIn[i].freq + "<br/>";
     }
-
-    output += "Send SMS to: " + "<br/>"
+    output += "</table>"
+    output += "<table><th class='styleheadtable2'>Send SMS to </th> " + "<br/>"
+    output +="<table><th class='stylerowtable2 '>"
     for (i = 0; i < d[index].smsOut.length; i++) {
         output += (i + 1) + "). " + d[index].smsOut[i].PhoneNumber + " Freq: " + d[index].smsOut[i].freq + "<br/>";
     }
+    output += "</table>"
 
     document.getElementById("summarize").innerHTML = output;
 }
