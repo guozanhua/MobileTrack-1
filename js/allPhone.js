@@ -2400,7 +2400,7 @@ function dataVisualizationAllPhones(finalResult) {
             .attr("class", "text")
             .attr("text-anchor", "middle")
             .attr("dy", ".35em")
-            .style("stroke", "blue")
+            .style("stroke", "#1b9bff")
             .text(function (d) {
                 return d.textDisplay;
             });
@@ -2672,7 +2672,7 @@ function visualizeNodeSummary(d) {
         for (i = 0; i < d.lineChat.length; i++) {
             output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
             output += (i+1) + "). </td><td>" 
-            output += d.lineIn[i].PhoneNumber+ "</td><td>"; 
+            output += d.lineChat[i].Account+ "</td><td>"; 
             output += " Freq: " + d.lineIn[i].freq +"</td></tr>";
             }
              output += "</tbody></table>"
@@ -2684,7 +2684,7 @@ function visualizeNodeSummary(d) {
         for (i = 0; i < d.WhatsappChat.length; i++) {
             output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
             output += (i+1) + "). </td><td>" 
-            output += d.WhatsappChat[i].PhoneNumber+ "</td><td>"; 
+            output += d.WhatsappChat[i].Account+ "</td><td>"; 
             output += " Freq: " + d.WhatsappChat[i].freq +"</td></tr>";
             }
              output += "</tbody></table>"
@@ -2696,7 +2696,7 @@ function visualizeNodeSummary(d) {
         for (i = 0; i < d.facebookChat.length; i++) {
             output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
             output += (i+1) + "). </td><td>" 
-            output += d.facebookChat[i].PhoneNumber+ "</td><td>"; 
+            output += d.facebookChat[i].Account+ "</td><td>"; 
             output += " Freq: " + d.facebookChat[i].freq +"</td></tr>";
             }
              output += "</tbody></table>"
