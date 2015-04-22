@@ -6,42 +6,42 @@
 <link rel="stylesheet" type="text/css" href="css/styles2.css" >
 <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
 <link rel="stylesheet" type="text/css" href="css/graph.css" >
-<link rel="stylesheet" type="text/css" href="css/bar.css" >
-<link rel="stylesheet" type="text/css" href="css/divpopup.css" >
-<link rel="stylesheet" type="text/css" href="css/table.css" >
+ <link rel="stylesheet" type="text/css" href="css/bar.css" >
+ <link rel="stylesheet" type="text/css" href="css/divpopup.css" >
+ <link rel="stylesheet" type="text/css" href="css/table.css" >
+ <link rel="stylesheet" type="text/css" href="css/table2.css" >
 </head>
 <body>
 <div id="doc" class="yui-t1">
   <div id="hd">
     <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:100%"></h1></div>
   </div>
- <div id='cssmenu'>
+  <div id='cssmenu'>
               <ul>
-                  <li><a href="select.html"><span>Multiple Phone</span></a></li>
+                  <li><a href="multiplePhone.html"><span>Multiple Phone</span></a></li>
                   
                   
                        <li class='has-sub active'><a href='#'><span>Find the middle-man</span></a>
                           <ul>
-                             <li class='has-sub'><a href="destination2.html"><span>S--X--D</span></a>
+                             <li class='has-sub'><a href="oneMiddleMan.html"><span>S--X--D</span></a>
                                 
                              </li>
-                             <li class='has-sub'><a href="destination3.html"><span>S--X--X--D</span></a>
+                             <li class='has-sub'><a href="twoMiddleMan.html"><span>S--X--X--D</span></a>
                                 
-                             </li> <li class='has-sub'><a href="destination4.html"><span>S--X--X--X--D</span></a>
+                             </li> <li class='has-sub'><a href="threeMiddleMan.html"><span>S--X--X--X--D</span></a>
                                 
                              </li>
                              
                           </ul>
                        </li>
-                       <li><a href="destination.html"><span>Phone - Phone</span></a></li>
-                       <li><a href="specificNode.html"><span>Specific Number</span></a></li>
+                       <li><a href="directCommunication.html"><span>Phone - Phone</span></a></li>
+                       <li><a href="specificNumber.html"><span>Specific Number</span></a></li>
                         <li><a href="mainmenu.html"><span>Main Menu</span></a></li>
                 </ul>
             </div>
     <div class="yui-b">
       <div id="input">
-         
-        <br/>
+         <br/>
        <p align = "center"><label><font face="supermarket" class="font1" size="2" color="white">- ENTER -</label></p></font>
         <p align = "center"><label><font face="supermarket" class="font2" size="4"color="white">SOURCE AND TARGET NUMBERS TO DISPLAY THE COMMUNICATION</label></p></font>
            <div class="wrapper-dropdown-5">
@@ -53,21 +53,24 @@
             <u><label><font face="supermarket" class="font" size="4">Target Phone Number</font></label></u>
            <input type="text" id="targetPhoneNo"class="wrapper-dropdown-6"maxlength="10"></input>
           </form>
-        </div>  
+        </div>   
+          
 
          <p align = "center"><button id="suggestBtn"class="color red button" >Suggest Phone Number</button></p>
-       
-        <br>   
+      
+   
+        <br>    
+        
         <div>
           <form id="status" >
           <u><label><font face="supermarket"class="font"size="4"color="white" >Route Communication :</font></label><br></u>
-            <font face="supermarket"class="font" size="4" color="white"><input type="radio" id="sxdrad1" name="call" value="" >S--->X--->D</font>
+            <font face="supermarket" class="font"size="4" color="white"><input type="radio" id="rad1" name="call" value="" checked>S--->X---X--->D</font>
              <br>  
-            <font face="supermarket"class="font"size="4" color="white"><input type="radio" id="sxdrad2" name="call" value="" >S--->X<---D</font>
+            <font face="supermarket" class="font"size="4" color="white"><input type="radio" id="rad2" name="call" value="" >S--->X---X<---D</font>
              <br>
-            <font face="supermarket" class="font"size="4" color="white"><input type="radio" id="sxdrad3" name="call" value="" >S<---X--->D</font>
+            <font face="supermarket" class="font"size="4" color="white"><input type="radio" id="rad3" name="call" value="" >S<---X---X--->D</font>
              <br>
-            <font face="supermarket"class="font" size="4" color="white"><input type="radio" id="sxdrad4" name="call" value="" >S<---X<---D</font>
+            <font face="supermarket" class="font"size="4" color="white"><input type="radio" id="rad4" name="call" value="" >S<---X---X<---D</font>
              <br> 
 
           </form>
@@ -76,22 +79,21 @@
         <div>
           <form id="status" >
            
-          <u><label><font face="supermarket"class="font"size="4"color="white" >Type Communication :</font></label><br></u>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="sxdchk1" name="call" value="" >CALL</font>
+          <u><label><font face="supermarket"class="font"size="4"color="white" >Type Communication:</font></label><br> </u> 
+             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="checkb1" name="call" value="" >CALL</font>
              <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="sxdchk2" name="sms" value="">SMS</font>
+             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="checkb2" name="sms" value="">SMS</font>
              <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="sxdchk3" name="line" value="">LINE</font>
+             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="checkb3" name="line" value="">LINE</font>
              <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="sxdchk4" name="facbook" value="">WHATSAPP</font>
+             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="checkb4" name="facbook" value="">FACEBOOK</font>
              <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="sxdchk5" name="whatapp" value="">FACEBOOK</font>
+             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="checkb5" name="whatapp" value="">WHATAPP</font>
           </form>
 
-    
         </div>
         <br>
-         <div  >
+           <div>
           <form id="date_form" action="demo_form.asp" >
           <div><class="wrapper-dropdown-5">
                    
@@ -102,14 +104,15 @@
             </div>
 
           </form>
+    
         </div>
         <br>
-         
-          <div>
+        
+            <div>
           <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
            <p align = "right"><button type="button" class="color blue button" onclick="actionPerformed();"size="2">Send</button></p>
         </div>
-    
+      
       
       </div>  
     </div>
@@ -128,8 +131,8 @@
                 </div>
     </div>
 
-    <div class="yui-c">
-      <div id="scollbar" >
+      <div class="yui-c">
+        <div id="scollbar" >
         <font face="supermarket" size="2" color="white">
         <div id = "displayNode"style="float: left; width: 33%;"></div>
         <div id = "displayType" style="float: left; width: 33%;"></div>
@@ -142,178 +145,164 @@
         
       </div>
       <div id="output"></div>
-    </div>
-    </div>
+      </div>
     
   </div>
 
 </div>
 
-<script src="js/d3.v3.min.js"></script>
+
+
+<script type="text/javascript">
+function actionPerformed(){
+  if(document.getElementById("rad1").checked){
+    //a->?-?->b
+    var selections = [];
+    if(document.getElementById("checkb3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['-[r1:Call]->','<-[x1:Call]->','-[r2:Call]->'];
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['-[r1:SMS]->','<-[x1:SMS]->','-[r2:SMS]->'];
+      selections.push(objCommu);
+    }
+    console.log(selections.length);
+    createQueryForTwo(selections);
+
+  }else if(document.getElementById("rad2").checked){  
+    //a->?-?<-b
+    var selections = [];
+    if(document.getElementById("checkb3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['-[r1:Call]->','<-[x1:Call]->','<-[r2:Call]-'];
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['-[r1:SMS]->','<-[x1:SMS]->','<-[r2:SMS]-'];
+      selections.push(objCommu);
+    }
+    createQueryForTwo(selections);
+
+  }else if(document.getElementById("rad3").checked){
+    //a<-?-?->b
+    var selections = [];
+
+    var selections = [];
+    if(document.getElementById("checkb3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['<-[r1:Call]-','<-[x1:Call]->','-[r2:Call]->'];
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['<-[r1:SMS]-','<-[x1:SMS]->','-[r2:SMS]->'];
+      selections.push(objCommu);
+    }
+    createQueryForTwo(selections);
+
+  }else if(document.getElementById("rad4").checked){
+    //a<-?-?<-b
+    var selections = [];
+    if(document.getElementById("checkb3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['<-[r1:Call]-','<-[x1:Call]->','<-[r2:Call]-'];
+      selections.push(objCommu);
+    }
+    if(document.getElementById("checkb2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['<-[r1:SMS]-','<-[x1:SMS]->','<-[r2:SMS]-'];
+      selections.push(objCommu);
+    }
+    createQueryForTwo(selections);
+
+  }else{
+    alert("Please select your desired communication route ..")
+
+  }
+}
+
+</script>
+
+<script src='js/d3.v3.min.js'></script>
 <script src="js/d3.tip.js"></script>
 <script type="text/javascript" src="js/specificNodeDetail.js"></script>
 <script type="text/javascript" src="js/BuildQuery.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
 <script type="text/javascript" src="js/helperfunction.js"></script>
-<script type="text/javascript" src="js/intermediaryNodeQuery.js"></script>
+<script type="text/javascript" src="js/intermediaryNodeQuery2.js"></script>
 <script type="text/javascript" src="js/divpopuphandler.js"></script>
-
-<script type="text/javascript">
-function actionPerformed(){
-  var linkType = [];
-  if(document.getElementById("sxdrad1").checked){
-    var selections = [];
-    if(document.getElementById("sxdchk3").checked){
-      var objCommu = {};
-      objCommu.Type = 'Line';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk4").checked){
-      var objCommu = {};
-      objCommu.Type = 'Whatsapp';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk5").checked){
-      var objCommu = {};
-      objCommu.Type = 'Facebook';
-      selections.push(objCommu);
-    }
-
-    if(document.getElementById("sxdchk2").checked){
-      var objCommu = {};
-      objCommu.Type = 'SMS';
-      objCommu.linkType = ['-[r1:SMS]->','-[r2:SMS]->'];
-      selections.push(objCommu);
-
-    }
-
-    if(document.getElementById("sxdchk1").checked){
-      var objCommu = {};
-      objCommu.Type = 'Call';
-      objCommu.linkType = ['-[r1:Call]->','-[r2:Call]->'];
-      selections.push(objCommu);
-
-    }
-    if(selections.length > 0){
-      console.log(selections.length);
-      queryManagementSXD(selections);
-    }
-
-  }else if(document.getElementById("sxdrad2").checked){
-    var selections = [];
-    if(document.getElementById("sxdchk3").checked){
-      var objCommu = {};
-      objCommu.Type = 'Line';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk4").checked){
-      var objCommu = {};
-      objCommu.Type = 'Whatsapp';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk5").checked){
-      var objCommu = {};
-      objCommu.Type = 'Facebook';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk2").checked){
-      var objCommu = {};
-      objCommu.Type = 'SMS';
-      objCommu.linkType = ['-[r1:SMS]->','<-[r2:SMS]-'];
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk1").checked){
-      var objCommu = {};
-      objCommu.Type = 'Call';
-      objCommu.linkType = ['-[r1:Call]->','<-[r2:Call]-'];
-      selections.push(objCommu);
-
-    }
-    //Check if there is any communication in selections
-    if(selections.length > 0){
-      console.log(selections.length);
-      queryManagementSXD(selections);
-    }
-  }else if(document.getElementById("sxdrad3").checked){
-    var selections = [];
-    if(document.getElementById("sxdchk3").checked){
-      var objCommu = {};
-      objCommu.Type = 'Line';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk4").checked){
-      var objCommu = {};
-      objCommu.Type = 'Whatsapp';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk5").checked){
-      var objCommu = {};
-      objCommu.Type = 'Facebook';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk2").checked){
-      var objCommu = {};
-      objCommu.Type = 'SMS';
-      objCommu.linkType = ['<-[r1:SMS]-','-[r2:SMS]->'];
-      selections.push(objCommu);
-
-    }
-    if(document.getElementById("sxdchk1").checked){
-      var objCommu = {};
-      objCommu.Type = 'Call';
-      objCommu.linkType = ['<-[r1:Call]-','-[r2:Call]->'];
-      selections.push(objCommu);
-
-    }
-    //Check if there is any communication in selections
-    if(selections.length > 0){
-      console.log(selections.length);
-      queryManagementSXD(selections);
-    }
-
-  }else if(document.getElementById("sxdrad4").checked){
-    var selections = [];
-    if(document.getElementById("sxdchk3").checked){
-      var objCommu = {};
-      objCommu.Type = 'Line';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk4").checked){
-      var objCommu = {};
-      objCommu.Type = 'Whatsapp';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk5").checked){
-      var objCommu = {};
-      objCommu.Type = 'Facebook';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk2").checked){
-      var objCommu = {};
-      objCommu.Type = 'SMS';
-      objCommu.linkType = ['<-[r1:SMS]-','<-[r2:SMS]-'];
-      selections.push(objCommu);
-
-    }if(document.getElementById("sxdchk1").checked){
-      var objCommu = {};
-      objCommu.Type = 'Call';
-      objCommu.linkType = ['<-[r1:Call]-','<-[r2:Call]-'];
-      selections.push(objCommu);
-
-    }
-    //Check if there is any communication in selections
-    if(selections.length > 0){
-      console.log(selections.length);
-      queryManagementSXD(selections);
-    }
-  }
-  else{
-    alert("Please select communication route !")
-  }
-}
-
-</script>
 
 <script>
 //Load all the possible phone numbers into the list to be ready for display when user hit suggestion button.
@@ -365,7 +354,7 @@ d3.xhr("http://localhost:7474/db/data/transaction/commit")
 
 </script>
 
+
+</script>
 </body>
 </html>
-            
-          

@@ -3796,7 +3796,7 @@ function queryManagement(selections) {
                                     }
                                 }
 
-                                if (result.lenght > 0) {
+                                if (result.length > 0) {
                                     //After finished adding all the nodes and relationship into nodeArr and linkArr
                                     var allLineNodes = [];
                                     for (i = 0; i < nodeArr.length; i++) {
@@ -4703,84 +4703,37 @@ function dataVisualizationSocial(finalResult) {
             var nodeColor = d3.select("#colorpane");
 
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle')
-            var colorLabel = d3.select(".nodeCircle");
+                    .attr('class', 'headNodeSheet')
+            var colorLabel = d3.select(".headNodeSheet");
             colorLabel.html("&nbsp;Node&nbspcolor:");
-
+            
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle1')
+                    .attr('class', 'nodeSheet');
+            
+            var nodeSheet = d3.select('.nodeSheet');
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[0];
-                    })
-            var colorLabel = d3.select(".nodeCircle1");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputSource);
-
-            nodeColor.append('div')
-                    .attr('class', 'nodeCircle2')
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right0')
+            var colorLabel = d3.select(".nodeSheet.right0");
+            colorLabel.html("&nbsp;" + inputSource);
+            
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[1];
-                    })
-            var colorLabel = d3.select(".nodeCircle2");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputTarget);
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right1')
+            var colorLabel = d3.select(".nodeSheet.right1");
+            colorLabel.html("&nbsp;" + inputTarget);
 
-
-
-            //DisplayType
-            d3.select("#displayType")
-                    .append('div')
-                    .attr("id", "colorpane2")
-            var nodeType = d3.select("#colorpane2");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType')
-            var typeLabel = d3.select(".nodeType");
-            typeLabel.html("&nbsp;Node&nbspType:");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType1')
-            var typeLabel = d3.select(".nodeType1");
-            typeLabel.html("&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType2')
-            var typeLabel = d3.select(".nodeType2");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LineAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType3')
-            var typeLabel = d3.select(".nodeType3");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WhatsappAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType4')
-            var typeLabel = d3.select(".nodeType4");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FacebookAccount");
-
-            //DisplayLink
-            d3.select("#displayLink")
-                    .append('div')
-                    .attr("id", "colorpane3")
-            var linkType = d3.select("#colorpane3");
-
-            linkType.append('div')
-                    .attr('class', 'linkType')
-            var linkLabel = d3.select(".linkType");
-            linkLabel.html("&nbsp;Link&nbspColor:");
-
-            linkType.append('div')
-                    .attr('class', 'linkType1')
-            var linkLabel = d3.select(".linkType1");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;0");
-
-            linkType.append('div')
-                    .attr('class', 'linkType2')
-            var linkLabel = d3.select(".linkType2");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;5");
-
-            linkType.append('div')
-                    .attr('class', 'linkType3')
-            var linkLabel = d3.select(".linkType3");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;8");
+            drawColorPane();
 
         } else {
             console.log("what!!?")
@@ -4915,7 +4868,9 @@ function SDsummarization(finalResult) {
     var inputTarget = document.getElementById("tPhoneNo").value;
     var linkArr = finalResult;
     if (linkArr.length > 0) {
-        var output = "<p>Visualizing communication flow between mobile phones using number " + inputSource + " and " + inputTarget + "</p><br/>";
+        
+        var output = "<h3 class='text2'>Visualizing communication flow between mobile phones using number</h3>" ;
+            output += "<h3 class='text3'>" + inputSource + " and " + inputTarget + "</h3>";
         var indexCall = [];
         var indexSMS = [];
         var indexLine = [];
@@ -4935,7 +4890,7 @@ function SDsummarization(finalResult) {
                 indexFacebook.push(i);
             }
         }
-
+        output += "<table><thead><th class='styleheadtable2'>List</th><th class='styleheadtable3'>Frequency </th></thead><tbody>";
         if (indexCall.length > 0) {
             if (indexCall.length > 1) {
                 var sumProp = 0;
@@ -4944,7 +4899,11 @@ function SDsummarization(finalResult) {
                 }
                 output += "Call log: " + sumProp + "<br/>"
             } else {
-                output += "Call log from " + linkArr[indexCall[0]].source.PhoneNumber + " to " + linkArr[indexCall[0]].target.PhoneNumber + ": " + linkArr[indexCall[0]].prop.length + "<br/>"
+                
+                output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
+                output += "Call log from " + linkArr[indexCall[0]].source.PhoneNumber + " to " + linkArr[indexCall[0]].target.PhoneNumber + ": </td><td class='stylerowtable3 '>";
+                output += linkArr[indexCall[0]].prop.length +"</td></tr>";
+                
             }
         }
 
@@ -4956,7 +4915,10 @@ function SDsummarization(finalResult) {
                 }
                 output += "Total SMS log: " + sumProp + "<br/>"
             } else {
-                output += "SMS log from " + linkArr[indexSMS[0]].source.PhoneNumber + " to " + linkArr[indexSMS[0]].target.PhoneNumber + ": " + linkArr[indexCall[0]].prop.length + "<br/>"
+                output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
+                output += "SMS log from " + linkArr[indexSMS[0]].source.PhoneNumber + " to " + linkArr[indexSMS[0]].target.PhoneNumber + ": </td><td class='stylerowtable3 '>";
+                output += linkArr[indexCall[0]].prop.length +"</td></tr>";
+               
             }
         }
 
@@ -4965,7 +4927,10 @@ function SDsummarization(finalResult) {
             for (i = 0; i < indexLine.length; i++) {
                 sumProp = linkArr[indexLine[i]].prop.length + sumProp;
             }
-            output += "Total Line chat log: " + sumProp + "<br/>";
+            output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
+            output += "Total Line chat log" + ": </td><td class='stylerowtable3 '>";
+            output += sumProp +"</td></tr>";
+            
         }
 
         if (indexWhatsapp.length > 0) {
@@ -4973,7 +4938,9 @@ function SDsummarization(finalResult) {
             for (i = 0; i < indexWhatsapp.length; i++) {
                 sumProp = linkArr[indexWhatsapp[i]].prop.length + sumProp;
             }
-            output += "Total Whatsapp chat log: " + sumProp + "<br/>";
+            output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
+            output += "Total Whatsapp chat log: " + ": </td><td class='stylerowtable3 '>";
+            output += sumProp +"</td></tr>";
         }
 
         if (indexFacebook.length > 0) {
@@ -4981,8 +4948,11 @@ function SDsummarization(finalResult) {
             for (i = 0; i < indexFacebook.length; i++) {
                 sumProp = linkArr[indexFacebook[i]].prop.length + sumProp;
             }
-            output += "Total Facebook chat log: " + sumProp + "<br/>";
+            output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
+            output += "Total Facebook chat log: " + ": </td><td class='stylerowtable3 '>";
+            output += sumProp +"</td></tr>";
         }
+         output += "</tbody></table>";
     } else {
         var output = "<p/>According to user's selection, no communication flow could be found between " + inputSource + " and " + inputTarget + "</p><br/>";
     }

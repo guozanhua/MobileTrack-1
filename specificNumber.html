@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" href="css/graph.css" >
         <link rel="stylesheet" type="text/css" href="css/bar.css" >
         <link rel="stylesheet" type="text/css" href="css/table.css" >
+        <link rel="stylesheet" type="text/css" href="css/table2.css" >
 
         <script src='js/d3.v3.min.js'></script>
         <script src="js/d3.tip.js"></script>
@@ -32,24 +33,24 @@
 
             <div id='cssmenu'>
                 <ul>
-                    <li><a href="select.html"><span>Multiple Phone</span></a></li>
+                    <li><a href="multiplePhone.html"><span>Multiple Phone</span></a></li>
 
 
                     <li class='has-sub'><a href='#'><span>Find the middle-man</span></a>
                         <ul>
-                            <li class='has-sub'><a href="destination2.html"><span>S--X--D</span></a>
+                            <li class='has-sub'><a href="oneMiddleMan.html"><span>S--X--D</span></a>
 
                             </li>
-                            <li class='has-sub'><a href="destination3.html"><span>S--X--X--D</span></a>
+                            <li class='has-sub'><a href="twoMiddleMan.html"><span>S--X--X--D</span></a>
 
-                            </li> <li class='has-sub'><a href="destination4.html"><span>S--X--X--X--D</span></a>
+                            </li> <li class='has-sub'><a href="threeMiddleMan.html"><span>S--X--X--X--D</span></a>
 
                             </li>
 
                         </ul>
                     </li>
-                    <li><a href="destination.html"><span>Phone - Phone</span></a></li>
-                    <li class='active'><a href="specificNode.html"><span>Specific Number</span></a></li>
+                    <li><a href="directCommunication.html"><span>Phone - Phone</span></a></li>
+                    <li class='active'><a href="specificNumber.html"><span>Specific Number</span></a></li>
                     <li><a href="mainmenu.html"><span>Main Menu</span></a></li>
                 </ul>
             </div>
@@ -139,7 +140,7 @@
                                             <u><label><font face="supermarket"class="font" size="4" color="white"  >Duration :</font></label ></u>
                                             <br/>
                                             <form id="selecttype"> 
-                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="ddd" id="ddd" onchange="defaultduration()">Default Duration</font>
+                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="ddd" id="ddd" onchange="defaultduration()" checked>Default Duration</font>
                                                 <br/>
                                                 <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="sdd" id="sdd" onchange="specificduration()">Specific Duration</font>
                                             </form>
@@ -169,7 +170,7 @@
                                             <u><label><font face="supermarket"class="font" size="4" color="white"  >Frequency :</font></label ></u>
                                             <br>
                                             <form id="selecttype"> 
-                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="ddf" id="ddf" onchange="defaultfrequency()" >Default Frequency</font>
+                                                <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="ddf" id="ddf" onchange="defaultfrequency()" checked>Default Frequency</font>
                                                 <br>
                                                 <font face="supermarket" size="4" class="font"color="white"><input type="radio" value="sdf" id="sdf" onchange="specificfrequency()">Specific Frequency</font>
 
@@ -310,23 +311,23 @@
 
                         document.getElementById("typeboxmessage").style.display = "block";
                         document.getElementById("statusSMS").style.display = "block";
-                        document.getElementById("frequency").style.display = "block";
+//                        document.getElementById("frequency").style.display = "block";
                     }
                     else if (a == "line") {
                         document.getElementById("date_form").style.display = "block";
-                        document.getElementById("frequency").style.display = "block";
+//                        document.getElementById("frequency").style.display = "block";
 
 
                     }
                     else if (a == "facebook") {
                         document.getElementById("date_form").style.display = "block";
-                        document.getElementById("frequency").style.display = "block";
+//                        document.getElementById("frequency").style.display = "block";
 
 
                     }
                     else if (a == "whatapp") {
                         document.getElementById("date_form").style.display = "block";
-                        document.getElementById("frequency").style.display = "block";
+//                        document.getElementById("frequency").style.display = "block";
 
 
                     }

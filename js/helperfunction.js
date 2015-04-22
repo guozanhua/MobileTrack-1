@@ -276,3 +276,144 @@ function hideProgressBar() {
     document.getElementById("blanket").style.display = 'none';
     document.getElementById("progressDiv").style.display = 'none';
 }
+
+function drawColorPane() {
+    //DisplayType 
+    d3.select("#displayType")
+            .append('div')
+            .attr("id", "colorpane2")
+    var nodeType = d3.select("#colorpane2");
+
+    nodeType.append('div')
+            .attr('class', 'headNodeType')
+    var typeLabel = d3.select(".headNodeType");
+    typeLabel.html("&nbsp;Node&nbspType:");
+
+    /*Node type: PHONE*/
+    nodeType.append('div').attr('class', 'nodeType');
+    var nodeTypeSheet = d3.select('.nodeType');
+
+    nodeTypeSheet.append('div')
+            .attr('class', 'nodeType left0');
+
+    nodeTypeSheet.append('div')
+            .attr('class', 'nodeType right0');
+    var nodeTypeLabel = d3.select(".nodeType.right0");
+    nodeTypeLabel.html("&nbsp;Phone");
+
+    /*Node type: LINE*/
+    nodeTypeSheet.append('div')
+            .attr('class', 'nodeType left1');
+
+    nodeTypeSheet.append('div')
+            .attr('class', 'nodeType right1');
+
+    var nodeTypeLabel = d3.select(".nodeType.right1");
+    nodeTypeLabel.html("&nbsp;LineAccount");
+
+    /*Node type: WHATSAPP*/
+
+    nodeTypeSheet.append('div')
+            .attr('class', 'nodeType left2');
+    nodeTypeSheet.append('div')
+            .attr('class', 'nodeType right2');
+
+    var nodeTypeLabel = d3.select(".nodeType.right2");
+    nodeTypeLabel.html("&nbsp;WhatsappAccount");
+
+    /*Node type: FACEBOOK*/
+    nodeTypeSheet.append('div')
+            .attr('class', 'nodeType left3');
+
+    nodeTypeSheet.append('div')
+            .attr('class', 'nodeType right3');
+
+    var nodeTypeLabel = d3.select(".nodeType.right3");
+    nodeTypeLabel.html("&nbsp;FacebookAccount");
+
+    //DisplayLink
+    d3.select("#displayLink")
+            .append('div')
+            .attr("id", "colorpane3")
+    var linkType = d3.select("#colorpane3");
+
+    linkType.append('div')
+            .attr('class', 'headLinkType')
+    var linkLabel = d3.select(".headLinkType");
+    linkLabel.html("&nbsp;Link&nbspColor:");
+
+    linkType.append('div')
+            .attr('class', 'linkType')
+    var linkTypeSheet = d3.select(".linkType");
+
+    /*high freq link*/
+    linkTypeSheet.append('div')
+            .attr('class', 'linkType left3');
+
+    linkTypeSheet.append('div')
+            .attr('class', 'linkType right3');
+    var linkLabel = d3.select(".linkType.right3");
+    linkLabel.html("&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;30");
+
+    /*mid freq link*/
+    linkTypeSheet.append('div')
+            .attr('class', 'linkType left2');
+
+    linkTypeSheet.append('div')
+            .attr('class', 'linkType right2');
+    var linkLabel = d3.select(".linkType.right2");
+    linkLabel.html("&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;15");
+
+    /*low freq link*/
+    linkTypeSheet.append('div')
+            .attr('class', 'linkType left1');
+
+    linkTypeSheet.append('div')
+            .attr('class', 'linkType right1');
+    var linkLabel = d3.select(".linkType.right1");
+    linkLabel.html("&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;0");
+
+    //DisplayNodeMeaning
+    var nodeType = d3.select("#colorpane3");
+
+    nodeType.append('div')
+            .attr('class', 'headNodeMeaning')
+    var nodeTypeMeaning = d3.select('.headNodeMeaning');
+    nodeTypeMeaning.html("&nbsp;Node&nbspMeaning:");
+
+    nodeType.append('div')
+            .attr('class', 'nodeMeaning')
+
+    var nodeMeaning = d3.select('.nodeMeaning');
+
+    /*highly connected node*/
+    nodeMeaning.append('div')
+            .attr('class', 'nodeMeaning left1')
+            .style('background', 'red');
+
+    nodeMeaning.append('div')
+            .attr('class', 'nodeMeaning right1');
+    var nodeMeaningLabel = d3.select('.nodeMeaning.right1');
+    nodeMeaningLabel.html("&nbsp;Rel&nbsp;>15");
+
+    /*medium connected node*/
+    nodeMeaning.append('div')
+            .attr('class', 'nodeMeaning left2')
+            .style('background', 'orange');
+
+    nodeMeaning.append('div')
+            .attr('class', 'nodeMeaning right2');
+    var nodeMeaningLabel = d3.select('.nodeMeaning.right2');
+    nodeMeaningLabel.html("&nbsp;Rel&nbsp;>8");
+
+    /*low connected node*/
+    nodeMeaning.append('div')
+            .attr('class', 'nodeMeaning left3')
+            .style('background', 'green');
+
+    nodeMeaning.append('div')
+            .attr('class', 'nodeMeaning right3');
+    var nodeMeaningLabel = d3.select('.nodeMeaning.right3');
+    nodeMeaningLabel.html("&nbsp;Rel&nbsp;>0");
+
+}

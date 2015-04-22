@@ -1,7 +1,7 @@
 function FetchSMSDatabase(input) {
     clearDiv('graph');
     clearDiv('output');
-    var _queryString = input;	
+    var _queryString = input;
     console.log(_queryString);
     var inputNumber = document.getElementById("phoneNo").value;
 
@@ -93,42 +93,42 @@ function FetchSMSDatabase(input) {
                     }
 
                     if (i == 0) {
-                        
-                            //Add source to nodeArr
-                            var objSource = {};
-                            objSource.NodeName = result[i].Source;
-                            objSource.PhoneNumber = result[i].SourceNumber;
-                            objSource.NodeIndex = nodeArr.length;
-                            objSource.groupIndex = getGroupSource;
-                            objSource.textDisplay = result[i].SourceNumber;
-                            nodeArr.push(objSource);
-                            //Add target to nodeArr
-                            var objTarget = {};
-                            objTarget.NodeName = result[i].Target;
-                            objTarget.PhoneNumber = result[i].TargetNumber;
-                            objTarget.groupIndex = getGroupTarget;
-                            objTarget.textDisplay = result[i].TargetNumber;
-                            objTarget.NodeIndex = nodeArr.length;
-                            nodeArr.push(objTarget);
-                            //Add relationship to linkArr
-                            var objLink = {};
-                            objLink.source = 0;
-                            objLink.target = 1;
-                            objLink.Type = "SMS";
 
-                            //'prop' is an array which contain an object. Each object in this 'prop' represents a detail about each time the communcation occurs   
-                            objLink.prop = [];
-                            var objLinkProp = {};
-                            objLinkProp.Source = result[i].SourceNumber;
-                            objLinkProp.Target = result[i].TargetNumber;
-                            objLinkProp.date = convertDatetoNormal(result[i].Date);
-                            //objLinkProp.time = result[i].Time;
-                            objLinkProp.status = result[i].Status;
-                            objLinkProp.message = result[i].Message;
-                            objLink.prop.push(objLinkProp)
+                        //Add source to nodeArr
+                        var objSource = {};
+                        objSource.NodeName = result[i].Source;
+                        objSource.PhoneNumber = result[i].SourceNumber;
+                        objSource.NodeIndex = nodeArr.length;
+                        objSource.groupIndex = getGroupSource;
+                        objSource.textDisplay = result[i].SourceNumber;
+                        nodeArr.push(objSource);
+                        //Add target to nodeArr
+                        var objTarget = {};
+                        objTarget.NodeName = result[i].Target;
+                        objTarget.PhoneNumber = result[i].TargetNumber;
+                        objTarget.groupIndex = getGroupTarget;
+                        objTarget.textDisplay = result[i].TargetNumber;
+                        objTarget.NodeIndex = nodeArr.length;
+                        nodeArr.push(objTarget);
+                        //Add relationship to linkArr
+                        var objLink = {};
+                        objLink.source = 0;
+                        objLink.target = 1;
+                        objLink.Type = "SMS";
 
-                            linkArr.push(objLink);
-                        
+                        //'prop' is an array which contain an object. Each object in this 'prop' represents a detail about each time the communcation occurs   
+                        objLink.prop = [];
+                        var objLinkProp = {};
+                        objLinkProp.Source = result[i].SourceNumber;
+                        objLinkProp.Target = result[i].TargetNumber;
+                        objLinkProp.date = convertDatetoNormal(result[i].Date);
+                        //objLinkProp.time = result[i].Time;
+                        objLinkProp.status = result[i].Status;
+                        objLinkProp.message = result[i].Message;
+                        objLink.prop.push(objLinkProp)
+
+                        linkArr.push(objLink);
+
                     } else {
                         var checkSource = 0;
                         var checkTarget = 0;
@@ -184,51 +184,24 @@ function FetchSMSDatabase(input) {
                                 }
                             }
                             if (linkExist == 1) {
-                                
-                                    //There is already a link between source and target.
-                                    var objLinkProp = {};
-                                    objLinkProp.Source = result[i].SourceNumber;
-                                    objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                    //objLinkProp.time = result[i].Time;
-                                    objLinkProp.status = result[i].Status;
-                                    objLinkProp.message = result[i].Message;
-                                    linkArr[linkIndex].prop.push(objLinkProp);
-                                
+
+                                //There is already a link between source and target.
+                                var objLinkProp = {};
+                                objLinkProp.Source = result[i].SourceNumber;
+                                objLinkProp.Target = result[i].TargetNumber;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                //objLinkProp.time = result[i].Time;
+                                objLinkProp.status = result[i].Status;
+                                objLinkProp.message = result[i].Message;
+                                linkArr[linkIndex].prop.push(objLinkProp);
+
                             } else {
                                 //Link between source and target haven't been created yet.
-                                
-                                    var objLink = {};
-                                    objLink.source = getSourceIndex;
-                                    objLink.target = getTargetIndex;
-                                    objLink.Type = "SMS"
-                                    objLink.prop = [];
-
-                                    var objLinkProp = {};
-                                    objLinkProp.Source = result[i].SourceNumber;
-                                    objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                    //objLinkProp.time = result[i].Time;
-                                    objLinkProp.status = result[i].Status;
-                                    objLinkProp.message = result[i].Message;
-                                    objLink.prop.push(objLinkProp);
-                                    linkArr.push(objLink);
-                                
-                            }
-                        } else if (checkSource > 0 && checkTarget == 0) { // source is matched with the existing node in nodeArr
-                            
-                                var objAdd = {};
-                                objAdd.NodeName = result[i].Target;
-                                objAdd.PhoneNumber = result[i].TargetNumber;
-                                objAdd.NodeIndex = nodeArr.length;
-                                objAdd.groupIndex = getGroupTarget;
-                                objAdd.textDisplay = result[i].TargetNumber;
-                                nodeArr.push(objAdd);
 
                                 var objLink = {};
                                 objLink.source = getSourceIndex;
-                                objLink.target = nodeArr.length - 1;
-                                objLink.Type = "SMS";
+                                objLink.target = getTargetIndex;
+                                objLink.Type = "SMS"
                                 objLink.prop = [];
 
                                 var objLinkProp = {};
@@ -239,84 +212,111 @@ function FetchSMSDatabase(input) {
                                 objLinkProp.status = result[i].Status;
                                 objLinkProp.message = result[i].Message;
                                 objLink.prop.push(objLinkProp);
-
                                 linkArr.push(objLink);
-                            
+
+                            }
+                        } else if (checkSource > 0 && checkTarget == 0) { // source is matched with the existing node in nodeArr
+
+                            var objAdd = {};
+                            objAdd.NodeName = result[i].Target;
+                            objAdd.PhoneNumber = result[i].TargetNumber;
+                            objAdd.NodeIndex = nodeArr.length;
+                            objAdd.groupIndex = getGroupTarget;
+                            objAdd.textDisplay = result[i].TargetNumber;
+                            nodeArr.push(objAdd);
+
+                            var objLink = {};
+                            objLink.source = getSourceIndex;
+                            objLink.target = nodeArr.length - 1;
+                            objLink.Type = "SMS";
+                            objLink.prop = [];
+
+                            var objLinkProp = {};
+                            objLinkProp.Source = result[i].SourceNumber;
+                            objLinkProp.Target = result[i].TargetNumber;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
+                            //objLinkProp.time = result[i].Time;
+                            objLinkProp.status = result[i].Status;
+                            objLinkProp.message = result[i].Message;
+                            objLink.prop.push(objLinkProp);
+
+                            linkArr.push(objLink);
+
 
                             //(3.3)
                         } else if (checkSource == 0 && checkTarget > 0) { // target is matched with the existing node in nodeArr 
-                            
-                                var objAdd = {};
-                                objAdd.NodeName = result[i].Source;
-                                objAdd.PhoneNumber = result[i].SourceNumber;
-                                objAdd.NodeIndex = nodeArr.length;
-                                objAdd.groupIndex = getGroupSource;
-                                objAdd.textDisplay = result[i].SourceNumber;
-                                nodeArr.push(objAdd);
 
-                                var objLink = {};
-                                objLink.source = nodeArr.length - 1;
-                                objLink.target = getTargetIndex;
-                                objLink.Type = "SMS";
-                                objLink.prop = [];
+                            var objAdd = {};
+                            objAdd.NodeName = result[i].Source;
+                            objAdd.PhoneNumber = result[i].SourceNumber;
+                            objAdd.NodeIndex = nodeArr.length;
+                            objAdd.groupIndex = getGroupSource;
+                            objAdd.textDisplay = result[i].SourceNumber;
+                            nodeArr.push(objAdd);
 
-                                var objLinkProp = {};
-                                objLinkProp.Source = result[i].SourceNumber;
-                                objLinkProp.Target = result[i].TargetNumber;
-                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                //objLinkProp.time = result[i].Time;
-                                objLinkProp.status = result[i].Status;
-                                objLinkProp.message = result[i].Message;
-                                objLink.prop.push(objLinkProp);
+                            var objLink = {};
+                            objLink.source = nodeArr.length - 1;
+                            objLink.target = getTargetIndex;
+                            objLink.Type = "SMS";
+                            objLink.prop = [];
 
-                                linkArr.push(objLink);
-                                //document.write("Add " + result[i].Source + "</br>");
-                            
+                            var objLinkProp = {};
+                            objLinkProp.Source = result[i].SourceNumber;
+                            objLinkProp.Target = result[i].TargetNumber;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
+                            //objLinkProp.time = result[i].Time;
+                            objLinkProp.status = result[i].Status;
+                            objLinkProp.message = result[i].Message;
+                            objLink.prop.push(objLinkProp);
+
+                            linkArr.push(objLink);
+                            //document.write("Add " + result[i].Source + "</br>");
+
 
                             //(3.4)
                         } else { // No match in an array
-                            
-                                //Add source to nodeArr
-                                var objSource = {};
-                                var sourceIndex;
-                                objSource.NodeName = result[i].Source;
-                                objSource.PhoneNumber = result[i].SourceNumber;
-                                objSource.NodeIndex = nodeArr.length;
-                                objSource.groupIndex = getGroupSource;
-                                objSource.textDisplay = result[i].SourceNumber;
-                                sourceIndex = objSource.NodeIndex;
-                                nodeArr.push(objSource);
 
-                                //Add target to nodeArr
-                                var objTarget = {};
-                                var targetIndex;
-                                objTarget.NodeName = result[i].Target;
-                                objTarget.PhoneNumber = result[i].TargetNumber;
-                                objTarget.NodeIndex = nodeArr.length;
-                                objTarget.groupIndex = getGroupTarget;
-                                objTarget.textDisplay = result[i].TargetNumber;
-                                targetIndex = objTarget.NodeIndex;
-                                nodeArr.push(objTarget);
-                                //Add relationship to linkArr
-                                var objLink = {};
-                                objLink.source = sourceIndex;
-                                objLink.target = targetIndex;
-                                objLink.Type = "SMS";
-                                objLink.prop = [];
+                            //Add source to nodeArr
+                            var objSource = {};
+                            var sourceIndex;
+                            objSource.NodeName = result[i].Source;
+                            objSource.PhoneNumber = result[i].SourceNumber;
+                            objSource.NodeIndex = nodeArr.length;
+                            objSource.groupIndex = getGroupSource;
+                            objSource.textDisplay = result[i].SourceNumber;
+                            sourceIndex = objSource.NodeIndex;
+                            nodeArr.push(objSource);
+
+                            //Add target to nodeArr
+                            var objTarget = {};
+                            var targetIndex;
+                            objTarget.NodeName = result[i].Target;
+                            objTarget.PhoneNumber = result[i].TargetNumber;
+                            objTarget.NodeIndex = nodeArr.length;
+                            objTarget.groupIndex = getGroupTarget;
+                            objTarget.textDisplay = result[i].TargetNumber;
+                            targetIndex = objTarget.NodeIndex;
+                            nodeArr.push(objTarget);
+                            //Add relationship to linkArr
+                            var objLink = {};
+                            objLink.source = sourceIndex;
+                            objLink.target = targetIndex;
+                            objLink.Type = "SMS";
+                            objLink.prop = [];
 
 
-                                var objLinkProp = {};
-                                objLinkProp.Source = result[i].SourceNumber;
-                                objLinkProp.Target = result[i].TargetNumber;
-                                objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                //objLinkProp.time = result[i].Time;
-                                objLinkProp.status = result[i].Status;
-                                objLinkProp.message = result[i].Message;
-                                objLink.prop.push(objLinkProp);
+                            var objLinkProp = {};
+                            objLinkProp.Source = result[i].SourceNumber;
+                            objLinkProp.Target = result[i].TargetNumber;
+                            objLinkProp.date = convertDatetoNormal(result[i].Date);
+                            //objLinkProp.time = result[i].Time;
+                            objLinkProp.status = result[i].Status;
+                            objLinkProp.message = result[i].Message;
+                            objLink.prop.push(objLinkProp);
 
-                                linkArr.push(objLink);
-                                //document.write("Add " + result[i].Source + " " + result[i].Target + "</br>");
-                            
+                            linkArr.push(objLink);
+                            //document.write("Add " + result[i].Source + " " + result[i].Target + "</br>");
+
                         }
 
                     }
@@ -404,8 +404,8 @@ function smsDataVisualization(finalResult) {
                 }
             })
             .nodes(finalResult[0])
-            .links(finalResult[1].filter(function(d){
-                if(d.prop.length >= inputFreq)
+            .links(finalResult[1].filter(function (d) {
+                if (d.prop.length >= inputFreq)
                     return d.prop.length >= inputFreq;
             }))
             .size([width, height])
@@ -607,100 +607,54 @@ function smsDataVisualization(finalResult) {
             var nodeColor = d3.select("#colorpane");
 
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle')
-            var colorLabel = d3.select(".nodeCircle");
+                    .attr('class', 'headNodeSheet')
+            var colorLabel = d3.select(".headNodeSheet");
             colorLabel.html("&nbsp;Node&nbspcolor:");
 
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle1')
+                    .attr('class', 'nodeSheet');
+
+            var nodeSheet = d3.select('.nodeSheet');
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[0];
-                    })
-            var colorLabel = d3.select(".nodeCircle1");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputSource);
+                    });
 
-            nodeColor.append('div')
-                    .attr('class', 'nodeCircle2')
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right0')
+            var colorLabel = d3.select(".nodeSheet.right0");
+            colorLabel.html("&nbsp;" + inputSource);
+
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[1];
-                    })
-            var colorLabel = d3.select(".nodeCircle2");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coresponding&nbsp;Nodes");
+                    });
 
-            var nonInputPhone = [];
-            for (i = 0; i < nodeData.length; i++) {
-                if (nodeData[i].PhoneNumber != inputSource) {
-                    nonInputPhone.push(nodeData[i].PhoneNumber);
-                }
-            }
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right1')
+            var colorLabel = d3.select(".nodeSheet.right1");
+            colorLabel.html("&nbsp;Coresponding&nbsp;Nodes");
 
-            for (i = 0; i < nonInputPhone.length; i++) {
-                nodeColor.append('div')
-                        .attr('class', 'nodeCircle' + (i + 3))
-                        .style('background', function (d) {
-                            return color[1];
-                        })
-                var colorLabel = d3.select(".nodeCircle" + (i + 3));
-                colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + nonInputPhone[i]);
-            }
+//            var nonInputPhone = [];
+//            for (i = 0; i < nodeData.length; i++) {
+//                if (nodeData[i].PhoneNumber != inputSource) {
+//                    nonInputPhone.push(nodeData[i].PhoneNumber);
+//                }
+//            }
+//
+//            for (i = 0; i < nonInputPhone.length; i++) {
+//                nodeColor.append('div')
+//                        .attr('class', 'nodeCircle' + (i + 3))
+//                        .style('background', function (d) {
+//                            return color[1];
+//                        })
+//                var colorLabel = d3.select(".nodeCircle" + (i + 3));
+//                colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + nonInputPhone[i]);
+//            }
 
-            //DisplayType
-            d3.select("#displayType")
-                    .append('div')
-                    .attr("id", "colorpane2")
-            var nodeType = d3.select("#colorpane2");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType')
-            var typeLabel = d3.select(".nodeType");
-            typeLabel.html("&nbsp;Node&nbspType:");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType1')
-            var typeLabel = d3.select(".nodeType1");
-            typeLabel.html("&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType2')
-            var typeLabel = d3.select(".nodeType2");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LineAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType3')
-            var typeLabel = d3.select(".nodeType3");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WhatsappAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType4')
-            var typeLabel = d3.select(".nodeType4");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FacebookAccount");
-
-            //DisplayLink
-            d3.select("#displayLink")
-                    .append('div')
-                    .attr("id", "colorpane3")
-            var linkType = d3.select("#colorpane3");
-
-            linkType.append('div')
-                    .attr('class', 'linkType')
-            var linkLabel = d3.select(".linkType");
-            linkLabel.html("&nbsp;Link&nbspColor:");
-
-            linkType.append('div')
-                    .attr('class', 'linkType1')
-            var linkLabel = d3.select(".linkType1");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;0");
-
-            linkType.append('div')
-                    .attr('class', 'linkType2')
-            var linkLabel = d3.select(".linkType2");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;5");
-
-            linkType.append('div')
-                    .attr('class', 'linkType3')
-            var linkLabel = d3.select(".linkType3");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;8");
-
+            drawColorPane();
         } else {
             console.log("what!!?")
             clearDiv('graph');
@@ -806,17 +760,28 @@ function specificSMSSummarize(finalResult) {
         }
     }
 
-    var output = "User's input Phone Number: " + inputSource + "<br/>";
-    output += "Received SMS from: " + "<br/>"
-    for (i = 0; i < d[index].smsIn.length; i++) {
-        output += (i + 1) + "). " + d[index].smsIn[i].PhoneNumber + " Freq: " + d[index].smsIn[i].freq + "<br/>";
-    }
+    var output = "<h3 class='text2'>User's input Phone Number: " + inputSource + "</h3>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Receive SMS from </th></thead><tbody>";
 
-    output += "Send SMS to: " + "<br/>"
-    for (i = 0; i < d[index].smsOut.length; i++) {
-        output += (i + 1) + "). " + d[index].smsOut[i].PhoneNumber + " Freq: " + d[index].smsOut[i].freq + "<br/>";
+    for (i = 0; i < d[index].smsIn.length; i++) {
+        output += "<tr class='stylerowtable2 '><td class='stylecolumntable2'>"
+        output += (i + 1) + ").</td><td> ";
+        output += d[index].smsIn[i].PhoneNumber + "</td><td>";
+        output += "Freq: " + d[index].smsIn[i].freq + "</td></tr>";
+
     }
+    output += "</tbody></table>";
+    output += "</br>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Send SMS to </th></thead><tbody>";
+
+    for (i = 0; i < d[index].smsOut.length; i++) {
+        output += "<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i + 1) + "). </td><td>";
+        output += d[index].smsOut[i].PhoneNumber + "</td><td>";
+        output += "Freq: " + d[index].smsOut[i].freq + "</td></tr>";
+    }
+    output += "</tbody></table>"
 
     document.getElementById("summarize").innerHTML = output;
 }
-    
+

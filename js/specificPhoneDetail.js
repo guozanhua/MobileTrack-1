@@ -702,100 +702,37 @@ function dataVisualizationPhone(finalResult) {
             var nodeColor = d3.select("#colorpane");
 
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle')
-            var colorLabel = d3.select(".nodeCircle");
+                    .attr('class', 'headNodeSheet')
+            var colorLabel = d3.select(".headNodeSheet");
             colorLabel.html("&nbsp;Node&nbspcolor:");
-
+            
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle1')
+                    .attr('class', 'nodeSheet');
+            
+            var nodeSheet = d3.select('.nodeSheet');
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[0];
-                    })
-            var colorLabel = d3.select(".nodeCircle1");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputSource);
-
-
-            nodeColor.append('div')
-                    .attr('class', 'nodeCircle2')
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right0')
+            var colorLabel = d3.select(".nodeSheet.right0");
+            colorLabel.html("&nbsp;" + inputSource);
+            
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[1];
-                    })
-            var colorLabel = d3.select(".nodeCircle2");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coresponding&nbsp;Nodes");
-
-            var nonInputPhone = [];
-            for (i = 0; i < nodeData.length; i++) {
-                if (nodeData[i].PhoneNumber != inputSource) {
-                    nonInputPhone.push(nodeData[i].PhoneNumber);
-                }
-            }
-
-            for (i = 0; i < nonInputPhone.length; i++) {
-                nodeColor.append('div')
-                        .attr('class', 'nodeCircle' + (i + 3))
-                        .style('background', function (d) {
-                            return color[1];
-                        })
-                var colorLabel = d3.select(".nodeCircle" + (i + 3));
-                colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + nonInputPhone[i]);
-            }
-
-            //DisplayType
-            d3.select("#displayType")
-                    .append('div')
-                    .attr("id", "colorpane2")
-            var nodeType = d3.select("#colorpane2");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType')
-            var typeLabel = d3.select(".nodeType");
-            typeLabel.html("&nbsp;Node&nbspType:");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType1')
-            var typeLabel = d3.select(".nodeType1");
-            typeLabel.html("&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType2')
-            var typeLabel = d3.select(".nodeType2");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LineAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType3')
-            var typeLabel = d3.select(".nodeType3");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WhatsappAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType4')
-            var typeLabel = d3.select(".nodeType4");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FacebookAccount");
-
-            //DisplayLink
-            d3.select("#displayLink")
-                    .append('div')
-                    .attr("id", "colorpane3")
-            var linkType = d3.select("#colorpane3");
-
-            linkType.append('div')
-                    .attr('class', 'linkType')
-            var linkLabel = d3.select(".linkType");
-            linkLabel.html("&nbsp;Link&nbspColor:");
-
-            linkType.append('div')
-                    .attr('class', 'linkType1')
-            var linkLabel = d3.select(".linkType1");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;0");
-
-            linkType.append('div')
-                    .attr('class', 'linkType2')
-            var linkLabel = d3.select(".linkType2");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;5");
-
-            linkType.append('div')
-                    .attr('class', 'linkType3')
-            var linkLabel = d3.select(".linkType3");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;8");
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right1')
+            var colorLabel = d3.select(".nodeSheet.right1");
+            colorLabel.html("&nbsp;Coresponding&nbsp;Nodes");
+            
+            drawColorPane();
 
         } else {
             console.log("what!!?")
@@ -903,19 +840,29 @@ function specificCallSummarize(finalResult) {
                 break;
             }
         }
-
-        var output = "User's input Phone Number: " + inputSource + "<br/>";
-        output += "Receive Call from: " + "<br/>"
-        for (i = 0; i < d[index].callIn.length; i++) {
-            output += (i + 1) + "). " + d[index].callIn[i].PhoneNumber + " Freq: " + d[index].callIn[i].freq + "<br/>";
-        }
-
-        output += "Dialing Call to: " + "<br/>"
-        for (i = 0; i < d[index].callOut.length; i++) {
-            output += (i + 1) + "). " + d[index].callOut[i].PhoneNumber + " Freq: " + d[index].callOut[i].freq + "<br/>";
-        }
-
-        document.getElementById("summarize").innerHTML = output;
+    }
+    
+    var output = "<h3 class='text2'>User's input Phone Number: " + inputSource + "</h3>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Receive Call from </th></thead><tbody>";
+    
+    for (i = 0; i < d[index].callIn.length; i++) {
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>"
+        output += (i+1) + ").</td><td> " ;
+        output += d[index].callIn[i].PhoneNumber + "</td><td>";
+        output += "Freq: " + d[index].callIn[i].freq + "</td></tr>";
+        
     }
 
+    output += "</tbody></table>";
+    output += "</br>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Dialing Call to </th></thead><tbody>";
+    
+    for (i = 0; i < d[index].callOut.length; i++) {
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i+1) + "). </td><td>";
+        output += d[index].callOut[i].PhoneNumber+ "</td><td>";
+        output += "Freq: "+ d[index].callOut[i].freq+ "</td></tr>";
+    }
+    output += "</tbody></table>"
+    document.getElementById("summarize").innerHTML = output;
 }

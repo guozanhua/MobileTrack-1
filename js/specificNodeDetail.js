@@ -409,74 +409,26 @@ function drawD3(finalResult) {
             var nodeColor = d3.select("#colorpane");
 
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle')
-            var colorLabel = d3.select(".nodeCircle");
+                    .attr('class', 'headNodeSheet')
+            var colorLabel = d3.select(".headNodeSheet");
             colorLabel.html("&nbsp;Node&nbspcolor:");
-
+            
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle1')
+                    .attr('class', 'nodeSheet');
+            
+            var nodeSheet = d3.select('.nodeSheet');
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left0')
                     .style('background', function (d) {
                         return color[0];
-                    })
-            var colorLabel = d3.select(".nodeCircle1");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputSource);
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right0')
+            var colorLabel = d3.select(".nodeSheet.right0");
+            colorLabel.html("&nbsp;&nbsp;" + inputSource);
 
-            //DisplayType
-            d3.select("#displayType")
-                    .append('div')
-                    .attr("id", "colorpane2")
-            var nodeType = d3.select("#colorpane2");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType')
-            var typeLabel = d3.select(".nodeType");
-            typeLabel.html("&nbsp;Node&nbspType:");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType1')
-            var typeLabel = d3.select(".nodeType1");
-            typeLabel.html("&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType2')
-            var typeLabel = d3.select(".nodeType2");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LineAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType3')
-            var typeLabel = d3.select(".nodeType3");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WhatsappAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType4')
-            var typeLabel = d3.select(".nodeType4");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FacebookAccount");
-
-            //DisplayLink
-            d3.select("#displayLink")
-                    .append('div')
-                    .attr("id", "colorpane3")
-            var linkType = d3.select("#colorpane3");
-
-            linkType.append('div')
-                    .attr('class', 'linkType')
-            var linkLabel = d3.select(".linkType");
-            linkLabel.html("&nbsp;Link&nbspColor:");
-
-            linkType.append('div')
-                    .attr('class', 'linkType1')
-            var linkLabel = d3.select(".linkType1");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;0");
-
-            linkType.append('div')
-                    .attr('class', 'linkType2')
-            var linkLabel = d3.select(".linkType2");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;5");
-
-            linkType.append('div')
-                    .attr('class', 'linkType3')
-            var linkLabel = d3.select(".linkType3");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;8");
+            drawColorPane();
 
         } else {
             console.log("what!!?")
@@ -628,27 +580,32 @@ function specificNodeSummarize(finalResult){
     //Print it out on summarize pane
     var output = "<u><h3 class='text'>Displaying information that were collected from mobile phone using number " + nodeArr[indexPhone].PhoneNumber + " </h3></u>";
     output += "<h3 class='text2'>Coresponding social account are as the followings  " + "</h3>";
-    output += "<table><th class='styleheadtable2'>Line Account </th><br/>"; 
-    output +="<table><th class='stylerowtable2 '>"
+    
+    output += "<table><thead><th class='styleheadtable2'>Line Account </th></thead><tbody>"; 
     for(i=0;i<indexLine.length;i++){
-        output +=  nodeArr[indexLine[i]].textDisplay ;
+        output +="<tr class='stylerowtable2 '><td>";
+        output +=  nodeArr[indexLine[i]].textDisplay +"</td></tr>";
     }
-    "</th><br/>"
-    output += "</table>"
-    output += "<table><th class='styleheadtable2'>Whatsapp Account </th><br/>"; 
-     output +="<table><th class='stylerowtable2 '>"
-    for(i=0;i<indexWhatsapp.length;i++){
-        output += nodeArr[indexWhatsapp[i]].textDisplay + "<br/>";
+    output +="</tbody></table>";
+    
+    output +="<br>"
+    output += "<table><thead><th class='styleheadtable2'>Whatsapp Account </th></thead><tbody>"; 
+    
+    for(i=0;i<indexWhatsapp.length;i++){ 
+        output +="<tr class='stylerowtable2 '><td>";
+        output += nodeArr[indexWhatsapp[i]].textDisplay + "</td></tr>";
     }
-    "</th><br/>"
-    output += "</table>"
-    output += "<table><th class='styleheadtable2'>Facebook Account </th><br/>";
-     output +="<table><th class='stylerowtable2 '>" 
+    output +="</tbody></table>";
+    
+    output +="<br>"
+    output += "<table><thead><th class='styleheadtable2'>Facebook Account </th></thead><tbody>";
+      
     for(i=0;i<indexFacebook.length;i++){
+        output +="<tr class='stylerowtable2 '><td>";
         output += nodeArr[indexFacebook[i]].textDisplay + "<br/>";
     }
-       "</th><br/>"
-    output += "</table>"
+    output +="</tbody></table>";
+    
     
     document.getElementById("summarize").innerHTML = output;
 }

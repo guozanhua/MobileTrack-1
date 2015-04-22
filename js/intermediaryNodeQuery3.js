@@ -5304,94 +5304,51 @@ function threeInterNodeVisualization(finalResult) {
             var nodeColor = d3.select("#colorpane");
 
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle')
-            var colorLabel = d3.select(".nodeCircle");
+                    .attr('class', 'headNodeSheet')
+            var colorLabel = d3.select(".headNodeSheet");
             colorLabel.html("&nbsp;Node&nbspcolor:");
-
+            
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle1')
+                    .attr('class', 'nodeSheet');
+            
+            var nodeSheet = d3.select('.nodeSheet');
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[0];
-                    })
-            var colorLabel = d3.select(".nodeCircle1");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputSource);
-
-            nodeColor.append('div')
-                    .attr('class', 'nodeCircle2')
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right0')
+            var colorLabel = d3.select(".nodeSheet.right0");
+            colorLabel.html("&nbsp;" + inputSource);
+            
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[1];
-                    })
-            var colorLabel = d3.select(".nodeCircle2");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputTarget);
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right1')
+            var colorLabel = d3.select(".nodeSheet.right1");
+            colorLabel.html("&nbsp;" + inputTarget);
 
-            nodeColor.append('div')
-                    .attr('class', 'nodeCircle3')
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[2];
-                    })
-            var colorLabel = d3.select(".nodeCircle3");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Intermediary&nbsp;Nodes");
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right2')
+            var colorLabel = d3.select(".nodeSheet.right2");
+            colorLabel.html("&nbsp;Intermediary&nbsp;Nodes");
 
-            //DisplayType
-            d3.select("#displayType")
-                    .append('div')
-                    .attr("id", "colorpane2")
-            var nodeType = d3.select("#colorpane2");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType')
-            var typeLabel = d3.select(".nodeType");
-            typeLabel.html("&nbsp;Node&nbspType:");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType1')
-            var typeLabel = d3.select(".nodeType1");
-            typeLabel.html("&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType2')
-            var typeLabel = d3.select(".nodeType2");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LineAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType3')
-            var typeLabel = d3.select(".nodeType3");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WhatsappAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType4')
-            var typeLabel = d3.select(".nodeType4");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FacebookAccount");
-
-            //DisplayLink
-            d3.select("#displayLink")
-                    .append('div')
-                    .attr("id", "colorpane3")
-            var linkType = d3.select("#colorpane3");
-
-            linkType.append('div')
-                    .attr('class', 'linkType')
-            var linkLabel = d3.select(".linkType");
-            linkLabel.html("&nbsp;Link&nbspColor:");
-
-            linkType.append('div')
-                    .attr('class', 'linkType1')
-            var linkLabel = d3.select(".linkType1");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;0");
-
-            linkType.append('div')
-                    .attr('class', 'linkType2')
-            var linkLabel = d3.select(".linkType2");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;5");
-
-            linkType.append('div')
-                    .attr('class', 'linkType3')
-            var linkLabel = d3.select(".linkType3");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;8");
-
+            drawColorPane();
         } else {
             console.log("what!!?")
-            clearDiv('mid');
+            clearDiv('graph');
         }
     }
 
@@ -5657,25 +5614,37 @@ function sxxxdSummarize(linkArr) {
     }
 
     //Displaying in summarize
-    var output = "<p style='color:red'>All the possible middle-man between <span style = 'color:white'>" + inputSource + "</span> and <span style = 'color:white'>" + inputTarget + "</span> are listed below</p><br/>";
-    output += "<p>Hob One: <br/>";
+  var output = "<h3 class='text2'>All the possible middle-man between</h3>" ;
+    output += "<h3 class='text3'>" + inputSource + " and " + inputTarget + "</h3>";
+    output += "<h3 class='text2'>are listed below</h3>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Hob One </th></thead><tbody>";
+    
     for (i = 0; i < hobOne.length; i++) {
-        output += hobOne[i] + "<br/>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i+1) + ").  </td><td>" ;
+        output += hobOne[i] +"</td></tr>";
     }
-    output += "</p><br/>";
-
-    output += "<p>Hob Two: <br/>";
+    output += "</tbody></table>"
+    output += "</br>";
+    
+   output += "<table><thead><th colspan='3' class='styleheadtable2'>Hob Two </th></thead><tbody>";
+    
     for (i = 0; i < hobTwo.length; i++) {
-        output += hobTwo[i] + "<br/>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i+1) + ").  </td><td>" ;
+        output += hobTwo[i] +"</td></tr>";
     }
-    output += "</p><br/>";
+    output += "</tbody></table>"
+    output += "</br>";
 
-
-    output += "<p>Hob Three: <br/>";
+    output += "<table><thead><th colspan='3' class='styleheadtable2'>Hob Three </th></thead><tbody>";
+    
     for (i = 0; i < hobThree.length; i++) {
-        output += hobThree[i] + "<br/>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i+1) + ").  </td><td>" ;
+        output += hobThree[i] +"</td></tr>";
     }
-    output += "</p><br/>";
+    output += "</tbody></table>"
 
     document.getElementById("summarize").innerHTML = output;
 }

@@ -6,43 +6,42 @@
 <link rel="stylesheet" type="text/css" href="css/styles2.css" >
 <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" >
 <link rel="stylesheet" type="text/css" href="css/graph.css" >
-   <link rel="stylesheet" type="text/css" href="css/bar.css" >
-   <link rel="stylesheet" type="text/css" href="css/table.css" >
-   <link rel="stylesheet" type="text/css" href="css/table2.css" >
+<link rel="stylesheet" type="text/css" href="css/bar.css" >
+<link rel="stylesheet" type="text/css" href="css/divpopup.css" >
+<link rel="stylesheet" type="text/css" href="css/table.css" >
+<link rel="stylesheet" type="text/css" href="css/table2.css" >
 </head>
 <body>
 <div id="doc" class="yui-t1">
   <div id="hd">
     <div id="header"><h1><img src="picture/mahidolbanner.png" alt="this is logo" style="width:100%"></h1></div>
   </div>
-    
-     <div id='cssmenu'>
+ <div id='cssmenu'>
               <ul>
-                  <li><a href="select.html"><span>Multiple Phone</span></a></li>
+                  <li><a href="multiplePhone.html"><span>Multiple Phone</span></a></li>
                   
                   
-                       <li class='has-sub'><a href='#'><span>Find the middle-man</span></a>
+                       <li class='has-sub active'><a href='#'><span>Find the middle-man</span></a>
                           <ul>
-                             <li class='has-sub'><a href="destination2.html"><span>S--X--D</span></a>
+                             <li class='has-sub'><a href="oneMiddleMan.html"><span>S--X--D</span></a>
                                 
                              </li>
-                             <li class='has-sub'><a href="destination3.html"><span>S--X--X--D</span></a>
+                             <li class='has-sub'><a href="twoMiddleMan.html"><span>S--X--X--D</span></a>
                                 
-                             </li> <li class='has-sub'><a href="destination4.html"><span>S--X--X--X--D</span></a>
+                             </li> <li class='has-sub'><a href="threeMiddleMan.html"><span>S--X--X--X--D</span></a>
                                 
                              </li>
                              
                           </ul>
                        </li>
-                       <li class='active'><a href="destination.html"><span>Phone - Phone</span></a></li>
-                       <li ><a href="specificNode.html"><span>Specific Number</span></a></li>
+                       <li><a href="directCommunication.html"><span>Phone - Phone</span></a></li>
+                       <li><a href="specificNumber.html"><span>Specific Number</span></a></li>
                         <li><a href="mainmenu.html"><span>Main Menu</span></a></li>
                 </ul>
             </div>
- 
     <div class="yui-b">
       <div id="input">
-        
+         
         <br/>
        <p align = "center"><label><font face="supermarket" class="font1" size="2" color="white">- ENTER -</label></p></font>
         <p align = "center"><label><font face="supermarket" class="font2" size="4"color="white">SOURCE AND TARGET NUMBERS TO DISPLAY THE COMMUNICATION</label></p></font>
@@ -50,40 +49,44 @@
 
           <form id="phonenumber" >
             <u><p align = "center"><label><font face="supermarket" class="font" size="4">Source Phone Number</font></label></u>
-            <input type="text" id="sPhoneNo"class="wrapper-dropdown-6"maxlength="10"></input>
+            <input type="text" id="sourcePhoneNo"class="wrapper-dropdown-6"maxlength="10"></input>
             <br></br>
             <u><label><font face="supermarket" class="font" size="4">Target Phone Number</font></label></u>
-           <input type="text" id="tPhoneNo"class="wrapper-dropdown-6"maxlength="10"></input>
+           <input type="text" id="targetPhoneNo"class="wrapper-dropdown-6"maxlength="10"></input>
           </form>
-        </div>   
-          
+        </div>  
 
          <p align = "center"><button id="suggestBtn"class="color red button" >Suggest Phone Number</button></p>
-     
-        <br>    
+       
+        <br>   
         <div>
           <form id="status" >
           <u><label><font face="supermarket"class="font"size="4"color="white" >Route Communication :</font></label><br></u>
-            <font face="supermarket" class="font"size="4" color="white"><input type="radio" name="call" id = "sdrad1" value="" >S--->D</font>
+            <font face="supermarket"class="font" size="4" color="white"><input type="radio" id="sxdrad1" name="call" value="" checked>S--->X--->D</font>
              <br>  
-            <font face="supermarket" class="font"size="4" color="white"><input type="radio" name="call" id = "sdrad2" value="" >S<---D</font>
-             <br>  
+            <font face="supermarket"class="font"size="4" color="white"><input type="radio" id="sxdrad2" name="call" value="" >S--->X<---D</font>
+             <br>
+            <font face="supermarket" class="font"size="4" color="white"><input type="radio" id="sxdrad3" name="call" value="" >S<---X--->D</font>
+             <br>
+            <font face="supermarket"class="font" size="4" color="white"><input type="radio" id="sxdrad4" name="call" value="" >S<---X<---D</font>
+             <br> 
+
           </form>
         </div>
-        <br> <br> <br>
+        <br> 
         <div>
           <form id="status" >
            
-          <u><label><font face="supermarket"class="font"size="4"color="white" >Type Communication :</font></label><br> </u> 
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="call" id = "sdchk1" value="" >CALL</font>
+          <u><label><font face="supermarket"class="font"size="4"color="white" >Type Communication :</font></label><br></u>  
+             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="sxdchk1" name="call" value="" >CALL</font>
              <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="sms" id = "sdchk2" value="">SMS</font>
+             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="sxdchk2" name="sms" value="">SMS</font>
              <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="line" id = "sdchk3" value="">LINE</font>
+             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="sxdchk3" name="line" value="">LINE</font>
              <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="facbook" id = "sdchk4" value="">WHATSAPP</font>
+             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="sxdchk4" name="facbook" value="">WHATSAPP</font>
              <br>  
-             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="whatapp" id = "sdchk5" value="">FACEBOOK</font>
+             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" id="sxdchk5" name="whatapp" value="">FACEBOOK</font>
           </form>
 
     
@@ -102,11 +105,12 @@
           </form>
         </div>
         <br>
-           
-            <div>
+         
+          <div>
           <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="FetchDatabase($('#phoneNo').val())">Send</button> -->
-           <p align = "right"><button class="color blue button"  onclick="gatheringSelections();"size="2">Send</button></p>
+           <p align = "right"><button type="button" class="color blue button" onclick="actionPerformed();"size="2">Send</button></p>
         </div>
+    
       
       </div>  
     </div>
@@ -118,9 +122,14 @@
       <div id="graph">
         
       </div>
+        
+        <div id="blanket" style="display:none"></div>
+                <div id="progressDiv" style="display:none">
+                    <p id="progressDisplay" ></p>
+                </div>
     </div>
 
-     <div class="yui-c">
+    <div class="yui-c">
       <div id="scollbar" >
         <font face="supermarket" size="2" color="white">
         <div id = "displayNode"style="float: left; width: 33%;"></div>
@@ -129,109 +138,181 @@
       </div>
 
       <br/>
-       <div id="summarize" >
+      <div id="summarize" >
         <font face="supermarket" size="2" color="white">
         
       </div>
       <div id="output"></div>
+    </div>
     </div>
     
   </div>
 
 </div>
 
-<script src='js/d3.v3.min.js'></script>
+<script src="js/d3.v3.min.js"></script>
 <script src="js/d3.tip.js"></script>
 <script type="text/javascript" src="js/specificNodeDetail.js"></script>
 <script type="text/javascript" src="js/BuildQuery.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.magnific-popup.js"></script>
 <script type="text/javascript" src="js/helperfunction.js"></script>
-<script type="text/javascript" src="js/testsd.js"></script>
-<script>
-function gatheringSelections(){
-  if(document.getElementById("sdrad1").checked){
+<script type="text/javascript" src="js/intermediaryNodeQuery.js"></script>
+<script type="text/javascript" src="js/divpopuphandler.js"></script>
+
+<script type="text/javascript">
+function actionPerformed(){
+  var linkType = [];
+  if(document.getElementById("sxdrad1").checked){
     var selections = [];
-    if(document.getElementById("sdchk3").checked){
+    if(document.getElementById("sxdchk3").checked){
       var objCommu = {};
       objCommu.Type = 'Line';
-      objCommu.linkType = '-[r1:LINEchat]->';
       selections.push(objCommu);
 
-    }if(document.getElementById("sdchk4").checked){
+    }if(document.getElementById("sxdchk4").checked){
       var objCommu = {};
       objCommu.Type = 'Whatsapp';
-      objCommu.linkType = '-[r1:WhatsappChat]->';
       selections.push(objCommu);
 
-    }if(document.getElementById("sdchk5").checked){
+    }if(document.getElementById("sxdchk5").checked){
       var objCommu = {};
       objCommu.Type = 'Facebook';
-      objCommu.linkType = '-[r1:Facebook]->';
       selections.push(objCommu);
     }
 
-    if(document.getElementById("sdchk1").checked){
-      var objCommu = {};
-      objCommu.Type = 'Call';
-      objCommu.linkType = '-[r1:Call]->';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sdchk2").checked){
+    if(document.getElementById("sxdchk2").checked){
       var objCommu = {};
       objCommu.Type = 'SMS';
-      objCommu.linkType = '-[r1:SMS]->';
+      objCommu.linkType = ['-[r1:SMS]->','-[r2:SMS]->'];
+      selections.push(objCommu);
+
+    }
+
+    if(document.getElementById("sxdchk1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['-[r1:Call]->','-[r2:Call]->'];
       selections.push(objCommu);
 
     }
     if(selections.length > 0){
       console.log(selections.length);
-      queryManagement(selections);
+      queryManagementSXD(selections);
     }
 
-  }else if(document.getElementById("sdrad2").checked){
+  }else if(document.getElementById("sxdrad2").checked){
     var selections = [];
-    if(document.getElementById("sdchk3").checked){
+    if(document.getElementById("sxdchk3").checked){
       var objCommu = {};
       objCommu.Type = 'Line';
-      objCommu.linkType = '<-[r1:LINEchat]->';
       selections.push(objCommu);
 
-    }if(document.getElementById("sdchk4").checked){
+    }if(document.getElementById("sxdchk4").checked){
       var objCommu = {};
       objCommu.Type = 'Whatsapp';
-      objCommu.linkType = '<-[r1:WhatsappChat]->';
       selections.push(objCommu);
 
-    }if(document.getElementById("sdchk5").checked){
+    }if(document.getElementById("sxdchk5").checked){
       var objCommu = {};
       objCommu.Type = 'Facebook';
-      objCommu.linkType = '<-[r1:Facebook]->';
       selections.push(objCommu);
 
-    }if(document.getElementById("sdchk1").checked){
-      var objCommu = {};
-      objCommu.Type = 'Call';
-      objCommu.linkType = '<-[r1:Call]-';
-      selections.push(objCommu);
-
-    }if(document.getElementById("sdchk2").checked){
+    }if(document.getElementById("sxdchk2").checked){
       var objCommu = {};
       objCommu.Type = 'SMS';
-      objCommu.linkType = '<-[r1:SMS]-';
+      objCommu.linkType = ['-[r1:SMS]->','<-[r2:SMS]-'];
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['-[r1:Call]->','<-[r2:Call]-'];
       selections.push(objCommu);
 
     }
     //Check if there is any communication in selections
     if(selections.length > 0){
       console.log(selections.length);
-      queryManagement(selections);
+      queryManagementSXD(selections);
     }
-  }else{
+  }else if(document.getElementById("sxdrad3").checked){
+    var selections = [];
+    if(document.getElementById("sxdchk3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['<-[r1:SMS]-','-[r2:SMS]->'];
+      selections.push(objCommu);
+
+    }
+    if(document.getElementById("sxdchk1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['<-[r1:Call]-','-[r2:Call]->'];
+      selections.push(objCommu);
+
+    }
+    //Check if there is any communication in selections
+    if(selections.length > 0){
+      console.log(selections.length);
+      queryManagementSXD(selections);
+    }
+
+  }else if(document.getElementById("sxdrad4").checked){
+    var selections = [];
+    if(document.getElementById("sxdchk3").checked){
+      var objCommu = {};
+      objCommu.Type = 'Line';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk4").checked){
+      var objCommu = {};
+      objCommu.Type = 'Whatsapp';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk5").checked){
+      var objCommu = {};
+      objCommu.Type = 'Facebook';
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk2").checked){
+      var objCommu = {};
+      objCommu.Type = 'SMS';
+      objCommu.linkType = ['<-[r1:SMS]-','<-[r2:SMS]-'];
+      selections.push(objCommu);
+
+    }if(document.getElementById("sxdchk1").checked){
+      var objCommu = {};
+      objCommu.Type = 'Call';
+      objCommu.linkType = ['<-[r1:Call]-','<-[r2:Call]-'];
+      selections.push(objCommu);
+
+    }
+    //Check if there is any communication in selections
+    if(selections.length > 0){
+      console.log(selections.length);
+      queryManagementSXD(selections);
+    }
+  }
+  else{
     alert("Please select communication route !")
   }
 }
-  
 
 </script>
 
@@ -263,7 +344,7 @@ d3.xhr("http://localhost:7474/db/data/transaction/commit")
                   phoneNumberArr.push(objAdd);
                 }
                 //document.write(JSON.stringify(phoneNumberArr));
-               myTable = "<table><tr><th class='styleheadtable1'>PhoneNumber";
+                myTable = "<table><tr><th class='styleheadtable1'>PhoneNumber";
                             myTable += "<th class='styleheadtable1'>Model</th>";
                             myTable += "<th class='styleheadtable1'>Owner</th>";
                             for (var i = 0; i < phoneNumberArr.length; i++) {
@@ -284,6 +365,7 @@ d3.xhr("http://localhost:7474/db/data/transaction/commit")
 });
 
 </script>
+
 </body>
 </html>
             
