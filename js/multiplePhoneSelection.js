@@ -5069,7 +5069,7 @@ function multipleSummarize(d, selectPhonesArr) {
                         if (document.getElementById("mchk5").checked) {
                             output.summary += d[j].textDisplay + "<br/>";
                             output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Facebook chat with </th></thead><tbody>";
-                            output.summary += "Facebook chat with: " + "<br/>"
+                           
                             for (k = 0; k < d[j].facebookChat.length; k++) {
                                 output.summary +="<tr class='styletable1 '><td class='stylerowtable1'>";
                                 output.summary += (k+1) + "). </td><td class='stylerowtable1'>"; 
@@ -5128,40 +5128,61 @@ function multipleSummarize(d, selectPhonesArr) {
                                 }
                                 outputArr[indexOutput].summary +=  "</tbody></table>"
 
-                                outputArr[indexOutput].summary += "SMS Out: " + "<br/>"
-                                for (k = 0; k < d[j].smsOut.length; k++) {
-                                    outputArr[indexOutput].summary += k + "). " + d[j].smsOut[k].PhoneNumber + " Freq: " + d[j].smsOut[k].freq + "<br/>";
-                                }
+                                outputArr[indexOutput].summary += "<br>"
+                                outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS Out </th></thead><tbody>";
+                            
+                            for (k = 0; k < d[j].smsOut.length; k++) {
+                                outputArr[indexOutput].summary +="<tr class='styletable1 '><td class='stylerowtable1'>";
+                                outputArr[indexOutput].summary += (k+1) + "). </td><td class='stylerowtable1'>"; 
+                                outputArr[indexOutput].summary += d[j].smsOut[k].PhoneNumber+"</td><td class='stylerowtable1'>"; 
+                                outputArr[indexOutput].summary += " Freq: " + d[j].smsOut[k].freq + "</td></tr>";
+                            }
+                            outputArr[indexOutput].summary += "</tbody></table>"
                             }
                         }
 
                         else if (d[j].Label == 'Line') {
                             if (document.getElementById("mchk3").checked) {
-                                outputArr[indexOutput].summary += d[j].textDisplay + "<br/>";
-                                outputArr[indexOutput].summary += "LINE chat with: " + "<br/>"
-                                for (k = 0; k < d[j].lineChat.length; k++) {
-                                    outputArr[indexOutput].summary += k + "). " + d[j].lineChat[k].Account + " Freq: " + d[j].lineChat[k].freq + "<br/>";
-                                }
+                               outputArr[indexOutput].summary += d[j].textDisplay + "<br/>";
+                               outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Line chat with </th></thead><tbody>";
+                            
+                            for (k = 0; k < d[j].lineChat.length; k++) {
+                                outputArr[indexOutput].summary +="<tr class='styletable1 '><td class='stylerowtable1'>";
+                                outputArr[indexOutput].summary += (k+1) + "). </td><td class='stylerowtable1'>"; 
+                                outputArr[indexOutput].summary += d[j].lineChat[k].Account+"</td><td class='stylerowtable1'>"; 
+                                outputArr[indexOutput].summary += " Freq: " + d[j].lineChat[k].freq + "</td></tr>";
+                            }
+                           outputArr[indexOutput].summary += "</tbody></table>"
                             }
                         }
 
                         else if (d[j].Label == 'Whatsapp') {
                             if (document.getElementById("mchk4").checked) {
                                 outputArr[indexOutput].summary += d[j].textDisplay + "<br/>";
-                                outputArr[indexOutput].summary += "Whatsapp chat with: " + "<br/>"
-                                for (k = 0; k < d[j].WhatsappChat.length; k++) {
-                                    outputArr[indexOutput].summary += k + "). " + d[j].WhatsappChat[k].Account + " Freq: " + d[j].WhatsappChat[k].freq + "<br/>";
-                                }
+                             outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Whatsapp chat with </th></thead><tbody>";
+                            
+                            for (k = 0; k < d[j].WhatsappChat.length; k++) {
+                                 outputArr[indexOutput].summary +="<tr class='styletable1 '><td class='stylerowtable1'>";
+                                 outputArr[indexOutput].summary += (k+1) + "). </td><td class='stylerowtable1'>"; 
+                                 outputArr[indexOutput].summary += d[j].WhatsappChat[k].Account+"</td><td class='stylerowtable1'>"; 
+                                 outputArr[indexOutput].summary += " Freq: " + d[j].WhatsappChat[k].freq + "</td></tr>";
+                            }
+                             outputArr[indexOutput].summary += "</tbody></table>"
                             }
                         }
 
                         else if (d[j].Label == 'Facebook') {
                             if (document.getElementById("mchk5").checked) {
                                 outputArr[indexOutput].summary += d[j].textDisplay + "<br/>";
-                                outputArr[indexOutput].summary += "Facebook chat with: " + "<br/>"
-                                for (k = 0; k < d[j].facebookChat.length; k++) {
-                                    outputArr[indexOutput].summary += k + "). " + d[j].facebookChat[k].Account + " Freq: " + d[j].facebookChat[k].freq + "<br/>";
-                                }
+                            outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Facebook chat with </th></thead><tbody>";
+                           
+                            for (k = 0; k < d[j].facebookChat.length; k++) {
+                                outputArr[indexOutput].summary +="<tr class='styletable1 '><td class='stylerowtable1'>";
+                                outputArr[indexOutput].summary += (k+1) + "). </td><td class='stylerowtable1'>"; 
+                                outputArr[indexOutput].summary += d[j].facebookChat[k].Account+"</td><td class='stylerowtable1'>"; 
+                                outputArr[indexOutput].summary += " Freq: " + d[j].facebookChat[k].freq + "</td></tr>";
+                            }
+                            outputArr[indexOutput].summary += "</tbody></table>"
                             }
                         }
                     } else {
