@@ -581,62 +581,7 @@ function dataVisualizationFacebook(finalResult) {
             var colorLabel = d3.select(".nodeCircle2");
             colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coresponding&nbsp;Nodes");
 
-            //DisplayType
-            d3.select("#displayType")
-                    .append('div')
-                    .attr("id", "colorpane2")
-            var nodeType = d3.select("#colorpane2");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType')
-            var typeLabel = d3.select(".nodeType");
-            typeLabel.html("&nbsp;Node&nbspType:");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType1')
-            var typeLabel = d3.select(".nodeType1");
-            typeLabel.html("&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType2')
-            var typeLabel = d3.select(".nodeType2");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FacebookAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType3')
-            var typeLabel = d3.select(".nodeType3");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WhatsappAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType4')
-            var typeLabel = d3.select(".nodeType4");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FacebookAccount");
-
-            //DisplayLink
-            d3.select("#displayLink")
-                    .append('div')
-                    .attr("id", "colorpane3")
-            var linkType = d3.select("#colorpane3");
-
-            linkType.append('div')
-                    .attr('class', 'linkType')
-            var linkLabel = d3.select(".linkType");
-            linkLabel.html("&nbsp;Link&nbspColor:");
-
-            linkType.append('div')
-                    .attr('class', 'linkType1')
-            var linkLabel = d3.select(".linkType1");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;0");
-
-            linkType.append('div')
-                    .attr('class', 'linkType2')
-            var linkLabel = d3.select(".linkType2");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;5");
-
-            linkType.append('div')
-                    .attr('class', 'linkType3')
-            var linkLabel = d3.select(".linkType3");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;8");
+            drawColorPane();
 
         } else {
             console.log("what!!?")

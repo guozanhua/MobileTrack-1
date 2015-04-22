@@ -2129,7 +2129,7 @@ function dataVisualizationAllPhones(finalResult) {
 
     //force.linkDistance(width/2);
     var link = svg.selectAll('.link')
-            .data(finalResult[1])
+            .data(force.links())
             .enter().append('path')
             .attr('class', linkClass)
             .attr("id", function (d, i) {
@@ -2161,7 +2161,7 @@ function dataVisualizationAllPhones(finalResult) {
                 }
             });
 
-    var linktext = svg.selectAll("g.linklabelholder").data(finalResult[1]);
+    var linktext = svg.selectAll("g.linklabelholder").data(force.links());
     linktext.enter().append("g").attr("class", "linklabelholder")
             .append("text")
             .attr("class", "linklabel")
@@ -2318,8 +2318,8 @@ function dataVisualizationAllPhones(finalResult) {
             var nodeColor = d3.select("#colorpane");
 
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle')
-            var colorLabel = d3.select(".nodeCircle");
+                    .attr('class', 'headNodeSheet')
+            var colorLabel = d3.select(".headNodeSheet");
             colorLabel.html("&nbsp;Node&nbspcolor:");
 
             var phoneArr = [];
@@ -2350,9 +2350,14 @@ function dataVisualizationAllPhones(finalResult) {
                 }
             }
 
+            nodeColor.append('div')
+                    .attr('class', 'nodeSheet');
+            var nodeSheet = d3.select('.nodeSheet');
+            
             for (i = 0; i < phoneArr.length; i++) {
-                nodeColor.append('div')
-                        .attr('class', 'nodeCircle' + (i + 1))
+
+                nodeSheet.append('div')
+                        .attr('class', 'nodeSheet left')
                         .style("background", function () {
                             var sum = 0;
                             if (commuBox == 'call')
@@ -2374,97 +2379,14 @@ function dataVisualizationAllPhones(finalResult) {
                                 return "#00FF00";
                             }
                         });
-                var colorLabel = d3.select(".nodeCircle" + (i + 1));
-                colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + phoneArr[i].textDisplay);
 
+                nodeSheet.append('div')
+                        .attr('class', 'nodeSheet right' + (i));
+                var colorLabel = d3.select(".nodeSheet.right" + (i));
+                colorLabel.html("&nbsp;" + phoneArr[i].textDisplay);
             }
-
-            //DisplayType
-            d3.select("#displayType")
-                    .append('div')
-                    .attr("id", "colorpane2")
-            var nodeType = d3.select("#colorpane2");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType')
-            var typeLabel = d3.select(".nodeType");
-            typeLabel.html("&nbsp;Node&nbspType:");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType1')
-            var typeLabel = d3.select(".nodeType1");
-            typeLabel.html("&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType2')
-            var typeLabel = d3.select(".nodeType2");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LineAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType3')
-            var typeLabel = d3.select(".nodeType3");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WhatsappAccount");
-
-            nodeType.append('div')
-                    .attr('class', 'nodeType4')
-            var typeLabel = d3.select(".nodeType4");
-            typeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FacebookAccount");
-
-            //DisplayLink
-            d3.select("#displayLink")
-                    .append('div')
-                    .attr("id", "colorpane3")
-            var linkType = d3.select("#colorpane3");
-
-            linkType.append('div')
-                    .attr('class', 'linkType')
-            var linkLabel = d3.select(".linkType");
-            linkLabel.html("&nbsp;Link&nbspColor:");
-
-            linkType.append('div')
-                    .attr('class', 'linkType1')
-            var linkLabel = d3.select(".linkType1");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;0");
-
-            linkType.append('div')
-                    .attr('class', 'linkType2')
-            var linkLabel = d3.select(".linkType2");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;15");
-
-            linkType.append('div')
-                    .attr('class', 'linkType3')
-            var linkLabel = d3.select(".linkType3");
-            linkLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;30");
-
-            //DisplayNodeMeaning
-            var nodeType = d3.select("#colorpane3");
-
-            nodeType.append('div')
-                    .attr('class', 'colorMeaning')
-            var nodeTypeLabel = d3.select('.colorMeaning');
-            nodeTypeLabel.html("&nbsp;Node&nbspMeaning:");
-
-            nodeType.append('div')
-                    .attr('class', 'colorMeaning1')
-                    .style('background', '#FF0000');
-            var nodeTypeLabel = d3.select(".colorMeaning1");
-            nodeTypeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In&Out&nbsp;&nbsp;Rel&nbsp;>15");
-
-            nodeType.append('div')
-                    .attr('class', 'colorMeaning2')
-                    .style('background', '#FFFF00');
-            var nodeTypeLabel = d3.select(".colorMeaning2");
-            nodeTypeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In&Out&nbsp;&nbsp;Rel&nbsp;>10");
-
-            nodeType.append('div')
-                    .attr('class', 'colorMeaning3')
-                    .style('background', '#00FF00');
-            var nodeTypeLabel = d3.select(".colorMeaning3");
-            nodeTypeLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In&Out&nbsp;&nbsp;Rel&nbsp;>0");
-
-
-
-
+            
+            drawColorPane();
         } else {
             alert('No data matches your criteria. Please try again');
             console.log("what!!?")

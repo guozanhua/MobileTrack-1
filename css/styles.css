@@ -392,7 +392,7 @@ P.blocktext {
 
     float:right;
     height: 165px;
-    width: 150px;
+    width: 100%;
     border: 1px white solid;
     background: grey;
     overflow: auto;
@@ -402,7 +402,7 @@ P.blocktext {
 
     float:right;
     height: 165px;
-    width: 150px;
+    width: 100%;
     border: 1px white solid;
     background: grey;
     overflow: auto;
@@ -412,15 +412,14 @@ P.blocktext {
 
     float:right;
     height: 165px;
-    width: 150px;
+    width: 100%;
     border: 1px white solid;
     background: grey;
     overflow: auto;
 }
 
-
-.nodeCircle{
-    width:15px;
+.headNodeSheet{
+    width:100%;
     height:20px;
     border-radius:7.5px;
     background: grey;
@@ -428,199 +427,1383 @@ P.blocktext {
     margin: 7px;
 }
 
-.nodeCircle1{
-    width:15px;
+
+.nodeSheet{
+    width: 100%;
+    height: 15px;
+    background: grey;
+    margin: 5px;
+    display: inline-block;
+}
+.nodeSheet .left{
+    float: left;
+    width:12%;
     height:15px;
     border-radius:14.5px;
     color:white;
     margin: 5px;
+    display: inline;
 }
 
-.nodeCircle2{
-    width:15px;
+.nodeSheet .right0{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle3{
-    width:15px;
+.nodeSheet .right1{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle4{
-    width:15px;
+.nodeSheet .right2{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle5{
-    width:15px;
+.nodeSheet .right3{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle6{
-    width:15px;
+.nodeSheet .right4{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle7{
-    width:15px;
+.nodeSheet .right5{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle8{
-    width:15px;
+.nodeSheet .right6{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle9{
-    width:15px;
+.nodeSheet .right7{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle10{
-    width:15px;
+.nodeSheet .right8{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle11{
-    width:15px;
+.nodeSheet .right9{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle12{
-    width:15px;
+.nodeSheet .right10{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle13{
-    width:15px;
+.nodeSheet .right11{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
 }
 
-.nodeCircle14{
-    width:15px;
+.nodeSheet .right12{
+    float: left;
+    width:60%;
     height:15px;
-    border-radius:14.5px;
-    color:white;
+    background: grey;
     margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right13{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right14{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right15{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right16{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right17{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right18{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right19{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right20{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right21{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right22{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right23{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right24{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right25{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right26{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right27{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right28{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right29{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right30{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right9{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right10{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right0{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right1{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right2{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right3{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right4{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right5{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right6{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right7{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right8{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right9{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right10{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+//--------------------------------------------------------------------------------------------
+.nodeSheet .right0{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right1{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right2{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right3{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right4{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right5{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right6{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right7{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right8{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right9{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right10{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right0{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right1{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right2{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right3{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right4{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right5{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right6{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right7{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right8{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right9{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right10{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right0{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right1{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right2{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right3{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right4{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right5{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right6{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right7{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right8{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right9{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right10{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right0{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right1{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right2{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right3{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right4{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right5{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right6{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right7{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right8{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right9{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right10{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right0{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right1{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right2{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right3{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right4{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right5{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right6{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right7{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right8{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right9{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right10{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right0{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right1{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right2{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right3{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right4{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right5{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right6{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right7{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right8{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right9{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeSheet .right10{
+    float: left;
+    width:60%;
+    height:15px;
+    background: grey;
+    margin: 5px;
+    display: inline;
+    text-align: start;
+}
+
+.headNodeType{
+    width:100%;
+    height:20px;
+    border-radius:7.5px;
+    background: grey;
+    color:white;
+    margin: 7px;
 }
 
 .nodeType{
-    width:15px;
+    width: 100%;
+    height: 15px;
+    background: grey;
+    margin: 5px;
+    display: inline-block;
+}
+
+.nodeType .left0{
+
+    float: left;
+    width:9%;
+    height:11px;
+    border-radius:15px;
+    border: 2.5px solid #000;
+    color:white;
+    margin: 5px;
+    display: inline;
+}
+
+.nodeType .right0{
+    float: left;
+    width:72%;
+    height:15px;
+    background: grey;
+    margin-left: 0px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeType .left1{
+    float: left;
+    width:9%;
+    height:11px;
+    border-radius:15px;
+    border: 2.5px solid #000;
+    color:white;
+    margin: 5px;
+    display: inline;
+}
+
+.nodeType .right1{
+    float: left;
+    width:72%;
+    height:15px;
+    background: grey;
+    margin-left: 0px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeType .left2{
+    float: left;
+    width:9%;
+    height:11px;
+    border-radius:15px;
+    border: 2.5px solid #000;
+    color:white;
+    margin: 5px;
+    display: inline;
+}
+
+.nodeType .right2{
+    float: left;
+    width:72%;
+    height:15px;
+    background: grey;
+    margin-left: 0px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeType .left3{
+    float: left;
+    width:9%;
+    height:11px;
+    border-radius:15px;
+    border: 2.5px solid #000;
+    color:white;
+    margin: 5px;
+    display: inline;
+}
+
+.nodeType .right3{
+    float: left;
+    width:72%;
+    height:15px;
+    background: grey;
+    margin-left: 0px;
+    display: inline;
+    text-align: start;
+}
+
+.headLinkType{
+    width:100%;
     height:20px;
     border-radius:7.5px;
     background: grey;
     color:white;
     margin: 7px;
-}
-
-.nodeType1{
-    width:15px;
-    height:15px;
-    border-radius:12px;
-    border: 2.5px solid #000;
-    background: grey;
-    color:white;
-    margin: 5px;
-}
-
-.nodeType2{
-    width:15px;
-    height:15px;
-    border-radius:12px;
-    border: 2.5px solid #40FF00;
-    background: grey;
-    color:white;
-    margin: 5px;
-}
-
-.nodeType3{
-    width:15px;
-    height:15px;
-    border-radius:12px;
-    border: 2.5px solid #387E0C;
-    background: grey;
-    color:white;
-    margin: 5px;
-}
-
-.nodeType4{
-    width:15px;
-    height:15px;
-    border-radius:12px;
-    border: 2.5px solid #1C27BF;
-    background: grey;
-    color:white;
-    margin: 5px;
+    margin-bottom: -9px;
 }
 
 .linkType{
-    width:15px;
-    height:20px;
+    width: 100%;
+    height: 40%;
     background: grey;
-    color:white;
-    margin: 7px;
-
+    margin: 5px;
+    display: inline-block;
 }
 
-.linkType1{
-    width:15px;
+.linkType .left1{
+    float: left;
+    width:10%;
     height:15px;
     background: green;
     color:white;
     margin: 5px;
-    
+    display: inline;
 }
 
-.linkType2{
-    width:15px;
+.linkType .right1{
+    float: left;
+    width:72%;
+    height:15px;
+    background: grey;
+    margin-left: 0px;
+    display: inline;
+    text-align: start;
+}
+
+.linkType .left2{
+    float: left;
+    width:10%;
     height:15px;
     background: orange;
     color:white;
     margin: 5px;
-    
+    display: inline;
+
 }
 
-.linkType3{
-    width:15px;
+.linkType .right2{
+    float: left;
+    width:72%;
+    height:15px;
+    background: grey;
+    margin-left: 0px;
+    display: inline;
+    text-align: start;
+}
+
+.linkType .left3{
+    float: left;
+    width:10%;
     height:15px;
     background: red;
     color:white;
     margin: 5px;
-    
+    display: inline;
 }
+
+.linkType .right3{
+    float: left;
+    width:72%;
+    height:15px;
+    background: grey;
+    margin-left: 0px;
+    display: inline;
+    text-align: start;
+}
+
+.headNodeMeaning{
+    width:100%;
+    height:20px;
+    border-radius:7.5px;
+    background: grey;
+    color:white;
+    margin: 7px;
+    margin-bottom: -9px;
+}
+
+.nodeMeaning{
+    width: 100%;
+    height: 40%;
+    background: grey;
+    margin: 5px;
+    display: inline-block;
+}
+
+.nodeMeaning .left1{
+    float: left;
+    width:12%;
+    height:15px;
+    border-radius:14.5px;
+    color:white;
+    margin: 5px;
+    display: inline;
+}
+
+.nodeMeaning .right1{
+    float: left;
+    width:72%;
+    height:15px;
+    background: grey;
+    margin-left: 0px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeMeaning .left2{
+    float: left;
+    width:12%;
+    height:15px;
+    border-radius:14.5px;
+    color:white;
+    margin: 5px;
+    display: inline;
+
+}
+
+.nodeMeaning .right2{
+    float: left;
+    width:72%;
+    height:15px;
+    background: grey;
+    margin-left: 0px;
+    display: inline;
+    text-align: start;
+}
+
+.nodeMeaning .left3{
+    float: left;
+    width:12%;
+    height:15px;
+    border-radius:14.5px;
+    color:white;
+    margin: 5px;
+    display: inline;
+}
+
+.nodeMeaning .right3{
+    float: left;
+    width:72%;
+    height:15px;
+    background: grey;
+    margin-left: 0px;
+    display: inline;
+    text-align: start;
+}
+
+
