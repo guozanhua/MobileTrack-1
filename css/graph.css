@@ -4,9 +4,10 @@
 }
 
 .text {
-    stroke: #1b9bff;
+    stroke: #FF3F2A;
     pointer-events: none;
     font: 10px sans-serif;
+    stroke-opacity: 0px;
 }
 
 .node.Phone{
