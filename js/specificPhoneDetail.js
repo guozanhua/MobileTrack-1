@@ -100,42 +100,42 @@ function FetchDatabase(input) {
                     }
 
                     if (i == 0) {
-                        if (checkDateRange(result[i].Date) == 'PASS') {
-                            //Add source to nodeArr
-                            var objSource = {};
-                            objSource.NodeName = result[i].Source;
-                            objSource.PhoneNumber = result[i].SourceNumber;
-                            objSource.NodeIndex = nodeArr.length;
-                            objSource.groupIndex = getGroupSource;
-                            objSource.textDisplay = result[i].SourceNumber;
-                            objSource.Label = 'Phone'
-                            nodeArr.push(objSource);
-                            //Add target to nodeArr
-                            var objTarget = {};
-                            objTarget.NodeName = result[i].Target;
-                            objTarget.PhoneNumber = result[i].TargetNumber;
-                            objTarget.NodeIndex = nodeArr.length;
-                            objTarget.groupIndex = getGroupTarget;
-                            objTarget.textDisplay = result[i].TargetNumber;
-                            objTarget.Label = 'Phone'
-                            nodeArr.push(objTarget);
-                            //Add relationship to linkArr
 
-                            var objLink = {};
-                            objLink.source = 0;
-                            objLink.target = 1;
-                            objLink.Type = "Call"
-                            //'prop' is an array which contain an object. Each object in this 'prop' represents a detail about each time the communcation occurs   
-                            objLink.prop = [];
+                        //Add source to nodeArr
+                        var objSource = {};
+                        objSource.NodeName = result[i].Source;
+                        objSource.PhoneNumber = result[i].SourceNumber;
+                        objSource.NodeIndex = nodeArr.length;
+                        objSource.groupIndex = getGroupSource;
+                        objSource.textDisplay = result[i].SourceNumber;
+                        objSource.Label = 'Phone'
+                        nodeArr.push(objSource);
+                        //Add target to nodeArr
+                        var objTarget = {};
+                        objTarget.NodeName = result[i].Target;
+                        objTarget.PhoneNumber = result[i].TargetNumber;
+                        objTarget.NodeIndex = nodeArr.length;
+                        objTarget.groupIndex = getGroupTarget;
+                        objTarget.textDisplay = result[i].TargetNumber;
+                        objTarget.Label = 'Phone'
+                        nodeArr.push(objTarget);
+                        //Add relationship to linkArr
 
-                            var objLinkProp = {};
-                            objLinkProp.Source = result[i].SourceNumber;
-                            objLinkProp.Target = result[i].TargetNumber;
-                            objLinkProp.dur = result[i].Duration;
-                            objLinkProp.date = convertDatetoNormal(result[i].Date);
-                            objLink.prop.push(objLinkProp)
-                            linkArr.push(objLink);
-                        }
+                        var objLink = {};
+                        objLink.source = 0;
+                        objLink.target = 1;
+                        objLink.Type = "Call"
+                        //'prop' is an array which contain an object. Each object in this 'prop' represents a detail about each time the communcation occurs   
+                        objLink.prop = [];
+
+                        var objLinkProp = {};
+                        objLinkProp.Source = result[i].SourceNumber;
+                        objLinkProp.Target = result[i].TargetNumber;
+                        objLinkProp.dur = result[i].Duration;
+                        objLinkProp.date = convertDatetoNormal(result[i].Date);
+                        objLink.prop.push(objLinkProp)
+                        linkArr.push(objLink);
+
 
                     } else {
 
@@ -211,33 +211,33 @@ function FetchDatabase(input) {
                             }
                             if (linkExist == 1) {
                                 //There is already a link between source and target.
-                                if (checkDateRange(result[i].Date) == 'PASS') {
-                                    var objLinkProp = {};
-                                    objLinkProp.Source = result[i].SourceNumber;
-                                    objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                    linkArr[linkIndex].prop.push(objLinkProp);
-                                }
+
+                                var objLinkProp = {};
+                                objLinkProp.Source = result[i].SourceNumber;
+                                objLinkProp.Target = result[i].TargetNumber;
+                                objLinkProp.dur = result[i].Duration;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                linkArr[linkIndex].prop.push(objLinkProp);
+
 
                             } else {
-                                if (checkDateRange(result[i].Date) == 'PASS') {
-                                    //Link between source and target haven't been created yet.
-                                    var objLink = {};
-                                    objLink.source = getSourceIndex;
-                                    objLink.target = getTargetIndex;
-                                    objLink.Type = "Call"
-                                    objLink.prop = [];
 
-                                    var objLinkProp = {};
-                                    objLinkProp.Source = result[i].SourceNumber;
-                                    objLinkProp.Target = result[i].TargetNumber;
-                                    objLinkProp.dur = result[i].Duration;
-                                    objLinkProp.date = convertDatetoNormal(result[i].Date);
-                                    objLink.prop.push(objLinkProp);
+                                //Link between source and target haven't been created yet.
+                                var objLink = {};
+                                objLink.source = getSourceIndex;
+                                objLink.target = getTargetIndex;
+                                objLink.Type = "Call"
+                                objLink.prop = [];
 
-                                    linkArr.push(objLink);
-                                }
+                                var objLinkProp = {};
+                                objLinkProp.Source = result[i].SourceNumber;
+                                objLinkProp.Target = result[i].TargetNumber;
+                                objLinkProp.dur = result[i].Duration;
+                                objLinkProp.date = convertDatetoNormal(result[i].Date);
+                                objLink.prop.push(objLinkProp);
+
+                                linkArr.push(objLink);
+
                             }
                         } else if (checkSource > 0 && checkTarget == 0) { // source is matched with the existing node in nodeArr
 
@@ -705,33 +705,33 @@ function dataVisualizationPhone(finalResult) {
                     .attr('class', 'headNodeSheet')
             var colorLabel = d3.select(".headNodeSheet");
             colorLabel.html("&nbsp;Node&nbspcolor:");
-            
+
             nodeColor.append('div')
                     .attr('class', 'nodeSheet');
-            
+
             var nodeSheet = d3.select('.nodeSheet');
             nodeSheet.append('div')
                     .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[0];
                     });
-                    
+
             nodeSheet.append('div')
                     .attr('class', 'nodeSheet right0')
             var colorLabel = d3.select(".nodeSheet.right0");
             colorLabel.html("&nbsp;" + inputSource);
-            
+
             nodeSheet.append('div')
                     .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[1];
                     });
-                    
+
             nodeSheet.append('div')
                     .attr('class', 'nodeSheet right1')
             var colorLabel = d3.select(".nodeSheet.right1");
             colorLabel.html("&nbsp;Coresponding&nbsp;Nodes");
-            
+
             drawColorPane();
 
         } else {
@@ -841,27 +841,27 @@ function specificCallSummarize(finalResult) {
             }
         }
     }
-    
+
     var output = "<h3 class='text2'>User's input Phone Number: " + inputSource + "</h3>";
     output += "<table><thead><th colspan='3' class='styleheadtable2'>Receive Call from </th></thead><tbody>";
-    
+
     for (i = 0; i < d[index].callIn.length; i++) {
-        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>"
-        output += (i+1) + ").</td><td> " ;
+        output += "<tr class='stylerowtable2 '><td class='stylecolumntable2'>"
+        output += (i + 1) + ").</td><td> ";
         output += d[index].callIn[i].PhoneNumber + "</td><td>";
         output += "Freq: " + d[index].callIn[i].freq + "</td></tr>";
-        
+
     }
 
     output += "</tbody></table>";
     output += "</br>";
     output += "<table><thead><th colspan='3' class='styleheadtable2'>Dialing Call to </th></thead><tbody>";
-    
+
     for (i = 0; i < d[index].callOut.length; i++) {
-        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
-        output += (i+1) + "). </td><td>";
-        output += d[index].callOut[i].PhoneNumber+ "</td><td>";
-        output += "Freq: "+ d[index].callOut[i].freq+ "</td></tr>";
+        output += "<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
+        output += (i + 1) + "). </td><td>";
+        output += d[index].callOut[i].PhoneNumber + "</td><td>";
+        output += "Freq: " + d[index].callOut[i].freq + "</td></tr>";
     }
     output += "</tbody></table>"
     document.getElementById("summarize").innerHTML = output;
