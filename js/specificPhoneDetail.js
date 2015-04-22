@@ -702,44 +702,36 @@ function dataVisualizationPhone(finalResult) {
             var nodeColor = d3.select("#colorpane");
 
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle')
-            var colorLabel = d3.select(".nodeCircle");
+                    .attr('class', 'headNodeSheet')
+            var colorLabel = d3.select(".headNodeSheet");
             colorLabel.html("&nbsp;Node&nbspcolor:");
-
+            
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle1')
+                    .attr('class', 'nodeSheet');
+            
+            var nodeSheet = d3.select('.nodeSheet');
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[0];
-                    })
-            var colorLabel = d3.select(".nodeCircle1");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputSource);
-
-
-            nodeColor.append('div')
-                    .attr('class', 'nodeCircle2')
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right0')
+            var colorLabel = d3.select(".nodeSheet.right0");
+            colorLabel.html("&nbsp;" + inputSource);
+            
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[1];
-                    })
-            var colorLabel = d3.select(".nodeCircle2");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coresponding&nbsp;Nodes");
-
-//            var nonInputPhone = [];
-//            for (i = 0; i < nodeData.length; i++) {
-//                if (nodeData[i].PhoneNumber != inputSource) {
-//                    nonInputPhone.push(nodeData[i].PhoneNumber);
-//                }
-//            }
-//
-//            for (i = 0; i < nonInputPhone.length; i++) {
-//                nodeColor.append('div')
-//                        .attr('class', 'nodeCircle' + (i + 3))
-//                        .style('background', function (d) {
-//                            return color[1];
-//                        })
-//                var colorLabel = d3.select(".nodeCircle" + (i + 3));
-//                colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + nonInputPhone[i]);
-//            }
-
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right1')
+            var colorLabel = d3.select(".nodeSheet.right1");
+            colorLabel.html("&nbsp;Coresponding&nbsp;Nodes");
+            
             drawColorPane();
 
         } else {

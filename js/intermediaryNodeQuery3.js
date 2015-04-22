@@ -5304,38 +5304,51 @@ function threeInterNodeVisualization(finalResult) {
             var nodeColor = d3.select("#colorpane");
 
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle')
-            var colorLabel = d3.select(".nodeCircle");
+                    .attr('class', 'headNodeSheet')
+            var colorLabel = d3.select(".headNodeSheet");
             colorLabel.html("&nbsp;Node&nbspcolor:");
-
+            
             nodeColor.append('div')
-                    .attr('class', 'nodeCircle1')
+                    .attr('class', 'nodeSheet');
+            
+            var nodeSheet = d3.select('.nodeSheet');
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[0];
-                    })
-            var colorLabel = d3.select(".nodeCircle1");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputSource);
-
-            nodeColor.append('div')
-                    .attr('class', 'nodeCircle2')
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right0')
+            var colorLabel = d3.select(".nodeSheet.right0");
+            colorLabel.html("&nbsp;" + inputSource);
+            
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[1];
-                    })
-            var colorLabel = d3.select(".nodeCircle2");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + inputTarget);
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right1')
+            var colorLabel = d3.select(".nodeSheet.right1");
+            colorLabel.html("&nbsp;" + inputTarget);
 
-            nodeColor.append('div')
-                    .attr('class', 'nodeCircle3')
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[2];
-                    })
-            var colorLabel = d3.select(".nodeCircle3");
-            colorLabel.html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Intermediary&nbsp;Nodes");
+                    });
+                    
+            nodeSheet.append('div')
+                    .attr('class', 'nodeSheet right2')
+            var colorLabel = d3.select(".nodeSheet.right2");
+            colorLabel.html("&nbsp;Intermediary&nbsp;Nodes");
 
             drawColorPane();
         } else {
             console.log("what!!?")
-            clearDiv('mid');
+            clearDiv('graph');
         }
     }
 
