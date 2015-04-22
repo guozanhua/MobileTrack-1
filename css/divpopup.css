@@ -56,18 +56,23 @@ img {border:0px}
     top:0px;
     left:0px;
     width:100%;
+    
 }
 
 #popUpDiv {
     position:fixed;
-    background-color:#fff;
+    background-color:#1c1c1c;
     width:50%;
     height:70%;
     border:5px solid #FF0000;
     z-index: 9002;
-    margin-top: -350px;
+    margin-top: -370px;
     margin-left: -50px;
     overflow: auto;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    padding-top: 30px;
 }
 
 #progressDiv {
