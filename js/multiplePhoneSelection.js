@@ -4978,7 +4978,7 @@ function dataVisualizationMultiplePhones(finalResult, selectPhonesArr) {
 var outputArr = [];
 
 function multipleSummarize(d, selectPhonesArr) {
-    var header = "<p style='color:red'>User's selected phone numbers are listed below. Click on each number to see more detail</p><br/>";
+    var header = "<h3 class='text2'>User's selected phone numbers are listed below. Click on each number to see more detail</h3>";
     outputArr = [];
 
     for (i = 0; i < selectPhonesArr.length; i++) {
@@ -4991,10 +4991,14 @@ function multipleSummarize(d, selectPhonesArr) {
                     if (d[j].Label == 'Phone') {
                         output.summary += "Phone Number: " + d[j].PhoneNumber + "<br/>";
                         if (document.getElementById("mchk1").checked) {
-                            output.summary += "Call In: " + "<br/>"
+                            output.summary += "<table><thead><th colspan='3' class='styleheadtable2'>Call In </th></thead><tbody>";
                             for (k = 0; k < d[j].callIn.length; k++) {
-                                output.summary += k + "). " + d[j].callIn[k].PhoneNumber + " Freq: " + d[j].callIn[k].freq + "<br/>";
+                                summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+                                output.summary += (k+1) + "). </td><td>"; 
+                                output.summary += d[j].callIn[k].PhoneNumber+"</td><td>"; 
+                                output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
                             }
+                            output.summary += "</tbody></table>"
 
                             output.summary += "Call Out: " + "<br/>"
                             for (k = 0; k < d[j].callOut.length; k++) {

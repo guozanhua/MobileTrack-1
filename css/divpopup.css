@@ -61,11 +61,12 @@ img {border:0px}
 #popUpDiv {
     position:fixed;
     background-color:#fff;
-    width:600px;
-    height:600px;
+    width:50%;
+    height:70%;
     border:5px solid #FF0000;
     z-index: 9002;
-    margin-top: -250px;
+    margin-top: -350px;
+    margin-left: -50px;
     overflow: auto;
 }
 
