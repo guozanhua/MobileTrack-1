@@ -2609,11 +2609,22 @@ function visualizeLinkSummary(d) {
         summary += "Type of Communication: " + d.Type + "<br/>";
         summary += "Total Whatsapp Chat Log: " + d.prop.length;
     } else if (d.Type == 'Facebook') {
-        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
-        summary += "Source: " + d.source.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "<br/>";
-        summary += "Target: " + d.target.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "<br/>";
-        summary += "Type of Communication: " + d.Type + "<br/>";
-        summary += "Total Facebook Chat Log: " + d.prop.length;
+        var summary = "<h3 class='text2'>You have clicked on the link between </h3>";
+        summary += "<h3 class='text2'>" + d.source.textDisplay + " and " + d.target.textDisplay + "</h3>" ;
+        summary += "<table><thead><th colspan='3' class='styleheadtable2'>Link Summalize </th></thead><tbody>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Source: </td><td>" 
+        summary += d.source.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Target: </td><td>" 
+        summary += d.target.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Type of Communication: </td><td>" 
+        summary += d.Type + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Total Facebook Chat Log: </td><td>" 
+        summary += d.prop.length+"</td></tr>";
+        summary +="</tbody></table>"
     } else if (d.Type == 'Call') {
         var summary = "<h3 class='text2'>You have clicked on the link between </h3>";
         summary += "<h3 class='text2'>" + d.source.textDisplay + " and " + d.target.textDisplay + "</h3>" ;
@@ -2630,6 +2641,7 @@ function visualizeLinkSummary(d) {
         summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
         summary += "Total Call Log: </td><td>" 
         summary += d.prop.length +"</td></tr>";
+        summary +="</tbody></table>"
     } else {
         var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
         summary += "Source: " + d.source.textDisplay + "<br/>";
