@@ -2519,21 +2519,43 @@ function dataVisualizationAllPhones(finalResult) {
 function visualizeLinkSummary(d) {
     if (d.Type == 'Line') {
         
-        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
-        summary += "Source: " + d.source.textDisplay + " is a Line account related with " + d.source.PhoneNumber + "<br/>";
-        summary += "Target: " + d.target.textDisplay + " is a Line account related with " + d.target.PhoneNumber + "<br/>";
-        summary += "Type of Communication: " + d.Type + "<br/>";
-        summary += "Total Line Chat Log: " + d.prop.length;
+        var summary = "<h3 class='text2'>You have clicked on the link between </h3>";
+        summary += "<h3 class='text2'>" + d.source.textDisplay + " and " + d.target.textDisplay + "</h3>" ;
+        summary += "<table><thead><th colspan='3' class='styleheadtable2'>Link Summarize </th></thead><tbody>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Source: </td><td>"
+        summary += d.source.textDisplay + " is a Line account related with " + d.source.PhoneNumber + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Target: </td><td>" 
+        summary += d.target.textDisplay + " is a Line account related with " + d.target.PhoneNumber + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Type of Communication: </td><td>" 
+        summary += d.Type + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Total Line Chat Log: </td><td>" 
+        summary += d.prop.length+"</td></tr>";
+        summary +="</tbody></table>"
     } else if (d.Type == 'Whatsapp') {
-        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
-        summary += "Source: " + d.source.textDisplay + " is a Whatsapp account related with " + d.source.PhoneNumber + "<br/>";
-        summary += "Target: " + d.target.textDisplay + " is a Whatsapp account related with " + d.source.PhoneNumber + "<br/>";
-        summary += "Type of Communication: " + d.Type + "<br/>";
-        summary += "Total Whatsapp Chat Log: " + d.prop.length;
+        var summary = "<h3 class='text2'>You have clicked on the link between </h3>";
+        summary += "<h3 class='text2'>" + d.source.textDisplay + " and " + d.target.textDisplay + "</h3>" ;
+        summary += "<table><thead><th colspan='3' class='styleheadtable2'>Link Summarize </th></thead><tbody>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Source: </td><td>" 
+        summary += d.source.textDisplay + " is a Whatsapp account related with " + d.source.PhoneNumber + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Target: </td><td>" 
+        summary += d.target.textDisplay + " is a Whatsapp account related with " + d.source.PhoneNumber + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Type of Communication: </td><td>" 
+        summary += d.Type + "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Total Whatsapp Chat Log: </td><td>" 
+        summary += d.prop.length+"</td></tr>";
+        summary +="</tbody></table>"
     } else if (d.Type == 'Facebook') {
         var summary = "<h3 class='text2'>You have clicked on the link between </h3>";
         summary += "<h3 class='text2'>" + d.source.textDisplay + " and " + d.target.textDisplay + "</h3>" ;
-        summary += "<table><thead><th colspan='3' class='styleheadtable2'>Link Summalize </th></thead><tbody>";
+        summary += "<table><thead><th colspan='3' class='styleheadtable2'>Link Summarize </th></thead><tbody>";
         summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
         summary += "Source: </td><td>" 
         summary += d.source.textDisplay + " is a Facebook account related with " + d.source.PhoneNumber + "</td></tr>";
@@ -2550,7 +2572,7 @@ function visualizeLinkSummary(d) {
     } else if (d.Type == 'Call') {
         var summary = "<h3 class='text2'>You have clicked on the link between </h3>";
         summary += "<h3 class='text2'>" + d.source.textDisplay + " and " + d.target.textDisplay + "</h3>" ;
-        summary += "<table><thead><th colspan='3' class='styleheadtable2'>Link Summalize </th></thead><tbody>";
+        summary += "<table><thead><th colspan='3' class='styleheadtable2'>Link Summarize </th></thead><tbody>";
         summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
         summary += "Source: </td><td>" 
         summary += d.source.textDisplay + "</td></tr>";
@@ -2565,11 +2587,22 @@ function visualizeLinkSummary(d) {
         summary += d.prop.length +"</td></tr>";
         summary +="</tbody></table>"
     } else {
-        var summary = "<h3 class='text2'>You have clicked on the link between " + d.source.textDisplay + " and " + d.target.textDisplay + "</h3><br/>"
-        summary += "Source: " + d.source.textDisplay + "<br/>";
-        summary += "Target: " + d.target.textDisplay + "<br/>";
-        summary += "Type of Communication: " + d.Type + "<br/>";
-        summary += "Total SMS Log: " + d.prop.length;
+        var summary = "<h3 class='text2'>You have clicked on the link between </h3>";
+        summary += "<h3 class='text2'>" + d.source.textDisplay + " and " + d.target.textDisplay + "</h3>" ;
+        summary += "<table><thead><th colspan='3' class='styleheadtable2'>Link Summarize </th></thead><tbody>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Source: </td><td>" 
+        summary += d.source.textDisplay +  "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Target: </td><td>"  
+        summary += d.target.textDisplay +  "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Type of Communication: </td><td>"  
+        summary += d.Type +  "</td></tr>";
+        summary +="<tr class='stylerowtable2 '><td class='stylecolumntable3'>";
+        summary += "Total SMS Log: </td><td>"  
+        summary += d.prop.length +"</td></tr>";
+        summary +="</tbody></table>"
     }
 
     document.getElementById("summarize").innerHTML = summary;
@@ -2684,8 +2717,8 @@ function visualizeNodeSummary(d) {
         for (i = 0; i < d.lineChat.length; i++) {
             output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
             output += (i+1) + "). </td><td>" 
-            output += d.lineIn[i].PhoneNumber+ "</td><td>"; 
-            output += " Freq: " + d.lineIn[i].freq +"</td></tr>";
+            output += d.lineChat[i].Account+ "</td><td>"; 
+            output += " Freq: " + d.lineChat[i].freq +"</td></tr>";
             }
              output += "</tbody></table>"
             
@@ -2696,7 +2729,7 @@ function visualizeNodeSummary(d) {
         for (i = 0; i < d.WhatsappChat.length; i++) {
             output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
             output += (i+1) + "). </td><td>" 
-            output += d.WhatsappChat[i].PhoneNumber+ "</td><td>"; 
+            output += d.WhatsappChat[i].Account+ "</td><td>"; 
             output += " Freq: " + d.WhatsappChat[i].freq +"</td></tr>";
             }
              output += "</tbody></table>"
@@ -2708,7 +2741,7 @@ function visualizeNodeSummary(d) {
         for (i = 0; i < d.facebookChat.length; i++) {
             output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
             output += (i+1) + "). </td><td>" 
-            output += d.facebookChat[i].PhoneNumber+ "</td><td>"; 
+            output += d.facebookChat[i].Account+ "</td><td>"; 
             output += " Freq: " + d.facebookChat[i].freq +"</td></tr>";
             }
              output += "</tbody></table>"
