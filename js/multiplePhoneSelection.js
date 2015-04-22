@@ -10,6 +10,13 @@ function queryMultiplePhones(selections, selectPhonesArr) {
     promptArr.push(linkArr);
     promptArr.push(groupArr);
 
+    /*Date filtering*/
+    var datefrom = document.getElementById("datefromMulti").value;
+    var dateto = document.getElementById("datetoMulti").value;
+    var datefromforquery = convertDatetoISO(datefrom);
+    var datetoforquery = convertDatetoISO(dateto);
+
+
     var noLoop = 0;
     recursiveMultiplePhone(promptArr);
     function recursiveMultiplePhone(promptArr) {
@@ -24,11 +31,27 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                 var _query = "MATCH (n:PHONE)<-[r:Call]->(m:PHONE) "
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
-                        _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
+                        _query += "WHERE (n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     } else {
                         _query += "OR n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     }
                 }
+                _query += ") ";
+                /*Duration and Date Filtering
+                 if (document.getElementById("sdd").checked) {
+                 var durFrom = document.getElementById("fmin").value * 1000 * 60;
+                 var durTo = document.getElementById("smin").value * 1000 * 60;
+                 _query += "WHERE toInt(r.Duration) > " + durFrom + " ";
+                 _query += "AND toInt(r.Duration) < " + durTo + " ";
+                 if (datefrom != "" && dateto != "") {
+                 _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                 }
+                 } else {
+                 if (datefrom != "" && dateto != "") {
+                 _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                 }
+                 }*/
+
                 _query += "RETURN collect(distinct r) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -1068,11 +1091,18 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                 var _query = "MATCH (n:LINE)<-[r:LINEchat]->(m:LINE) "
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
-                        _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
+                        _query += "WHERE (n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     } else {
                         _query += "OR n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     }
                 }
+                _query += ") ";
+                
+                /*Date filtering*/
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                }
+                
                 _query += "RETURN distinct r ORDER BY r.Date,r.Time";
                 console.log(_query);
                 var linkLabel = selections[noLoop].Type;
@@ -1666,11 +1696,18 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                 var _query = "MATCH (n:WHATSAPP)<-[r:Whatsappchat]->(m:WHATSAPP) "
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
-                        _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
+                        _query += "WHERE (n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     } else {
                         _query += "OR n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     }
                 }
+                _query += ") ";
+                
+                /*Date filtering*/
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                }
+                
                 _query += "RETURN distinct r ORDER BY r.Date,r.Time";
                 console.log(_query);
                 var linkLabel = selections[noLoop].Type;
@@ -2228,11 +2265,18 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                 var _query = "MATCH (n:FACEBOOK)<-[r:Facebookchat]->(m:FACEBOOK) "
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
-                        _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
+                        _query += "WHERE (n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     } else {
                         _query += "OR n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     }
                 }
+                _query += ") ";
+                
+                /*Date filtering*/
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                }
+                
                 _query += "RETURN distinct r ORDER BY r.Date,r.Time";
                 console.log(_query);
                 var linkLabel = selections[noLoop].Type;
@@ -2801,6 +2845,22 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                         _query += "OR n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     }
                 }
+
+                /*Duration and Date Filtering
+                 if (document.getElementById("sdd").checked) {
+                 var durFrom = document.getElementById("fmin").value * 1000 * 60;
+                 var durTo = document.getElementById("smin").value * 1000 * 60;
+                 _query += "WHERE toInt(r.Duration) > " + durFrom + " ";
+                 _query += "AND toInt(r.Duration) < " + durTo + " ";
+                 if (datefrom != "" && dateto != "") {
+                 _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                 }
+                 } else {
+                 if (datefrom != "" && dateto != "") {
+                 _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                 }
+                 }*/
+
                 _query += "RETURN collect(distinct r) AS R";
                 console.log(_query);
                 console.log("linkArr length = " + linkArr.length);
@@ -3165,6 +3225,26 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                         _query += "OR n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     }
                 }
+
+                /*Status Filtering
+                 var status = document.getElementById("statusAll").value;
+                 if (status == "read") {
+                 if (datefrom != "" && dateto != "") {
+                 _query += "AND r.Status = 'read' ";
+                 } else {
+                 _query += "WHERE r.Status = 'read' ";
+                 }
+                 } else if (status == "unread") {
+                 if (datefrom != "" && dateto != "") {
+                 _query += "AND r.Status = 'unread' ";
+                 } else {
+                 _query += "WHERE r.Status = 'unread' "
+                 }
+                 } else {
+                 //do nothing
+                 
+                 }*/
+
                 _query += "RETURN collect(distinct r) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -3526,11 +3606,17 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                 var _query = "MATCH (n:WHATSAPP)<-[r:Whatsappchat]->(m:WHATSAPP) "
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
-                        _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
+                        _query += "WHERE (n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     } else {
                         _query += "OR n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     }
                 }
+                _query += ") ";
+                /*Date filtering*/
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                }
+
                 _query += "RETURN distinct r ORDER BY r.Date,r.Time";
                 console.log(_query);
                 var linkLabel = selections[noLoop].Type;
@@ -4063,10 +4149,16 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                 var _query = "MATCH (n:FACEBOOK)<-[r:Facebookchat]->(m:FACEBOOK) "
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
-                        _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
+                        _query += "WHERE (n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     } else {
                         _query += "OR n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     }
+                }
+                _query += ") ";
+                
+                /*Date filtering*/
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
                 }
                 _query += "RETURN distinct r ORDER BY r.Date,r.Time";
                 console.log(_query);
