@@ -45,7 +45,7 @@ body{text-align:center;}
 
 body {
   
-    background-color: #1C1C1C;
+    background-color: #1b9bff;
 }
 
 .font{
@@ -342,6 +342,21 @@ P.blocktext {
 
 #scollbar{
     height: 150px;
+    background-color:#0c0c0c;
+    margin-bottom:1%;
+    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    white-space: pre-wrap;       /* css-3 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    word-break: break-all;
+    white-space: normal;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    overflow: auto;
+    border:5px solid rgba(0,0,0,0.40);
 }
 #summarize{
     height: 250px;
