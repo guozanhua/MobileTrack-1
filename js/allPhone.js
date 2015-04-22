@@ -366,8 +366,6 @@ function queryAllPhones(selections) {
                                         }
                                     }
                                 }
-
-
                             });
 
                             //After finish adding all the nodes and relationship into nodeArr and linkArr
@@ -989,7 +987,8 @@ function queryAllPhones(selections) {
                                     }
                                 }
                             }
-
+                            
+                            /*Frequency Filtering*/
                             for (i = 0; i < nodeArr.length; i++) {
                                 nodeArr[i].lineChat = [];
                                 nodeArr[i].matchFreq = 0;

@@ -4953,7 +4953,7 @@ function dataVisualizationSXD(finalResult) {
             .attr('width', width)
             .attr('height', height);
 
-    var color = ['blue', '#FF00FF', '#2a2a2a'];
+    var color = ['blue', '#FF00FF', '#999'];
     var force = d3.layout.force()
             .charge(-800)
             .linkDistance(function (d) {
