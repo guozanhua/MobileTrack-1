@@ -418,7 +418,7 @@ function drawD3(finalResult) {
             
             var nodeSheet = d3.select('.nodeSheet');
             nodeSheet.append('div')
-                    .attr('class', 'nodeSheet left0')
+                    .attr('class', 'nodeSheet left')
                     .style('background', function (d) {
                         return color[0];
                     });
