@@ -5761,28 +5761,32 @@ function multipleSummarize(d, selectPhonesArr) {
                     output.summary = "";
                     if (d[j].Label == 'Phone') {
                         if (document.getElementById("mchk1").checked) {
-                            output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
-                            output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
-                            for (k = 0; k < d[j].callIn.length; k++) {
-                                output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                            if (d[j].callIn.length > 0) {
+                                output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
+                                for (k = 0; k < d[j].callIn.length; k++) {
+                                    output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                    output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                    output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                    output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                }
+                                output.summary += "</tbody></table>"
+                                output.summary += "<br>"
                             }
-                            output.summary += "</tbody></table>"
-                            output.summary += "<br>"
-                            output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
 
-                            for (k = 0; k < d[j].callOut.length; k++) {
-                                output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                output.summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                output.summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                            if (d[j].callOut.length > 0) {
+                                output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
+
+                                for (k = 0; k < d[j].callOut.length; k++) {
+                                    output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                    output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                    output.summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                    output.summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                }
+                                output.summary += "</tbody></table>";
+                                output.summary += "<br/>";
                             }
-                            output.summary += "</tbody></table>";
-                            output.summary += "<br/>";
                         }
-
 
                         if (document.getElementById("mchk2").checked) {
                             if (d[j].smsIn.length > 0) {
@@ -5881,26 +5885,31 @@ function multipleSummarize(d, selectPhonesArr) {
                     if (outputExist > 0) {
                         if (d[j].Label == 'Phone') {
                             if (document.getElementById("mchk1").checked) {
-                                outputArr[indexOutput].summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
-                                outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
+                                if (d[j].callIn.length > 0) {
+                                    outputArr[indexOutput].summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                    outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
 
-                                for (k = 0; k < d[j].callIn.length; k++) {
-                                    outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                    outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                    outputArr[indexOutput].summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                    outputArr[indexOutput].summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                    for (k = 0; k < d[j].callIn.length; k++) {
+                                        outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        outputArr[indexOutput].summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        outputArr[indexOutput].summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                    }
+                                    outputArr[indexOutput].summary += "</tbody></table>"
+                                    outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
+                                    outputArr[indexOutput].summary += "<br>"
                                 }
-                                outputArr[indexOutput].summary += "</tbody></table>"
-                                outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
-                                outputArr[indexOutput].summary += "<br>"
-                                for (k = 0; k < d[j].callOut.length; k++) {
-                                    outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                    outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                    outputArr[indexOutput].summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                    outputArr[indexOutput].summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+
+                                if (d[j].callOut.length > 0) {
+                                    for (k = 0; k < d[j].callOut.length; k++) {
+                                        outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        outputArr[indexOutput].summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        outputArr[indexOutput].summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                    }
+                                    outputArr[indexOutput].summary += "</tbody></table>"
+                                    outputArr[indexOutput].summary += "<br>"
                                 }
-                                outputArr[indexOutput].summary += "</tbody></table>"
-                                outputArr[indexOutput].summary += "<br>"
                             }
 
                             if (document.getElementById("mchk2").checked) {
@@ -5991,25 +6000,31 @@ function multipleSummarize(d, selectPhonesArr) {
                         output.summary = "";
                         if (d[j].Label == 'Phone') {
                             if (document.getElementById("mchk1").checked) {
-                                output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
-                                output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
-                                for (k = 0; k < d[j].callIn.length; k++) {
-                                    output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                    output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                    output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                    output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                if (d[j].callIn.length > 0) {
+                                    output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
+                                    for (k = 0; k < d[j].callIn.length; k++) {
+                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                    }
+                                    output.summary += "</tbody></table>"
+                                    output.summary += "<br>"
                                 }
-                                output.summary += "</tbody></table>"
-                                output.summary += "<br>"
-                                output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
 
-                                for (k = 0; k < d[j].callOut.length; k++) {
-                                    output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                    output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                    output.summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                    output.summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                if (d[j].callOut.length > 0) {
+                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
+
+                                    for (k = 0; k < d[j].callOut.length; k++) {
+                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        output.summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        output.summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                    }
+                                    output.summary += "</tbody></table>";
                                 }
-                                output.summary += "</tbody></table>"
+
                             }
 
                             if (document.getElementById("mchk2").checked) {
