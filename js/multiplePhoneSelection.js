@@ -5609,7 +5609,6 @@ function dataVisualizationMultiplePhones(finalResult, selectPhonesArr) {
             .attr("class", "text")
             .attr("text-anchor", "middle")
             .attr("dy", ".35em")
-            .style("stroke", "#1b9bff")
             .text(function (d) {
                 return d.textDisplay;
             });
