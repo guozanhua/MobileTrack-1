@@ -1844,7 +1844,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
                                     var objAdd = {};
                                     objAdd.NodeName = result[i].Target;
-                                    objAdd.PhoneNumber = result[i].PhoneNumber
+                                    objAdd.PhoneNumber = result[i].PhoneNumber;
                                     objAdd.Label = result[i].TargetType;
                                     objAdd.groupIndex = getGroupIndex;
                                     objAdd.textDisplay = result[i].PhoneNumber;
@@ -3496,15 +3496,15 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                             }
 
                             for (i = 0; i < nodeArr.length; i++) {
-                                if(nodeArr[i].matchFreq > 0){
+                                if (nodeArr[i].matchFreq > 0) {
                                     nodeArr[i].callOut = [];
                                     nodeArr[i].callIn = [];
-                                }else{
+                                } else {
                                     nodeArr[i].callOut = [];
                                     nodeArr[i].callIn = [];
                                     nodeArr[i].matchFreq = 0;
                                 }
-                                 
+
                             }
 
                             //Listed of callTo and callIn for each node
@@ -3961,10 +3961,10 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                             }
 
                             for (i = 0; i < nodeArr.length; i++) {
-                                if(nodeArr[i].matchFreq > 0){
+                                if (nodeArr[i].matchFreq > 0) {
                                     nodeArr[i].smsOut = [];
                                     nodeArr[i].smsIn = [];
-                                }else{
+                                } else {
                                     nodeArr[i].smsOut = [];
                                     nodeArr[i].smsIn = [];
                                     nodeArr[i].matchFreq = 0;
@@ -4490,8 +4490,10 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
                             /*Frequency Filtering*/
                             for (i = 0; i < nodeArr.length; i++) {
-                                nodeArr[i].WhatsappChat = [];
-                                nodeArr[i].matchFreq = 0;
+                                if (nodeArr[i].Label == 'Whatsapp') {
+                                    nodeArr[i].WhatsappChat = [];
+                                    nodeArr[i].matchFreq = 0;
+                                }
                             }
 
                             var inputFreq = document.getElementById("fof").value;
@@ -4499,7 +4501,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                             linkArr.forEach(function (link) {
                                 if (document.getElementById("ddf").checked) {
                                     for (i = 0; i < nodeArr.length; i++) {
-                                        if (link.source == nodeArr[i].NodeIndex) {
+                                        if (link.source == nodeArr[i].NodeIndex && link.Type == 'Whatsapp') {
                                             for (j = 0; j < nodeArr.length; j++) {
                                                 if (link.target == nodeArr[j].NodeIndex) {
                                                     var objWhatsappChat = {};
@@ -4515,7 +4517,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     }
 
                                     for (i = 0; i < nodeArr.length; i++) {
-                                        if (link.target == nodeArr[i].NodeIndex) {
+                                        if (link.target == nodeArr[i].NodeIndex && link.Type == 'Whatsapp') {
                                             for (j = 0; j < nodeArr.length; j++) {
                                                 if (link.source == nodeArr[j].NodeIndex) {
                                                     var objWhatsappChat = {};
@@ -4533,7 +4535,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     if (document.getElementById("morethan").checked) {
                                         if (link.prop.length >= inputFreq) {
                                             for (i = 0; i < nodeArr.length; i++) {
-                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                if (link.source == nodeArr[i].NodeIndex && link.Type == 'Whatsapp') {
                                                     for (j = 0; j < nodeArr.length; j++) {
                                                         if (link.target == nodeArr[j].NodeIndex) {
                                                             var objWhatsappChat = {};
@@ -4549,7 +4551,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                             }
 
                                             for (i = 0; i < nodeArr.length; i++) {
-                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                if (link.target == nodeArr[i].NodeIndex && link.Type == 'Whatsapp') {
                                                     for (j = 0; j < nodeArr.length; j++) {
                                                         if (link.source == nodeArr[j].NodeIndex) {
                                                             var objWhatsappChat = {};
@@ -4567,7 +4569,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     } else if (document.getElementById("lessthan").checked) {
                                         if (link.prop.length <= inputFreq) {
                                             for (i = 0; i < nodeArr.length; i++) {
-                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                if (link.source == nodeArr[i].NodeIndex && link.Type == 'Whatsapp') {
                                                     for (j = 0; j < nodeArr.length; j++) {
                                                         if (link.target == nodeArr[j].NodeIndex) {
                                                             var objWhatsappChat = {};
@@ -4583,7 +4585,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                             }
 
                                             for (i = 0; i < nodeArr.length; i++) {
-                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                if (link.target == nodeArr[i].NodeIndex && link.Type == 'Whatsapp') {
                                                     for (j = 0; j < nodeArr.length; j++) {
                                                         if (link.source == nodeArr[j].NodeIndex) {
                                                             var objWhatsappChat = {};
@@ -4644,7 +4646,6 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                 }
 
                                 for (i = 0; i < result.length; i++) {
-
                                     var getGroupIndex;
                                     var getSourceIndex, getTargetIndex;
                                     var checkSource = 0, checkTarget = 0;
@@ -5105,15 +5106,17 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                             }
 
                             for (i = 0; i < nodeArr.length; i++) {
-                                nodeArr[i].facebookChat = [];
-                                nodeArr[i].matchFreq = 0;
+                                if (nodeArr[i].Label == 'Facebook') {
+                                    nodeArr[i].facebookChat = [];
+                                    nodeArr[i].matchFreq = 0;
+                                }
                             }
 
                             var inputFreq = document.getElementById("fof").value;
                             linkArr.forEach(function (link) {
                                 if (document.getElementById("ddf").checked) {
                                     for (i = 0; i < nodeArr.length; i++) {
-                                        if (link.source == nodeArr[i].NodeIndex) {
+                                        if (link.source == nodeArr[i].NodeIndex && link.Type == 'Facebook') {
                                             for (j = 0; j < nodeArr.length; j++) {
                                                 if (link.target == nodeArr[j].NodeIndex) {
                                                     var objFacebookChat = {};
@@ -5129,7 +5132,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     }
 
                                     for (i = 0; i < nodeArr.length; i++) {
-                                        if (link.target == nodeArr[i].NodeIndex) {
+                                        if (link.target == nodeArr[i].NodeIndex && link.Type == 'Facebook') {
                                             for (j = 0; j < nodeArr.length; j++) {
                                                 if (link.source == nodeArr[j].NodeIndex) {
                                                     var objFacebookChat = {};
@@ -5147,7 +5150,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                     if (document.getElementById("morethan").checked) {
                                         if (link.prop.length >= inputFreq) {
                                             for (i = 0; i < nodeArr.length; i++) {
-                                                if (link.source == nodeArr[i].NodeIndex) {
+                                                if (link.source == nodeArr[i].NodeIndex && link.Type == 'Facebook') {
                                                     for (j = 0; j < nodeArr.length; j++) {
                                                         if (link.target == nodeArr[j].NodeIndex) {
                                                             var objFacebookChat = {};
@@ -5163,7 +5166,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                             }
 
                                             for (i = 0; i < nodeArr.length; i++) {
-                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                if (link.target == nodeArr[i].NodeIndex && link.Type == 'Facebook') {
                                                     for (j = 0; j < nodeArr.length; j++) {
                                                         if (link.source == nodeArr[j].NodeIndex) {
                                                             var objFacebookChat = {};
@@ -5179,7 +5182,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                             }
                                         }
                                     } else if (document.getElementById("lessthan").checked) {
-                                        if (link.prop.length <= inputFreq) {
+                                        if (link.prop.length <= inputFreq && link.Type == 'Facebook') {
                                             for (i = 0; i < nodeArr.length; i++) {
                                                 if (link.source == nodeArr[i].NodeIndex) {
                                                     for (j = 0; j < nodeArr.length; j++) {
@@ -5197,7 +5200,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                             }
 
                                             for (i = 0; i < nodeArr.length; i++) {
-                                                if (link.target == nodeArr[i].NodeIndex) {
+                                                if (link.target == nodeArr[i].NodeIndex && link.Type == 'Facebook') {
                                                     for (j = 0; j < nodeArr.length; j++) {
                                                         if (link.source == nodeArr[j].NodeIndex) {
                                                             var objFacebookChat = {};
@@ -5779,7 +5782,7 @@ function multipleSummarize(d, selectPhonesArr) {
                             output.summary += "</tbody></table>";
                             output.summary += "<br/>";
                         }
-                        
+
 
                         if (document.getElementById("mchk2").checked) {
                             if (d[j].smsIn.length > 0) {
@@ -5968,7 +5971,7 @@ function multipleSummarize(d, selectPhonesArr) {
                         else if (d[j].Label == 'Facebook') {
                             if (document.getElementById("mchk5").checked) {
                                 if (d[j].facebookChat.length > 0) {
-                                    outputArr[indexOutput].summary += "<h3 class='text4'>Phone Number: " + d[j].textDisplay + "</h3>";
+                                    outputArr[indexOutput].summary += "<h3 class='text4'>" + d[j].textDisplay + "</h3>";
                                     outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Facebook chat with </th></thead><tbody>";
 
                                     for (k = 0; k < d[j].facebookChat.length; k++) {
