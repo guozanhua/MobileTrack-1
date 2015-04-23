@@ -5735,7 +5735,7 @@ function multipleSummarize(d, selectPhonesArr) {
             if (d[j].PhoneNumber == selectPhonesArr[i]) {
                 if (j == 0) {
                     var output = {};
-                    output.PhoneNumber = "<h3 class='text4'>"+d[j].PhoneNumber+ "</h3>";;
+                    output.PhoneNumber = d[j].PhoneNumber;
                     output.summary = "";
                     if (d[j].Label == 'Phone') {
                         output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";

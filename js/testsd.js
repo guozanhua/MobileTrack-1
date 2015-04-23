@@ -4917,7 +4917,7 @@ function SDsummarization(finalResult) {
             } else {
                 output +="<tr class='stylerowtable2 '><td class='stylerowtable3 '>";
                 output += "SMS log from " + linkArr[indexSMS[0]].source.PhoneNumber + " to " + linkArr[indexSMS[0]].target.PhoneNumber + ": </td><td class='stylerowtable3 '>";
-                output += linkArr[indexCall[0]].prop.length +"</td></tr>";
+                output += linkArr[indexSMS[0]].prop.length +"</td></tr>";
                
             }
         }

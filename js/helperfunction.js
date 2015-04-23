@@ -158,19 +158,19 @@ function visualizeLinkDetail(d) {
     if (d.Type == "Line") {
         var propArr = d.prop;
         var myTable = "<p style='color:#FF0000'>Line chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
-        myTable += "<table id='myTable' class='tablesorter'><thead><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr></thead><tbody>";
+        myTable += "<table id='myTable'><thead><tr><th class='styleheadtable5'>SENDER</th>";
+        myTable += "<th class='styleheadtable6'>MESSAGE</th>";
+        myTable += "<th class='styleheadtable5'>DATE</th>";
+        myTable += "<th class='styleheadtable5'>TIME</th></tr></thead><tbody>";
 
 
 
         for (var i = 0; i < propArr.length; i++) {
             //if(checkDateRange(propArr[i].date) == "PASS"){
-            myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-            myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
+            myTable += "<tr class='styletable5'><td class='stylerowtable5'>" + propArr[i].Sender + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].message + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].date + "</td>";
+            myTable += "<td class='stylerowtable5'>" + removeUTC(propArr[i].Time) + "</td></tr>";
             //}
         }
         myTable += "</tbody></table>";
@@ -181,17 +181,17 @@ function visualizeLinkDetail(d) {
 
         var propArr = d.prop;
         var myTable = "<p style='color:#FF0000'>Whatsapp chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
-        myTable += "<table id='myTable' class='tablesorter'><thead><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr></thead><tbody>";
+        myTable += "<table id='myTable'><thead><tr><th class='styleheadtable5'>SENDER</th>";
+        myTable += "<th class='styleheadtable6'>MESSAGE</th>";
+        myTable += "<th class='styleheadtable5'>DATE</th>";
+        myTable += "<th class='styleheadtable5'>TIME</th></tr></thead><tbody>";
 
         for (var i = 0; i < propArr.length; i++) {
             //if(checkDateRange(propArr[i].date) == "PASS"){
-            myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-            myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
+            myTable += "<tr class='styletable5'><td class='stylerowtable5'>" + propArr[i].Sender + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].message + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].date + "</td>";
+            myTable += "<td class='stylerowtable5'>" + removeUTC(propArr[i].Time) + "</td></tr>";
             //}
         }
         myTable += "</tbody></table>";
@@ -201,19 +201,19 @@ function visualizeLinkDetail(d) {
     } else if (d.Type == "Facebook") {
         var propArr = d.prop;
         var myTable = "<p style='color:#FF0000'>Facebook chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
-        myTable += "<table id='myTable' class='tablesorter'><thead><tr><th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>SENDER</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>MESSAGE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:200px; border:2px solid white; color: white; text-align: center;'>DATE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px;border:2px solid white; color: white; text-align: center;'>TIME</th></tr></thead><tbody>";
+        myTable += "<table id='myTable'><thead><tr><th class='styleheadtable5'>SENDER</th>";
+        myTable += "<th class='styleheadtable6'>MESSAGE</th>";
+        myTable += "<th class='styleheadtable5'>DATE</th>";
+        myTable += "<th class='styleheadtable5'>TIME</th></tr></thead><tbody>";
 
 
 
         for (var i = 0; i < propArr.length; i++) {
             //if(checkDateRange(propArr[i].date) == "PASS"){
-            myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].Sender + "</td>";
-            myTable += "<td style='height: 40px; text-align: left;background-color:#BEBEBE;border:2px solid white;'>" + propArr[i].message + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border:2px solid white;'>" + propArr[i].date + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border:2px solid white;'>" + removeUTC(propArr[i].Time) + "</td></tr>";
+            myTable += "<tr class='styletable5'><td class='stylerowtable5'>" + propArr[i].Sender + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].message + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].date + "</td>";
+            myTable += "<td class='stylerowtable5'>" + removeUTC(propArr[i].Time) + "</td></tr>";
             //}
         }
         myTable += "</tbody></table>";
@@ -223,17 +223,17 @@ function visualizeLinkDetail(d) {
     } else if (d.Type == 'Call') {
         var propArr = d.prop;
         var myTable = "<p style='color:#FF0000'>Call between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
-        myTable += "<table id='myTable' class='tablesorter'><thead><tr><th style='background-color:#333333;height: 40px; width:150px; border: 2px solid white; color: white; text-align: center;'>SOURCE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>TARGET</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:200px; border: 2px solid white; color: white; text-align: center;'>DURATION</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:150px; border:2px solid white; color: white; text-align: center;'>D/M/Y</th></tr></thead><tbody>";
+        myTable += "<table id='myTable'><thead><tr><th class='styleheadtable5'>SOURCE</th>";
+        myTable += "<th class='styleheadtable5'>TARGET</th>";
+        myTable += "<th class='styleheadtable5'>DURATION</th>";
+        myTable += "<th class='styleheadtable5'>D/M/Y</th></tr></thead><tbody>";
 
         for (var i = 0; i < propArr.length; i++) {
             //if(checkDateRange(propArr[i].date) == "PASS"){
-            myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + convertTime(propArr[i].dur) + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td></tr>";
+            myTable += "<tr class='styletable5'><td class='stylerowtable5'>" + propArr[i].Source + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].Target + "</td>";
+            myTable += "<td class='stylerowtable5'>" + convertTime(propArr[i].dur) + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].date + "</td></tr>";
             //}
         }
         myTable += "</tbody></table>";
@@ -242,19 +242,19 @@ function visualizeLinkDetail(d) {
     } else {
         var propArr = d.prop;
         var myTable = "<p style='color:#FF0000'>SMS between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
-        myTable += "<table id='myTable' class='tablesorter'><thead><tr><th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>SENDER</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:180px; border: 2px solid white; color: white; text-align: center;'>RECEIVER</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:155px; border: 2px solid white; color: white; text-align: center;'>DATE</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:125px; border: 2px solid white; color: white; text-align: center;'>STATUS</th>";
-        myTable += "<th style='background-color:#333333;height: 40px; width:170px; border: 2px solid white; color: white; text-align: center;'>MESSAGE</th></tr></thead><tbody>";
+        myTable += "<table id='myTable'><thead><tr><th class='styleheadtable5'>SENDER</th>";
+        myTable += "<th class='styleheadtable5'>RECEIVER</th>";
+        myTable += "<th class='styleheadtable5'>DATE</th>";
+        myTable += "<th class='styleheadtable5'>STATUS</th>";
+        myTable += "<th class='styleheadtable6'>MESSAGE</th></tr></thead><tbody>";
 
         for (var i = 0; i < propArr.length; i++) {
             // if(checkDateRange(propArr[i].date) == "PASS"){
-            myTable += "<tr><td style='height: 40px; text-align: center;background-color:#8B8B83;border: 2px solid white;'>" + propArr[i].Source + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].Target + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].date + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].status + "</td>";
-            myTable += "<td style='height: 40px; text-align: center;background-color:#BEBEBE;border: 2px solid white;'>" + propArr[i].message + "</td></tr>";
+            myTable += "<tr class='styletable5'><td class='stylerowtable5'>" + propArr[i].Source + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].Target + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].date + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].status + "</td>";
+            myTable += "<td class='stylerowtable5'>" + propArr[i].message + "</td></tr>";
             //}
         }
         myTable += "</tbody></table>";
