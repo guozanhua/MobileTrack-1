@@ -84,21 +84,35 @@
                                 </select>
                             </form>
                         </div>
-
+                        
                         <div>
-                            <form id="durationbox2" style="display:none">
-                                &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket" class="font2"size="3"color="white">DURATION:</font></label >
-                                <select id="durationMulti" class="wrapper-dropdown-6">
-                                    <option value="01">0-1 MINUTE</option>
-                                    <option value="12">1-2 MINUTE</option>
-                                    <option value="23">2-3 MINUTE</option>
-                                    <!-- <option value="34">3-4 MINUTE</option>
-                                    <option value="45">4-5 MINUTE</option>
-                                    <option value="5">MORE 5 MINUTE</option> -->
-                                </select>
+                        <form id="durationbox2" style="display:none">
+                            &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket" class="font2" size="4" color="white"  >Duration :</font></label >
+                            <br/>
+                            <form id="selecttype"> 
+                                &nbsp;  &nbsp;   &nbsp;<font face="supermarket" size="4" class="font2"color="white"><input type="radio" value="ddd" id="ddd" onchange="defaultduration()" checked>Default Duration</font>
+                                <br/>
+                                &nbsp;  &nbsp;   &nbsp;<font face="supermarket" size="4" class="font2"color="white"><input type="radio" value="sdd" id="sdd" onchange="specificduration()">Specific Duration</font>
+                            </form>
+                        </form>
+                        </div>
+                        
+                        <div>
+                        <form id="durationrange"  style="display:none">
+                            <p align = "center"><label><font face="supermarket"class="font2" size="4" color="white"  >Duration range</font></label ></p>
+                            <p align = "center">
+                            <form id="inputduration"> 
+                                <input type="text"align = "center" class="wrapper-dropdown-7" id="fmin" maxlength="5"></input>
+                                <font face="supermarket" size="4" class="font2"color="white">mins-</font>
+
+                                <input type="text"align = "center" class="wrapper-dropdown-7" id="smin" maxlength="5"></input>
+                                <font face="supermarket" size="4" class="font2"color="white">mins</font>
 
                             </form>
+                            </p>
                         </div>
+
+                   
 
 
                         <form id="status1" style = "display:none" > 
@@ -129,6 +143,7 @@
                         <form id="status4" style = "display:none" > 
                             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="whatapp" id = "mchk5" value="">FACEBOOK</font>
                         </form> 
+                           
                     </div>
 
                     <div>
