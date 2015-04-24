@@ -583,7 +583,7 @@ function specificNodeSummarize(finalResult){
     
     output += "<table><thead><th class='styleheadtable2'>Line Account </th></thead><tbody>"; 
     for(i=0;i<indexLine.length;i++){
-        output +="<tr class='stylerowtable2 '><td>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
         output +=  nodeArr[indexLine[i]].textDisplay +"</td></tr>";
     }
     output +="</tbody></table>";
@@ -592,7 +592,7 @@ function specificNodeSummarize(finalResult){
     output += "<table><thead><th class='styleheadtable2'>Whatsapp Account </th></thead><tbody>"; 
     
     for(i=0;i<indexWhatsapp.length;i++){ 
-        output +="<tr class='stylerowtable2 '><td>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
         output += nodeArr[indexWhatsapp[i]].textDisplay + "</td></tr>";
     }
     output +="</tbody></table>";
@@ -601,7 +601,7 @@ function specificNodeSummarize(finalResult){
     output += "<table><thead><th class='styleheadtable2'>Facebook Account </th></thead><tbody>";
       
     for(i=0;i<indexFacebook.length;i++){
-        output +="<tr class='stylerowtable2 '><td>";
+        output +="<tr class='stylerowtable2 '><td class='stylecolumntable2'>";
         output += nodeArr[indexFacebook[i]].textDisplay + "<br/>";
     }
     output +="</tbody></table>";

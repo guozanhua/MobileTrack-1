@@ -3075,7 +3075,7 @@ function createQueryForTwo(selections) {
         else {
             if (selections[noLoop].Type == 'Call') {
                 var _query = "MATCH (a:PHONE)" + selections[noLoop].linkType[0] + "(b:PHONE)" + selections[noLoop].linkType[1] + "(c:PHONE)" + selections[noLoop].linkType[2] + "(d:PHONE) ";
-                _query = "WHERE a.PhoneNumber = '" + inputSource + "' AND d.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' ";
+                _query += "WHERE a.PhoneNumber = '" + inputSource + "' AND d.PhoneNumber = '" + inputTarget + "'AND b.PhoneNumber <> '" + inputSource + "' AND b.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputTarget + "' AND c.PhoneNumber <> '" + inputSource + "' ";
                 /*Add date filtering here*/
                 if (datefrom != "" && dateto != "") {
                     _query += " AND toInt(r1.Date) >= toInt(" + datefromforquery + ") AND toInt(r1.Date) <= toInt(" + datetoforquery + ") "

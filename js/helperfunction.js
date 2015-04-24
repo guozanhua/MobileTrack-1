@@ -128,7 +128,7 @@ function convertTime(duration) {
     var seconds = parseInt((gettime / 1000) % 60);
     var minutes = parseInt((gettime / (1000 * 60)) % 60);
     var hours = parseInt((gettime / (1000 * 60 * 60)) % 24);
-    var outputTime = hours + "H: " + minutes + "M: " + seconds + "Sec";
+    var outputTime = hours + "h:" + minutes + "m:" + seconds + "s";
     return outputTime;
 }
 

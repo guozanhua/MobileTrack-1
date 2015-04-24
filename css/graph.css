@@ -54,7 +54,7 @@
 }
 
 .link.lowf{
-    stroke: #1CBF29;
+    stroke: #009C00;
 }
 
 .link.mediumf{
@@ -62,12 +62,12 @@
 }
 
 .link.highf{
-    stroke: #E10215;
+    stroke: #AD0800;
 
 }
 
 #lowf{
-    fill: #1CBF29;
+    fill: #009C00;
 }
 
 #mediumf{
@@ -75,6 +75,6 @@
 }
 
 #highf{
-    fill: #E10215;
+    fill: #AD0800;
 }
 
