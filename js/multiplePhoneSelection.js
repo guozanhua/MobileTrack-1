@@ -28,7 +28,16 @@ function queryMultiplePhones(selections, selectPhonesArr) {
         if (noLoop == 0) {
             if (selections[noLoop].Type == 'Call') {
                 //create Query for Call
-                var _query = "MATCH (n:PHONE)<-[r:Call]->(m:PHONE) "
+                var callType = document.getElementById("typecallMulti").value;
+                var _query = "";
+                if (callType == 'incoming') {
+                    _query = "MATCH (n:PHONE)<-[r:Call]-(m:PHONE) "
+                } else if (callType == 'outgoing') {
+                    _query = "MATCH (n:PHONE)-[r:Call]->(m:PHONE) "
+                } else {
+                    _query = "MATCH (n:PHONE)<-[r:Call]->(m:PHONE) "
+                }
+
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
                         _query += "WHERE (n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
@@ -37,20 +46,21 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                     }
                 }
                 _query += ") ";
-                /*Duration and Date Filtering
-                 if (document.getElementById("sdd").checked) {
-                 var durFrom = document.getElementById("fmin").value * 1000 * 60;
-                 var durTo = document.getElementById("smin").value * 1000 * 60;
-                 _query += "WHERE toInt(r.Duration) > " + durFrom + " ";
-                 _query += "AND toInt(r.Duration) < " + durTo + " ";
-                 if (datefrom != "" && dateto != "") {
-                 _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
-                 }
-                 } else {
-                 if (datefrom != "" && dateto != "") {
-                 _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
-                 }
-                 }*/
+
+                /*Duration and Date Filtering*/
+                if (document.getElementById("sdd").checked) {
+                    var durFrom = document.getElementById("fmin").value * 1000 * 60;
+                    var durTo = document.getElementById("smin").value * 1000 * 60;
+                    _query += "AND toInt(r.Duration) > " + durFrom + " ";
+                    _query += "AND toInt(r.Duration) < " + durTo + " ";
+                    if (datefrom != "" && dateto != "") {
+                        _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                    }
+                } else {
+                    if (datefrom != "" && dateto != "") {
+                        _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                    }
+                }
 
                 _query += "RETURN collect(distinct r) AS R";
                 console.log(_query);
@@ -3183,7 +3193,15 @@ function queryMultiplePhones(selections, selectPhonesArr) {
         else {
             if (selections[noLoop].Type == 'Call') {
                 //create Query for Call
-                var _query = "MATCH (n:PHONE)<-[r:Call]->(m:PHONE) "
+                var callType = document.getElementById("typecallMulti").value;
+                var _query = "";
+                if (callType == 'incoming') {
+                    _query = "MATCH (n:PHONE)<-[r:Call]-(m:PHONE) "
+                } else if (callType == 'outgoing') {
+                    _query = "MATCH (n:PHONE)-[r:Call]->(m:PHONE) "
+                } else {
+                    _query = "MATCH (n:PHONE)<-[r:Call]->(m:PHONE) "
+                }
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
                         _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
@@ -3192,20 +3210,20 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                     }
                 }
 
-                /*Duration and Date Filtering
-                 if (document.getElementById("sdd").checked) {
-                 var durFrom = document.getElementById("fmin").value * 1000 * 60;
-                 var durTo = document.getElementById("smin").value * 1000 * 60;
-                 _query += "WHERE toInt(r.Duration) > " + durFrom + " ";
-                 _query += "AND toInt(r.Duration) < " + durTo + " ";
-                 if (datefrom != "" && dateto != "") {
-                 _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
-                 }
-                 } else {
-                 if (datefrom != "" && dateto != "") {
-                 _query += " WHERE toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
-                 }
-                 }*/
+                /*Duration and Date Filtering*/
+                if (document.getElementById("sdd").checked) {
+                    var durFrom = document.getElementById("fmin").value * 1000 * 60;
+                    var durTo = document.getElementById("smin").value * 1000 * 60;
+                    _query += "AND toInt(r.Duration) > " + durFrom + " ";
+                    _query += "AND toInt(r.Duration) < " + durTo + " ";
+                    if (datefrom != "" && dateto != "") {
+                        _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                    }
+                } else {
+                    if (datefrom != "" && dateto != "") {
+                        _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                    }
+                }
 
                 _query += "RETURN collect(distinct r) AS R";
                 console.log(_query);
@@ -5761,30 +5779,57 @@ function multipleSummarize(d, selectPhonesArr) {
                     output.summary = "";
                     if (d[j].Label == 'Phone') {
                         if (document.getElementById("mchk1").checked) {
-                            if (d[j].callIn.length > 0) {
-                                output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
-                                output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
-                                for (k = 0; k < d[j].callIn.length; k++) {
-                                    output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                    output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                    output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                    output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                            var callType = document.getElementById("typecallMulti").value;
+                            if (callType == 'incoming') {
+                                if (d[j].callIn.length > 0) {
+                                    output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
+                                    for (k = 0; k < d[j].callIn.length; k++) {
+                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                    }
+                                    output.summary += "</tbody></table>"
+                                    output.summary += "<br>"
                                 }
-                                output.summary += "</tbody></table>"
-                                output.summary += "<br>"
-                            }
+                            } else if (callType == 'outgoing') {
+                                if (d[j].callOut.length > 0) {
+                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
 
-                            if (d[j].callOut.length > 0) {
-                                output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
-
-                                for (k = 0; k < d[j].callOut.length; k++) {
-                                    output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                    output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                    output.summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                    output.summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                    for (k = 0; k < d[j].callOut.length; k++) {
+                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        output.summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        output.summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                    }
+                                    output.summary += "</tbody></table>";
                                 }
-                                output.summary += "</tbody></table>";
-                                output.summary += "<br/>";
+                            } else {
+                                if (d[j].callIn.length > 0) {
+                                    output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
+                                    for (k = 0; k < d[j].callIn.length; k++) {
+                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                    }
+                                    output.summary += "</tbody></table>"
+                                    output.summary += "<br>"
+                                }
+
+                                if (d[j].callOut.length > 0) {
+                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
+
+                                    for (k = 0; k < d[j].callOut.length; k++) {
+                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        output.summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        output.summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                    }
+                                    output.summary += "</tbody></table>";
+                                }
                             }
                         }
 
@@ -5885,31 +5930,61 @@ function multipleSummarize(d, selectPhonesArr) {
                     if (outputExist > 0) {
                         if (d[j].Label == 'Phone') {
                             if (document.getElementById("mchk1").checked) {
-                                if (d[j].callIn.length > 0) {
-                                    outputArr[indexOutput].summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
-                                    outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
+                                var callType = document.getElementById("typecallMulti").value;
+                                if (callType == 'incoming') {
+                                    if (d[j].callIn.length > 0) {
+                                        outputArr[indexOutput].summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                        outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
 
-                                    for (k = 0; k < d[j].callIn.length; k++) {
-                                        outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                        for (k = 0; k < d[j].callIn.length; k++) {
+                                            outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                        }
+                                        outputArr[indexOutput].summary += "</tbody></table>"
+                                        outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
+                                        outputArr[indexOutput].summary += "<br>"
                                     }
-                                    outputArr[indexOutput].summary += "</tbody></table>"
-                                    outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
-                                    outputArr[indexOutput].summary += "<br>"
+                                } else if (callType == 'outgoing') {
+                                    if (d[j].callOut.length > 0) {
+                                        for (k = 0; k < d[j].callOut.length; k++) {
+                                            outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                        }
+                                        outputArr[indexOutput].summary += "</tbody></table>"
+                                        outputArr[indexOutput].summary += "<br>"
+                                    }
+                                } else {
+                                    if (d[j].callIn.length > 0) {
+                                        outputArr[indexOutput].summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                        outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
+
+                                        for (k = 0; k < d[j].callIn.length; k++) {
+                                            outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                        }
+                                        outputArr[indexOutput].summary += "</tbody></table>"
+                                        outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
+                                        outputArr[indexOutput].summary += "<br>"
+                                    }
+
+                                    if (d[j].callOut.length > 0) {
+                                        for (k = 0; k < d[j].callOut.length; k++) {
+                                            outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                        }
+                                        outputArr[indexOutput].summary += "</tbody></table>"
+                                        outputArr[indexOutput].summary += "<br>"
+                                    }
                                 }
 
-                                if (d[j].callOut.length > 0) {
-                                    for (k = 0; k < d[j].callOut.length; k++) {
-                                        outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
-                                    }
-                                    outputArr[indexOutput].summary += "</tbody></table>"
-                                    outputArr[indexOutput].summary += "<br>"
-                                }
                             }
 
                             if (document.getElementById("mchk2").checked) {
@@ -6000,31 +6075,58 @@ function multipleSummarize(d, selectPhonesArr) {
                         output.summary = "";
                         if (d[j].Label == 'Phone') {
                             if (document.getElementById("mchk1").checked) {
-                                if (d[j].callIn.length > 0) {
-                                    output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
-                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
-                                    for (k = 0; k < d[j].callIn.length; k++) {
-                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                        output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                        output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                var callType = document.getElementById("typecallMulti").value;
+                                if (callType == 'incoming') {
+                                    if (d[j].callIn.length > 0) {
+                                        output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                        output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
+                                        for (k = 0; k < d[j].callIn.length; k++) {
+                                            output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                        }
+                                        output.summary += "</tbody></table>"
+                                        output.summary += "<br>"
                                     }
-                                    output.summary += "</tbody></table>"
-                                    output.summary += "<br>"
-                                }
+                                } else if (callType == 'outgoing') {
+                                    if (d[j].callOut.length > 0) {
+                                        output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
 
-                                if (d[j].callOut.length > 0) {
-                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
-
-                                    for (k = 0; k < d[j].callOut.length; k++) {
-                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                        output.summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                        output.summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                        for (k = 0; k < d[j].callOut.length; k++) {
+                                            output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            output.summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            output.summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                        }
+                                        output.summary += "</tbody></table>";
                                     }
-                                    output.summary += "</tbody></table>";
-                                }
+                                } else {
+                                    if (d[j].callIn.length > 0) {
+                                        output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                        output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
+                                        for (k = 0; k < d[j].callIn.length; k++) {
+                                            output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
+                                        }
+                                        output.summary += "</tbody></table>"
+                                        output.summary += "<br>"
+                                    }
 
+                                    if (d[j].callOut.length > 0) {
+                                        output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
+
+                                        for (k = 0; k < d[j].callOut.length; k++) {
+                                            output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            output.summary += d[j].callOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            output.summary += " Freq: " + d[j].callOut[k].freq + "</td></tr>";
+                                        }
+                                        output.summary += "</tbody></table>";
+                                    }
+                                }
                             }
 
                             if (document.getElementById("mchk2").checked) {
