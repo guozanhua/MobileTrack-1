@@ -1588,13 +1588,13 @@ P.blocktext {
     border-radius:15px;
     border: 2.5px solid #000;
     color:white;
-    margin: 5px;
+    margin: 1px;
     display: inline;
 }
 
 .nodeType .right0{
     float: left;
-    width:72%;
+    width:80%;
     height:15px;
     background: grey;
     margin-left: 0px;
@@ -1609,13 +1609,13 @@ P.blocktext {
     border-radius:15px;
     border: 2.5px solid #40FF00;
     color:white;
-    margin: 5px;
+    margin: 1px;
     display: inline;
 }
 
 .nodeType .right1{
     float: left;
-    width:72%;
+    width:80%;
     height:15px;
     background: grey;
     margin-left: 0px;
@@ -1630,13 +1630,13 @@ P.blocktext {
     border-radius:15px;
     border: 2.5px solid #387E0C;
     color:white;
-    margin: 5px;
+    margin: 1px;
     display: inline;
 }
 
 .nodeType .right2{
     float: left;
-    width:72%;
+    width:80%;
     height:15px;
     background: grey;
     margin-left: 0px;
@@ -1651,13 +1651,13 @@ P.blocktext {
     border-radius:15px;
     border: 2.5px solid #1C27BF;
     color:white;
-    margin: 5px;
+    margin: 1px;
     display: inline;
 }
 
 .nodeType .right3{
     float: left;
-    width:72%;
+    width:80%;
     height:15px;
     background: grey;
     margin-left: 0px;
@@ -1689,13 +1689,13 @@ P.blocktext {
     height:15px;
     background: green;
     color:white;
-    margin: 5px;
+    margin: 1px;
     display: inline;
 }
 
 .linkType .right1{
     float: left;
-    width:72%;
+    width:80%;
     height:15px;
     background: grey;
     margin-left: 0px;
@@ -1709,14 +1709,14 @@ P.blocktext {
     height:15px;
     background: orange;
     color:white;
-    margin: 5px;
+    margin: 1px;
     display: inline;
 
 }
 
 .linkType .right2{
     float: left;
-    width:72%;
+    width:80%;
     height:15px;
     background: grey;
     margin-left: 0px;
@@ -1730,13 +1730,13 @@ P.blocktext {
     height:15px;
     background: red;
     color:white;
-    margin: 5px;
+    margin: 1px;
     display: inline;
 }
 
 .linkType .right3{
     float: left;
-    width:72%;
+    width:80%;
     height:15px;
     background: grey;
     margin-left: 0px;
@@ -1768,7 +1768,7 @@ P.blocktext {
     height:15px;
     border-radius:14.5px;
     color:white;
-    margin: 5px;
+    margin: 1px;
     display: inline;
 }
 
@@ -1788,7 +1788,7 @@ P.blocktext {
     height:15px;
     border-radius:14.5px;
     color:white;
-    margin: 5px;
+    margin: 1px;
     display: inline;
 
 }
@@ -1809,7 +1809,7 @@ P.blocktext {
     height:15px;
     border-radius:14.5px;
     color:white;
-    margin: 5px;
+    margin: 1px;
     display: inline;
 }
 
@@ -1822,4 +1822,3 @@ P.blocktext {
     display: inline;
     text-align: start;
 }
-
