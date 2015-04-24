@@ -157,7 +157,7 @@ function convertDatetoNormal(b) {
 function visualizeLinkDetail(d) {
     if (d.Type == "Line") {
         var propArr = d.prop;
-        var myTable = "<p style='color:#FF0000'>Line chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        var myTable = "<h3 class='text5'>Line chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</h3><br/>";
         myTable += "<table id='myTable'><thead><tr><th class='styleheadtable5'>SENDER</th>";
         myTable += "<th class='styleheadtable6'>MESSAGE</th>";
         myTable += "<th class='styleheadtable5'>DATE</th>";
@@ -180,7 +180,7 @@ function visualizeLinkDetail(d) {
     } else if (d.Type == "Whatsapp") {
 
         var propArr = d.prop;
-        var myTable = "<p style='color:#FF0000'>Whatsapp chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        var myTable = "<h3 class='text5'>Whatsapp chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</h3><br/>";
         myTable += "<table id='myTable'><thead><tr><th class='styleheadtable5'>SENDER</th>";
         myTable += "<th class='styleheadtable6'>MESSAGE</th>";
         myTable += "<th class='styleheadtable5'>DATE</th>";
@@ -200,7 +200,7 @@ function visualizeLinkDetail(d) {
 
     } else if (d.Type == "Facebook") {
         var propArr = d.prop;
-        var myTable = "<p style='color:#FF0000'>Facebook chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        var myTable = "<h3 class='text5'>Facebook chat between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</h3><br/>";
         myTable += "<table id='myTable'><thead><tr><th class='styleheadtable5'>SENDER</th>";
         myTable += "<th class='styleheadtable6'>MESSAGE</th>";
         myTable += "<th class='styleheadtable5'>DATE</th>";
@@ -222,7 +222,7 @@ function visualizeLinkDetail(d) {
 
     } else if (d.Type == 'Call') {
         var propArr = d.prop;
-        var myTable = "<p style='color:#FF0000'>Call between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        var myTable = "<h3 class='text5'>Call between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</h3><br/>";
         myTable += "<table id='myTable'><thead><tr><th class='styleheadtable5'>SOURCE</th>";
         myTable += "<th class='styleheadtable5'>TARGET</th>";
         myTable += "<th class='styleheadtable5'>DURATION</th>";
@@ -241,12 +241,12 @@ function visualizeLinkDetail(d) {
         document.getElementById("output").innerHTML = myTable;
     } else {
         var propArr = d.prop;
-        var myTable = "<p style='color:#FF0000'>SMS between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</p><br/>";
+        var myTable = "<h3 class='text5'>SMS between " + d.source.textDisplay + " AND " + d.target.textDisplay + "</h3><br/>";
         myTable += "<table id='myTable'><thead><tr><th class='styleheadtable5'>SENDER</th>";
         myTable += "<th class='styleheadtable5'>RECEIVER</th>";
         myTable += "<th class='styleheadtable5'>DATE</th>";
         myTable += "<th class='styleheadtable5'>STATUS</th>";
-        myTable += "<th class='styleheadtable6'>MESSAGE</th></tr></thead><tbody>";
+        myTable += "<th class='styleheadtable5'>MESSAGE</th></tr></thead><tbody>";
 
         for (var i = 0; i < propArr.length; i++) {
             // if(checkDateRange(propArr[i].date) == "PASS"){
