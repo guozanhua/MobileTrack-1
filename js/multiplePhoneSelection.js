@@ -631,13 +631,37 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
             } else if (selections[noLoop].Type == 'SMS') {
                 //create Query for SMS
-                var _query = "MATCH (n:PHONE)<-[r:SMS]->(m:PHONE) "
+                var smsType = document.getElementById("typesmsMulti").value;
+                var _query = "";
+                if (smsType == 'send') {
+                    _query = "MATCH (n:PHONE)-[r:SMS]->(m:PHONE) ";
+                } else if (smsType == 'received') {
+                    _query = "MATCH (n:PHONE)<-[r:SMS]-(m:PHONE) ";
+                } else {
+                    _query = "MATCH (n:PHONE)<-[r:SMS]->(m:PHONE) ";
+                }
+
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
-                        _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
+                        _query += "WHERE (n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     } else {
                         _query += "OR n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     }
+                }
+                _query += ") ";
+
+                if (datefrom != "" && dateto != "") {
+                    _query += "AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                }
+
+                var status = document.getElementById('stsms').value;
+
+                if (status == 'unread') {
+                    _query += "AND r.Status = 'unread' ";
+                } else if (status == 'read') {
+                    _query += "AND r.Status = 'read' ";
+                } else {
+                    //Do nothing
                 }
                 _query += "RETURN collect(distinct r) AS R";
                 console.log(_query);
@@ -3654,34 +3678,38 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
             } else if (selections[noLoop].Type == 'SMS') {
                 //create Query for Call
-                var _query = "MATCH (n:PHONE)<-[r:SMS]->(m:PHONE) "
+                var smsType = document.getElementById("typesmsMulti").value;
+                var _query = "";
+                if (smsType == 'send') {
+                    _query = "MATCH (n:PHONE)-[r:SMS]->(m:PHONE) ";
+                } else if (smsType == 'received') {
+                    _query = "MATCH (n:PHONE)<-[r:SMS]-(m:PHONE) ";
+                } else {
+                    _query = "MATCH (n:PHONE)<-[r:SMS]->(m:PHONE) ";
+                }
+
                 for (i = 0; i < selectPhonesArr.length; i++) {
                     if (i == 0) {
-                        _query += "WHERE n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
+                        _query += "WHERE (n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     } else {
                         _query += "OR n.PhoneNumber = '" + selectPhonesArr[i] + "' ";
                     }
                 }
+                _query += ") ";
 
-                /*Status Filtering
-                 var status = document.getElementById("statusAll").value;
-                 if (status == "read") {
-                 if (datefrom != "" && dateto != "") {
-                 _query += "AND r.Status = 'read' ";
-                 } else {
-                 _query += "WHERE r.Status = 'read' ";
-                 }
-                 } else if (status == "unread") {
-                 if (datefrom != "" && dateto != "") {
-                 _query += "AND r.Status = 'unread' ";
-                 } else {
-                 _query += "WHERE r.Status = 'unread' "
-                 }
-                 } else {
-                 //do nothing
-                 
-                 }*/
+                if (datefrom != "" && dateto != "") {
+                    _query += " AND toInt(r.Date) >= toInt(" + datefromforquery + ") AND toInt(r.Date) <= toInt(" + datetoforquery + ") "
+                }
 
+                var status = document.getElementById('stsms').value;
+
+                if (status == 'unread') {
+                    _query += "AND r.Status = 'unread' ";
+                } else if (status == 'read') {
+                    _query += "AND r.Status = 'read' ";
+                } else {
+                    //Do nothing
+                }
                 _query += "RETURN collect(distinct r) AS R";
                 console.log(_query);
                 d3.xhr("http://localhost:7474/db/data/transaction/commit")
@@ -5834,30 +5862,56 @@ function multipleSummarize(d, selectPhonesArr) {
                         }
 
                         if (document.getElementById("mchk2").checked) {
-                            if (d[j].smsIn.length > 0) {
-                                output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS In </th></thead><tbody>";
-                                for (k = 0; k < d[j].smsIn.length; k++) {
-                                    output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                    output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                    output.summary += d[j].smsIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                    output.summary += " Freq: " + d[j].smsIn[k].freq + "</td></tr>";
+                            var smsType = document.getElementById("typesmsMulti").value;
+                            if (smsType == 'send') {
+                                if (d[j].smsOut.length > 0) {
+                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS Out </th></thead><tbody>";
+
+                                    for (k = 0; k < d[j].smsOut.length; k++) {
+                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        output.summary += d[j].smsOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        output.summary += " Freq: " + d[j].smsOut[k].freq + "</td></tr>";
+                                    }
+                                    output.summary += "</tbody></table>"
                                 }
-                                output.summary += "</tbody></table>"
-                                output.summary += "<br>"
-                            }
-
-                            if (d[j].smsIn.length > 0) {
-                                output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS Out </th></thead><tbody>";
-
-                                for (k = 0; k < d[j].smsOut.length; k++) {
-                                    output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                    output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                    output.summary += d[j].smsOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                    output.summary += " Freq: " + d[j].smsOut[k].freq + "</td></tr>";
+                            } else if (smsType == 'received') {
+                                if (d[j].smsIn.length > 0) {
+                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS In </th></thead><tbody>";
+                                    for (k = 0; k < d[j].smsIn.length; k++) {
+                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        output.summary += d[j].smsIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        output.summary += " Freq: " + d[j].smsIn[k].freq + "</td></tr>";
+                                    }
+                                    output.summary += "</tbody></table>"
                                 }
-                                output.summary += "</tbody></table>"
-                            }
+                            } else {
+                                if (d[j].smsIn.length > 0) {
+                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS In </th></thead><tbody>";
+                                    for (k = 0; k < d[j].smsIn.length; k++) {
+                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        output.summary += d[j].smsIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        output.summary += " Freq: " + d[j].smsIn[k].freq + "</td></tr>";
+                                    }
+                                    output.summary += "</tbody></table>";
+                                    output.summary += "<br>";
+                                }
 
+
+                                if (d[j].smsOut.length > 0) {
+                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS Out </th></thead><tbody>";
+
+                                    for (k = 0; k < d[j].smsOut.length; k++) {
+                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                        output.summary += d[j].smsOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                        output.summary += " Freq: " + d[j].smsOut[k].freq + "</td></tr>";
+                                    }
+                                    output.summary += "</tbody></table>"
+                                }
+                            }
                         }
                     }
 
@@ -5948,6 +6002,8 @@ function multipleSummarize(d, selectPhonesArr) {
                                     }
                                 } else if (callType == 'outgoing') {
                                     if (d[j].callOut.length > 0) {
+                                        outputArr[indexOutput].summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                        outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call In </th></thead><tbody>";
                                         for (k = 0; k < d[j].callOut.length; k++) {
                                             outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
                                             outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
@@ -5988,31 +6044,61 @@ function multipleSummarize(d, selectPhonesArr) {
                             }
 
                             if (document.getElementById("mchk2").checked) {
-                                if (d[j].smsIn.length > 0) {
-                                    outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS In </th></thead><tbody>";
+                                var smsType = document.getElementById("").value;
+                                if (smsType == 'send') {
+                                    if (d[j].smsOut.length > 0) {
+                                        outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS Out </th></thead><tbody>";
 
-                                    for (k = 0; k < d[j].smsIn.length; k++) {
-                                        outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += d[j].smsIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += " Freq: " + d[j].smsIn[k].freq + "</td></tr>";
+                                        for (k = 0; k < d[j].smsOut.length; k++) {
+                                            outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += d[j].smsOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += " Freq: " + d[j].smsOut[k].freq + "</td></tr>";
+                                        }
+                                        outputArr[indexOutput].summary += "</tbody></table>"
                                     }
-                                    outputArr[indexOutput].summary += "</tbody></table>"
+                                } else if (smsType == 'received') {
+                                    if (d[j].smsIn.length > 0) {
+                                        outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS In </th></thead><tbody>";
 
-                                    outputArr[indexOutput].summary += "<br>"
+                                        for (k = 0; k < d[j].smsIn.length; k++) {
+                                            outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += d[j].smsIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += " Freq: " + d[j].smsIn[k].freq + "</td></tr>";
+                                        }
+                                        outputArr[indexOutput].summary += "</tbody></table>"
+
+                                        outputArr[indexOutput].summary += "<br>"
+                                    }
+                                } else {
+                                    if (d[j].smsIn.length > 0) {
+                                        outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS In </th></thead><tbody>";
+
+                                        for (k = 0; k < d[j].smsIn.length; k++) {
+                                            outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += d[j].smsIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += " Freq: " + d[j].smsIn[k].freq + "</td></tr>";
+                                        }
+                                        outputArr[indexOutput].summary += "</tbody></table>"
+
+                                        outputArr[indexOutput].summary += "<br>"
+                                    }
+
+                                    if (d[j].smsOut.length > 0) {
+                                        outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS Out </th></thead><tbody>";
+
+                                        for (k = 0; k < d[j].smsOut.length; k++) {
+                                            outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += d[j].smsOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            outputArr[indexOutput].summary += " Freq: " + d[j].smsOut[k].freq + "</td></tr>";
+                                        }
+                                        outputArr[indexOutput].summary += "</tbody></table>"
+                                    }
                                 }
 
-                                if (d[j].smsOut.length > 0) {
-                                    outputArr[indexOutput].summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS Out </th></thead><tbody>";
-
-                                    for (k = 0; k < d[j].smsOut.length; k++) {
-                                        outputArr[indexOutput].summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += d[j].smsOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                        outputArr[indexOutput].summary += " Freq: " + d[j].smsOut[k].freq + "</td></tr>";
-                                    }
-                                    outputArr[indexOutput].summary += "</tbody></table>"
-                                }
                             }
                         }
 
@@ -6064,7 +6150,7 @@ function multipleSummarize(d, selectPhonesArr) {
                                         outputArr[indexOutput].summary += d[j].facebookChat[k].Account + "</td><td class='stylerowtable1'>";
                                         outputArr[indexOutput].summary += " Freq: " + d[j].facebookChat[k].freq + "</td></tr>";
                                     }
-                                    outputArr[indexOutput].summary += "</tbody></table>"
+                                    outputArr[indexOutput].summary += "</tbody></table>";
                                 }
                             }
                         }
@@ -6086,11 +6172,12 @@ function multipleSummarize(d, selectPhonesArr) {
                                             output.summary += d[j].callIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
                                             output.summary += " Freq: " + d[j].callIn[k].freq + "</td></tr>";
                                         }
-                                        output.summary += "</tbody></table>"
-                                        output.summary += "<br>"
+                                        output.summary += "</tbody></table>";
+                                        output.summary += "<br>";
                                     }
                                 } else if (callType == 'outgoing') {
                                     if (d[j].callOut.length > 0) {
+                                        output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
                                         output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>Call Out </th></thead><tbody>";
 
                                         for (k = 0; k < d[j].callOut.length; k++) {
@@ -6130,31 +6217,59 @@ function multipleSummarize(d, selectPhonesArr) {
                             }
 
                             if (document.getElementById("mchk2").checked) {
-                                if (d[j].smsIn.length > 0) {
-                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS In </th></thead><tbody>";
-                                    for (k = 0; k < d[j].smsIn.length; k++) {
-                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                        output.summary += d[j].smsIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                        output.summary += " Freq: " + d[j].smsIn[k].freq + "</td></tr>";
+                                var smsType = document.getElementById("typesmsMulti").value;
+                                if (smsType == 'send') {
+                                    if (d[j].smsOut.length > 0) {
+                                        output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                        output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS Out </th></thead><tbody>";
+
+                                        for (k = 0; k < d[j].smsOut.length; k++) {
+                                            output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            output.summary += d[j].smsOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            output.summary += " Freq: " + d[j].smsOut[k].freq + "</td></tr>";
+                                        }
+                                        output.summary += "</tbody></table>"
                                     }
-                                    output.summary += "</tbody></table>"
-                                }
-
-                                output.summary += "<br>"
-
-                                if (d[j].smsOut.length > 0) {
-                                    output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS Out </th></thead><tbody>";
-
-                                    for (k = 0; k < d[j].smsOut.length; k++) {
-                                        output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
-                                        output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
-                                        output.summary += d[j].smsOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
-                                        output.summary += " Freq: " + d[j].smsOut[k].freq + "</td></tr>";
+                                } else if (smsType == 'received') {
+                                    if (d[j].smsIn.length > 0) {
+                                        output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                        output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS In </th></thead><tbody>";
+                                        for (k = 0; k < d[j].smsIn.length; k++) {
+                                            output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            output.summary += d[j].smsIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            output.summary += " Freq: " + d[j].smsIn[k].freq + "</td></tr>";
+                                        }
+                                        output.summary += "</tbody></table>"
                                     }
-                                    output.summary += "</tbody></table>"
-                                }
+                                } else {
+                                    if (d[j].smsIn.length > 0) {
+                                        output.summary += "<h3 class='text4'>Phone Number: " + d[j].PhoneNumber + "</h3>";
+                                        output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS In </th></thead><tbody>";
+                                        for (k = 0; k < d[j].smsIn.length; k++) {
+                                            output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            output.summary += d[j].smsIn[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            output.summary += " Freq: " + d[j].smsIn[k].freq + "</td></tr>";
+                                        }
+                                        output.summary += "</tbody></table>"
+                                    }
 
+                                    output.summary += "<br>"
+
+                                    if (d[j].smsOut.length > 0) {
+                                        output.summary += "<table><thead><th colspan='3' class='styleheadtable1'>SMS Out </th></thead><tbody>";
+
+                                        for (k = 0; k < d[j].smsOut.length; k++) {
+                                            output.summary += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                                            output.summary += (k + 1) + "). </td><td class='stylerowtable1'>";
+                                            output.summary += d[j].smsOut[k].PhoneNumber + "</td><td class='stylerowtable1'>";
+                                            output.summary += " Freq: " + d[j].smsOut[k].freq + "</td></tr>";
+                                        }
+                                        output.summary += "</tbody></table>"
+                                    }
+                                }
                             }
                         }
 
