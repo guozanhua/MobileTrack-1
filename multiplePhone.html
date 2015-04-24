@@ -76,7 +76,7 @@
                         <div>
                             <form id="typeboxcall2" style="display:none">
 
-                                &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket"class="font2"size="3"color="white" >TYPE:</font></label>
+                                &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket"class="font2"size="3"color="white" >TYPE :</font></label>
                                 <select id="typecallMulti" class="wrapper-dropdown-6">
                                     <option value="all">All</option>
                                     <option value="incoming">INCOMING</option>
@@ -119,16 +119,30 @@
                             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="sms" id = "mchk2" value="mchk2" onchange="selection2()">SMS</font>
                         </form> 
 
-                        <div>
+                        
                             <form id="typeboxmessage2" style="display:none">
-                                &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket"class="font2"size="3"color="white" >TYPE:</font></label>
+                                &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket"class="font2" size="3"color="white" >TYPE :</font></label>
                                 <select id="typesms"class="wrapper-dropdown-6" >
                                     <option value="all">ALL</option>
                                     <option value="send">SEND</option>
                                     <option value="received">RECEIVED</option>
-                                </select><br/>
+                                </select>
                             </form>
-                        </div>
+                       
+                        
+                        
+                        <form id="statusSMS2" style="display:none">
+                           
+                            &nbsp; <label><font face="supermarket"  class="font2" size="4" color="white">STATUS :</font></label>
+                            <select id="stsms" class="wrapper-dropdown-6">
+                                <option value="all">ALL STATUS</option>
+                                <option value="read">READ</option>
+                                <option value="unread">UNREAD</option>
+                               
+                            </select>
+                        </form>
+                          
+                   
 
                         <form id="status2" style = "display:none" >  
                             <font face="supermarket" class="font"size="4" color="white"><input type="checkbox" name="line" id = "mchk3" value="">LINE</font>
@@ -385,6 +399,7 @@
 
 
             if (a == "mchk1") {
+                
                 document.getElementById("typeboxcall2").style.display = "block";
                 document.getElementById("durationbox2").style.display = "block";
             }
@@ -394,14 +409,16 @@
 
     <script>
         function selection2() {
+            console.log('Hi');
             var a = document.getElementById("mchk2").value;
             document.getElementById("spinnerboxForm").style.display = "none"
             document.getElementById("typeboxmessage2").style.display = "none"
 
             if (a == "mchk2") {
                 document.getElementById("typeboxmessage2").style.display = "block";
-
+                document.getElementById("statusSMS2").style.display = "block";
             }
+            
 
 
         }
