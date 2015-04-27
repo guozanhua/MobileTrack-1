@@ -5,6 +5,7 @@ function clearDiv(id) {
 function FetchDatabase(input) {
     clearDiv('graph');
     clearDiv('output');
+    clearDiv('summarize');
     var _queryString = input;
     //"MATCH (n:PHONE)-[r1]->(m:PHONE)-[r2]->(o:PHONE) WHERE m.PhoneNumber = '" + input + "' RETURN collect(distinct r1) + collect(distinct r2) AS R";
     //"MATCH (n:PHONE)-[r1]->(m:PHONE) RETURN collect(distinct r1)";	

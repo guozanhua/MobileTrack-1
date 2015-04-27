@@ -1,6 +1,7 @@
 function createQueryForTwo(selections) {
     clearDiv('graph');
     clearDiv('output');
+    clearDiv('summarize');
     var nodeArr = [];
     var linkArr = [];
     var groupArr = [];

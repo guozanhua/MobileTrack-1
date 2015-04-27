@@ -1,6 +1,7 @@
 function WhatsappDatabase() {
     clearDiv('graph');
     clearDiv('output');
+    clearDiv('summarize');
     var inputNumber = $("#phoneNo").val();
     var datefrom = document.getElementById("datefrom").value;
     var dateto = document.getElementById("dateto").value;

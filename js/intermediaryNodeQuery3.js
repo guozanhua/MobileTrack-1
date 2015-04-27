@@ -7,6 +7,7 @@
 function createQueryForThree(selections) {
     clearDiv('graph');
     clearDiv('output');
+    clearDiv('summarize');
     var nodeArr = [];
     var linkArr = [];
     var groupArr = [];
@@ -60,6 +61,7 @@ function createQueryForThree(selections) {
                             var count = 0;
                             if (result.length == 0) {
                                 alert("No data found for Call. Please try again.");
+                                hideDiv('progressDiv');
                             }
 
                             //Create groupArr

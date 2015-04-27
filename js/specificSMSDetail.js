@@ -1,6 +1,7 @@
 function FetchSMSDatabase(input) {
     clearDiv('graph');
     clearDiv('output');
+    clearDiv('summarize');
     var _queryString = input;
     console.log(_queryString);
     var inputNumber = document.getElementById("phoneNo").value;

@@ -5,6 +5,7 @@ function queryMultiplePhones(selections, selectPhonesArr) {
 
     clearDiv('graph');
     clearDiv('output');
+    clearDiv('summarize');
     var promptArr = [];
     promptArr.push(nodeArr);
     promptArr.push(linkArr);

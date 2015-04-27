@@ -10,6 +10,7 @@ function queryManagementSXD(selections) {
     var datetoforquery = convertDatetoISO(dateto);
     clearDiv('graph');
     clearDiv('output');
+    clearDiv('summarize');
     var noLoop = 0;
     
     popup("progressDiv");

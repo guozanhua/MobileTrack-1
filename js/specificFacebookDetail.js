@@ -7,6 +7,7 @@
 function FacebookDatabase() {
     clearDiv('graph');
     clearDiv('output');
+    clearDiv('summarize');
     var datefrom = document.getElementById("datefrom").value;
     var dateto = document.getElementById("dateto").value;
     var datefromforquery = convertDatetoISO(datefrom);
