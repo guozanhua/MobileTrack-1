@@ -2115,11 +2115,11 @@ function dataVisualizationAllPhones(finalResult) {
 
 
     var linkClass = function (d) {
-        if (d.prop.length > 30) {
+        if (d.prop.length > linkFreq_High) {
             return "link highf";
-        } else if (d.prop.length > 15) {
+        } else if (d.prop.length > linkFreq_Medium) {
             return "link mediumf"
-        } else if (d.prop.length > 0) {
+        } else if (d.prop.length > linkFreq_Low) {
             return "link lowf";
         } else {
             return "link";
@@ -2137,11 +2137,11 @@ function dataVisualizationAllPhones(finalResult) {
             .on("mouseover", fadeLink(.1))
             .on("mouseout", fadeLink(1))
             .attr("marker-end", function (d) {
-                if (d.prop.length > 30 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
+                if (d.prop.length > linkFreq_High && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
                     return 'url(#highf)';
-                } else if (d.prop.length > 15 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
+                } else if (d.prop.length > linkFreq_Medium && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
                     return 'url(#mediumf)';
-                } else if (d.prop.length > 0 && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
+                } else if (d.prop.length > linkFreq_Low && d.Type != 'Line' && d.Type != 'Whatsapp' && d.Type != 'Facebook') {
                     return 'url(#lowf)';
                 } else {
                     return "";

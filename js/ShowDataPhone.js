@@ -1,10 +1,3 @@
-//Initialize Global Variable
-
-
-function clearDiv(id) {
-    document.getElementById(id).innerHTML = "";
-}
-
 function querySpecificNode(PhoneNo) {
     // var _queryString = "MATCH (a)-[r1]->(b)-[r2]->(c:PHONE) MATCH (d)-[r3]->(c:PHONE) WHERE c.PhoneNumber = '" + PhoneNo + "' AND c.label = 'Phone' AND b.label <> 'Phone' AND d.label <> 'Phone' AND d.label <> 'Audio' AND (a.label <> 'Whatsapp' AND a.label <> 'Line' AND a.label <> 'Facebook') RETURN collect(distinct r1)+collect(distinct r2)+collect(distinct r3) as R";
     var _queryString = "MATCH (a)-[r]->(b:PHONE) WHERE b.PhoneNumber = '" + PhoneNo + "' AND a.label <> 'Phone' RETURN collect(distinct r) AS R"

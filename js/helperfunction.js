@@ -1,3 +1,12 @@
+/*Initialize global variables*/
+var linkFreq_High = 30;
+var linkFreq_Medium = 15;
+var linkFreq_Low = 0;
+
+var nodeRelation_High = 15;
+var nodeRelation_Medium = 8;
+var nodeRelation_Low = 0;
+
 function listAllNumbers() {
     console.log("listAllNumber!");
     $(document).ready(function () {
@@ -13,102 +22,8 @@ function listAllNumbers() {
 }
 
 
-function checkDateRange(date) {
-    var inputFrom = document.getElementById("datefrom").value;
-    var inputTo = document.getElementById("dateto").value;
-
-    if (inputFrom == "" || inputTo == "") {
-        return "PASS";
-    } else {
-        var start = convertDateAndTime(inputFrom); // dd/mm/yy
-        var end = convertDateAndTime(inputTo); // dd/mm/yy
-
-        var startMonth = start.substring(0, 2);
-        var temp = start.substring(3);
-        var startDate = temp.substring(0, 2);
-        var startYear = start.substring(6);
-        console.log("Begin: " + startMonth + " " + startDate + " " + startYear);
-
-        var endMonth = end.substring(0, 2);
-        var temp = end.substring(3);
-        var endDate = temp.substring(0, 2);
-        var endYear = end.substring(6);
-        console.log("End: " + endMonth + " " + endDate + " " + endYear);
-
-        var compareMonth = date.substring(0, 2);
-        var temp = date.substring(3);
-        var compareDate = temp.substring(0, 2);
-        var compareYear = date.substring(6);
-        console.log("Compare: " + compareMonth + " " + compareDate + " " + compareYear);
-
-        if ((startYear <= compareYear) && (endYear >= compareYear)) {
-            //Check the year first. If compareYear is in between startYear and endYear, automatically return PASS as every conditions are fine.
-            if ((startYear == compareYear) || (endYear == compareYear)) {
-                if (startYear == compareYear) {
-                    //if compareMonth > startMonth in the same year then return PASS. If compareMonth and startMonth are equal then check the date.
-                    if (startMonth <= compareMonth) {
-                        if (startMonth == compareMonth) {
-                            if (startDate <= compareDate) {
-                                //Everything matches the condition.
-                                return "PASS";
-                            } else {
-                                //Everything matches except date is before user selection.
-                                return "NOT PASS";
-                            }
-                        } else {
-                            if (compareMonth <= endMonth || compareMonth >= startMonth) {
-                                if (compareMonth == endMonth) {
-                                    if (compareDate <= endDate) {
-                                        return "PASS";
-                                    } else {
-                                        return "NOT PASS";
-                                    }
-                                } else {
-                                    return "PASS";
-                                }
-                            } else {
-                                return "NOT PASS";
-                            }
-
-                        }
-
-                    } else {
-                        return "NOT PASS";
-                    }
-                } else if (endYear == compareYear) {
-                    //if compareMonth < endMonth in the same year then return PASS. If compareMonth and endMonth are equal then check their date.
-                    if (endMonth >= compareMonth) {
-                        if (endMonth == compareMonth) {
-                            if (endDate >= compareDate) {
-                                //Everything matches the condition.
-                                return "PASS";
-                            } else {
-                                //Everything matches except date is before user selection.
-                                return "NOT PASS";
-                            }
-                        } else {
-                            if (compareMonth >= startMonth) {
-                                return "PASS";
-                            } else {
-                                return "NOT PASS";
-                            }
-
-                        }
-                    } else {
-                        return "NOT PASS";
-                    }
-                } else {
-                    return "PASS";
-                }
-
-            } else {
-                return "PASS";
-            }
-        } else {
-            return "NOT PASS";
-        }
-
-    }
+function clearDiv(id) {
+    document.getElementById(id).innerHTML = "";
 }
 
 function convertDateAndTime(UserInputdate) {
