@@ -5967,7 +5967,11 @@ function multipleSummarize(d, selectPhonesArr) {
 
                         }
                     }
-                    header += selectPhonesArr[i] + " <button id = 'viewbtn' class='color blue button' value = '" + i + "' onclick='multipleSummarizeArea(this.value)'>View</button><br/>"
+                    header += "<table><thead><th colspan='3' class='styleheadtable2'>List </th></thead><tbody>"; 
+                    header += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                    header += selectPhonesArr[i] + "</td><td class='stylerowtable1'>";
+                    header += " <button id = 'viewbtn' class='color blue button' value = '" + i + "' onclick='multipleSummarizeArea(this.value)'>View</button></td></tr>"
+                    
                     outputArr.push(output);
                 } else {
                     //check the existence of summary in outputArr
@@ -6325,16 +6329,21 @@ function multipleSummarize(d, selectPhonesArr) {
 
                             }
                         }
-                        header += selectPhonesArr[i] + " <button id = 'viewbtn' class='color blue button' value = '" + i + "' onclick='multipleSummarizeArea(this.value)'>View</button><br/>"
+                        header += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                        header += selectPhonesArr[i] + "</td><td class='stylerowtable1'>";
+                        header += " <button id = 'viewbtn' class='color blue button' value = '" + i + "' onclick='multipleSummarizeArea(this.value)'>View</button></td></tr>"
+                        
                         outputArr.push(output);
                     }
                 }
             }
+            
             else {
                 //Do nothing. Just keep on the iteration
             }
         }
     }
+    header += "</tbody></table>";
     document.getElementById("summarize").innerHTML = header;
 }
 

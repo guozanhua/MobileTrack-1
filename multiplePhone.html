@@ -90,15 +90,15 @@
                             &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket" class="font2" size="4" color="white"  >Duration :</font></label >
                             <br/>
                             <form id="selecttype"> 
-                                &nbsp;  &nbsp;   &nbsp;<font face="supermarket" size="4" class="font2"color="white"><input type="radio" value="ddd" id="ddd" onchange="defaultduration()" checked>Default Duration</font>
+                                &nbsp;  &nbsp;   &nbsp;<font face="supermarket" size="4" class="font2"color="white"><input type="radio" value="ddd" id="ddd" onchange="defaultduration2()" checked>Default Duration</font>
                                 <br/>
-                                &nbsp;  &nbsp;   &nbsp;<font face="supermarket" size="4" class="font2"color="white"><input type="radio" value="sdd" id="sdd" onchange="specificduration()">Specific Duration</font>
+                                &nbsp;  &nbsp;   &nbsp;<font face="supermarket" size="4" class="font2"color="white"><input type="radio" value="sdd" id="sdd" onchange="specificduration2()">Specific Duration</font>
                             </form>
                         </form>
                         </div>
                         
                         <div>
-                        <form id="durationrange"  style="display:none">
+                        <form id="durationrange2"  style="display:none">
                             <p align = "center"><label><font face="supermarket"class="font2" size="4" color="white"  >Duration range</font></label ></p>
                             <p align = "center">
                             <form id="inputduration"> 
@@ -433,6 +433,25 @@
             document.getElementById("sdd").checked = false;
         }
     </script>
+    
+     <script>
+        function specificduration2() {
+            var a = document.getElementById("sdd").value;
+            document.getElementById("durationrange2").style.display = "none";
+            if (a == "sdd") {
+                document.getElementById("durationrange2").style.display = "block";
+            }
+            document.getElementById("ddd").checked = false;
+
+        }
+
+        function defaultduration2() {
+            var a = document.getElementById("ddd").value;
+            document.getElementById("durationrange2").style.display = "none";
+            document.getElementById("sdd").checked = false;
+        }
+    </script>
+    
 
     <script>
         function specificfrequency() {
@@ -478,6 +497,8 @@
             document.getElementById("typeboxmessage2").style.display = "none";
             document.getElementById("date_form2").style.display = "none";
             document.getElementById("frequency").style.display = "none";
+            document.getElementById("statusSMS2").style.display = "none";
+            document.getElementById("durationrange2").style.display = "none";
             if (a == "ap") {
                 document.getElementById("spinnerboxForm").style.display = "block";
             }

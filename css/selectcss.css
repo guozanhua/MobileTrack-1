@@ -335,7 +335,7 @@ P.blocktext {
 
 #input{
 
-    min-height:1300px;
+    min-height:1000px;
     background-color: #0c0c0c;
     background-size: 100%;
     /*background-color: black;*/
@@ -349,7 +349,7 @@ P.blocktext {
 
     z-index:-1; 
 
-    height:1300px;
+    height:1000px;
     /*width:815px;*/
     background-color:#111111;
     margin-bottom:10px;
@@ -361,7 +361,7 @@ P.blocktext {
 
 #output{
     height:100%;
-    height:823px;
+    height:513px;
     background-color:#0c0c0c;
     margin-bottom:1%;
     white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
