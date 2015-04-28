@@ -60,8 +60,9 @@ function createQueryForThree(selections) {
 
                             var count = 0;
                             if (result.length == 0) {
-                                alert("No data found for Call. Please try again.");
                                 hideDiv('progressDiv');
+                                alert("No data found for Call. Please try again.");
+                                
                             }
 
                             //Create groupArr
