@@ -63,9 +63,8 @@
 
                     <div id="checkboxbar" style="display:none">
                         <font face="supermarket" size="4" color="white"><div name="checkboxes" id="box"></div></font>
-
-<br/>
                     </div>
+                    <br/>
                     
                     <div class="wrapper-dropdown-5">
                         <form id="status"  style = "display:none" > 
@@ -90,9 +89,9 @@
                             &nbsp;  &nbsp;   &nbsp;<label><font face="supermarket" class="font2" size="4" color="white"  >Duration :</font></label >
                             <br/>
                             <form id="selecttype"> 
-                                &nbsp;  &nbsp;   &nbsp;<font face="supermarket" size="4" class="font2"color="white"><input type="radio" value="ddd" id="ddd" onchange="defaultduration2()" checked>Default Duration</font>
+                                &nbsp;  &nbsp;   &nbsp;<font face="supermarket" size="4" class="font2"color="white"><input type="radio" value="ddd" id="ddd2" onchange="defaultduration2()" checked>Default Duration</font>
                                 <br/>
-                                &nbsp;  &nbsp;   &nbsp;<font face="supermarket" size="4" class="font2"color="white"><input type="radio" value="sdd" id="sdd" onchange="specificduration2()">Specific Duration</font>
+                                &nbsp;  &nbsp;   &nbsp;<font face="supermarket" size="4" class="font2"color="white"><input type="radio" value="sdd" id="sdd2" onchange="specificduration2()">Specific Duration</font>
                             </form>
                         </form>
                         </div>
@@ -433,19 +432,19 @@
     
      <script>
         function specificduration2() {
-            var a = document.getElementById("sdd").value;
+            var a = document.getElementById("sdd2").value;
             document.getElementById("durationrange2").style.display = "none";
-            if (a == "sdd") {
+            if (a == "sdd2") {
                 document.getElementById("durationrange2").style.display = "block";
             }
-            document.getElementById("ddd").checked = false;
+            document.getElementById("ddd2").checked = false;
 
         }
 
         function defaultduration2() {
-            var a = document.getElementById("ddd").value;
+            var a = document.getElementById("ddd2").value;
             document.getElementById("durationrange2").style.display = "none";
-            document.getElementById("sdd").checked = false;
+            document.getElementById("sdd2").checked = false;
         }
     </script>
     
