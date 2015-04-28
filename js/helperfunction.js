@@ -268,7 +268,7 @@ function drawColorPane() {
     linkTypeSheet.append('div')
             .attr('class', 'linkType right3');
     var linkLabel = d3.select(".linkType.right3");
-    linkLabel.html("&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;30");
+    linkLabel.html("&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;" + linkFreq_High);
 
     /*mid freq link*/
     linkTypeSheet.append('div')
@@ -277,7 +277,7 @@ function drawColorPane() {
     linkTypeSheet.append('div')
             .attr('class', 'linkType right2');
     var linkLabel = d3.select(".linkType.right2");
-    linkLabel.html("&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;15");
+    linkLabel.html("&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;" + linkFreq_Medium);
 
     /*low freq link*/
     linkTypeSheet.append('div')
@@ -286,7 +286,7 @@ function drawColorPane() {
     linkTypeSheet.append('div')
             .attr('class', 'linkType right1');
     var linkLabel = d3.select(".linkType.right1");
-    linkLabel.html("&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;0");
+    linkLabel.html("&nbsp;Commu&nbsp;Log&nbsp;>&nbsp;" + linkFreq_Low);
 
     //DisplayNodeMeaning
     var nodeType = d3.select("#colorpane3");
@@ -304,31 +304,31 @@ function drawColorPane() {
     /*highly connected node*/
     nodeMeaning.append('div')
             .attr('class', 'nodeMeaning left1')
-            .style('background', 'red');
+            .style('background', '#FF0000');
 
     nodeMeaning.append('div')
             .attr('class', 'nodeMeaning right1');
     var nodeMeaningLabel = d3.select('.nodeMeaning.right1');
-    nodeMeaningLabel.html("&nbsp;Rel&nbsp;>15");
+    nodeMeaningLabel.html("&nbsp;Rel&nbsp;>" + nodeRelation_High);
 
     /*medium connected node*/
     nodeMeaning.append('div')
             .attr('class', 'nodeMeaning left2')
-            .style('background', 'orange');
+            .style('background', '#FFFF00');
 
     nodeMeaning.append('div')
             .attr('class', 'nodeMeaning right2');
     var nodeMeaningLabel = d3.select('.nodeMeaning.right2');
-    nodeMeaningLabel.html("&nbsp;Rel&nbsp;>8");
+    nodeMeaningLabel.html("&nbsp;Rel&nbsp;>" + nodeRelation_Medium);
 
     /*low connected node*/
     nodeMeaning.append('div')
             .attr('class', 'nodeMeaning left3')
-            .style('background', 'green');
+            .style('background', '#00FF00');
 
     nodeMeaning.append('div')
             .attr('class', 'nodeMeaning right3');
     var nodeMeaningLabel = d3.select('.nodeMeaning.right3');
-    nodeMeaningLabel.html("&nbsp;Rel&nbsp;>0");
+    nodeMeaningLabel.html("&nbsp;Rel&nbsp;>" + nodeRelation_Low);
 
 }
