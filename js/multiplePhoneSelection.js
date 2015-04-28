@@ -487,13 +487,6 @@ function queryMultiplePhones(selections, selectPhonesArr) {
                                 }
                             }
 
-
-                            for (i = 0; i < nodeArr.length; i++) {
-                                nodeArr[i].callOut = [];
-                                nodeArr[i].callIn = [];
-                                nodeArr[i].matchFreq = 0;
-                            }
-
                             /*Frequency Filtering for Call*/
                             for (i = 0; i < nodeArr.length; i++) {
                                 nodeArr[i].callOut = [];
@@ -5802,7 +5795,8 @@ function multipleSummarize(d, selectPhonesArr) {
     for (i = 0; i < selectPhonesArr.length; i++) {
         for (j = 0; j < d.length; j++) {
             if (d[j].PhoneNumber == selectPhonesArr[i]) {
-                if (j == 0) {
+                if (i == 0) {
+                    console.log("Create button first round: " + d[j].PhoneNumber);
                     var output = {};
                     output.PhoneNumber = d[j].PhoneNumber;
                     output.summary = "";
@@ -6160,7 +6154,7 @@ function multipleSummarize(d, selectPhonesArr) {
                             }
                         }
                     } else {
-                        console.log(d[j].PhoneNumber);
+                        console.log("Create button second round: " + d[j].PhoneNumber);
                         var output = {};
                         output.PhoneNumber = d[j].PhoneNumber;
                         output.summary = "";
@@ -6330,10 +6324,9 @@ function multipleSummarize(d, selectPhonesArr) {
 
                             }
                         }
-                        header += "<tr class='styletable1 '><td class='stylerowtable1'>";
+                        header += "<tr class='styletable1'><td class='stylerowtable1'>";
                         header += selectPhonesArr[i] + "</td><td class='stylerowtable1'>";
                         header += " <button id = 'viewbtn' class='color blue button' value = '" + i + "' onclick='multipleSummarizeArea(this.value)'>View</button></td></tr>"
-                        
                         outputArr.push(output);
                     }
                 }
