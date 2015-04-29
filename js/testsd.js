@@ -3017,7 +3017,7 @@ function queryManagement(selections) {
                                 var result = returnData.results[0].data[0].row[0];
                                 var count = 0;
                                 if (result.length == 0) {
-                                    alert("No data found. Please try again.");
+                                    alert("No data found for Call. Please try again.");
                                 }
 
                                 for (i = 0; i < result.length; i++) {
@@ -4379,7 +4379,7 @@ function queryManagement(selections) {
                                         objLink.prop = [];
 
                                         var objLinkProp = {};
-                                        objLinkProp.Sender = result[i].SourceNumber;
+                                        objLinkProp.Sender = result[i].SourceFacebook;
                                         objLinkProp.date = convertDatetoNormal(result[i].Date);
                                         objLinkProp.Time = result[i].Time;
                                         objLinkProp.message = result[i].Message;
