@@ -150,6 +150,14 @@
 <script type="text/javascript" src="js/testsd.js"></script>
 <script>
 function gatheringSelections(){
+    var dateFrom = document.getElementById("datefrom").value;
+    var dateTo = document.getElementById("dateto").value;
+    var valid_date = true;
+    //Validate the date range
+    if (dateFrom != "" && dateTo != "") {
+        valid_date = DateRangeValidation(dateFrom, dateTo);
+    }
+    
   if(document.getElementById("sdrad1").checked){
     var selections = [];
     if(document.getElementById("sdchk3").checked){
@@ -185,8 +193,11 @@ function gatheringSelections(){
 
     }
     if(selections.length > 0){
-      console.log(selections.length);
-      queryManagement(selections);
+      if(valid_date){
+          queryManagement(selections);
+      }else{
+          alert("invalid date-range format");
+      } 
     }
 
   }else if(document.getElementById("sdrad2").checked){
@@ -220,12 +231,16 @@ function gatheringSelections(){
       objCommu.Type = 'SMS';
       objCommu.linkType = '<-[r1:SMS]-';
       selections.push(objCommu);
-
     }
+
     //Check if there is any communication in selections
     if(selections.length > 0){
-      console.log(selections.length);
-      queryManagement(selections);
+      if(valid_date){
+          queryManagement(selections);
+      }else{
+          alert("Invalid date-range format");
+      }
+      
     }
   }else{
     alert("Please select communication route !")
