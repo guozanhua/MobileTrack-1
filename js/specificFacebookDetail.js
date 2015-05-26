@@ -36,7 +36,7 @@ function FacebookDatabase() {
                 var result = [];
 
                 if (returnData.results[0].data.length == 0) {
-                    alert("No data found, please try again.");
+                    alert("Facebook Communication: No corresponding result has been returned from database. Please try again.");
                 } else {
                     for (i = 0; i < returnData.results[0].data.length; i++) {
                         result.push(returnData.results[0].data[i].row[0]);

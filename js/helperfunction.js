@@ -332,3 +332,21 @@ function drawColorPane() {
     nodeMeaningLabel.html("&nbsp;Rel&nbsp;>" + nodeRelation_Low);
 
 }
+
+function DurationRangeValidation(durFrom, durTo){
+    if(durFrom > durTo){
+        return false;
+    }else{
+        return true;
+    }
+}
+
+function DateRangeValidation(dateFrom, dateTo){
+    var dateFrom = convertDatetoISO(dateFrom);
+    var dateTo = convertDatetoISO(dateTo);
+    if(dateFrom > dateTo){
+        return false;
+    }else{
+        return true;
+    }
+}

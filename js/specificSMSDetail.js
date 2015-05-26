@@ -25,7 +25,7 @@ function FetchSMSDatabase(input) {
                 var groupArr = [];
                 var count = 0;
                 if (result.length == 0) {
-                    alert("No data found. Please try again.");
+                    alert("SMS Communication: No corresponding result has been returned from database. Please try again.");
                 }
 
                 //create GroupArr
