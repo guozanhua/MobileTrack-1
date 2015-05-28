@@ -161,6 +161,14 @@
 
 <script type="text/javascript">
 function actionPerformed(){
+    var dateFrom = document.getElementById("datefrom").value;
+    var dateTo = document.getElementById("dateto").value;
+    var valid_date = true;
+    //Validate the date range
+    if (dateFrom != "" && dateTo != "") {
+        valid_date = DateRangeValidation(dateFrom, dateTo);
+    }
+    
   var linkType = [];
   if(document.getElementById("sxdrad1").checked){
     var selections = [];
@@ -196,8 +204,12 @@ function actionPerformed(){
 
     }
     if(selections.length > 0){
-      console.log(selections.length);
-      queryManagementSXD(selections);
+      if(valid_date){
+          queryManagementSXD(selections);
+      }else{
+          alert("Invalid date-range format");
+      }
+      
     }
 
   }else if(document.getElementById("sxdrad2").checked){
@@ -232,8 +244,11 @@ function actionPerformed(){
     }
     //Check if there is any communication in selections
     if(selections.length > 0){
-      console.log(selections.length);
-      queryManagementSXD(selections);
+      if(valid_date){
+          queryManagementSXD(selections);
+      }else{
+          alert("Invalid date-range format");
+      }
     }
   }else if(document.getElementById("sxdrad3").checked){
     var selections = [];
@@ -268,8 +283,11 @@ function actionPerformed(){
     }
     //Check if there is any communication in selections
     if(selections.length > 0){
-      console.log(selections.length);
-      queryManagementSXD(selections);
+      if(valid_date){
+          queryManagementSXD(selections);
+      }else{
+          alert("Invalid date-range format");
+      }
     }
 
   }else if(document.getElementById("sxdrad4").checked){
@@ -304,8 +322,11 @@ function actionPerformed(){
     }
     //Check if there is any communication in selections
     if(selections.length > 0){
-      console.log(selections.length);
-      queryManagementSXD(selections);
+      if(valid_date){
+          queryManagementSXD(selections);
+      }else{
+          alert("Invalid date-range format");
+      }
     }
   }
   else{

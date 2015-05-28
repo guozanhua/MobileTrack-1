@@ -144,6 +144,13 @@
 
 <script>
 function getdata(){
+    var dateFrom = document.getElementById("datefrom").value;
+    var dateTo = document.getElementById("dateto").value;
+    var valid_date = true;
+    //Validate the date range
+    if (dateFrom != "" && dateTo != "") {
+        valid_date = DateRangeValidation(dateFrom, dateTo);
+    }
 if(document.getElementById("rad1").checked){
     //a->?-?->b
     var selections = [];
@@ -174,9 +181,17 @@ if(document.getElementById("rad1").checked){
       objCommu.linkType = ['-[r1:SMS]->','<-[x1:SMS]->','<-[x2:SMS]->','-[r2:SMS]->'];
       selections.push(objCommu);
     }
-    console.log(selections.length);
-    createQueryForThree(selections);
-
+    
+    if(selections.length > 0){
+        if(valid_date){
+            createQueryForThree(selections);
+        }else{
+            alert("Invalid date-range format");
+        }
+    }else{
+        alert("Please select communication types");
+    }
+    
   }else if(document.getElementById("rad2").checked){  
     //a->?-?<-b
     var selections = [];
@@ -207,7 +222,15 @@ if(document.getElementById("rad1").checked){
       objCommu.linkType = ['-[r1:SMS]->','<-[x1:SMS]->','<-[x2:SMS]->','<-[r2:SMS]-'];
       selections.push(objCommu);
     }
-    createQueryForThree(selections);
+    if(selections.length > 0){
+        if(valid_date){
+            createQueryForThree(selections);
+        }else{
+            alert("Invalid date-range format");
+        }
+    }else{
+        alert("Please select communication types");
+    }
 
   }else if(document.getElementById("rad3").checked){
     //a<-?-?->b
@@ -241,8 +264,15 @@ if(document.getElementById("rad1").checked){
       objCommu.linkType = ['<-[r1:SMS]-','<-[x1:SMS]->','<-[x2:SMS]->','-[r2:SMS]->'];
       selections.push(objCommu);
     }
-    createQueryForThree(selections);
-
+    if(selections.length > 0){
+        if(valid_date){
+            createQueryForThree(selections);
+        }else{
+            alert("Invalid date-range format");
+        }
+    }else{
+        alert("Please select communication types");
+    }
   }else if(document.getElementById("rad4").checked){
     //a<-?-?<-b
     var selections = [];
@@ -273,8 +303,15 @@ if(document.getElementById("rad1").checked){
       objCommu.linkType = ['<-[r1:SMS]-','<-[x1:SMS]->','<-[x2:SMS]->','<-[r2:SMS]-'];
       selections.push(objCommu);
     }
-    createQueryForThree(selections);
-
+    if(selections.length > 0){
+        if(valid_date){
+            createQueryForThree(selections);
+        }else{
+            alert("Invalid date-range format");
+        }
+    }else{
+        alert("Please select communication types");
+    }
   }else{
     alert("Please select your desired communication route ..")
   }
